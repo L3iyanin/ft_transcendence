@@ -4,43 +4,43 @@ version: '3.9'
 services:
 
   postgres:
-    build: srcs/database
+    build: services/database
     image: postgres
     container_name: postgres
     restart: unless-stopped
     env_file:
       - .env
     volumes:
-      - database:${LOCAL_DATABASE_VLPATH}
+      - database:${CONTAINER_DATABASE_VLPATH}
     networks:
       - ft_transcendence
 
   react:
-    build: srcs/frontend
+    build: services/frontend
     image: react
     container_name: react
     restart: unless-stopped
     env_file:
       - .env
     volumes:
-      - frontend:${LOCAL_FRONTEND_VLPATH}
+      - frontend:${CONTAINER_FRONTEND_VLPATH}
     networks:
       - ft_transcendence
 
   nestjs:
-    build: srcs/backend
+    build: services/backend
     image: nestjs
     container_name: nestjs
     restart: unless-stopped
     env_file:
       - .env
     volumes:
-      - backend:${LOCAL_BACKEND_VLPATH}
+      - backend:${CONTAINER_BACKEND_VLPATH}
     networks:
       - ft_transcendence
     
   webserver:
-    build: srcs/webserver
+    build: services/webserver
     image: webserver
     container_name: webserver
     restart: unless-stopped
@@ -68,19 +68,19 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: ${CONTAINER_FRONTEND_VLPATH}
+      device: ${LOCAL_FRONTEND_VLPATH}
   backend:
     name: backend
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: ${CONTAINER_BACKEND_VLPATH}
+      device: ${LOCAL_BACKEND_VLPATH}
   database:
     name: database
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: ${CONTAINER_DATABASE_VLPATH}
+      device: ${LOCAL_DATABASE_VLPATH}
 # =======================================================================================
