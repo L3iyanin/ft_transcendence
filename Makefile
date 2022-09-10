@@ -1,16 +1,17 @@
+#!make
+include .env
+
 Author = younes
 
 all: build
 
-LOCAL_DATABASE_VLPATH="~/.ft_transcendence/database"
-
 build:
-	@docker-compose up --build -d
+	@docker-compose up --build
 
 init: volumes build
 
 up:
-	@docker-compose up -d
+	@docker-compose up
 
 down:
 	@docker-compose down
@@ -21,7 +22,7 @@ volumes:
 clean: down
 
 fclean: clean
-	@rm -rf $(LOCAL_DATABASE_VLPATH)/
+	@rm -rf $(LOCAL_DATABASE_VLPATH)
 	@bash dockerCleanup.sh
 
 re: fclean init
