@@ -3,22 +3,25 @@ version: '3.9'
 # ======================================= Services ======================================
 services:
 
-  postgres:
-    build: services/database
-    image: postgres
-    container_name: postgres
+  database:
+    build: deployement/database
+    image: database
+    container_name: database
     restart: unless-stopped
     env_file:
       - .env
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - database:${CONTAINER_DATABASE_VLPATH}
     networks:
       - ft_transcendence
 
-  react:
-    build: services/frontend
-    image: react
-    container_name: react
+  frontend:
+    build: deployement/frontend
+    image: frontend
+    container_name: frontend
     restart: unless-stopped
     env_file:
       - .env
@@ -27,10 +30,10 @@ services:
     networks:
       - ft_transcendence
 
-  nestjs:
-    build: services/backend
-    image: nestjs
-    container_name: nestjs
+  backend:
+    build: deployement/backend
+    image: backend
+    container_name: backend
     restart: unless-stopped
     env_file:
       - .env
@@ -40,7 +43,7 @@ services:
       - ft_transcendence
     
   webserver:
-    build: services/webserver
+    build: deployement/webserver
     image: webserver
     container_name: webserver
     restart: unless-stopped
@@ -77,10 +80,11 @@ volumes:
       o: 'bind'
       device: ${LOCAL_BACKEND_VLPATH}
   database:
-    name: database
     driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: ${LOCAL_DATABASE_VLPATH}
+    # name: database
+    # driver: local
+    # driver_opts:
+    #   type: 'none'
+    #   o: 'bind'
+    #   device: ${LOCAL_DATABASE_VLPATH}
 # =======================================================================================

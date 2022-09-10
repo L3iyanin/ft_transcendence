@@ -4,4 +4,4 @@ docker rm -f $(docker ps -a -q)
 
 docker volume rm $(docker volume ls -q)
 
-docker system prune -af
+# docker system prune -af
