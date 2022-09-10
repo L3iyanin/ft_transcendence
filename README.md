@@ -31,6 +31,12 @@ It’s a Pong Multiplayer Game.
 git clone https://github.com/L3iyanin/ft_transcendence.git
 ```
 
+#### Create .env file
+
+```bash
+cp .env.sample .env # and change the values by your own
+```
+
 ### Startup project
 ```bash
 docker-compose up
