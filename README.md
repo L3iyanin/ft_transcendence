@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/L3iyanin/ft_transcendence/blob/2-kirwa-init-project/readme/images/logo.svg" />
+  <img src="https://github.com/L3iyanin/ft_transcendence/blob/main/readme/images/logo.svg" />
 </p>
 
 ## ft_transcendence:
