@@ -39,7 +39,17 @@ cp .env.sample .env # and change the values by your own
 
 ### Startup project
 ```bash
-docker-compose up
+make init
+```
+
+### Cleanup project
+```bash
+make fclean
+```
+
+### Run project after you have already startup it
+```bash 
+make up
 ```
 
 To see the frontend `127.0.0.1:80`.
