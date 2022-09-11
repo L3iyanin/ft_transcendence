@@ -39,6 +39,8 @@ cp .env.sample .env # and change the values by your own
 
 ### Startup project
 ```bash
+make
+# or
 make init
 ```
 

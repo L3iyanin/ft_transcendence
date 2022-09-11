@@ -3,7 +3,7 @@ include .env
 
 Author = younes
 
-all: build
+all: init
 
 build:
 	@docker-compose up --build
@@ -24,11 +24,10 @@ clean: down
 fclean: clean
 	@rm -rf $(LOCAL_DATABASE_VLPATH)
 	
-	@docker-compose down
-	@docker rm -f $(docker ps -a -q)
-	@# docker rmi -f $$(sudo docker images -q)
-	@docker volume rm $(docker volume ls -q)
-	@docker system prune -af
+	@rm -rf ./backend/node_modules
+	@rm -rf ./frontend/node_modules
+	
+	@bash dockerCleanup.sh
 
 re: fclean init
 
