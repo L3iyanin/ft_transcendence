@@ -100,11 +100,10 @@ volumes:
       o: 'bind'
       device: ${LOCAL_BACKEND_VLPATH}
   database:
+    name: database
     driver: local
-    # name: database
-    # driver: local
-    # driver_opts:
-    #   type: 'none'
-    #   o: 'bind'
-    #   device: ${LOCAL_DATABASE_VLPATH}
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: ${LOCAL_DATABASE_VLPATH}
 # =======================================================================================
