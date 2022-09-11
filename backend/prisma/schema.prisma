@@ -2,20 +2,100 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
-model Article {
-  id          Int      @id @default(autoincrement())
-  title       String   @unique
-  description String?
-  body        String
-  published   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model User {
+    id                     Int           @id @default(autoincrement())
+    username               String        @unique
+    fullName               String
+    imgUrl                 String
+    wins                   Int
+    loses                  Int
+    twoFactorAuth          Boolean
+    friends                User[]        @relation("friends")
+    friendsRelation        User[]        @relation("friends")
+    friendRequests         User[]        @relation("friendRequests")
+    friendRequestsRelation User[]        @relation("friendRequests")
+    achievements           Achievement[]
+    createdChannles        Chennel[]
+    Member                 Member[]
+    Message                Message[]
+}
+
+model Match {
+    id           Int      @id @default(autoincrement())
+    isMatching   Boolean
+    live         Boolean
+    player1Id    Int
+    player2Id    Int
+    player1Score Int      @default(0)
+    player2Score Int      @default(0)
+    date         DateTime @default(now())
+    scoreToWin   Int // can be 3 or 7
+}
+
+model Achievement {
+    id          Int    @id @default(autoincrement())
+    name        String
+    description String
+    imgUrl      String
+    User        User[]
+}
+
+model Chennel {
+    id            Int           @id @default(autoincrement())
+    name          String
+    owner         User          @relation(fields: [userId], references: [id])
+    userId        Int
+    members       Member[]
+    messages      Message[]
+    status        ChannleStatus
+    password      String
+    lastMessagdID Int
+}
+
+enum ChannleStatus {
+    DM
+    PUBLIC
+    PRIVATE
+    PROTECTED
+}
+
+model Member {
+    id        Int          @id @default(autoincrement())
+    user      User         @relation(fields: [userId], references: [id])
+    status    MemberStatus
+    until     DateTime?
+    role      Roles
+    Chennel   Chennel      @relation(fields: [chennelId], references: [id])
+    chennelId Int
+    userId    Int
+}
+
+enum MemberStatus {
+    BANNED
+    MUTED
+    NONE
+}
+
+enum Roles {
+    OWNER
+    ADMIN
+    MEMBER
+}
+
+model Message {
+    id        Int      @id @default(autoincrement())
+    content   String
+    sender    User     @relation(fields: [userId], references: [id])
+    chennel   Chennel  @relation(fields: [chennelId], references: [id])
+    date      DateTime @default(now())
+    chennelId Int
+    userId    Int
 }
