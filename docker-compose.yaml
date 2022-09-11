@@ -19,7 +19,9 @@ services:
       - ft_transcendence
 
   backend:
-    build: deployement/backend
+    build:
+      dockerfile: deployement/backend/Dockerfile
+      context: .
     image: backend
     container_name: backend
     restart: unless-stopped
@@ -35,7 +37,9 @@ services:
       - ft_transcendence
 
   frontend:
-    build: deployement/frontend
+    build:
+      dockerfile: deployement/frontend/Dockerfile
+      context: .
     image: frontend
     container_name: frontend
     restart: unless-stopped
