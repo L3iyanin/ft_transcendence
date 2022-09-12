@@ -14,6 +14,7 @@ model User {
     id                     Int           @id @default(autoincrement())
     username               String        @unique
     fullName               String
+    login                  String       @unique
     imgUrl                 String
     wins                   Int @default(0)
     loses                  Int @default(0)
