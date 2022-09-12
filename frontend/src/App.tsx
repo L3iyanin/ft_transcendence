@@ -1,7 +1,11 @@
 import Router from "./routes/Router";
 
 const App: React.FC = () => {
-	return <Router />;
+	return (
+		<div className="bg-dark-blue">
+			<Router />
+		</div>
+	);
 };
 
 export default App;
