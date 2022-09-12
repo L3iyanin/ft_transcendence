@@ -6,8 +6,8 @@ import NavBar from "../components/NavBar/NavBar";
 const Router: React.FC = () => {
 	return (
 		<>
-			<NavBar/>
 			<BrowserRouter>
+				<NavBar/>
 				<Routes>
 					<Route path="/game" element={<Game />} />
 					<Route path="/" element={<Landing />} />
