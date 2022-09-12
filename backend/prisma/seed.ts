@@ -30,21 +30,24 @@ async function addUsers(){
         data : {
             username : "user0",
             fullName : "fdfdff",
-            imgUrl :  "/path/image/profile"
+            imgUrl :  "/path/image/profile",
+            login : "user0"
         }
     })
     const user1 = await prisma.user.create({
         data : {
             username : "user1",
             fullName : "cdcdcd",
-            imgUrl :  "/path/image/profile"
+            imgUrl :  "/path/image/profile",
+            login : "user1"
         }
     })
     const user2 = await prisma.user.create({
         data : {
             username : "user2",
             fullName : "fdfdfd",
-            imgUrl :  "/path/image/profile"
+            imgUrl :  "/path/image/profile",
+            login : "user2"
         }
     })
     console.log({user0, user1, user2})
