@@ -9,4 +9,10 @@
 
 * {
     font-family: 'Poppins', sans-serif;
+	box-sizing: border-box;
+}
+
+body {
+	@extend .main-bg;
+	background-image: url('../assets/backgrounds/bg-noise.webp');
 }
