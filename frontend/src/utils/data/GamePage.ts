@@ -1,6 +1,7 @@
 import { IGamePlayer, IGameSettings, IGameWatcher } from "../types/Game";
 
 const player1: IGamePlayer = {
+	id: "1",
 	fullName: "Imran Baali",
 	score: 2,
 	username: "kirwa-ko",
@@ -8,10 +9,11 @@ const player1: IGamePlayer = {
 		"https://myanimelist.tech/api/avatar?name=kirwako&animeName=Inazuma_Eleven",
 	wins: 15,
 	loses: 4,
-	achivements: 3,
+	achievements: 3,
 };
 
 const player2: IGamePlayer = {
+	id: "2",
 	fullName: "Abdali Ait Hmid",
 	score: 7,
 	username: "twelve",
@@ -19,11 +21,12 @@ const player2: IGamePlayer = {
 		"https://myanimelist.tech/api/avatar?name=twelve&animeName=Inazuma_Eleven",
 	wins: 15,
 	loses: 4,
-	achivements: 3,
+	achievements: 6,
 };
 
 const fakeGameWatchers: IGameWatcher[] = [
 	{
+		id: "3",
 		fullName: "Imran Baali",
 		username: "kirwa-ko",
 		imageUrl:
@@ -34,6 +37,7 @@ const fakeGameWatchers: IGameWatcher[] = [
 			"https://myanimelist.tech/api/profile?name=kirwako&animeName=Inazuma_Eleven",
 	},
 	{
+		id: "4",
 		fullName: "Abdali Ait Hmid",
 		username: "twelve",
 		imageUrl:
@@ -44,6 +48,7 @@ const fakeGameWatchers: IGameWatcher[] = [
 			"https://myanimelist.tech/api/profile?name=twelve&animeName=Inazuma_Eleven",
 	},
 	{
+		id: "5",
 		fullName: "Khalid Belyazid",
 		username: "seven",
 		imageUrl:
@@ -54,6 +59,7 @@ const fakeGameWatchers: IGameWatcher[] = [
 			"https://myanimelist.tech/api/profile?name=seven&animeName=Inazuma_Eleven",
 	},
 	{
+		id: "6",
 		fullName: "Youness Aroubi",
 		username: "procrastinator",
 		imageUrl:
@@ -64,6 +70,7 @@ const fakeGameWatchers: IGameWatcher[] = [
 			"https://myanimelist.tech/api/profile?name=procrastinator&animeName=Inazuma_Eleven",
 	},
 	{
+		id: "7",
 		fullName: "Youssef Raki",
 		username: "raki",
 		imageUrl:

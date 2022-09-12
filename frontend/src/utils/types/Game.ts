@@ -1,12 +1,13 @@
 
 export interface IGamePlayer {
+	id: string;
 	fullName: string;
 	username: string;
 	score: number;
 	imageUrl: string;
 	wins: number;
 	loses: number;
-	achivements: number;
+	achievements: number;
 }
 
 export interface IGameSettings {
@@ -19,6 +20,7 @@ export interface IGameSettings {
 }
 
 export interface IGameWatcher {
+	id: string;
 	fullName: string;
 	username: string;
 	imageUrl: string;

@@ -1,7 +1,7 @@
-import yarroubi from '../../assets/teamPictures/yarroubi.png'
-import twelvePic from '../../assets/teamPictures/aait-hmi.png'
-import kbenlyaz from '../../assets/teamPictures/kbenlyaz.png'
-import ibaali from '../../assets/teamPictures/ibaali.png'
+import yarroubi from '../../assets/team/yarroubi.png'
+import twelvePic from '../../assets/team/aait-hmi.png'
+import kbenlyaz from '../../assets/team/kbenlyaz.png'
+import ibaali from '../../assets/team/ibaali.png'
 import { ReactComponent as TwitterLogo } from "../../assets/icons/TwitterLogo.svg";
 import { ReactComponent as GithubLogo } from "../../assets/icons/GithubLogo.svg";
 import { ReactComponent as WebsiteLogo } from "../../assets/icons/WebsiteLogo.svg";
