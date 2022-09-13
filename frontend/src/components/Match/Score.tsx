@@ -1,12 +1,11 @@
-const Score = ({ score1, score2, className}: { score1: number, score2: number, className: string }) => {
+import { IScoreProps } from "../../utils/types/Game";
+
+const Score = ({ score1, score2, className }: IScoreProps) => {
 	return (
-		// <div className={"flex w-40 rounded-xl justify-center text-center font-medium text-white " + className}>
-		<div className={"flex w-40 rounded-xl justify-center text-center font-medium text-white tracking-widest " + className}>
-			<p className="block text-center px-3">
-				{score1 + " : " + score2}
-			</p>
-		</div>
+		<p className={"block w-40 rounded-xl px-3 tracking-widest text-center font-medium " + className}>
+			{score1 + " : " + score2}
+		</p>
 	);
-}
+};
 
 export default Score;

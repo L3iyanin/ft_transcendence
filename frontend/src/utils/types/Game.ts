@@ -38,3 +38,21 @@ export interface IGameMatch {
 	date: Date;
 	type: GameType;
 }
+
+export interface IMatchProps {
+	children: IGameMatch;
+	className: string;
+	scoreStyle: string;
+}
+
+export interface IScoreProps {
+	score1: number;
+	score2: number;
+	className: string;
+}
+
+export interface IPlayerProps {
+	username: string;
+	avatar: string;
+	className: string;
+}

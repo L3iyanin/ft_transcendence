@@ -10,6 +10,14 @@ module.exports = {
 			center: true,
 		},
 		extend: {
+			// height : {
+			// 	'xs' : '0.75em',
+			// 	'sm' : '0.875em',
+			// 	'base' : '1em',
+			// 	'lg' : '1.5em',
+			// 	'xl' : '1.25em',
+			// 	'2xl' : '1.5em'
+			// },
 			colors: {
 				"red": "#E30039",
 				"white": "#FFFFFF",
