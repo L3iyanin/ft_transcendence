@@ -46,8 +46,10 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 			return {
 				x: window.playgroundWidth / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + 2,
 				y: window.playgroundHeight / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + 2,
-				directionX: direction.x,
-				directionY: direction.y,
+				// directionX: direction.x,
+				// directionY: direction.y,
+				directionX: 1,
+				directionY: 0,
 				velocity: INITIAL_VELOCITY,
 			};
 		});
@@ -59,11 +61,11 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 		playerYposition: number
 	): boolean => {
 		if (
-			ballXposition <= BALL_SIZE &&
-			ballYposition + BALL_SIZE / 2 >=
-				playerYposition - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN &&
+			ballXposition - BALL_SIZE / 2 <= BALL_SIZE &&
+			ballYposition  >=
+				playerYposition - PADDLE_HEIGHT / 2 - BALL_SIZE / 2 &&
 			ballYposition <=
-				playerYposition + PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN
+				playerYposition + PADDLE_HEIGHT / 2 + BALL_SIZE / 2
 		) {
 			return true;
 		}
@@ -76,11 +78,11 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 		playerYposition: number
 	): boolean => {
 		if (
-			ballXposition + BALL_SIZE / 2 >= window.playgroundWidth - PADDLE_WIDTH &&
+			ballXposition + BALL_SIZE >= window.playgroundWidth - PADDLE_WIDTH  &&
 			ballYposition + BALL_SIZE / 2 >=
-				playerYposition - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN &&
+				playerYposition - PADDLE_HEIGHT / 2 - BALL_SIZE / 2 &&
 			ballYposition <=
-				playerYposition + PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN
+				playerYposition + PADDLE_HEIGHT / 2 + BALL_SIZE / 2
 		) {
 			return true;
 		}
@@ -90,7 +92,8 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 
 	const updateBall = (delta: number) => {
 		setBallPosition((prev) => {
-			const distance = prev.velocity * delta / 2;
+			// const distance = prev.velocity * delta / 2;
+			const distance = 1;
 
 			let newDirectionX = prev.directionX;
 			let newDirectionY = prev.directionY;
