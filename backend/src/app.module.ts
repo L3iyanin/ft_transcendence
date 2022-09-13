@@ -5,6 +5,7 @@ import { AuthController } from "./auth/auth.controller";
 import { AuthService } from "./auth/auth.service";
 import { ConfigModule } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
+import { UsersModule } from './users/users.module';
 @Module({
 	imports: [
 		ConfigModule.forRoot({
@@ -17,6 +18,7 @@ import { JwtModule } from "@nestjs/jwt";
 				expiresIn: "1d",
 			},
 		}),
+		UsersModule,
 	],
 
 	controllers: [AppController, AuthController],
