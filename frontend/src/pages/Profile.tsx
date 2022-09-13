@@ -9,15 +9,15 @@ const Profile = () => {
 	return (
 		<div>
 			<NavBar />
-			<section className="container flex justify-start items-center gap-8">
+			<main className="container flex justify-between items-center gap-8">
 				<UserCard>
 					{players[0]}
 				</UserCard>
-				<LastMatches>
+				<LastMatches >
 					{matches}
 				</LastMatches>
 				
-			</section>
+			</main>
 		</div>
 	);
 };

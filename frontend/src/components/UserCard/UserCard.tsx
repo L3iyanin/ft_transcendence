@@ -8,8 +8,8 @@ const UserCard: React.FC<{
 	children: IGamePlayer;
 }> = ({ children: user}) => {
 	return (
-		<section className="container min-w-[200px] w-1/6 text-white">
-			<div className="mt-0 bg-dark-60 rounded-lg flex flex-col items-center p-6 gap-y-1.5">
+		<section className="container min-w-[200px] w-1/6 m-0 text-white">
+			<div className="m-0 bg-dark-60 rounded-lg flex flex-col items-center p-6 gap-y-1.5">
 				<img
 					src={user.imageUrl}
 					alt=""

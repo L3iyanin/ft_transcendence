@@ -9,7 +9,7 @@ const Match = ({ children, className, scoreStyle }: IMatchProps) => {
 	return (
 		<article
 			className={
-				"container flex justify-center min-w-[500px] max-h-8 border rounded-lg " +
+				"container m-0 flex justify-center min-w-[400px] max-h-8 border rounded-lg " +
 				className
 			}
 		>
