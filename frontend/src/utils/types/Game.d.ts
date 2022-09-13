@@ -27,14 +27,3 @@ interface IGameWatcher {
 	charUrl: string;
 	profileUrl: string;
 }
-
-interface IGameMatch {
-	player1: IGamePlayer;
-	player2: IGamePlayer;
-	player1Score: number;
-	player2Score: number;
-	isMatching: boolean;
-	isLive: boolean;
-	date: Date;
-	type: GameType;
-}
