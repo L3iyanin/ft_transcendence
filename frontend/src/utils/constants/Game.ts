@@ -28,3 +28,7 @@ export const PADDLE_Y_MARGIN = 10;
 export const INITIAL_BALL_X = PLAY_GROUND_WIDTH / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + 2;
 
 export const INITIAL_BALL_Y = PLAY_GROUND_HEIGHT / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + 2;
+
+export const PLAYER_ONE = 1;
+
+export const PLAYER_TWO = 2;

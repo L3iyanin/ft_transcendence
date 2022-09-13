@@ -7,6 +7,8 @@ import useBallMove from "../../../hooks/useBallMove";
 import {
 	INITIAL_BALL_START_POSITION,
 	PADDLE_HEIGHT,
+	PLAYER_ONE,
+	PLAYER_TWO,
 	PLAY_GROUND_HEIGHT,
 	PLAY_GROUND_WIDTH,
 } from "../../../utils/constants/Game";
@@ -15,16 +17,38 @@ import { useEffect, useRef, useState } from "react";
 const PlayGround: React.FC<{
 	settings: IGameSettings;
 }> = ({ settings }) => {
-	const { playerY, movePlayer, stopPropagation, playerMoveOnPaddle } =
-		usePlayerMove(313, PLAY_GROUND_HEIGHT, PADDLE_HEIGHT);
 	
+	const [playersScore, setPlayersScore] = useState<{ player1Score: number, player2Score: number }>({
+		player1Score: 0,
+		player2Score: 0,
+	});
+	
+	const { playerY: player1Y, movePlayer: movePlayer1, stopPropagation, playerMoveOnPaddle: player1MoveOnPaddle } =
+		usePlayerMove(313, PLAY_GROUND_HEIGHT, PADDLE_HEIGHT, PLAYER_ONE);
 
-	const { ballPosition } = useBallMove(
-		INITIAL_BALL_START_POSITION.x,
-		INITIAL_BALL_START_POSITION.y
-	);
+	const { playerY: player2Y, movePlayer: movePlayer2, playerMoveOnPaddle: player2MoveOnPaddle } =
+		usePlayerMove(313, PLAY_GROUND_HEIGHT, PADDLE_HEIGHT, PLAYER_TWO);
+
+	const setPlayersScoreHandler = (playerIndex: number, goalsOnPlayer: number) => {
+		setPlayersScore((prevState) => {
+			const newPlayerScore = { ...prevState };
+			if (playerIndex === PLAYER_ONE) {
+				newPlayerScore.player1Score += goalsOnPlayer;
+			} else {
+				newPlayerScore.player2Score += goalsOnPlayer;
+			}
+			return newPlayerScore;
+		});
+	}
+
+	const { ballPosition } = useBallMove(setPlayersScoreHandler);
 
 	const ref = useRef(null);
+
+	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		movePlayer1(e);
+		movePlayer2(e);
+	}
 
 	return (
 		<div
@@ -36,19 +60,20 @@ const PlayGround: React.FC<{
 				// aspectRatio: '16 / 9'
 			}}
 			id="playground"
+			// onMouseMove={movePlayer1}
 			onMouseMove={movePlayer}
 		>
 			<PlayerPaddle
-				playerMoveOnPaddle={playerMoveOnPaddle}
+				playerMoveOnPaddle={player1MoveOnPaddle}
 				PADDLE_HEIGHT={PADDLE_HEIGHT}
 				isOnLeft={true}
-				top={`${playerY}px`}
+				top={`${player1Y}px`}
 			/>
 			<PlayerPaddle
-				playerMoveOnPaddle={playerMoveOnPaddle}
+				playerMoveOnPaddle={player2MoveOnPaddle}
 				PADDLE_HEIGHT={PADDLE_HEIGHT}
 				isOnLeft={false}
-				top="70%"
+				top={`${player2Y}px`}
 			/>
 			<div
 				onMouseMove={stopPropagation}
@@ -58,8 +83,8 @@ const PlayGround: React.FC<{
 				onMouseMove={stopPropagation}
 				className="absolute text-white top-4 left-1/2 transform -translate-x-1/2 gap-x-16 flex"
 			>
-				<PlayerScore player={settings.player1} />
-				<PlayerScore player={settings.player2} isReverse={true} />
+				<PlayerScore score={playersScore.player1Score} player={settings.player1} />
+				<PlayerScore score={playersScore.player2Score} player={settings.player2} isReverse={true} />
 			</div>
 			<div ref={ref} />
 			<Ball

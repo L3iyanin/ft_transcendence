@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
-import { PADDLE_Y_MARGIN, PLAYGROUND_BORDERSIZE } from "../utils/constants/Game";
+import { PADDLE_Y_MARGIN, PLAYER_ONE, PLAYGROUND_BORDERSIZE } from "../utils/constants/Game";
 
-const usePlayerMove = (initialY: number, PLAY_GROUND_HEIGHT: number, PADDLE_HEIGHT: number) => {
+const usePlayerMove = (initialY: number, PLAY_GROUND_HEIGHT: number, PADDLE_HEIGHT: number, playerIndex: number) => {
 	const [playerY, setPlayerY] = useState<number>(initialY);
 
 	useEffect(() => {
-		window.playerY = playerY;
+		if (playerIndex === PLAYER_ONE) {
+			window.player1Y = playerY;
+		} else {
+			window.player2Y = playerY;
+		}
 	}, [playerY])
 
 	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

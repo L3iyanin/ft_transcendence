@@ -1,9 +1,9 @@
-import { IGamePlayer } from "../../../utils/types/Game";
 
 const PlayerScore: React.FC<{
 	player: IGamePlayer;
+	score: number;
 	isReverse?: boolean;
-}> = ({ player, isReverse }) => {
+}> = ({ player, isReverse, score }) => {
 	return (
 		<div
 			className={`flex text-xl items-center gap-x-4 ${
@@ -19,7 +19,7 @@ const PlayerScore: React.FC<{
 				src={player.imageUrl}
 				alt=""
 			/>
-			<span className="text-5xl font-bold">{player.score}</span>
+			<span className="text-5xl font-bold">{score}</span>
 		</div>
 	);
 };
