@@ -46,10 +46,8 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 			return {
 				x: window.playgroundWidth / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + 2,
 				y: window.playgroundHeight / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + 2,
-				// directionX: direction.x,
-				// directionY: direction.y,
-				directionX: 1,
-				directionY: 0,
+				directionX: direction.x,
+				directionY: direction.y,
 				velocity: INITIAL_VELOCITY,
 			};
 		});
