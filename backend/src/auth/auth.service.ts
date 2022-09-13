@@ -21,7 +21,7 @@ export class AuthService {
 			const data = await auth.get_user_data(token.access_token);
 			const fullName: any = data.first_name + " " + data.last_name;
 			const userData: AuthUserData = {
-				userName: data.login,
+				username: data.login,
 				fullName: fullName,
 			};
 			return userData;
@@ -31,15 +31,11 @@ export class AuthService {
 		}
 	}
 
-	async saveUserInDatabase(
-		userName: string,
-		fullName: string,
-		imgUrl: string
-	) {
+	async saveUserInDatabase(username: string, fullName: string, imgUrl: string) {
 		try {
 			const userExist = await prisma.user.findFirst({
 				where: {
-					login: userName,
+					login: username,
 				},
 			});
 			if (userExist) {
@@ -47,9 +43,9 @@ export class AuthService {
 			} else {
 				const user = await prisma.user.create({
 					data: {
-						username: userName,
+						username: username,
 						fullName: fullName,
-						login: userName,
+						login: username,
 						imgUrl: imgUrl,
 					},
 				});
@@ -61,17 +57,17 @@ export class AuthService {
 		}
 	}
 
-	async crietJwtToken(userName: string, fullName: string) {
+	async createJwtToken(username: string, fullName: string) {
 		const payload = {
 			fullName: fullName,
-			userName: userName,
+			username: username,
 		};
 		const jwt = await this.jwtTokenService.signAsync(payload);
 		return jwt;
 	}
 
-	getImageProfileUrl(userName: string) {
-		const avatarImageUrl = `https://myanimelist.tech/api/avatar?&name=${userName}&animeName=One_Piece`;
+	getImageProfileUrl(username: string) {
+		const avatarImageUrl = `https://myanimelist.tech/api/avatar?&name=${username}&animeName=One_Piece`;
 		return avatarImageUrl;
 	}
 }

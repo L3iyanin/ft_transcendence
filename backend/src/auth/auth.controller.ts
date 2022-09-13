@@ -13,14 +13,14 @@ export class AuthController {
 		const code: any = req.query["code"];
 		const userData: AuthUserData = await this.authService.getUserData(code);
 		const avatarImage = this.authService.getImageProfileUrl(
-			userData.userName
+			userData.username
 		);
 		const user = await this.authService.saveUserInDatabase(
-			userData.userName,
+			userData.username,
 			userData.fullName,
 			avatarImage
 		);
-		const token = await this.authService.crietJwtToken(
+		const token = await this.authService.createJwtToken(
 			user.username,
 			user.fullName
 		);
