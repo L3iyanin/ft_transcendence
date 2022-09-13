@@ -24,7 +24,7 @@ model User {
     friendRequests         User[]        @relation("friendRequests")
     friendRequestsRelation User[]        @relation("friendRequests")
     achievements           Achievement[]
-    createdChannles        Chennel[]
+    createdChannles        Channel[]
     Member                 Member[]
     Message                Message[]
 }
@@ -49,7 +49,7 @@ model Achievement {
     User        User[]
 }
 
-model Chennel {
+model Channel {
     id            Int           @id @default(autoincrement())
     name          String
     owner         User          @relation(fields: [userId], references: [id])
@@ -74,8 +74,8 @@ model Member {
     status    MemberStatus
     until     DateTime?
     role      Roles
-    Chennel   Chennel      @relation(fields: [chennelId], references: [id])
-    chennelId Int
+    Channel   Channel      @relation(fields: [channelId], references: [id])
+    channelId Int
     userId    Int
 }
 
@@ -95,8 +95,8 @@ model Message {
     id        Int      @id @default(autoincrement())
     content   String
     sender    User     @relation(fields: [userId], references: [id])
-    chennel   Chennel  @relation(fields: [chennelId], references: [id])
+    channel   Channel  @relation(fields: [channelId], references: [id])
     date      DateTime @default(now())
-    chennelId Int
+    channelId Int
     userId    Int
 }
