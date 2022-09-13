@@ -1,23 +1,26 @@
+import { PADDLE_WIDTH, PADDLE_X_MARGIN } from "../../../utils/constants/Game";
+
 const PlayerPaddle: React.FC<{
 	isOnLeft: boolean;
 	top: string;
-	paddleHeight: number;
+	PADDLE_HEIGHT: number;
 	playerMoveOnPaddle: any;
-}> = ({ isOnLeft, top, paddleHeight, playerMoveOnPaddle }) => {
+}> = ({ isOnLeft, top, PADDLE_HEIGHT, playerMoveOnPaddle }) => {
 	
+
 	return (
 		<div
 			onMouseMove={playerMoveOnPaddle}
-			// onMouseDown={playerMoveOnPaddle}
-			// onMouseOver={onMouseDown}
-			// onMouseOut={playerMoveOnPaddle}
-			className={`absolute rounded-sm w-[20px] bg-beige ${
+			className={`absolute rounded-sm bg-beige ${
 				isOnLeft ? "left-[12px]" : "right-[12px]"
 			}`}
 			style={{
 				top: top,
-				height: `${paddleHeight}px`,
+				height: `${PADDLE_HEIGHT}px`,
+				width: `${PADDLE_WIDTH}px`,
 				transform: `translateY(-50%)`,
+				left: isOnLeft ? `${PADDLE_X_MARGIN}px` : "auto",
+				right: !isOnLeft ? `${PADDLE_X_MARGIN}px` :"auto",
 			}}
 		/>
 	);

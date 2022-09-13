@@ -1,38 +1,52 @@
-import { IGameSettings } from "../../../utils/types/Game";
+
 import PlayerPaddle from "./PlayerPaddle";
 import PlayerScore from "./PlayerScore";
 import Ball from "./Ball";
 import usePlayerMove from "../../../hooks/usePlayerMove";
 import useBallMove from "../../../hooks/useBallMove";
-import { INITIAL_BALL_START_POSITION, paddleHeight, playGorundHeight } from "../../../utils/constants/Game";
+import {
+	INITIAL_BALL_START_POSITION,
+	PADDLE_HEIGHT,
+	PLAY_GROUND_HEIGHT,
+	PLAY_GROUND_WIDTH,
+} from "../../../utils/constants/Game";
+import { useEffect, useRef, useState } from "react";
 
 const PlayGround: React.FC<{
 	settings: IGameSettings;
 }> = ({ settings }) => {
-	const { playerX, movePlayer, stopPropagation, playerMoveOnPaddle } =
-		usePlayerMove(290, playGorundHeight, paddleHeight);
+	const { playerY, movePlayer, stopPropagation, playerMoveOnPaddle } =
+		usePlayerMove(313, PLAY_GROUND_HEIGHT, PADDLE_HEIGHT);
 	
-	const { ballPosition } = useBallMove(INITIAL_BALL_START_POSITION);
+
+	const { ballPosition } = useBallMove(
+		INITIAL_BALL_START_POSITION.x,
+		INITIAL_BALL_START_POSITION.y
+	);
+
+	const ref = useRef(null);
 
 	return (
 		<div
-			className={`relative w-full bg-red mt-5 bg-cover bg-center rounded-3xl border-4 border-red`}
+			className={`relative w-full bg-red mt-5 bg-cover bg-center ac rounded-3xl border-4 border-red`}
 			style={{
 				backgroundImage: `url(${settings.backgroundUrl})`,
-				height: `${playGorundHeight}px`,
+				height: `${PLAY_GROUND_HEIGHT}px`,
+				width: `${PLAY_GROUND_WIDTH}px`,
+				// aspectRatio: '16 / 9'
 			}}
 			id="playground"
 			onMouseMove={movePlayer}
 		>
 			<PlayerPaddle
 				playerMoveOnPaddle={playerMoveOnPaddle}
-				paddleHeight={paddleHeight}
+				PADDLE_HEIGHT={PADDLE_HEIGHT}
 				isOnLeft={true}
-				top={`${playerX}px`}
+				top={`${playerY}px`}
 			/>
 			<PlayerPaddle
 				playerMoveOnPaddle={playerMoveOnPaddle}
-				paddleHeight={paddleHeight}
+				PADDLE_HEIGHT={PADDLE_HEIGHT}
 				isOnLeft={false}
 				top="70%"
 			/>
@@ -47,7 +61,12 @@ const PlayGround: React.FC<{
 				<PlayerScore player={settings.player1} />
 				<PlayerScore player={settings.player2} isReverse={true} />
 			</div>
-			<Ball onMouseMove={stopPropagation} top={ballPosition.x} left={ballPosition.y} />
+			<div ref={ref} />
+			<Ball
+				onMouseMove={stopPropagation}
+				top={ballPosition.y}
+				left={ballPosition.x}
+			/>
 		</div>
 	);
 };

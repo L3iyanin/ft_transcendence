@@ -1,21 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { PADDLE_Y_MARGIN, PLAYGROUND_BORDERSIZE } from "../utils/constants/Game";
 
-// I made minus 8 to remove the border of playground
-const playgroundBorderSize = 8;
-const paddleYMargin = 10;
+const usePlayerMove = (initialY: number, PLAY_GROUND_HEIGHT: number, PADDLE_HEIGHT: number) => {
+	const [playerY, setPlayerY] = useState<number>(initialY);
 
-const usePlayerMove = (initialX: number, playGorundHeight: number, paddleHeight: number) => {
-	const [playerX, setPlayerX] = useState<number>(initialX);
+	useEffect(() => {
+		window.playerY = playerY;
+	}, [playerY])
 
 	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-		if (e.clientY - e.target.offsetTop + (paddleHeight / 2) + playgroundBorderSize >= playGorundHeight) {
-			setPlayerX(playGorundHeight - playgroundBorderSize - paddleHeight / 2 - paddleYMargin);
+		if (e.clientY - e.target.offsetTop + (PADDLE_HEIGHT / 2) + PLAYGROUND_BORDERSIZE >= PLAY_GROUND_HEIGHT) {
+			setPlayerY(PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN);
+			// window.playerY = PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN;
 		}
-		else if (e.clientY - e.target.offsetTop - paddleHeight / 2 <= 0) {
-			setPlayerX(paddleHeight / 2 + paddleYMargin);
+		else if (e.clientY - e.target.offsetTop - PADDLE_HEIGHT / 2 <= 0) {
+			setPlayerY(PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN);
+			// window.playerY = PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN;
 		}
 		else {
-			setPlayerX(e.clientY - e.target.offsetTop);
+			setPlayerY(e.clientY - e.target.offsetTop);
+			// window.playerY = e.clientY - e.target.offsetTop;
 		}
 	};
 
@@ -25,19 +29,22 @@ const usePlayerMove = (initialX: number, playGorundHeight: number, paddleHeight:
 
 	const playerMoveOnPaddle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e.stopPropagation();
-		if (e.clientY - e.target.offsetParent.offsetTop + paddleHeight / 2 + playgroundBorderSize >= playGorundHeight) {
-			setPlayerX(playGorundHeight - paddleHeight / 2 - playgroundBorderSize - paddleYMargin);
+		if (e.clientY - e.target.offsetParent.offsetTop + PADDLE_HEIGHT / 2 + PLAYGROUND_BORDERSIZE >= PLAY_GROUND_HEIGHT) {
+			setPlayerY(PLAY_GROUND_HEIGHT - PADDLE_HEIGHT / 2 - PLAYGROUND_BORDERSIZE - PADDLE_Y_MARGIN);
+			window.playerY = PLAY_GROUND_HEIGHT - PADDLE_HEIGHT / 2 - PLAYGROUND_BORDERSIZE - PADDLE_Y_MARGIN;
 		}
-		else if (e.clientY - e.target.offsetParent.offsetTop - paddleHeight / 2 <= 0) {
-			setPlayerX(paddleHeight / 2 + paddleYMargin);
+		else if (e.clientY - e.target.offsetParent.offsetTop - PADDLE_HEIGHT / 2 <= 0) {
+			setPlayerY(PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN);
+			window.playerY = PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN;
 		}
 		else {
-			setPlayerX(e.clientY - e.target.offsetParent.offsetTop);
+			setPlayerY(e.clientY - e.target.offsetParent.offsetTop);
+			window.playerY = e.clientY - e.target.offsetParent.offsetTop;
 		}
 	};
 
 	return {
-		playerX,
+		playerY,
 		movePlayer,
 		stopPropagation,
 		playerMoveOnPaddle,

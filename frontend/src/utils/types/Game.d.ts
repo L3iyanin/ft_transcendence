@@ -1,5 +1,5 @@
 
-export interface IGamePlayer {
+interface IGamePlayer {
 	id: string;
 	fullName: string;
 	username: string;
@@ -10,7 +10,7 @@ export interface IGamePlayer {
 	achievements: number;
 }
 
-export interface IGameSettings {
+interface IGameSettings {
 	name: string;
 	goalsToWin: number;
 	backgroundUrl: string;
@@ -19,7 +19,7 @@ export interface IGameSettings {
 	watchers: IGameWatcher[];
 }
 
-export interface IGameWatcher {
+interface IGameWatcher {
 	id: string;
 	fullName: string;
 	username: string;
@@ -27,3 +27,4 @@ export interface IGameWatcher {
 	charUrl: string;
 	profileUrl: string;
 }
+

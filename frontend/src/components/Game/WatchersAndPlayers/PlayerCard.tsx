@@ -1,4 +1,3 @@
-import { IGamePlayer } from "../../../utils/types/Game";
 import { ReactComponent as WinIcon } from "../../../assets/icons/win.svg";
 import { ReactComponent as LoseIcon } from "../../../assets/icons/lose.svg";
 import { ReactComponent as AchivementIcon } from "../../../assets/icons/achivement.svg";
