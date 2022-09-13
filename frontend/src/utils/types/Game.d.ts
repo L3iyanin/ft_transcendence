@@ -1,5 +1,5 @@
-import {GameType} from '../constants/enum'
-export interface IGamePlayer {
+
+interface IGamePlayer {
 	id: string;
 	fullName: string;
 	username: string;
@@ -10,7 +10,7 @@ export interface IGamePlayer {
 	achievements: number;
 }
 
-export interface IGameSettings {
+interface IGameSettings {
 	name: string;
 	goalsToWin: number;
 	backgroundUrl: string;
@@ -19,7 +19,7 @@ export interface IGameSettings {
 	watchers: IGameWatcher[];
 }
 
-export interface IGameWatcher {
+interface IGameWatcher {
 	id: string;
 	fullName: string;
 	username: string;
@@ -28,7 +28,7 @@ export interface IGameWatcher {
 	profileUrl: string;
 }
 
-export interface IGameMatch {
+interface IGameMatch {
 	player1: IGamePlayer;
 	player2: IGamePlayer;
 	player1Score: number;
@@ -39,20 +39,25 @@ export interface IGameMatch {
 	type: GameType;
 }
 
-export interface IMatchProps {
+interface IMatchProps {
 	children: IGameMatch;
 	className: string;
 	scoreStyle: string;
 }
 
-export interface IScoreProps {
+interface IScoreProps {
 	score1: number;
 	score2: number;
 	className: string;
 }
 
-export interface IPlayerProps {
+interface IPlayerProps {
 	username: string;
 	avatar: string;
 	className: string;
+}
+
+interface IOptionProps {
+	url: string;
+	children: string;
 }

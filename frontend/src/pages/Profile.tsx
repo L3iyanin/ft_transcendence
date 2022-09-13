@@ -1,11 +1,20 @@
-
-import {matches} from "../utils/data/Match"
-import Match from "../components/Match/Match"
+import { matches } from "../utils/data/Match";
+import Match from "../components/Match/Match";
+import NavBar from "../components/NavBar/NavBar";
+import LastMatches from "../components/LastMatches/LastMatches";
 
 const Profile = () => {
 	return (
-		<Match className="w-3/5 border-beige" scoreStyle="bg-grey text-white">{matches[0]}</Match>
+		<div>
+			<NavBar />
+			<section>
+				<LastMatches>
+					{matches}
+				</LastMatches>
+				
+			</section>
+		</div>
 	);
-}
+};
 
 export default Profile;

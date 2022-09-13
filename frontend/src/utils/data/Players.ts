@@ -1,5 +1,3 @@
-import {IGamePlayer} from "../types/Game"
-
 export const players: IGamePlayer[] = [
 	{
 		id: "1",

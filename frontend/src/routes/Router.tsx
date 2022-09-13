@@ -8,7 +8,6 @@ const Router: React.FC = () => {
 	return (
 		<>
 			<BrowserRouter>
-				<NavBar/>
 				<Routes>
 					<Route path="/game" element={<Game />} />
 					<Route path="/profile" element={<Profile />} />

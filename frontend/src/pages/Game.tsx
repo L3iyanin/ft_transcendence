@@ -2,10 +2,12 @@ import PlayGround from "../components/Game/PlayGround/PlayGround";
 import { fakeGameSettings } from "../utils/data/GamePage";
 import TopSection from "../components/Game/TopSection";
 import WatchersAndPlayers from "../components/Game/WatchersAndPlayers/WatchersAndPlayers";
+import NavBar from "../components/NavBar/NavBar";
 
 const Game: React.FC = () => {
 	return (
 		<div className="container">
+			<NavBar/>
 			<div className="mt-20" />
 			<TopSection
 				name={fakeGameSettings.name}

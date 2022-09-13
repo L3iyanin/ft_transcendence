@@ -10,6 +10,10 @@ module.exports = {
 			center: true,
 		},
 		extend: {
+			fontSize: {
+				'3xs': '0.25rem',
+				'xxs': '0.5rem',
+			},
 			// height : {
 			// 	'xs' : '0.75em',
 			// 	'sm' : '0.875em',
@@ -18,6 +22,7 @@ module.exports = {
 			// 	'xl' : '1.25em',
 			// 	'2xl' : '1.5em'
 			// },
+
 			colors: {
 				"red": "#E30039",
 				"white": "#FFFFFF",

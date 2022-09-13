@@ -1,6 +1,5 @@
-import { IGamePlayer, IGameSettings, IGameWatcher, IGameMatch } from "../types/Game";
+import { GameType } from "../constants/enum";
 import {players } from "../data/Players"
-import {GameType} from '../constants/enum'
 
 export const matches:IGameMatch[] = [
 	{
