@@ -14,10 +14,11 @@ model User {
     id                     Int           @id @default(autoincrement())
     username               String        @unique
     fullName               String
+    login                  String        @unique
     imgUrl                 String
-    wins                   Int @default(0)
-    loses                  Int @default(0)
-    twoFactorAuth          Boolean @default(false)
+    wins                   Int           @default(0)
+    loses                  Int           @default(0)
+    twoFactorAuth          Boolean       @default(false)
     friends                User[]        @relation("friends")
     friendsRelation        User[]        @relation("friends")
     friendRequests         User[]        @relation("friendRequests")
