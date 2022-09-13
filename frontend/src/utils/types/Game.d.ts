@@ -28,3 +28,37 @@ interface IGameWatcher {
 	profileUrl: string;
 }
 
+
+interface IGameMatch {
+	player1: IGamePlayer;
+	player2: IGamePlayer;
+	player1Score: number;
+	player2Score: number;
+	isMatching: boolean;
+	isLive: boolean;
+	date: Date;
+	type: GameType;
+}
+
+interface IMatchProps {
+	children: IGameMatch;
+	className: string;
+	scoreStyle: string;
+}
+
+interface IScoreProps {
+	score1: number;
+	score2: number;
+	className: string;
+}
+
+interface IPlayerProps {
+	username: string;
+	avatar: string;
+	className: string;
+}
+
+interface IOptionProps {
+	url: string;
+	children: string;
+}
