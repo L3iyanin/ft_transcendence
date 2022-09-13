@@ -25,8 +25,8 @@ model User {
     friendRequestsRelation User[]        @relation("friendRequests")
     achievements           Achievement[]
     createdChannles        Channel[]
-    Member                 Member[]
-    Message                Message[]
+    members                Member[]
+    messages               Message[]
 }
 
 model Match {
@@ -46,7 +46,7 @@ model Achievement {
     name        String
     description String
     imgUrl      String
-    User        User[]
+    users       User[]
 }
 
 model Channel {
