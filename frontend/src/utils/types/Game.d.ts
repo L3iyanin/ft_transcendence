@@ -27,3 +27,4 @@ interface IGameWatcher {
 	charUrl: string;
 	profileUrl: string;
 }
+
