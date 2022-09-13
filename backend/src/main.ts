@@ -10,6 +10,8 @@ async function bootstrap() {
 
 	app.setGlobalPrefix("api");
 	const PORT = process.env.PORT || 8080;
-	await app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+	await app.listen(PORT, () =>
+		console.log(`Server running on http://127.0.0.1:${PORT}/api`)
+	);
 }
 bootstrap();
