@@ -36,10 +36,12 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 
 	const resetBall = () => {
 		let direction = { x: 0, y: 0 };
+		
 		while (Math.abs(direction.x) <= 0.2 || Math.abs(direction.x) >= 0.9) {
 			const heading = randomNumberBetween(0, 2 * Math.PI);
 			direction = { x: Math.cos(heading), y: Math.sin(heading) };
 		}
+
 		setBallPosition((_) => {
 			return {
 				x: window.playgroundWidth / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + 2,
@@ -92,6 +94,10 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 
 			let newDirectionX = prev.directionX;
 			let newDirectionY = prev.directionY;
+
+			if (window.widthRatio != 1) {
+				console.log(window.widthRatio);
+			}
 
 			let newX = prev.x + newDirectionX * distance * window.widthRatio;
 			let newY = prev.y + newDirectionY * distance * window.heightRatio;
