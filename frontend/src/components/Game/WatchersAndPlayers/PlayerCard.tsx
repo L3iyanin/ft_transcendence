@@ -1,4 +1,3 @@
-import { IGamePlayer } from "../../../utils/types/Game";
 import { ReactComponent as WinIcon } from "../../../assets/icons/win.svg";
 import { ReactComponent as LoseIcon } from "../../../assets/icons/lose.svg";
 import { ReactComponent as AchivementIcon } from "../../../assets/icons/achivement.svg";
@@ -33,7 +32,7 @@ const PlayerCard: React.FC<{
 				<div className="flex items-center gap-2">
 					<AchivementIcon />
 					<span className="text-xs">
-						{player.achivements}/{MAX_ACHIVEMENTS} achivments
+						{player.achievements}/{MAX_ACHIVEMENTS} achivments
 					</span>
 				</div>
 			</div>

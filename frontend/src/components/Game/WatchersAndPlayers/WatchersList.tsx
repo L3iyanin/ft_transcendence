@@ -13,7 +13,6 @@ const WatchersList: React.FC<{
 				watchers.map((watcher, index) => (
 					<WatcherCard watcher={watcher} key={watcher.id} />
 				))
-
 			}
 		</div>
 	);
