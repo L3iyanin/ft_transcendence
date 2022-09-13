@@ -38,26 +38,3 @@ interface IGameMatch {
 	date: Date;
 	type: GameType;
 }
-
-interface IMatchProps {
-	children: IGameMatch;
-	className: string;
-	scoreStyle: string;
-}
-
-interface IScoreProps {
-	score1: number;
-	score2: number;
-	className: string;
-}
-
-interface IPlayerProps {
-	username: string;
-	avatar: string;
-	className: string;
-}
-
-interface IOptionProps {
-	url: string;
-	children: string;
-}
