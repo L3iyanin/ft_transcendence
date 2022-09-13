@@ -4,7 +4,7 @@ include .env
 Author = l3iyanin
 
 all: volumes
-	@echo "DATABASE_URL="postgresql://$(DATABASE_USER):$(DATABASE_PASSWORD)@localhost:5432/$(DATABASE_NAME)?schema=public"" > ./backend/.env
+	@ cp ./backend/.env.sample ./backend/.env
 	@echo "✅ .env for backend with database url \033[1;32m[Created]\033[0m"
 	@docker-compose up
 
