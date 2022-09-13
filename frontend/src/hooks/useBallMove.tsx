@@ -11,8 +11,6 @@ import {
 	PLAYER_ONE,
 	PLAYER_TWO,
 	PLAYGROUND_BORDERSIZE,
-	PLAY_GROUND_HEIGHT,
-	PLAY_GROUND_WIDTH,
 	VELOCITY_INCREASE,
 } from "../utils/constants/Game";
 
@@ -44,8 +42,8 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 		}
 		setBallPosition((_) => {
 			return {
-				x: INITIAL_BALL_X,
-				y: INITIAL_BALL_Y,
+				x: window.playgroundWidth / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + 2,
+				y: window.playgroundHeight / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + 2,
 				directionX: direction.x,
 				directionY: direction.y,
 				velocity: INITIAL_VELOCITY,
@@ -76,7 +74,7 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 		playerYposition: number
 	): boolean => {
 		if (
-			ballXposition + BALL_SIZE / 2 >= PLAY_GROUND_WIDTH - PADDLE_WIDTH &&
+			ballXposition + BALL_SIZE / 2 >= window.playgroundWidth - PADDLE_WIDTH &&
 			ballYposition + BALL_SIZE / 2 >=
 				playerYposition - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN &&
 			ballYposition <=
@@ -95,32 +93,30 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 			let newDirectionX = prev.directionX;
 			let newDirectionY = prev.directionY;
 
-			let newX = prev.x + newDirectionX * distance;
-			let newY = prev.y + newDirectionY * distance;
+			let newX = prev.x + newDirectionX * distance * window.widthRatio;
+			let newY = prev.y + newDirectionY * distance * window.heightRatio;
 
 			let newVelocity = prev.velocity + VELOCITY_INCREASE * delta;
 
-			if (
-				newY + BALL_SIZE / 2 >=
-				PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE
-			) {
+			if (newY + BALL_SIZE / 2 >= window.playgroundHeight - PLAYGROUND_BORDERSIZE)
+			{
 				newDirectionY = newDirectionY * -1;
-				newY = prev.y + newDirectionY * distance;
+				newY = prev.y + newDirectionY * distance * window.heightRatio;
 			}
 
 			if (newY - BALL_SIZE / 2 <= 0) {
 				newDirectionY = newDirectionY * -1;
-				newY = prev.y + newDirectionY * distance;
+				newY = prev.y + newDirectionY * distance * window.heightRatio;
 			}
 
 			if (isCollisionWithPlayer1(newX, newY, window.player1Y)) {
 				newDirectionX = newDirectionX * -1;
-				newX = prev.x + newDirectionX * distance;
+				newX = prev.x + newDirectionX * distance * window.widthRatio;
 			}
 
 			if (isCollisionWithPlayer2(newX, newY, window.player2Y)) {
 				newDirectionX = newDirectionX * -1;
-				newX = prev.x + newDirectionX * distance;
+				newX = prev.x + newDirectionX * distance * window.widthRatio;
 			}
 
 			if (
@@ -135,7 +131,7 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 				);
 			}
 
-			if (newX + BALL_SIZE / 2 >= PLAY_GROUND_WIDTH - PADDLE_WIDTH) {
+			if (newX + BALL_SIZE / 2 >= window.playgroundWidth - PADDLE_WIDTH) {
 				resetBall();
 				setPlayersScoreHandler(PLAYER_ONE, 1);
 				console.log(
@@ -152,7 +148,6 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 				directionY: newDirectionY,
 			};
 		});
-		// velocity += VELOCITY_INCREASE * delta;
 	};
 
 	const animate = (time: DOMHighResTimeStamp) => {

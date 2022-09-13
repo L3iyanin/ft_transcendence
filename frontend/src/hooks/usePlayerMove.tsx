@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { PADDLE_Y_MARGIN, PLAYER_ONE, PLAYGROUND_BORDERSIZE } from "../utils/constants/Game";
 
-const usePlayerMove = (initialY: number, PLAY_GROUND_HEIGHT: number, PADDLE_HEIGHT: number, playerIndex: number) => {
+const usePlayerMove = (initialY: number, PADDLE_HEIGHT: number, playerIndex: number) => {
 	const [playerY, setPlayerY] = useState<number>(initialY);
 
 	useEffect(() => {
@@ -13,9 +13,9 @@ const usePlayerMove = (initialY: number, PLAY_GROUND_HEIGHT: number, PADDLE_HEIG
 	}, [playerY])
 
 	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-		if (e.clientY - e.target.offsetTop + (PADDLE_HEIGHT / 2) + PLAYGROUND_BORDERSIZE >= PLAY_GROUND_HEIGHT) {
-			setPlayerY(PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN);
-			// window.playerY = PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN;
+		if (e.clientY - e.target.offsetTop + (PADDLE_HEIGHT / 2) + PLAYGROUND_BORDERSIZE >= window.playgroundHeight) {
+			setPlayerY(window.playgroundHeight - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN);
+			// window.playerY = window.playgroundHeight - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN;
 		}
 		else if (e.clientY - e.target.offsetTop - PADDLE_HEIGHT / 2 <= 0) {
 			setPlayerY(PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN);
@@ -33,9 +33,9 @@ const usePlayerMove = (initialY: number, PLAY_GROUND_HEIGHT: number, PADDLE_HEIG
 
 	const playerMoveOnPaddle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e.stopPropagation();
-		if (e.clientY - e.target.offsetParent.offsetTop + PADDLE_HEIGHT / 2 + PLAYGROUND_BORDERSIZE >= PLAY_GROUND_HEIGHT) {
-			setPlayerY(PLAY_GROUND_HEIGHT - PADDLE_HEIGHT / 2 - PLAYGROUND_BORDERSIZE - PADDLE_Y_MARGIN);
-			window.playerY = PLAY_GROUND_HEIGHT - PADDLE_HEIGHT / 2 - PLAYGROUND_BORDERSIZE - PADDLE_Y_MARGIN;
+		if (e.clientY - e.target.offsetParent.offsetTop + PADDLE_HEIGHT / 2 + PLAYGROUND_BORDERSIZE >= window.playgroundHeight) {
+			setPlayerY(window.playgroundHeight - PADDLE_HEIGHT / 2 - PLAYGROUND_BORDERSIZE - PADDLE_Y_MARGIN);
+			window.playerY = window.playgroundHeight - PADDLE_HEIGHT / 2 - PLAYGROUND_BORDERSIZE - PADDLE_Y_MARGIN;
 		}
 		else if (e.clientY - e.target.offsetParent.offsetTop - PADDLE_HEIGHT / 2 <= 0) {
 			setPlayerY(PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN);
