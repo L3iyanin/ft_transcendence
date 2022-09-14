@@ -1,7 +1,7 @@
 import Footer from "../components/Footer/Footer";
-import TeamSection from "../components/LandingPage/TeamSection";
-import TextSection from "../components/LandingPage/TextSection";
-import TopSection from "../components/LandingPage/TopSection";
+import TeamSection from "../components/Pages/LandingPage/TeamSection";
+import TextSection from "../components/Pages/LandingPage/TextSection";
+import TopSection from "../components/Pages/LandingPage/TopSection";
 
 const Landing = () => {
 	return (

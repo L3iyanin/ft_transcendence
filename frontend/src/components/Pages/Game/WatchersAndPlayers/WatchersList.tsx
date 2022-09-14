@@ -1,6 +1,6 @@
-import IconWithLabel from "../../UI/IconWithLabel/IconWithLabel";
-import { ReactComponent as ChatIcon } from "../../../assets/icons/chat.svg";
-import { ReactComponent as ProfileIcon } from "../../../assets/icons/profile.svg";
+import IconWithLabel from "../../../UI/IconWithLabel/IconWithLabel";
+import { ReactComponent as ChatIcon } from "../../../../assets/icons/chat.svg";
+import { ReactComponent as ProfileIcon } from "../../../../assets/icons/profile.svg";
 import { useTranslation } from "react-i18next";
 
 const WatchersList: React.FC<{

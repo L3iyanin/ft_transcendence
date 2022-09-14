@@ -1,8 +1,8 @@
 import PlayerPaddle from "./PlayerPaddle";
 import PlayerScore from "./PlayerScore";
 import Ball from "./Ball";
-import usePlayerMove from "../../../hooks/usePlayerMove";
-import useBallMove from "../../../hooks/useBallMove";
+import usePlayerMove from "../../../../hooks/usePlayerMove";
+import useBallMove from "../../../../hooks/useBallMove";
 import {
 	INITIAL_BALL_START_POSITION,
 	PADDLE_HEIGHT,
@@ -10,7 +10,7 @@ import {
 	PLAYER_TWO,
 	PLAY_GROUND_HEIGHT,
 	PLAY_GROUND_WIDTH,
-} from "../../../utils/constants/Game";
+} from "../../../../utils/constants/Game";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const PlayGround: React.FC<{

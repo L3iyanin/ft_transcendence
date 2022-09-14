@@ -1,12 +1,11 @@
-import React from "react";
-import { ReactComponent as Css3Logo } from "../../assets/icons/Css3Logo.svg";
-import { ReactComponent as FigmaLogo } from "../../assets/icons/FigmaLogo.svg";
-import { ReactComponent as Html5Logo } from "../../assets/icons/Html5Logo.svg";
-import { ReactComponent as NestjsLogo } from "../../assets/icons/NestjsLogo.svg";
-import { ReactComponent as PostgresqlLogo } from "../../assets/icons/PostgresqlLogo.svg";
-import { ReactComponent as ReactLogo } from "../../assets/icons/ReactLogo.svg";
-import { ReactComponent as SocketioLogo } from "../../assets/icons/SocketioLogo.svg";
-import { ReactComponent as TypescriptLogo } from "../../assets/icons/TypescriptLogo.svg";
+import { ReactComponent as Css3Logo } from "../../../assets/icons/Css3Logo.svg";
+import { ReactComponent as FigmaLogo } from "../../../assets/icons/FigmaLogo.svg";
+import { ReactComponent as Html5Logo } from "../../../assets/icons/Html5Logo.svg";
+import { ReactComponent as NestjsLogo } from "../../../assets/icons/NestjsLogo.svg";
+import { ReactComponent as PostgresqlLogo } from "../../../assets/icons/PostgresqlLogo.svg";
+import { ReactComponent as ReactLogo } from "../../../assets/icons/ReactLogo.svg";
+import { ReactComponent as SocketioLogo } from "../../../assets/icons/SocketioLogo.svg";
+import { ReactComponent as TypescriptLogo } from "../../../assets/icons/TypescriptLogo.svg";
 import { useTranslation } from "react-i18next";
 
 

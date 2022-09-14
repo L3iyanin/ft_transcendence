@@ -1,6 +1,6 @@
-import { ReactComponent as WinIcon } from "../../../assets/icons/win.svg";
-import { ReactComponent as LoseIcon } from "../../../assets/icons/lose.svg";
-import { ReactComponent as AchivementIcon } from "../../../assets/icons/achivement.svg";
+import { ReactComponent as WinIcon } from "../../../../assets/icons/win.svg";
+import { ReactComponent as LoseIcon } from "../../../../assets/icons/lose.svg";
+import { ReactComponent as AchivementIcon } from "../../../../assets/icons/achivement.svg";
 
 const MAX_ACHIVEMENTS = import.meta.env.VITE_APP_MAX_ACHIVEMENTS;
 

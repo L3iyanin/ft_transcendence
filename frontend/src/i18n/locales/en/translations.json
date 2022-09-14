@@ -25,6 +25,10 @@
 		"goalsToWin": "Goals to win",
 		"watchTheMatch": "Watching The Match"
 	},
+	"chatPage": {
+		"dms": "DMs",
+		"channels": "Channels"
+	},
 	"playerOne": "Player 1",
 	"playerTwo": "Player 2",
 	"footer": {

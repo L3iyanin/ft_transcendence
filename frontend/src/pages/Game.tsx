@@ -1,7 +1,7 @@
-import PlayGround from "../components/Game/PlayGround/PlayGround";
+import PlayGround from "../components/Pages/Game/PlayGround/PlayGround";
 import { fakeGameSettings } from "../utils/data/GamePage";
-import TopSection from "../components/Game/TopSection";
-import WatchersAndPlayers from "../components/Game/WatchersAndPlayers/WatchersAndPlayers";
+import TopSection from "../components/Pages/Game/TopSection";
+import WatchersAndPlayers from "../components/Pages/Game/WatchersAndPlayers/WatchersAndPlayers";
 import Footer from "../components/Footer/Footer";
 import NavBar from "../components/NavBar/NavBar";
 

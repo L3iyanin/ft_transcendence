@@ -1,5 +1,5 @@
-import { ReactComponent as Arcade } from "../../assets/icons/Arcade.svg";
-import { ReactComponent as Logo } from "../../assets/icons/pong-3yan.svg";
+import { ReactComponent as Arcade } from "../../../assets/icons/Arcade.svg";
+import { ReactComponent as Logo } from "../../../assets/icons/pong-3yan.svg";
 import { useTranslation } from "react-i18next";
 
 const TopSection = () => {

@@ -1,7 +1,7 @@
-import { ReactComponent as TwitterLogo } from "../../assets/icons/TwitterLogo.svg";
-import { ReactComponent as GithubLogo } from "../../assets/icons/GithubLogo.svg";
-import { ReactComponent as WebsiteLogo } from "../../assets/icons/WebsiteLogo.svg";
-import OutsideLink from "../UI/OutsideLink";
+import { ReactComponent as TwitterLogo } from "../../../assets/icons/TwitterLogo.svg";
+import { ReactComponent as GithubLogo } from "../../../assets/icons/GithubLogo.svg";
+import { ReactComponent as WebsiteLogo } from "../../../assets/icons/WebsiteLogo.svg";
+import OutsideLink from "../../UI/OutsideLink";
 
 const TeamCard: React.FC<{
 	imageUrl: string;
