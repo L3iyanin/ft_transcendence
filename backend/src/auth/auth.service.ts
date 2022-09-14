@@ -4,11 +4,11 @@ import { PrismaClient } from "@prisma/client";
 // https://api.intra.42.fr/oauth/authorize?client_id=0db615c858576d32d6d34de5d45ec58e758fbd4a2b1e3adce1ed8f90bbee2a44&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fauth%2F42&response_type=code
 import { JwtService } from "@nestjs/jwt";
 import { AuthUserData } from "./auth.interface";
-
+var jwtService_2 = require("jsonwebtoken");
 const prisma = new PrismaClient();
 @Injectable()
 export class AuthService {
-	constructor(private jwtTokenService: JwtService) {}
+	constructor() {}
 
 	async getUserData(code: string): Promise<AuthUserData> {
 		try {
@@ -58,11 +58,16 @@ export class AuthService {
 	}
 
 	async createJwtToken(username: string, fullName: string) {
+		const jwtTokenService = new JwtService();
 		const payload = {
 			fullName: fullName,
 			username: username,
 		};
-		const jwt = await this.jwtTokenService.signAsync(payload);
+		// var token = jwtService_2.sign(payload, process.env.SECRET);
+		const jwt = await jwtTokenService.signAsync(payload, {
+			secret: process.env.JWT_SECRET,
+			expiresIn: "1d",
+		});
 		return jwt;
 	}
 

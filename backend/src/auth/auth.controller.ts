@@ -1,11 +1,13 @@
 import { Controller, Get } from "@nestjs/common";
 import { Req, Res } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 import { Request, Response } from "express";
 import { AuthUserData } from "./auth.interface";
 import { AuthService } from "./auth.service";
 
 // interface user {}
 @Controller("auth/42")
+@ApiTags("auth")
 export class AuthController {
 	constructor(private readonly authService: AuthService) {}
 	@Get()
