@@ -1,19 +1,25 @@
 // import { IsInt, IsString } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
 
-import { ApiBody, ApiProperty } from "@nestjs/swagger";
-export class UserProfile {
+export class UserInfo {
 	@ApiProperty()
 	username: string;
+
 	@ApiProperty()
 	fullName: string;
+
 	@ApiProperty()
 	imgUrl: string;
+
 	@ApiProperty()
 	numberOfFreind: number;
+
 	@ApiProperty()
 	numberOfachivements: number;
+
 	@ApiProperty()
 	wins: number;
+
 	@ApiProperty()
 	loses: number;
 }

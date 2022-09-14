@@ -2,10 +2,10 @@ import { Controller, Get, Param, ParseIntPipe, Req, UseGuards } from "@nestjs/co
 import { UserGuard } from "./user.guard";
 // import { Request, Response } from "express";
 import { UsersService } from "./users.service";
-import { UserProfile } from "./user.interface";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
-import { get } from "http";
 import { I18n, I18nContext } from "nestjs-i18n";
+import { UserInfo } from "./dto/user-info.dto";
+import { Leaderboard } from "./dto/leaderboard.dto";
 
 @UseGuards(UserGuard)
 @Controller("users")
@@ -13,18 +13,23 @@ import { I18n, I18nContext } from "nestjs-i18n";
 export class UsersController {
 	constructor(private readonly userService: UsersService) {}
 
-	@ApiResponse({ type: UserProfile })
+	@ApiResponse({ type: UserInfo })
 	@Get("/:userId/info")
-	async getUserInfoById(@Param("userId", ParseIntPipe) userId: number): Promise<UserProfile> {
-		const userProfile: UserProfile = await this.userService.getUserInfo(userId);
-		return userProfile;
+	async getUserInfo(@Param("userId", ParseIntPipe) userId: number): Promise<UserInfo> {
+		const userInfo: UserInfo = await this.userService.getUserInfoById(userId);
+		return userInfo;
+	}
+
+	@Get("leaderboard")
+	async getLeaderboard(): Promise<Leaderboard[]> {
+		const leaderboard: Leaderboard[] = await this.userService.getLeaderboard();
+		return leaderboard;
 	}
 
 	// test i18
-
 	@Get("wrongPassword")
 	async getHello(@I18n() i18n: I18nContext) {
-		return await i18n.t("translations.hello");
+		return await i18n.t("tr.errors.user.wrongPassword");
 	}
 
 	@Get("/:userId/achievements")
