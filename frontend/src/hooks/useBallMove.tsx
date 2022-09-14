@@ -65,7 +65,7 @@ const useBallMove = (
 
 	const isCollisionWithPlayer = (ballXposition: number, ballYposition: number, playerYposition: number, playerNumber: number): boolean =>
 	{
-		const cornerX = playerNumber === 1 ? PADDLE_X_MARGIN + PADDLE_WIDTH : window.playgroundWidth - PADDLE_X_MARGIN - PADDLE_WIDTH;
+		const cornerX = playerNumber === PLAYER_ONE ? PADDLE_X_MARGIN + PADDLE_WIDTH : window.playgroundWidth - PADDLE_X_MARGIN - PADDLE_WIDTH;
 
 		const radius = BALL_SIZE / 2;
 		const distX = (cornerX - ballXposition) * (cornerX - ballXposition);
@@ -117,12 +117,12 @@ const useBallMove = (
 				newY = prev.y + newDirectionY * distance * window.heightRatio;
 			}
 
-			if (isCollisionWithPlayer(newX, newY, window.player1Y, 1)) {
+			if (isCollisionWithPlayer(newX, newY, window.player1Y, PLAYER_ONE)) {
 				newDirectionX = newDirectionX * -1;
 				newX = prev.x + newDirectionX * distance * window.widthRatio;
 			}
 
-			if (isCollisionWithPlayer(newX, newY, window.player2Y, 2)) {
+			if (isCollisionWithPlayer(newX, newY, window.player2Y, PLAYER_TWO)) {
 				newDirectionX = newDirectionX * -1;
 				newX = prev.x + newDirectionX * distance * window.widthRatio;
 			}
