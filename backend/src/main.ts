@@ -11,15 +11,22 @@ async function bootstrap() {
 		origin: "http://localhost:3000",
 	});
 
+	app.setGlobalPrefix("api");
 	const config = new DocumentBuilder()
 		.setTitle("API Doc")
 		.setDescription("API description")
 		.setVersion("1.0")
+		// .addCookieAuth("jwt")
+		.addCookieAuth("auth-cookie", {
+			type: "http",
+			in: "Cookie",
+			scheme: "Bearer",
+		})
+		.setBasePath("/api/")
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup("api", app, document);
 
-	app.setGlobalPrefix("api");
 	const PORT = process.env.PORT || 8080;
 	await app.listen(PORT, () => console.log(`Server running on http://127.0.0.1:${PORT}/api`));
 }
