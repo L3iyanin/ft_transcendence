@@ -1,0 +1,28 @@
+{
+	"home": "Home",
+	"profile": "Profile",
+	"settings": "Settings",
+	"logout": "Logout",
+	"signinWith42": "Sign in with 42",
+	"chat": "Chat",
+	"about": "About",
+	"team": "Team",
+	"mainFeatures": "Main Features",
+	"technologiesUsed": "Technologies Used",
+	"landingPage": {
+		"aboutParagrapOne": "Ft_transcendence is the last project in the commen core of 1337 School (42Network).",
+		"aboutParagrapTwo": "It's a Pong Multiplayer Game.",
+		"mainFeaturesHeader": "The Project Contains:",
+		"mainFeaturesListOne": "Pong Multiplayer Online Game",
+		"mainFeaturesListTwo": "Direct and group chat (with diffrent permissions and configs)",
+		"mainFeaturesListThree": "Profile that contains: achivments and stats",
+		"teamMateOne": "younes arroubi",
+		"teamMateTwo": "abdelali ait hmid",
+		"teamMateThree": "khalid benlyazid",
+		"teamMateFour": "imran baali"
+	},
+	"footer": {
+		"textOne": "Developed with 💪🏼 by L3iyanin",
+		"textTwo": "1337 Future is loading"
+	}
+}

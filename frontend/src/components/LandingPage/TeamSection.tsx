@@ -1,60 +1,55 @@
-import yarroubi from '../../assets/team/yarroubi.png'
-import twelvePic from '../../assets/team/aait-hmi.png'
-import kbenlyaz from '../../assets/team/kbenlyaz.png'
-import ibaali from '../../assets/team/ibaali.png'
-import { ReactComponent as TwitterLogo } from "../../assets/icons/TwitterLogo.svg";
-import { ReactComponent as GithubLogo } from "../../assets/icons/GithubLogo.svg";
-import { ReactComponent as WebsiteLogo } from "../../assets/icons/WebsiteLogo.svg";
-
+import { useTranslation } from 'react-i18next';
+import TeamCard from './TeamCard';
 
 const TeamSection = () => {
+
+	const { t } = useTranslation();
+
+	const teamMembers: ITeam[] = [
+		{
+			imageUrl: "/imgs/team/yarroubi.png",
+			fullName: t("landingPage.teamMateOne"),
+			twitterLink: '',
+			githubLink: '',
+			websiteLink: '',
+		},
+		{
+			imageUrl: "/imgs/team/aait-hmi.png",
+			fullName: t("landingPage.teamMateTwo"),
+			twitterLink: '',
+			githubLink: '',
+			websiteLink: '',
+		},
+		{
+			imageUrl: "/imgs/team/kbenlyaz.png",
+			fullName: t("landingPage.teamMateThree"),
+			twitterLink: '',
+			githubLink: '',
+			websiteLink: '',
+		},
+		{
+			imageUrl: "/imgs/team/ibaali.png",
+			fullName: t("landingPage.teamMateFour"),
+			twitterLink: 'https://twitter.com/kirwaKO',
+			githubLink: 'https://github.com/kirwa-KO',
+			websiteLink: 'https://kirwako.com/',
+		}
+	];
+
 	return (
 		<div className="mb-10">
-			<h2 className="text-white font-bold text-2xl text-center py-8">Team</h2>
+			<h2 className="text-white font-bold text-2xl text-center py-8">{t("team")}</h2>
 			<div className='flex justify-center gap-16'>
-				<div className='flex flex-col items-center gap-2'>
-					<img src={yarroubi} alt="Younes Arroubi" className='h-24 w-24' />
-					<p className='text-white text-base font-medium text-center'>Younes arroubi</p>
-					<div className="flex gap-4">
-						<a href='https://twitter.com/AbdelaliAithmid' target="_blank"><TwitterLogo  className="h-8"/></a>
-						<a href='https://twitter.com/AbdelaliAithmid' target="_blank"><GithubLogo className="h-8" /></a>
-						<a href='https://twitter.com/AbdelaliAithmid' target="_blank"><WebsiteLogo className="h-8" /></a>
-					</div>
-				</div>
-
-				<div className='flex flex-col items-center gap-2'>
-					<img src={twelvePic} alt="abdelali ait hmid" className='h-24 w-24' />
-					<p className='text-white text-base font-medium text-center'>Abdelali ait hmid</p>
-					<div className="flex gap-4">
-						<a href='https://twitter.com/AbdelaliAithmid' target="_blank"><TwitterLogo  className="h-8" /></a>
-						<a href='https://twitter.com/AbdelaliAithmid' target="_blank"><GithubLogo  className="h-8" /></a>
-						<a href='https://twitter.com/AbdelaliAithmid' target="_blank"><WebsiteLogo className="h-8"  /></a>
-					</div>
-				</div>
-
-
-				<div className='flex flex-col items-center gap-2'>
-					<img src={kbenlyaz} alt="Khalid benlyazid" className='h-24 w-24' />
-					<p className='text-white text-base font-medium text-center'>Khalid benlyazid</p>
-					<div className="flex gap-4">
-						<a href='https://twitter.com/AbdelaliAithmid' target="_blank"><TwitterLogo className="h-8"  /></a>
-						<a href='https://twitter.com/AbdelaliAithmid' target="_blank"><GithubLogo  className="h-8" /></a>
-						<a href='https://twitter.com/AbdelaliAithmid' target="_blank"><WebsiteLogo className="h-8"  /></a>
-					</div>
-				</div>
-
-
-				<div className='flex flex-col items-center gap-2'>
-					<img src={ibaali} alt="Imran baali" className='h-24 w-24' />
-					<p className='text-white text-base font-medium text-center'>Imran baali</p>
-					<div className="flex gap-4">
-						<a href='https://twitter.com/AbdelaliAithmid' target="_blank"><TwitterLogo className="h-8"  /></a>
-						<a href='https://twitter.com/AbdelaliAithmid' target="_blank"><GithubLogo  className="h-8" /></a>
-						<a href='https://twitter.com/AbdelaliAithmid' target="_blank"><WebsiteLogo  className="h-8" /></a>
-					</div>
-				</div>
-
-
+				{teamMembers.map((member, index) => (
+					<TeamCard
+						key={index}
+						fullName={member.fullName}
+						imageUrl={member.imageUrl}
+						githubLink={member.githubLink}
+						twitterLink={member.twitterLink}
+						websiteLink={member.websiteLink}
+					/>
+				))}
 			</div>
 		</div>
 	);
