@@ -21,6 +21,12 @@
 		"teamMateThree": "khalid benlyazid",
 		"teamMateFour": "imran baali"
 	},
+	"gamePage": {
+		"goalsToWin": "Goals to win",
+		"watchTheMatch": "Watching The Match"
+	},
+	"playerOne": "Player 1",
+	"playerTwo": "Player 2",
 	"footer": {
 		"textOne": "Developed with 💪🏼 by L3iyanin",
 		"textTwo": "1337 Future is loading"

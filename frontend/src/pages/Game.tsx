@@ -2,6 +2,7 @@ import PlayGround from "../components/Game/PlayGround/PlayGround";
 import { fakeGameSettings } from "../utils/data/GamePage";
 import TopSection from "../components/Game/TopSection";
 import WatchersAndPlayers from "../components/Game/WatchersAndPlayers/WatchersAndPlayers";
+import Footer from "../components/Footer/Footer";
 
 const Game: React.FC = () => {
 	return (
@@ -17,6 +18,7 @@ const Game: React.FC = () => {
 				player2={fakeGameSettings.player2}
 				watchers={fakeGameSettings.watchers}
 			/>
+			<Footer />
 		</div>
 	);
 };

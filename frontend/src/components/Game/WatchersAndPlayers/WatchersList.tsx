@@ -1,14 +1,17 @@
-import { IGameWatcher } from "../../../utils/types/Game";
 import IconWithLabel from "../../UI/IconWithLabel/IconWithLabel";
 import { ReactComponent as ChatIcon } from "../../../assets/icons/chat.svg";
 import { ReactComponent as ProfileIcon } from "../../../assets/icons/profile.svg";
+import { useTranslation } from "react-i18next";
 
 const WatchersList: React.FC<{
 	watchers: IGameWatcher[];
 }> = ({ watchers }) => {
+
+	const { t } = useTranslation();
+
 	return (
 		<div className="bg-dark-60 rounded-lg p-6 grow max-h-[480px] overflow-y-auto">
-			<h2 className="text-3xl font-bold mb-6">Watching The Match:</h2>
+			<h2 className="text-3xl font-bold mb-6">{t("gamePage.watchTheMatch")}:</h2>
 			{
 				watchers.map((watcher, index) => (
 					<WatcherCard watcher={watcher} key={watcher.id} />
@@ -21,6 +24,9 @@ const WatchersList: React.FC<{
 export default WatchersList;
 
 const WatcherCard: React.FC<{ watcher: IGameWatcher }> = ({ watcher }) => {
+
+	const { t } = useTranslation();
+
 	return (
 		<>
 			<div className="flex justify-between">
@@ -39,13 +45,13 @@ const WatcherCard: React.FC<{ watcher: IGameWatcher }> = ({ watcher }) => {
 					<IconWithLabel
 						linkToGo={watcher.charUrl}
 						icon={<ChatIcon />}
-						label="Chat"
+						label={t("chat")}
 						labelStyle="text-red"
 					/>
 					<IconWithLabel
 						linkToGo={watcher.profileUrl}
 						icon={<ProfileIcon />}
-						label="Profile"
+						label={t("profile")}
 						labelStyle="text-yellow"
 					/>
 				</div>
