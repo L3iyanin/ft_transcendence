@@ -3,11 +3,13 @@ import { fakeGameSettings } from "../utils/data/GamePage";
 import TopSection from "../components/Game/TopSection";
 import WatchersAndPlayers from "../components/Game/WatchersAndPlayers/WatchersAndPlayers";
 import Footer from "../components/Footer/Footer";
+import NavBar from "../components/NavBar/NavBar";
 
 const Game: React.FC = () => {
 	return (
 		<div className="container">
-			<div className="mt-20" />
+			<NavBar />
+			<div className="mt-10" />
 			<TopSection
 				name={fakeGameSettings.name}
 				goalsToWin={fakeGameSettings.goalsToWin}

@@ -13,7 +13,7 @@ const WatchersList: React.FC<{
 		<div className="bg-dark-60 rounded-lg p-6 grow max-h-[480px] overflow-y-auto">
 			<h2 className="text-3xl font-bold mb-6">{t("gamePage.watchTheMatch")}:</h2>
 			{
-				watchers.map((watcher, index) => (
+				watchers.map((watcher) => (
 					<WatcherCard watcher={watcher} key={watcher.id} />
 				))
 			}
