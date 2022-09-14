@@ -8,19 +8,17 @@ export class UserGuard implements CanActivate {
 		try {
 			const jwtService = new JwtService();
 			const verified = jwtService.verify(jwt, {
-				secret : process.env.JWT_SECRET
+				secret: process.env.JWT_SECRET,
 			});
-			return true
+			return true;
+		} catch (exception) {
+			return false;
 		}
-		catch(exception){
-			return false
-		}
-	}
-	
-	canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-		const request = context.switchToHttp().getRequest();
-		const jwt = request.cookies['jwt']		
-		return this.checkToken(jwt);
 	}
 
+	canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+		const request = context.switchToHttp().getRequest();
+		const jwt = request.cookies["jwt"];
+		return this.checkToken(jwt);
+	}
 }

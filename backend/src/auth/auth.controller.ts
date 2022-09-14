@@ -14,18 +14,13 @@ export class AuthController {
 	async Auth42(@Req() req: Request, @Res() res: Response) {
 		const code: any = req.query["code"];
 		const userData: AuthUserData = await this.authService.getUserData(code);
-		const avatarImage = this.authService.getImageProfileUrl(
-			userData.username
-		);
+		const avatarImage = this.authService.getImageProfileUrl(userData.username);
 		const user = await this.authService.saveUserInDatabase(
 			userData.username,
 			userData.fullName,
 			avatarImage
 		);
-		const token = await this.authService.createJwtToken(
-			user.username,
-			user.fullName
-		);
+		const token = await this.authService.createJwtToken(user.username, user.fullName);
 		res.cookie("jwt", token, { httpOnly: true });
 		return res.send({
 			status: 200,
