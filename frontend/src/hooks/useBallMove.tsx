@@ -14,7 +14,9 @@ import {
 	VELOCITY_INCREASE,
 } from "../utils/constants/Game";
 
-const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer: number) => void) => {
+const useBallMove = (
+	setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer: number) => void
+) => {
 	let lastTime: DOMHighResTimeStamp | null = null;
 	// let direction: { x: number; y: number };
 
@@ -35,30 +37,30 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 	const requestRef = useRef<null | number>(null);
 
 	const resetBall = () => {
+		let direction = { x: 0, y: 0 };
 
-		if (!requestRef.current) {
-			let direction = { x: 0, y: 0 };
-			
-			while (Math.abs(direction.x) <= 0.2 || Math.abs(direction.x) >= 0.9) {
-				const heading = randomNumberBetween(0, 2 * Math.PI);
-				direction = { x: Math.cos(heading), y: Math.sin(heading) };
-			}
-	
-			setBallPosition((_) => {
-				return {
-					x: window.playgroundWidth / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + 2,
-					y: window.playgroundHeight / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + 2,
-					// directionX: direction.x,
-					// directionY: direction.y,
-					directionX: 1,
-					directionY: 0,
-					velocity: INITIAL_VELOCITY,
-				};
-			});
+		while (Math.abs(direction.x) <= 0.2 || Math.abs(direction.x) >= 0.9) {
+			const heading = randomNumberBetween(0, 2 * Math.PI);
+			direction = { x: Math.cos(heading), y: Math.sin(heading) };
 		}
-		else {
-			cancelAnimationFrame(requestRef.current);
-		}
+
+		setBallPosition((_) => {
+			return {
+				x:
+					window.playgroundWidth / 2 -
+					BALL_SIZE / 2 +
+					PLAYGROUND_BORDERSIZE +
+					2,
+				y:
+					window.playgroundHeight / 2 -
+					BALL_SIZE / 2 +
+					PLAYGROUND_BORDERSIZE +
+					2,
+				directionX: direction.x,
+				directionY: direction.y,
+				velocity: INITIAL_VELOCITY,
+			};
+		});
 	};
 
 	const isCollisionWithPlayer1 = (
@@ -75,20 +77,18 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 			(BALL_SIZE / 2) * (BALL_SIZE / 2)
 		) {
 			return true;
-		}
-		else if (
+		} else if (
 			(cornerX - ballXposition) * (cornerX - ballXposition) +
-				(bottomCornerY - ballYposition) * (bottomCornerY - ballYposition) <=
+				(bottomCornerY - ballYposition) *
+					(bottomCornerY - ballYposition) <=
 			(BALL_SIZE / 2) * (BALL_SIZE / 2)
 		) {
 			return true;
-		}
-		else if (
+		} else if (
 			ballXposition - BALL_SIZE / 2 <= BALL_SIZE &&
 			ballYposition >=
 				playerYposition - PADDLE_HEIGHT / 2 - BALL_SIZE / 2 &&
-			ballYposition <=
-				playerYposition + PADDLE_HEIGHT / 2 + BALL_SIZE / 2
+			ballYposition <= playerYposition + PADDLE_HEIGHT / 2 + BALL_SIZE / 2
 		) {
 			return true;
 		}
@@ -109,20 +109,19 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 			(BALL_SIZE / 2) * (BALL_SIZE / 2)
 		) {
 			return true;
-		}
-		else if (
+		} else if (
 			(cornerX - ballXposition) * (cornerX - ballXposition) +
-				(bottomCornerY - ballYposition) * (bottomCornerY - ballYposition) <=
+				(bottomCornerY - ballYposition) *
+					(bottomCornerY - ballYposition) <=
 			(BALL_SIZE / 2) * (BALL_SIZE / 2)
 		) {
 			return true;
-		}
-		else if (
-			ballXposition + BALL_SIZE >= window.playgroundWidth - PADDLE_WIDTH  &&
+		} else if (
+			ballXposition + BALL_SIZE >=
+				window.playgroundWidth - PADDLE_WIDTH &&
 			ballYposition + BALL_SIZE / 2 >=
 				playerYposition - PADDLE_HEIGHT / 2 - BALL_SIZE / 2 &&
-			ballYposition <=
-				playerYposition + PADDLE_HEIGHT / 2 + BALL_SIZE / 2
+			ballYposition <= playerYposition + PADDLE_HEIGHT / 2 + BALL_SIZE / 2
 		) {
 			return true;
 		}
@@ -132,23 +131,20 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 
 	const updateBall = (delta: number) => {
 		setBallPosition((prev) => {
-			// const distance = prev.velocity * delta / 2;
-			const distance = 1;
+			const distance = prev.velocity * delta / 2;
 
 			let newDirectionX = prev.directionX;
 			let newDirectionY = prev.directionY;
-
-			if (window.widthRatio != 1) {
-				console.log(window.widthRatio);
-			}
 
 			let newX = prev.x + newDirectionX * distance * window.widthRatio;
 			let newY = prev.y + newDirectionY * distance * window.heightRatio;
 
 			let newVelocity = prev.velocity + VELOCITY_INCREASE * delta;
 
-			if (newY + BALL_SIZE / 2 >= window.playgroundHeight - PLAYGROUND_BORDERSIZE)
-			{
+			if (
+				newY + BALL_SIZE / 2 >=
+				window.playgroundHeight - PLAYGROUND_BORDERSIZE
+			) {
 				newDirectionY = newDirectionY * -1;
 				newY = prev.y + newDirectionY * distance * window.heightRatio;
 			}
@@ -159,7 +155,6 @@ const useBallMove = (setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer
 			}
 
 			if (isCollisionWithPlayer1(newX, newY, window.player1Y)) {
-				resetBall();
 				newDirectionX = newDirectionX * -1;
 				newX = prev.x + newDirectionX * distance * window.widthRatio;
 			}

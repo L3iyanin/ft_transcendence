@@ -68,21 +68,12 @@ const PlayGround: React.FC<{
 	useLayoutEffect(() => {
 		window.playgroundWidth = playgroundRef.current.offsetWidth;
 		window.playgroundHeight = playgroundRef.current.offsetHeight;
-		// console.log(window.playgroundWidth);
-		window.widthRatio = 1;
-		window.heightRatio = 1;
-		// setHeight(ref.current.offsetHeight);
+		window.widthRatio = playgroundRef.current.offsetWidth / PLAY_GROUND_WIDTH;
+		window.heightRatio = playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
 	}, []);
 
 	useEffect(() => {
 		addEventListener("resize", () => {
-			// const oldWidth = window.playgroundWidth;
-			// const oldHeight = window.playgroundHeight;
-
-			// window.widthRatio = playgroundRef.current.offsetWidth / oldWidth;
-			// window.heightRatio = playgroundRef.current.offsetHeight / oldHeight;
-
-
 			window.widthRatio = playgroundRef.current.offsetWidth / PLAY_GROUND_WIDTH;
 			window.heightRatio = playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
 
