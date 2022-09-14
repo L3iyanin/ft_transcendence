@@ -63,70 +63,33 @@ const useBallMove = (
 		});
 	};
 
-	const isCollisionWithPlayer1 = (
-		ballXposition: number,
-		ballYposition: number,
-		playerYposition: number
-	): boolean => {
-		const cornerX = PADDLE_X_MARGIN + PADDLE_WIDTH;
+	const isCollisionWithPlayer = (ballXposition: number, ballYposition: number, playerYposition: number, playerNumber: number): boolean =>
+	{
+		const cornerX = playerNumber === 1 ? PADDLE_X_MARGIN + PADDLE_WIDTH : window.playgroundWidth - PADDLE_X_MARGIN - PADDLE_WIDTH;
+
+		const radius = BALL_SIZE / 2;
+		const distX = (cornerX - ballXposition) * (cornerX - ballXposition);
 		const topCornerY = playerYposition - PADDLE_HEIGHT / 2;
 		const bottomCornerY = playerYposition + PADDLE_HEIGHT / 2;
-		if (
-			(cornerX - ballXposition) * (cornerX - ballXposition) +
-				(topCornerY - ballYposition) * (topCornerY - ballYposition) <=
-			(BALL_SIZE / 2) * (BALL_SIZE / 2)
-		) {
-			return true;
-		} else if (
-			(cornerX - ballXposition) * (cornerX - ballXposition) +
-				(bottomCornerY - ballYposition) *
-					(bottomCornerY - ballYposition) <=
-			(BALL_SIZE / 2) * (BALL_SIZE / 2)
-		) {
-			return true;
-		} else if (
-			ballXposition - BALL_SIZE / 2 <= BALL_SIZE &&
-			ballYposition >=
-				playerYposition - PADDLE_HEIGHT / 2 - BALL_SIZE / 2 &&
-			ballYposition <= playerYposition + PADDLE_HEIGHT / 2 + BALL_SIZE / 2
-		) {
+
+		if ( distX + (topCornerY - ballYposition) * (topCornerY - ballYposition) <= radius * radius)
+		{
 			return true;
 		}
-		return false;
-	};
-
-	const isCollisionWithPlayer2 = (
-		ballXposition: number,
-		ballYposition: number,
-		playerYposition: number
-	): boolean => {
-		const cornerX = window.playgroundWidth - PADDLE_X_MARGIN - PADDLE_WIDTH;
-		const topCornerY = playerYposition - PADDLE_HEIGHT / 2;
-		const bottomCornerY = playerYposition + PADDLE_HEIGHT / 2;
-		if (
-			(cornerX - ballXposition) * (cornerX - ballXposition) +
-				(topCornerY - ballYposition) * (topCornerY - ballYposition) <=
-			(BALL_SIZE / 2) * (BALL_SIZE / 2)
-		) {
-			return true;
-		} else if (
-			(cornerX - ballXposition) * (cornerX - ballXposition) +
-				(bottomCornerY - ballYposition) *
-					(bottomCornerY - ballYposition) <=
-			(BALL_SIZE / 2) * (BALL_SIZE / 2)
-		) {
-			return true;
-		} else if (
-			ballXposition + BALL_SIZE >=
-				window.playgroundWidth - PADDLE_WIDTH &&
-			ballYposition + BALL_SIZE / 2 >=
-				playerYposition - PADDLE_HEIGHT / 2 - BALL_SIZE / 2 &&
-			ballYposition <= playerYposition + PADDLE_HEIGHT / 2 + BALL_SIZE / 2
-		) {
+		else if (distX + (bottomCornerY - ballYposition) * (bottomCornerY - ballYposition) <= radius * radius)
+		{
 			return true;
 		}
-
-		return false;
+		else
+		{
+			const isInPaddleRange = ballYposition >= topCornerY && ballYposition <= bottomCornerY;
+			if (playerNumber === 1 && ballXposition - radius <= cornerX && isInPaddleRange)
+				return true;
+			else if (playerNumber === 2 && ballXposition + radius >= cornerX && isInPaddleRange)
+				return true;
+			else
+				return false;
+		}
 	};
 
 	const updateBall = (delta: number) => {
@@ -154,12 +117,12 @@ const useBallMove = (
 				newY = prev.y + newDirectionY * distance * window.heightRatio;
 			}
 
-			if (isCollisionWithPlayer1(newX, newY, window.player1Y)) {
+			if (isCollisionWithPlayer(newX, newY, window.player1Y, 1)) {
 				newDirectionX = newDirectionX * -1;
 				newX = prev.x + newDirectionX * distance * window.widthRatio;
 			}
 
-			if (isCollisionWithPlayer2(newX, newY, window.player2Y)) {
+			if (isCollisionWithPlayer(newX, newY, window.player2Y, 2)) {
 				newDirectionX = newDirectionX * -1;
 				newX = prev.x + newDirectionX * distance * window.widthRatio;
 			}
