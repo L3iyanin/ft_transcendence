@@ -37,3 +37,4 @@ lerna-debug.log*
 #prisma
 /prisma/migrations
 .prettierrc
+.eslintrc.js

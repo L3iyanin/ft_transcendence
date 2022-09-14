@@ -1,0 +1,8 @@
+{
+	"hello": "كلمة",
+	"errors": {
+		"user": {
+			"wrongPassword": "كلمة مرور خاطئة"
+		}
+	}
+}
