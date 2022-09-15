@@ -8,21 +8,23 @@ import useGetGameName from "../hooks/useGetGame";
 
 const Game: React.FC = () => {
 	return (
-		<div className="container">
-			<NavBar />
-			<div className="mt-10" />
-			<TopSection
-				name={useGetGameName(fakeGameSettings.scoreToWin).name}
-				goalsToWin={fakeGameSettings.scoreToWin}
-			/>
-			<PlayGround settings={fakeGameSettings} />
-			<WatchersAndPlayers
-				player1={fakeGameSettings.player1}
-				player2={fakeGameSettings.player2}
-				watchers={fakeMatchWatchers}
-			/>
+		<>
+			<div className="container">
+				<NavBar />
+				<div className="mt-10" />
+				<TopSection
+					name={useGetGameName(fakeGameSettings.scoreToWin).name}
+					goalsToWin={fakeGameSettings.scoreToWin}
+				/>
+				<PlayGround settings={fakeGameSettings} />
+				<WatchersAndPlayers
+					player1={fakeGameSettings.player1}
+					player2={fakeGameSettings.player2}
+					watchers={fakeMatchWatchers}
+				/>
+			</div>
 			<Footer />
-		</div>
+		</>
 	);
 };
 

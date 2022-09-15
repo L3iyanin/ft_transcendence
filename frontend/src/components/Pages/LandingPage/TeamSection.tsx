@@ -16,9 +16,9 @@ const TeamSection = () => {
 		{
 			imageUrl: "/imgs/team/aait-hmi.png",
 			fullName: t("landingPage.teamMateTwo"),
-			twitterLink: '',
-			githubLink: '',
-			websiteLink: '',
+			twitterLink: 'https://twitter.com/AbdelaliAithmid',
+			githubLink: 'https://github.com/twelve0',
+			websiteLink: 'https://twelve.gymip.com/',
 		},
 		{
 			imageUrl: "/imgs/team/kbenlyaz.png",
