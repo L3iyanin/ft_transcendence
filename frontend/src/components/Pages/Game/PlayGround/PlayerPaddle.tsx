@@ -1,4 +1,4 @@
-import { PADDLE_WIDTH, PADDLE_X_MARGIN } from "../../../utils/constants/Game";
+import { PADDLE_WIDTH, PADDLE_X_MARGIN } from "../../../../utils/constants/Game";
 
 const PlayerPaddle: React.FC<{
 	isOnLeft: boolean;

@@ -1,10 +1,11 @@
-import IconWithLabel from "../../UI/IconWithLabel/IconWithLabel";
-import { ReactComponent as ChatIcon } from "../../../assets/icons/chat.svg";
-import { ReactComponent as ProfileIcon } from "../../../assets/icons/profile.svg";
+import IconWithLabel from "../../../UI/IconWithLabel/IconWithLabel";
+import { ReactComponent as ChatIcon } from "../../../../assets/icons/chat.svg";
+import { ReactComponent as ProfileIcon } from "../../../../assets/icons/profile.svg";
 import { useTranslation } from "react-i18next";
+import RoundedHr from "../../../UI/Hr/RoundedHr";
 
 const WatchersList: React.FC<{
-	watchers: IGameWatcher[];
+	watchers: IUser[];
 }> = ({ watchers }) => {
 
 	const { t } = useTranslation();
@@ -13,7 +14,7 @@ const WatchersList: React.FC<{
 		<div className="bg-dark-60 rounded-lg p-6 grow max-h-[480px] overflow-y-auto">
 			<h2 className="text-3xl font-bold mb-6">{t("gamePage.watchTheMatch")}:</h2>
 			{
-				watchers.map((watcher, index) => (
+				watchers.map((watcher) => (
 					<WatcherCard watcher={watcher} key={watcher.id} />
 				))
 			}
@@ -23,7 +24,7 @@ const WatchersList: React.FC<{
 
 export default WatchersList;
 
-const WatcherCard: React.FC<{ watcher: IGameWatcher }> = ({ watcher }) => {
+const WatcherCard: React.FC<{ watcher: IUser }> = ({ watcher }) => {
 
 	const { t } = useTranslation();
 
@@ -32,7 +33,7 @@ const WatcherCard: React.FC<{ watcher: IGameWatcher }> = ({ watcher }) => {
 			<div className="flex justify-between">
 				<div className="flex gap-5">
 					<img
-						src={watcher.imageUrl}
+						src={watcher.imgUrl}
 						alt=""
 						className="w-[49px] h-[49px] rounded-full"
 					/>
@@ -43,20 +44,20 @@ const WatcherCard: React.FC<{ watcher: IGameWatcher }> = ({ watcher }) => {
 				</div>
 				<div className="flex flex-col justify-between">
 					<IconWithLabel
-						linkToGo={watcher.charUrl}
+						linkToGo={`/chat/${watcher.username}`}
 						icon={<ChatIcon />}
 						label={t("chat")}
 						labelStyle="text-red"
 					/>
 					<IconWithLabel
-						linkToGo={watcher.profileUrl}
+						linkToGo={`/profile/${watcher.username}`}
 						icon={<ProfileIcon />}
 						label={t("profile")}
 						labelStyle="text-yellow"
 					/>
 				</div>
 			</div>
-			<hr className="my-4 border-dark-blue border-2 rounded" />
+			<RoundedHr />
 		</>
 	);
 };

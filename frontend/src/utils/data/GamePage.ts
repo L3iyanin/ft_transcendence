@@ -1,92 +1,72 @@
-import { IGamePlayer, IGameSettings, IGameWatcher } from "../types/Game";
+import { MatchTypeEnum } from "../constants/enum";
 
-const player1: IGamePlayer = {
-	id: "1",
+const player1: IUser = {
+	id: 1,
 	fullName: "Imran Baali",
-	score: 2,
 	username: "kirwa-ko",
-	imageUrl:
-		"https://myanimelist.tech/api/avatar?name=kirwako&animeName=Inazuma_Eleven",
+	imgUrl: "https://myanimelist.tech/api/avatar?name=kirwako&animeName=Inazuma_Eleven",
 	wins: 15,
 	loses: 4,
-	achievements: 3,
+	achievements: [],
 };
 
-const player2: IGamePlayer = {
-	id: "2",
+const player2: IUser = {
+	id: 2,
 	fullName: "Abdali Ait Hmid",
-	score: 7,
 	username: "twelve",
-	imageUrl:
-		"https://myanimelist.tech/api/avatar?name=twelve&animeName=Inazuma_Eleven",
+	imgUrl: "https://myanimelist.tech/api/avatar?name=twelve&animeName=Inazuma_Eleven",
 	wins: 15,
 	loses: 4,
-	achievements: 6,
+	achievements: [],
 };
 
-const fakeGameWatchers: IGameWatcher[] = [
+export const fakeMatchWatchers: IUser[] = [
 	{
-		id: "3",
+		id: 3,
 		fullName: "Imran Baali",
 		username: "kirwa-ko",
-		imageUrl:
-			"https://myanimelist.tech/api/avatar?name=kirwako&animeName=Inazuma_Eleven",
-		charUrl:
-			"https://myanimelist.tech/api/char?name=kirwako&animeName=Inazuma_Eleven",
-		profileUrl:
-			"https://myanimelist.tech/api/profile?name=kirwako&animeName=Inazuma_Eleven",
+		imgUrl:
+			"https://myanimelist.tech/api/avatar?name=kirwako&animeName=Inazuma_Eleven"
 	},
 	{
-		id: "4",
+		id: 4,
 		fullName: "Abdali Ait Hmid",
 		username: "twelve",
-		imageUrl:
+		imgUrl:
 			"https://myanimelist.tech/api/avatar?name=twelve&animeName=Inazuma_Eleven",
-		charUrl:
-			"https://myanimelist.tech/api/char?name=twelve&animeName=Inazuma_Eleven",
-		profileUrl:
-			"https://myanimelist.tech/api/profile?name=twelve&animeName=Inazuma_Eleven",
 	},
 	{
-		id: "5",
+		id: 5,
 		fullName: "Khalid Belyazid",
 		username: "seven",
-		imageUrl:
+		imgUrl:
 			"https://myanimelist.tech/api/avatar?name=seven&animeName=Inazuma_Eleven",
-		charUrl:
-			"https://myanimelist.tech/api/char?name=seven&animeName=Inazuma_Eleven",
-		profileUrl:
-			"https://myanimelist.tech/api/profile?name=seven&animeName=Inazuma_Eleven",
 	},
 	{
-		id: "6",
+		id: 6,
 		fullName: "Youness Aroubi",
 		username: "procrastinator",
-		imageUrl:
+		imgUrl:
 			"https://myanimelist.tech/api/avatar?name=procrastinator&animeName=Inazuma_Eleven",
-		charUrl:
-			"https://myanimelist.tech/api/char?name=procrastinator&animeName=Inazuma_Eleven",
-		profileUrl:
-			"https://myanimelist.tech/api/profile?name=procrastinator&animeName=Inazuma_Eleven",
 	},
 	{
-		id: "7",
+		id: 7,
 		fullName: "Youssef Raki",
 		username: "raki",
-		imageUrl:
+		imgUrl:
 			"https://myanimelist.tech/api/avatar?name=raki&animeName=Inazuma_Eleven",
-		charUrl:
-			"https://myanimelist.tech/api/char?name=raki&animeName=Inazuma_Eleven",
-		profileUrl:
-			"https://myanimelist.tech/api/profile?name=raki&animeName=Inazuma_Eleven",
 	},
 ];
 
-export const fakeGameSettings: IGameSettings = {
-	name: "Marineford Pong",
-	goalsToWin: 3,
+export const fakeGameSettings: IMatch = {
+	id: 1,
+    isMatching: false,
+    live: true,
+    player1: player1,
+    player2: player2,
+    player1Score: 0,
+    player2Score: 0,
+    date: new Date(),
+    scoreToWin: MatchTypeEnum.Classic,
 	backgroundUrl: "/imgs/backgrounds/marineford-bg.png",
-	player1: player1,
-	player2: player2,
-	watchers: fakeGameWatchers,
 };

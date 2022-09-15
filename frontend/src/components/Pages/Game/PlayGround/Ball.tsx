@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
 	BALL_SIZE,
 	INITIAL_BALL_START_POSITION,
-} from "../../../utils/constants/Game";
+} from "../../../../utils/constants/Game";
 
 const Ball: React.FC<{
 	top: number;

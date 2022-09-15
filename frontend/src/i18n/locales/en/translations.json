@@ -25,10 +25,16 @@
 		"goalsToWin": "Goals to win",
 		"watchTheMatch": "Watching The Match"
 	},
+	"chatPage": {
+		"dms": "DMs",
+		"channels": "Channels"
+	},
 	"playerOne": "Player 1",
 	"playerTwo": "Player 2",
 	"footer": {
 		"textOne": "Developed with 💪🏼 by L3iyanin",
 		"textTwo": "1337 Future is loading"
-	}
+	},
+	"classicGame": "Marineford Pong",
+	"vipGame": "Wano Pong"
 }

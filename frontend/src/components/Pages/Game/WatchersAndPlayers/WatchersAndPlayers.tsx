@@ -3,9 +3,9 @@ import WatchersList from "./WatchersList";
 import { useTranslation } from "react-i18next";
 
 const WatchersAndPlayers: React.FC<{
-	player1: IGamePlayer;
-	player2: IGamePlayer;
-	watchers: IGameWatcher[];
+	player1: IUser;
+	player2: IUser;
+	watchers: IUser[];
 }> = ({ player1, player2, watchers }) => {
 
 	const { t } = useTranslation();
