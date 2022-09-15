@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, Req, UseGuards } from "@nestjs/common";
+import { Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Post, Req, UseGuards} from "@nestjs/common";
 import { UserGuard } from "./user.guard";
 import { UsersService } from "./users.service";
 import { UserInfo } from "./dto/userInfo.dto";
@@ -21,6 +21,7 @@ export class UsersController {
 	}
 
 	@Get("leaderboard")
+	@ApiResponse({type : [Leaderboard]})
 	async getLeaderboard(): Promise<Leaderboard[]> {
 		const leaderboard: Leaderboard[] = await this.userService.getLeaderboard();
 		return leaderboard;
@@ -44,4 +45,26 @@ export class UsersController {
 		const friends =  await this.userService.getUserFriends(userId);
 		return friends
 	}
+	
+	@ApiResponse({type : HttpException})
+	@Post("/:friendId/sendFriendRequest")
+	async sendFriendRequest(@Param("friendId", ParseIntPipe) friendId: number, @Req() req){
+		const userId = req.user.id;
+		console.log(req.user.id)
+		if (userId == friendId)
+		return new HttpException('BAD REQUEST', HttpStatus.BAD_REQUEST);
+
+		
+		
+		const ret = await this.userService.sendFriendRequest(userId, friendId)
+		return ret
+	}
+	
+	@ApiResponse({type : HttpException})
+	@Post("/:friendId/accept-friend-request")
+	async acceptFriendRequest(@Param("friendId", ParseIntPipe) friendId: number, @Req() req){
+		const userId = req.user.id;
+		return await this.userService.acceptFriendRequest(userId, friendId)
+	}
+
 }

@@ -20,7 +20,7 @@ export class AuthController {
 			userData.fullName,
 			avatarImage
 		);
-		const token = await this.authService.createJwtToken(user.username, user.fullName);
+		const token = await this.authService.createJwtToken(user.username, user.fullName, user.id);
 		res.cookie("jwt", token, { httpOnly: true });
 		return res.send({
 			status: 200,

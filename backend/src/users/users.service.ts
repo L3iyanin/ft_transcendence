@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { Achievement } from "./dto/achievement.dto";
 import { Friend } from "./dto/friend.dto";
@@ -20,8 +20,7 @@ export class UsersService {
 					friends: true,
 				},
 			});
-			if (!user) 
-				return undefined;
+			if (!user) return undefined;
 			const userInfo: UserInfo = {
 				fullName: user.fullName,
 				username: user.username,
@@ -47,7 +46,7 @@ export class UsersService {
 					data: {
 						WinsMinusLoses: user.wins - user.loses,
 						rank: 1,
-						...user
+						...user,
 					},
 				};
 			});
@@ -55,11 +54,11 @@ export class UsersService {
 				if (user1.data.WinsMinusLoses > user2.data.WinsMinusLoses) {
 					return -1;
 				}
-			})
+			});
 
 			leaderboard.forEach((user, index) => {
 				user.data.rank = index + 1;
-			})
+			});
 
 			return leaderboard;
 		} catch (err) {
@@ -111,8 +110,8 @@ export class UsersService {
 		}
 	}
 
-	async getUserFriends(userId : number) :  Promise<Friend[]>{
-		try{
+	async getUserFriends(userId: number): Promise<Friend[]> {
+		try {
 			const user = await prisma.user.findUnique({
 				where: {
 					id: userId,
@@ -121,23 +120,84 @@ export class UsersService {
 					friends: true,
 				},
 			});
-			console.log(user.friends)
-			const friends : Friend[] = []
-			user.friends.map(friend => {
+			console.log(user.friends);
+			const friends: Friend[] = [];
+			user.friends.map((friend) => {
 				friends.push({
-					fullName : friend.fullName,
-					username : friend.username,
-					imgUrl : friend.imgUrl,
-					loses : friend.loses,
-					wins : friend.wins
-				})
-			})
+					fullName: friend.fullName,
+					username: friend.username,
+					imgUrl: friend.imgUrl,
+					loses: friend.loses,
+					wins: friend.wins,
+				});
+			});
 			return friends;
+		} catch (err) {
+			//! return error
+			console.log(err);
+			return undefined;
 		}
-		catch(err){ //! return error
-			console.log(err)
-			return undefined
+	}
+
+	async sendFriendRequest(from: number, to: number) { //! you should check this tommorow
+		try {
+			let user = await prisma.user.findUnique({
+				where: { id: to },
+				select: {
+					friendRequests: true,
+					friends : true
+				},
+			});
+			let alreadyExist = user.friendRequests.some((req) => req.id == from);
+			if (alreadyExist)
+				return new HttpException("Request already sent", HttpStatus.BAD_REQUEST);
+			alreadyExist = user.friends.some((friend) => friend.id == from);
+			if (alreadyExist)
+				return new HttpException("They are already friend", HttpStatus.BAD_REQUEST);
+			await prisma.user.update({
+				where: {
+					id: to,
+				},
+				data: {
+					friendRequests: {
+						connect: { id: from },
+					},
+				},
+			});
+			return new HttpException("Friend Request Has be sent", HttpStatus.CREATED);	
+		}
+		catch (err) {
+			console.log(err);
+			return new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	async acceptFriendRequest(userId: number, friendId: number) {
+		try {
+			let user = await prisma.user.findUnique({
+				where: { id: userId },
+				select: {
+					friendRequests: true,
+				},
+			});
+			const friendRequestExist = user.friendRequests.some((req) => req.id == friendId);
+			if (!friendRequestExist)
+				return new HttpException("Friend Request dosnt exist", HttpStatus.BAD_REQUEST);
+				const userUpdated = await prisma.user.update({
+					where: { id: userId },
+					data: {
+						friendRequests: {
+							disconnect: { id: friendId },
+						},
+						friends: {
+							connect: { id: friendId },
+						},
+					},
+				});
+			return new HttpException("Friend Request Has be accepted", HttpStatus.CREATED);
+		} 
+		catch (err) {
+			return new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
-	

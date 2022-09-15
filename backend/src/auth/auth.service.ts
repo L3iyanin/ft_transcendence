@@ -57,13 +57,13 @@ export class AuthService {
 		}
 	}
 
-	async createJwtToken(username: string, fullName: string) {
+	async createJwtToken(username: string, fullName: string, id : number) {
 		const jwtTokenService = new JwtService();
 		const payload = {
 			fullName: fullName,
 			username: username,
+			id : id
 		};
-		// var token = jwtService_2.sign(payload, process.env.SECRET);
 		const jwt = await jwtTokenService.signAsync(payload, {
 			secret: process.env.JWT_SECRET,
 			expiresIn: "7d",
