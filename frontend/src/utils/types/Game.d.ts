@@ -69,3 +69,11 @@ interface IAchievement {
     description : string;
     imgUrl : string;
 }
+
+interface IAchievementProps {
+	achievement: IAchievement;
+}
+
+interface IAchievementsListProps {
+	achievements: IAchievement[];
+}
