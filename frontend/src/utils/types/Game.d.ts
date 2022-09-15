@@ -62,3 +62,10 @@ interface IOptionProps {
 	url: string;
 	children: string;
 }
+
+interface IAchievement {
+    name : string;
+    achieved : boolean;
+    description : string;
+    imgUrl : string;
+}
