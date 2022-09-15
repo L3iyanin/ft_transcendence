@@ -1,3 +1,4 @@
+
 import PlayerPaddle from "./PlayerPaddle";
 import PlayerScore from "./PlayerScore";
 import Ball from "./Ball";
@@ -11,11 +12,13 @@ import {
 	PLAY_GROUND_HEIGHT,
 	PLAY_GROUND_WIDTH,
 } from "../../../utils/constants/Game";
+
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const PlayGround: React.FC<{
 	settings: IGameSettings;
 }> = ({ settings }) => {
+
 	const [playersScore, setPlayersScore] = useState<{
 		player1Score: number;
 		player2Score: number;
@@ -48,11 +51,14 @@ const PlayGround: React.FC<{
 				newPlayerScore.player1Score += goalsOnPlayer;
 			} else {
 				// console.log("player2");
+
 				newPlayerScore.player2Score += goalsOnPlayer;
 			}
 			return newPlayerScore;
 		});
+
 	};
+
 
 	const { ballPosition } = useBallMove(setPlayersScoreHandler);
 
@@ -61,6 +67,7 @@ const PlayGround: React.FC<{
 	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		movePlayer1(e);
 		movePlayer2(e);
+
 	};
 
 	const playgroundRef = useRef<HTMLDivElement>(null);
@@ -82,19 +89,24 @@ const PlayGround: React.FC<{
 		});
 	}, []);
 
+
 	return (
 		<div
 			className={`relative w-full bg-red mt-5 bg-cover bg-center ac rounded-3xl border-4 border-red`}
 			style={{
 				backgroundImage: `url(${settings.backgroundUrl})`,
+
 				// height: `${PLAY_GROUND_HEIGHT}px`,
 				// width: `${PLAY_GROUND_WIDTH}px`,
 				aspectRatio: "16 / 9",
+
 			}}
 			id="playground"
 			// onMouseMove={movePlayer1}
 			onMouseMove={movePlayer}
+
 			ref={playgroundRef}
+
 		>
 			<PlayerPaddle
 				playerMoveOnPaddle={player1MoveOnPaddle}
@@ -116,6 +128,7 @@ const PlayGround: React.FC<{
 				onMouseMove={stopPropagation}
 				className="absolute text-white top-4 left-1/2 transform -translate-x-1/2 gap-x-16 flex"
 			>
+
 				<PlayerScore
 					score={playersScore.player1Score}
 					player={settings.player1}
@@ -125,6 +138,7 @@ const PlayGround: React.FC<{
 					player={settings.player2}
 					isReverse={true}
 				/>
+
 			</div>
 			<div ref={ref} />
 			<Ball

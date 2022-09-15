@@ -1,4 +1,3 @@
-import { IGamePlayer, IGameSettings, IGameWatcher } from "../types/Game";
 
 const player1: IGamePlayer = {
 	id: "1",

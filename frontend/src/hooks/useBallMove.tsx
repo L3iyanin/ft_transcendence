@@ -11,12 +11,14 @@ import {
 	PLAYER_ONE,
 	PLAYER_TWO,
 	PLAYGROUND_BORDERSIZE,
+
 	VELOCITY_INCREASE,
 } from "../utils/constants/Game";
 
 const useBallMove = (
 	setPlayersScoreHandler: (playerIndex: number, goalsOnPlayer: number) => void
 ) => {
+
 	let lastTime: DOMHighResTimeStamp | null = null;
 	// let direction: { x: number; y: number };
 
@@ -39,10 +41,7 @@ const useBallMove = (
 	const resetBall = () => {
 		let direction = { x: 0, y: 0 };
 
-		while (Math.abs(direction.x) <= 0.2 || Math.abs(direction.x) >= 0.9) {
-			const heading = randomNumberBetween(0, 2 * Math.PI);
-			direction = { x: Math.cos(heading), y: Math.sin(heading) };
-		}
+
 
 		setBallPosition((_) => {
 			return {
@@ -56,12 +55,14 @@ const useBallMove = (
 					BALL_SIZE / 2 +
 					PLAYGROUND_BORDERSIZE +
 					2,
+
 				directionX: direction.x,
 				directionY: direction.y,
 				velocity: INITIAL_VELOCITY,
 			};
 		});
 	};
+
 
 	const isCollisionWithPlayer = (ballXposition: number, ballYposition: number, playerYposition: number, playerNumber: number): boolean =>
 	{
@@ -90,6 +91,7 @@ const useBallMove = (
 			else
 				return false;
 		}
+
 	};
 
 	const updateBall = (delta: number) => {
@@ -99,21 +101,26 @@ const useBallMove = (
 			let newDirectionX = prev.directionX;
 			let newDirectionY = prev.directionY;
 
+
 			let newX = prev.x + newDirectionX * distance * window.widthRatio;
 			let newY = prev.y + newDirectionY * distance * window.heightRatio;
+
 
 			let newVelocity = prev.velocity + VELOCITY_INCREASE * delta;
 
 			if (
 				newY + BALL_SIZE / 2 >=
+
 				window.playgroundHeight - PLAYGROUND_BORDERSIZE
 			) {
 				newDirectionY = newDirectionY * -1;
 				newY = prev.y + newDirectionY * distance * window.heightRatio;
+
 			}
 
 			if (newY - BALL_SIZE / 2 <= 0) {
 				newDirectionY = newDirectionY * -1;
+
 				newY = prev.y + newDirectionY * distance * window.heightRatio;
 			}
 
@@ -125,6 +132,7 @@ const useBallMove = (
 			if (isCollisionWithPlayer(newX, newY, window.player2Y, PLAYER_TWO)) {
 				newDirectionX = newDirectionX * -1;
 				newX = prev.x + newDirectionX * distance * window.widthRatio;
+
 			}
 
 			if (
@@ -139,7 +147,9 @@ const useBallMove = (
 				);
 			}
 
+
 			if (newX + BALL_SIZE / 2 >= window.playgroundWidth - PADDLE_WIDTH) {
+
 				resetBall();
 				setPlayersScoreHandler(PLAYER_ONE, 1);
 				console.log(
@@ -156,6 +166,7 @@ const useBallMove = (
 				directionY: newDirectionY,
 			};
 		});
+
 	};
 
 	const animate = (time: DOMHighResTimeStamp) => {
