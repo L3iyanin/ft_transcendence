@@ -17,10 +17,10 @@ export class UsersService {
 					friends: true,
 				},
 			});
-			let userProfile: UserProfile = {
+			const userProfile: UserProfile = {
 				numberOfFreind: user.friends.length,
 				numberOfachivements: user.achievements.length,
-				...user
+				...user,
 			};
 			return userProfile;
 		} catch (exception) {

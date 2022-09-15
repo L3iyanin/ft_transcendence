@@ -20,7 +20,21 @@ async function addAchivements() {
 			imgUrl: "/home/image1.jpg",
 		},
 	});
-	console.log({ achivement0, achivement1 });
+	const achivement2 = await prisma.achievement.create({
+		data: {
+			name: "achivement2",
+			description: "achivement2 desc",
+			imgUrl: "/home/image2.jpg",
+		},
+	});
+	const achivement3 = await prisma.achievement.create({
+		data: {
+			name: "achivement3",
+			description: "achivement3 desc",
+			imgUrl: "/home/image3.jpg",
+		},
+	});
+	console.table({ achivement0, achivement1 , achivement2, achivement3});
 }
 
 async function addUsers() {
@@ -51,12 +65,59 @@ async function addUsers() {
 	console.log({ user0, user1, user2 });
 }
 
-async function main() {
-	await addAchivements();
-	await addUsers();
-}
+async function addAchivementsToUser(userId : number){
+	try {
+		const achivement0 = {
+				name: "achivement0",
+				description: "achivement0 desc",
+				imgUrl: "/home/image0.jpg",
+		}
+		const achivement1 = {
+				name: "achivement1",
+				description: "achivement1 desc",
+				imgUrl: "/home/image1.jpg",
+		}
+		const achivement2 = {
+				name: "achivement2",
+				description: "achivement2 desc",
+				imgUrl: "/home/image2.jpg",
+		}
+		const achivement3 = {
+				name: "achivement3",
+				description: "achivement3 desc",
+				imgUrl: "/home/image3.jpg",
+		}
+		const  userUpdated = await prisma.user.update(
+			{
+				where : {id : userId},
+				data : {
+					achievements : {
+						connect : [{id : 9}, {id : 10}]
+					}
+				}
+			}
+		)
+			console.table(userUpdated)
+		// const achivementUpdated =  await prisma.achievement.updateMany({
+			
+		// 	data : {
+		// 		// user : {
+		// 			// connect :[id : 1]
+		// 		// }		
+		// 	}
+		// })
+	}
+	catch(exception){
+		console.log(exception)
+	}
 
-// execute the main function
+
+}
+async function main() {
+	// await addAchivements();
+	// await addUsers();
+	// await addAchivementsToUser(2)
+}
 main()
 	.catch((e) => {
 		console.error(e);

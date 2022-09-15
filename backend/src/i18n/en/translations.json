@@ -1,0 +1,8 @@
+{
+	"hello": "English",
+	"errors": {
+		"user" : {
+			"wrongPassword": "wrong password"
+		}
+	}
+}
