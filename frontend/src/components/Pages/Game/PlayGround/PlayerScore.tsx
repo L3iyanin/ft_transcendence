@@ -1,6 +1,6 @@
 
 const PlayerScore: React.FC<{
-	player: IGamePlayer;
+	player: IUser;
 	score: number;
 	isReverse?: boolean;
 }> = ({ player, isReverse, score }) => {
@@ -16,7 +16,7 @@ const PlayerScore: React.FC<{
 			</div>
 			<img
 				className="w-[49px] h-[49px] rounded-full"
-				src={player.imageUrl}
+				src={player.imgUrl}
 				alt=""
 			/>
 			<span className="text-5xl font-bold">{score}</span>
