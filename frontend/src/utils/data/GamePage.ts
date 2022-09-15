@@ -7,7 +7,7 @@ const player1: IGamePlayer = {
 	imageUrl:
 		"https://myanimelist.tech/api/avatar?name=kirwako&animeName=Inazuma_Eleven",
 	wins: 15,
-	loses: 4,
+	losses: 4,
 	achievements: 3,
 };
 
@@ -19,7 +19,7 @@ const player2: IGamePlayer = {
 	imageUrl:
 		"https://myanimelist.tech/api/avatar?name=twelve&animeName=Inazuma_Eleven",
 	wins: 15,
-	loses: 4,
+	losses: 4,
 	achievements: 6,
 };
 

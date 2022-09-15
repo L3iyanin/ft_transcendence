@@ -7,7 +7,7 @@ export const players: IGamePlayer[] = [
 		imageUrl:
 			"https://myanimelist.tech/api/avatar?name=01&animeName=Hunter_x_Hunter",
 		wins: 20,
-		loses: 3,
+		losses: 3,
 		achievements: 7,
 	},
 	{
@@ -18,7 +18,7 @@ export const players: IGamePlayer[] = [
 		imageUrl:
 			"https://myanimelist.tech/api/avatar?name=018&animeName=Hunter_x_Hunter",
 		wins: 10,
-		loses: 2,
+		losses: 2,
 		achievements: 5,
 	},
 	{
@@ -29,7 +29,7 @@ export const players: IGamePlayer[] = [
 		imageUrl:
 			"https://myanimelist.tech/api/avatar?name=twelve&animeName=Inazuma_Eleven",
 		wins: 15,
-		loses: 4,
+		losses: 4,
 		achievements: 6,
 	},
 	{
@@ -40,7 +40,7 @@ export const players: IGamePlayer[] = [
 		imageUrl:
 			"https://myanimelist.tech/api/avatar?name=kirwako&animeName=Inazuma_Eleven",
 		wins: 15,
-		loses: 4,
+		losses: 4,
 		achievements: 3,
 	}
 ]

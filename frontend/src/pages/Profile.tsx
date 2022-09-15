@@ -6,6 +6,7 @@ import LastMatches from "../components/LastMatches/LastMatches";
 import UserCard from "../components/UserCard/UserCard";
 import { achievements } from "../utils/data/Achievements";
 import AchievementsList from "../components/pages/Profile/AchievementsList";
+import FirendsList from "../components/pages/Profile/FriendsList";
 
 const Profile = () => {
 	return (
@@ -17,6 +18,7 @@ const Profile = () => {
 					<LastMatches>{matches}</LastMatches>
 				</section>
 				<section className="container flex justify-between items-center gap-8">
+					<FirendsList friends={players} />
 					<AchievementsList achievements={achievements} />
 				</section>
 			</main>

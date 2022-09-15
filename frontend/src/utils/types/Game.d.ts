@@ -6,7 +6,7 @@ interface IGamePlayer {
 	score: number;
 	imageUrl: string;
 	wins: number;
-	loses: number;
+	losses: number;
 	achievements: number;
 }
 
@@ -76,4 +76,8 @@ interface IAchievementProps {
 
 interface IAchievementsListProps {
 	achievements: IAchievement[];
+}
+
+interface IFriendProps {
+	user: IGamePlayer;
 }
