@@ -18,12 +18,6 @@ export const achievements : IAchievement[] = [
 		imgUrl: '/imgs/achievements/Poneglyph.png'
 	},
 	{
-		name: 'Mera Mera No Mi',
-		description: 'Win first played Match',
-		achieved: true,
-		imgUrl: '/imgs/achievements/'
-	},
-	{
 		name: 'Ito Ito No Mi',
 		description: 'Win with clean sheet',
 		achieved: true,

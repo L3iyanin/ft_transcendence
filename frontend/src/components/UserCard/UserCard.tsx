@@ -8,9 +8,9 @@ const MAX_ACHIVEMENTS = import.meta.env.VITE_APP_MAX_ACHIVEMENTS;
 
 const UserCard: React.FC<{
 	children: IGamePlayer;
-}> = ({ children: user}) => {
+}> = ({ children: user }) => {
 	return (
-		<section className="container min-w-[200px] w-1/6 m-0 bg-dark-60 rounded-lg ">
+		<section className="container min-w-[200px] max-w-[300px] m-0 bg-dark-60 rounded-lg ">
 			<div className="m-0 flex flex-col items-center p-6 gap-y-1.5 text-white">
 				<img
 					src={user.imageUrl}
@@ -36,16 +36,16 @@ const UserCard: React.FC<{
 					</span>
 				</div>
 			</div>
-				<footer className="container h-10 flex justify-center items-center gap-0">
-					<div className="container h-full rounded-bl-lg flex justify-center items-center gap-1 bg-yellow text-xs text-black">
-						<StartChatIcon className="h-4"/>
-						<p>Start Chat</p>
-					</div>
-					<div className="container h-full rounded-br-lg flex justify-center items-center gap-1 bg-red text-xs text-white">
-						<BlockUserIcon className="h-4"/>
-						<p>Block User</p>
-					</div>
-				</footer>
+			<footer className="container h-10 flex justify-center items-center gap-0">
+				<div className="container h-full rounded-bl-lg flex justify-center items-center gap-1 bg-yellow text-xs text-black">
+					<StartChatIcon className="h-4" />
+					<p>Start Chat</p>
+				</div>
+				<div className="container h-full rounded-br-lg flex justify-center items-center gap-1 bg-red text-xs text-white">
+					<BlockUserIcon className="h-4" />
+					<p>Block User</p>
+				</div>
+			</footer>
 		</section>
 	);
 };

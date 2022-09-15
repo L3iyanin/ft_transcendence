@@ -11,7 +11,7 @@ const Profile = () => {
 	return (
 		<div>
 			<NavBar />
-			<main className="container flex flex-col gap-10">
+			<main className="container mx-9 flex flex-col justify-between items-center gap-10">
 				<section className="container flex justify-between items-center gap-8">
 					<UserCard>{players[0]}</UserCard>
 					<LastMatches>{matches}</LastMatches>
