@@ -6,6 +6,7 @@ interface IMessage {
     Channel?: IChatChannel;
     // channelId: number;
     date: Date;
+	invite?: boolean;
 }
 
 interface IMember {

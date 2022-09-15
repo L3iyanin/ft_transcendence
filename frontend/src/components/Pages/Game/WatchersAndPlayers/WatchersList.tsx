@@ -51,7 +51,7 @@ const WatcherCard: React.FC<{ watcher: IUser }> = ({ watcher }) => {
 					/>
 					<IconWithLabel
 						linkToGo={`/profile/${watcher.username}`}
-						icon={<ProfileIcon />}
+						icon={<ProfileIcon className="w-4 h-4" />}
 						label={t("profile")}
 						labelStyle="text-yellow"
 					/>
