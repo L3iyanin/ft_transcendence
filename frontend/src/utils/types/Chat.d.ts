@@ -2,29 +2,31 @@
 interface IMessage {
 	id: number;
     content: string;
-    sender: number;
-    Channel: IChatChannel,
-    channelId: number,
-    date: Date,
+    sender: IUser;
+    Channel?: IChatChannel;
+    // channelId: number;
+    date: Date;
+	invite?: boolean;
 }
 
 interface IMember {
 	id: number;
-    user: number
-    status: MemberStatusEnum,
-    until: Date,
-    role: RolesEnum,
-    Channel: IChatChannel,
-    channelId: number,
+    user: IUser;
+    status?: MemberStatusEnum;
+    until?: Date;
+    role?: RolesEnum;
+    // Channel: IChatChannel;
 }
 
 interface IChatChannel {
 	id: number;
-    name: string
-    owner: number;
-    members: IMember[]
-    messages: Message[]
-    status: ChannleStatusEnum
-    password: string
-    lastMessagdID: IMessage
+    name: string;
+	imgUrl: string;
+    owner?: number;
+    members: IMember[];
+    messages: Message[];
+    status: ChannleStatusEnum;
+    password?: string;
+    lastMessage?: IMessage;
+	uneadMessages?: number;
 }

@@ -5,7 +5,7 @@ import { ReactComponent as AchivementIcon } from "../../../../assets/icons/achiv
 const MAX_ACHIVEMENTS = import.meta.env.VITE_APP_MAX_ACHIVEMENTS;
 
 const PlayerCard: React.FC<{
-	player: IGamePlayer;
+	player: IUser;
 	header: string;
 }> = ({ player, header }) => {
 	return (
@@ -13,7 +13,7 @@ const PlayerCard: React.FC<{
 			<h2 className="text-2xl font-bold text-center">{header}</h2>
 			<div className="mt-5 bg-dark-60 rounded-lg flex flex-col items-center p-6 gap-y-1.5">
 				<img
-					src={player.imageUrl}
+					src={player.imgUrl}
 					alt=""
 					className="w-[51px] h-[51px] rounded-full"
 				/>

@@ -7,7 +7,7 @@ const InputWithIcon: React.FC<{
 }> = ({type, placeholder, icon }) => {
 	return (
 		<div className="bg-dark-60 flex rounded-2xl px-5 py-3 text-lg items-center">
-			<input className="bg-transparent" type={type} placeholder={placeholder} />
+			<input className="focus:outline-none text-grey-2 bg-transparent grow" type={type} placeholder={placeholder} />
 			{icon}
 		</div>
 	);
