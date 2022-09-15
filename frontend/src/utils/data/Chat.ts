@@ -1,4 +1,4 @@
-import { ChannleStatusEnum, MemberStatusEnum } from "../constants/enum";
+import { ChannleStatusEnum } from "../constants/enum";
 import { users } from "./Users";
 
 export const members: IMember[] = users.map((user, index) => ({
@@ -39,45 +39,13 @@ export const messages: IMessage[] = [
 	},
 ];
 
-export const dmChannels: IChatChannel[] = [
-	{
-		id: 1,
-		name: "Khalid benlyazid",
-		members: members,
-		messages: messages,
-		status: ChannleStatusEnum.DM,
-		lastMessagdID: messages[0],
-	},
-	{
-		id: 2,
-		name: "Esther Howard",
-		members: members,
-		messages: messages,
-		status: ChannleStatusEnum.DM,
-		lastMessagdID: messages[1],
-	},
-	{
-		id: 3,
-		name: "Leslie Alexander",
-		members: members,
-		messages: messages,
-		status: ChannleStatusEnum.DM,
-		lastMessagdID: messages[2],
-	},
-	{
-		id: 4,
-		name: "Robert Fox",
-		members: members,
-		messages: messages,
-		status: ChannleStatusEnum.DM,
-		lastMessagdID: messages[3],
-	},
-	{
-		id: 5,
-		name: "Jacob Jones†",
-		members: members,
-		messages: messages,
-		status: ChannleStatusEnum.DM,
-		lastMessagdID: messages[4],
-	},
-];
+export const dmChannels: IChatChannel[] = users.map((user, index) => ({
+	id: index + 1,
+	name: user.fullName,
+	members: members,
+	messages: messages,
+	status: ChannleStatusEnum.DM,
+	lastMessage: messages[index % messages.length],
+	imgUrl: user.imgUrl,
+	notReadMessages: Math.floor(Math.random() * (0 - 5) + 5),
+}))

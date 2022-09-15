@@ -19,11 +19,13 @@ interface IMember {
 
 interface IChatChannel {
 	id: number;
-    name: string
+    name: string;
+	imgUrl: string;
     owner?: number;
     members: IMember[];
     messages: Message[];
     status: ChannleStatusEnum;
     password?: string;
-    lastMessagdID?: IMessage;
+    lastMessage?: IMessage;
+	notReadMessages?: number;
 }
