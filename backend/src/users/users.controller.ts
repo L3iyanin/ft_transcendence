@@ -14,23 +14,17 @@ import { Achievement } from "./dto/achievement.dto";
 export class UsersController {
 	constructor(private readonly userService: UsersService) {}
 
-	@ApiResponse({ type: UserProfile })
-	@Get("/:userId/info")
-	async getUserInfoById(@Param("userId", ParseIntPipe) userId: number): Promise<UserProfile> {
-		const userProfile: UserProfile = await this.userService.getUserInfo(userId);
-		return userProfile;
-	}
-
-	// test i18
-
-	@Get("wrongPassword")
-	async getHello(@I18n() i18n: I18nContext) {
-		return await i18n.t("translations.hello");
+    @ApiResponse({type : UserInfo})
+    @Get("/:userId/info")
+	    async getUserInfoById(@Req() req: Request, @Param('userId', ParseIntPipe) userId : number)  : Promise<UserInfo>{
+            const userProfile : UserInfo = await this.userService.getUserInfo(userId);
+		    return userProfile
 	}
 
 	@ApiResponse({ type: Achievement })
 	@Get("/:userId/achievements")
-	getUserachievements() {
-		return "";
+	async getUserachievements(@Param("userId", ParseIntPipe) userId: number): Promise<Achievement[]> {
+		const achievement: Achievement[] = await this.userService.getAchievemnets(userId);
+		return achievement;
 	}
 }
