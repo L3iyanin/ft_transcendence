@@ -78,5 +78,5 @@ export const dmChannels: IChatChannel[] = users.map((user, index) => ({
 	status: ChannleStatusEnum.DM,
 	lastMessage: messages[index % messages.length],
 	imgUrl: user.imgUrl,
-	notReadMessages: Math.floor(Math.random() * (0 - 5) + 5),
+	uneadMessages: Math.floor(Math.random() * (0 - 5) + 5),
 }))

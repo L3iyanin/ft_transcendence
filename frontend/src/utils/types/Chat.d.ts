@@ -28,5 +28,5 @@ interface IChatChannel {
     status: ChannleStatusEnum;
     password?: string;
     lastMessage?: IMessage;
-	notReadMessages?: number;
+	uneadMessages?: number;
 }

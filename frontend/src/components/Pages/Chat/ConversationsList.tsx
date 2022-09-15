@@ -16,19 +16,11 @@ const ConversationsList: React.FC<{
 				<div className="w-full mt-5">
 					{
 						channels.map((channel, index) => {
-							if (index === channels.length - 1) {
-								return <ConversationCard channel={channel} key={channel.id} />
-							}
-							else {
-								return (
-									<>
-										<ConversationCard channel={channel} key={channel.id} />
-										<RoundedHr />
-									</>
-								)
-							}
-						}
-						)
+							return <div key={index}>
+								<ConversationCard channel={channel} key={channel.id} />
+								{index !== channels.length - 1 && <RoundedHr />}
+							</ div>
+						})
 					}
 				</div>
 			</div>

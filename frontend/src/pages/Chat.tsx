@@ -18,7 +18,7 @@ const Chat: React.FC = () => {
 					<InputWithIcon icon={<SearchIcon />} type="text" placeholder="Search" />
 					<ConversationsList channels={dmChannels} />
 				</div>
-				<div className="basis-2/3">
+				<div className="basis-2/3 basis">
 					<ChatActions currentChannel={dmChannels[0]} username={users[0].username} />
 					<MessagesList messages={messages} />
 				</div>
