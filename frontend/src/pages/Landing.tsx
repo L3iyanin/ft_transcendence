@@ -6,7 +6,7 @@ import TopSection from "../components/Pages/LandingPage/TopSection";
 const Landing = () => {
 	return (
 		<>
-			<div className="container mx-auto px-6">
+			<div className="container">
 				<TopSection />
 				<TextSection />
 				<TeamSection />
