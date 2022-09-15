@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { Achievement } from "./dto/achievement.dto";
+import { Friend } from "./dto/friend.dto";
 import { Leaderboard } from "./dto/leaderboard.dto";
 import { UserInfo } from "./dto/userInfo.dto";
 
@@ -50,9 +51,6 @@ export class UsersService {
 					},
 				};
 			});
-
-
-
 			let leaderboard: Leaderboard[] = transformedUsers.sort((user1, user2) => {
 				if (user1.data.WinsMinusLoses > user2.data.WinsMinusLoses) {
 					return -1;
@@ -112,4 +110,34 @@ export class UsersService {
 			return;
 		}
 	}
+
+	async getUserFriends(userId : number) :  Promise<Friend[]>{
+		try{
+			const user = await prisma.user.findUnique({
+				where: {
+					id: userId,
+				},
+				select: {
+					friends: true,
+				},
+			});
+			console.log(user.friends)
+			const friends : Friend[] = []
+			user.friends.map(friend => {
+				friends.push({
+					fullName : friend.fullName,
+					username : friend.username,
+					imgUrl : friend.imgUrl,
+					loses : friend.loses,
+					wins : friend.wins
+				})
+			})
+			return friends;
+		}
+		catch(err){ //! return error
+			console.log(err)
+			return undefined
+		}
+	}
 }
+	

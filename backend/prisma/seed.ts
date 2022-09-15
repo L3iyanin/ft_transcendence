@@ -42,7 +42,7 @@ async function addUsers() {
 		data: {
 			username: "user0",
 			fullName: "fdfdff",
-			imgUrl: "/path/image/profile",
+			imgUrl: "/path/image/profile0",
 			login: "user0",
 		},
 	});
@@ -50,7 +50,7 @@ async function addUsers() {
 		data: {
 			username: "user1",
 			fullName: "cdcdcd",
-			imgUrl: "/path/image/profile",
+			imgUrl: "/path/image/profile1",
 			login: "user1",
 		},
 	});
@@ -58,7 +58,7 @@ async function addUsers() {
 		data: {
 			username: "user2",
 			fullName: "fdfdfd",
-			imgUrl: "/path/image/profile",
+			imgUrl: "/path/image/profile2",
 			login: "user2",
 		},
 	});
@@ -67,26 +67,6 @@ async function addUsers() {
 
 async function addAchivementsToUser(userId : number){
 	try {
-		const achivement0 = {
-				name: "achivement0",
-				description: "achivement0 desc",
-				imgUrl: "/home/image0.jpg",
-		}
-		const achivement1 = {
-				name: "achivement1",
-				description: "achivement1 desc",
-				imgUrl: "/home/image1.jpg",
-		}
-		const achivement2 = {
-				name: "achivement2",
-				description: "achivement2 desc",
-				imgUrl: "/home/image2.jpg",
-		}
-		const achivement3 = {
-				name: "achivement3",
-				description: "achivement3 desc",
-				imgUrl: "/home/image3.jpg",
-		}
 		const  userUpdated = await prisma.user.update(
 			{
 				where : {id : userId},
@@ -97,26 +77,37 @@ async function addAchivementsToUser(userId : number){
 				}
 			}
 		)
-			console.table(userUpdated)
-		// const achivementUpdated =  await prisma.achievement.updateMany({
-			
-		// 	data : {
-		// 		// user : {
-		// 			// connect :[id : 1]
-		// 		// }		
-		// 	}
-		// })
+		console.table(userUpdated)
 	}
 	catch(exception){
 		console.log(exception)
 	}
-
-
 }
+
+async function addAFriendsToUser(userId : number){
+	try {
+		const  userUpdated = await prisma.user.update(
+			{
+				where : {id : userId},
+				data : {
+					friends : {
+						connect : [{id : 5}, {id : 4},  {id : 3}]
+					}
+				}
+			}
+		)
+		console.table(userUpdated)
+	}
+	catch(exception){
+		console.log(exception)
+	}
+}
+
 async function main() {
 	// await addAchivements();
 	// await addUsers();
 	// await addAchivementsToUser(2)
+	await addAFriendsToUser(2)
 }
 main()
 	.catch((e) => {

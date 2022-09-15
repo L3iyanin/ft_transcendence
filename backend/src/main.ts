@@ -16,12 +16,6 @@ async function bootstrap() {
 		.setTitle("API Doc")
 		.setDescription("API description")
 		.setVersion("1.0")
-		// .addCookieAuth("jwt")
-		.addCookieAuth("auth-cookie", {
-			type: "http",
-			in: "Cookie",
-			scheme: "Bearer",
-		})
 		.setBasePath("/api/")
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
