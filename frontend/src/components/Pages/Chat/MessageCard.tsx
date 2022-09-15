@@ -10,7 +10,7 @@ const MessageCard: React.FC<{
 	const { t } = useTranslation();
 
 	return (
-		<div className="flex gap-2">
+		<div className="flex gap-2 mb-5">
 			<img className="w-[50px] h-[50px] rounded-full" src={message.sender.imgUrl} alt={message.sender.fullName} />
 			<div className="flex flex-col justify-between">
 				<div>
@@ -22,7 +22,7 @@ const MessageCard: React.FC<{
 					message.invite && (
 						<div className="flex gap-4 items-center">
 							<p>{t("pongInvitation")}</p>
-							<ButtonWithIcon icon={<PlayIcon />} label="Play Now" className="py-1 rounded-lg px-3 bg-red" />
+							<ButtonWithIcon icon={<PlayIcon />} label="Play Now" className="!py-1 rounded-lg px-3 bg-red" />
 						</div>
 					)
 				}

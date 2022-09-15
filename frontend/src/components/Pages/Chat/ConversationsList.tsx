@@ -11,7 +11,7 @@ const ConversationsList: React.FC<{
 	const { t } = useTranslation();
 
 	return (
-			<div className="bg-dark-60 mt-5 rounded-2xl p-5 text-white max-h-[70vh] overflow-y-auto">
+			<div className="bg-dark-60 mt-5 rounded-2xl p-5 text-white  h-full max-h-[70vh] overflow-y-auto">
 				<RoundedFilter firstLabel={t('chatPage.dms')} secondLabel={t('chatPage.channels')} whoIsActive={1} />
 				<div className="w-full mt-5">
 					{
