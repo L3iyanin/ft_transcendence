@@ -4,7 +4,8 @@ import { ReactComponent as SearchIcon } from "../assets/icons/search.svg";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import MembersList from "../components/Pages/ChannelSettings/MembersList";
-import { membersData } from "../utils/data/ChannelSettings";
+import { membersData, friendsListData } from "../utils/data/ChannelSettings";
+import FriendsList from "../components/Pages/ChannelSettings/FriendsList";
 
 const ChannelSettings: React.FC = () => {
 	const { channelId } = useParams();
@@ -25,7 +26,7 @@ const ChannelSettings: React.FC = () => {
 					<h2 className="text-xl font-semibold text-white">
 						Add friends to room {channelId}
 					</h2>
-					<div className="pt-4"/>
+					<div className="pt-4" />
 					<InputWithIcon
 						icon={<SearchIcon />}
 						type="text"
@@ -33,6 +34,7 @@ const ChannelSettings: React.FC = () => {
 					/>
 				</div>
 			</div>
+			<FriendsList friends={friendsListData} />
 		</div>
 	);
 };

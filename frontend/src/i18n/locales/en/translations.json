@@ -38,7 +38,8 @@
 		"kickOut": "kick out",
 		"1Hour": "1 Hour",
 		"5Hours": "5 Hours",
-		"24Hours": "24 Hours"
+		"24Hours": "24 Hours",
+		"addMember": "add member"
 	},
 	"roles" : {
 		"member": "member",

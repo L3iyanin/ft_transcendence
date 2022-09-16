@@ -19,42 +19,50 @@ const ButtonWithIcon: React.FC<{
 							{props.text}
 						</p>
 
-						{props.dropDown && <ChevronDownIcon
-							className="h-4 w-4"
-							aria-hidden="true"
-						/>}
+						{props.dropDown && (
+							<ChevronDownIcon
+								className="h-4 w-4"
+								aria-hidden="true"
+							/>
+						)}
 					</Menu.Button>
 				</div>
 
-				{props.dropDown && props.options && <Transition
-					as={Fragment}
-					enter="transition ease-out duration-100"
-					enterFrom="transform opacity-0 scale-95"
-					enterTo="transform opacity-100 scale-100"
-					leave="transition ease-in duration-75"
-					leaveFrom="transform opacity-100 scale-100"
-					leaveTo="transform opacity-0 scale-95"
-				>
-					<Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-dark-60 shadow-lg ring-1 ring-white focus:outline-none">
-						<div className="p-2">
-							{props.options.map((option, index) => {
-								return (
-									<div
-										className="hover:text-dark-grey cursor-pointer	"
-										key={index}
-									>
-										<Menu.Item>
-											<p className="p-1 mx-4">{option}</p>
-										</Menu.Item>
-										{index + 1 < props.options.length && (
-											<hr className="mx-4 bg-dark-blue"></hr>
-										)}
-									</div>
-								);
-							})}
-						</div>
-					</Menu.Items>
-				</Transition>}
+				{props.dropDown && props.options && (
+					<Transition
+						as={Fragment}
+						enter="transition ease-out duration-100"
+						enterFrom="transform opacity-0 scale-95"
+						enterTo="transform opacity-100 scale-100"
+						leave="transition ease-in duration-75"
+						leaveFrom="transform opacity-100 scale-100"
+						leaveTo="transform opacity-0 scale-95"
+					>
+						<Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-dark-60 shadow-lg ring-1 ring-white focus:outline-none">
+							<div className="p-2">
+								{props.options.map((option, index) => {
+									return (
+										<div
+											className="hover:text-dark-grey cursor-pointer	"
+											key={index}
+										>
+											<Menu.Item>
+												<p className="p-1 mx-4">
+													{option}
+												</p>
+											</Menu.Item>
+											{props.options &&
+												index + 1 <
+													props.options.length && (
+													<hr className="mx-4 bg-dark-blue"></hr>
+												)}
+										</div>
+									);
+								})}
+							</div>
+						</Menu.Items>
+					</Transition>
+				)}
 			</Menu>
 		</div>
 	);
