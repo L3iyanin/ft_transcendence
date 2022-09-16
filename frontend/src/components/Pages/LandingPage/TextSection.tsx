@@ -6,6 +6,7 @@ import { ReactComponent as PostgresqlLogo } from "../../../assets/icons/Postgres
 import { ReactComponent as ReactLogo } from "../../../assets/icons/ReactLogo.svg";
 import { ReactComponent as SocketioLogo } from "../../../assets/icons/SocketioLogo.svg";
 import { ReactComponent as TypescriptLogo } from "../../../assets/icons/TypescriptLogo.svg";
+import { ReactComponent as PongBallIcon } from "../../../assets/icons/pongBall.svg";
 import { useTranslation } from "react-i18next";
 
 
@@ -14,22 +15,25 @@ const TextSection = () => {
 	const { t } = useTranslation();
 
 	return (
-		<div className="max-w-3xl m-auto">
+		<div className="max-w-3xl m-auto relative">
+			<div className="absolute w-9 h-52 rounded-md bg-white -right-16 top-8" />
+			<div className="absolute w-9 h-52 rounded-md bg-white -left-16 bottom-8" />
+			<PongBallIcon className="absolute right-16 top-36" />
 			<hr className="bg-white mt-8 py-[1px]" />
-			<h2 className="text-white font-bold text-2xl text-center py-8">{t("about")}</h2>
+			<h2 className="text-white font-bold text-2xl text-center pt-8 pb-5">{t("about")}</h2>
 			<p className="text-white">
 				{t("landingPage.aboutParagrapOne")} <br />
 				{t("landingPage.aboutParagrapTwo")}
 			</p>
-			<h2 className="text-white font-bold text-2xl text-center py-8">{t("mainFeatures")}</h2>
+			<h2 className="text-white font-bold text-2xl text-center pb-5 pt-8">{t("mainFeatures")}</h2>
 			<p className="text-white">{t("landingPage.mainFeaturesHeader")}</p>
 			<ul className="list-disc text-white pl-8">
 				<li>{t("landingPage.mainFeaturesListOne")}</li>
 				<li>{t("landingPage.mainFeaturesListTwo")}</li>
 				<li>{t("landingPage.mainFeaturesListThree")}</li>
 			</ul>
-			<h2 className="text-white font-bold text-2xl text-center py-8">{t("technologiesUsed")}</h2>
-			<div className="flex gap-4">
+			<h2 className="text-white font-bold text-2xl text-center pb-5 pt-8">{t("technologiesUsed")}</h2>
+			<div className="flex gap-4 pb-4">
 				<SocketioLogo />
 				<FigmaLogo />
 				<ReactLogo />

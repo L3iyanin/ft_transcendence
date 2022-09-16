@@ -14,8 +14,9 @@ import {
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const PlayGround: React.FC<{
-	settings: IGameSettings;
+	settings: IMatch;
 }> = ({ settings }) => {
+	
 	const [playersScore, setPlayersScore] = useState<{
 		player1Score: number;
 		player2Score: number;
