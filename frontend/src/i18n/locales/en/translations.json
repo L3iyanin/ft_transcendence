@@ -9,6 +9,9 @@
 	"team": "Team",
 	"mainFeatures": "Main Features",
 	"technologiesUsed": "Technologies Used",
+	"search": "Search",
+	"admin": "admin",
+	"password": "Password",
 	"landingPage": {
 		"aboutParagrapOne": "Ft_transcendence is the last project in the commen core of 1337 School (42Network).",
 		"aboutParagrapTwo": "It's a Pong Multiplayer Game.",
@@ -27,8 +30,32 @@
 	},
 	"chatPage": {
 		"dms": "DMs",
-		"channels": "Channels"
+		"channels": "Channels",
+		"publicChannel": "Public Channel",
+		"protectedChannel": "Protected Channel",
+		"privateChannel": "Private Channel",
+		"seeProfile": "See Profile",
+		"inviteToPlay": "Invite to play",
+		"playNow": "Play Now",
+		"typeMessage": "Type a message...",
+		"channelSettings": "Channel Settings",
+		"createChannel": "Create Channel",
+		"channelName": "Channel Name",
+		"channelType": {
+			"public": "Public",
+			"private": "Private",
+			"protected": "Protected"
+		},
+		"bot": {
+			"name": "Bot 🤖",
+			"botMessages": [
+				"We are so happy to see you here",
+				"you can contact your friends using dm",
+				"And also you can create your own room and chat with your friends"
+			]
+		}
 	},
+	"send": "Send",
 	"playerOne": "Player 1",
 	"playerTwo": "Player 2",
 	"footer": {

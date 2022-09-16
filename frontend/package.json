@@ -9,6 +9,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@headlessui/react": "^1.7.2",
         "@tailwindcss/aspect-ratio": "^0.4.2",
         "@types/react-native": "^0.70.0",
         "i18next": "^21.9.1",

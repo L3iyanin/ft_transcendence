@@ -21,6 +21,17 @@
 		"teamMateThree": "خالد بنليزيد",
 		"teamMateFour": "عمران باعلي"
 	},
+	"chatPage": {
+		"dms": "الرسائل الخاصة",
+		"channels": "القنوات",
+		"publicChannel": "قناة عامة",
+		"typeMessage": "اكتب رسالتك هنا",
+		"protectedChannel": "Protected Channel",
+		"privateChannel": "Private Channel",
+		"seeProfile": "See Profile",
+		"inviteToPlay": "Invite to play",
+		"playNow": "Play Now"
+	},
 	"gamePage": {
 		"goalsToWin": "أهداف لتفوز"
 	},

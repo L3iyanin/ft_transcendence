@@ -11,6 +11,8 @@ export const enum RolesEnum {
 }
 
 export const enum ChannleStatusEnum {
+	BOTONDM,
+	BOTONCHANNEL,
     DM,
     PUBLIC,
     PRIVATE,
@@ -20,4 +22,9 @@ export const enum ChannleStatusEnum {
 export enum MatchTypeEnum {
     Classic = 3,
     Vip = 7
+}
+
+export enum ChatOptionsEnum {
+    DMS = 3,
+    CHANNELS = 7
 }
