@@ -7,7 +7,7 @@ const Achievement = ({ achievement }: IAchievementProps) => {
 	const { name, achieved, description, imgUrl } = achievement;
 
 	const { t } = useTranslation();
-	const opacity = "opacity-" + String(achieved ? 100 : 50);
+	const opacity = "opacity-" + String(achieved ? 100 : 20);
 	return (
 		<article
 			className={
