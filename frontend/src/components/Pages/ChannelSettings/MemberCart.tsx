@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { channelMemberInterface } from "../../../utils/types/channelMember";
+import { channelMemberInterface } from "../../../utils/types/channelSettings";
 import ButtonWithIcon from "../../UI/button/buttonWithIcon";
 import { ReactComponent as BanIcon } from "../../../assets/icons/ban.svg";
 import { ReactComponent as MuteIcon } from "../../../assets/icons/mute.svg";
@@ -9,6 +9,131 @@ const MemberCart: React.FC<{
 	member: channelMemberInterface;
 }> = (props) => {
 	const { t } = useTranslation();
+
+	let actions = (
+		<>
+			<div className="flex flex-row">
+				<ButtonWithIcon
+					icon={<BanIcon />}
+					text={t("channelSettings.ban")}
+					dropDown={true}
+					options={[
+						t("channelSettings.1Hour"),
+						t("channelSettings.5Hours"),
+						t("channelSettings.24Hours"),
+					]}
+				/>
+				<ButtonWithIcon
+					icon={<MuteIcon />}
+					text={t("channelSettings.mute")}
+					dropDown={true}
+					options={[
+						t("channelSettings.1Hour"),
+						t("channelSettings.5Hours"),
+						t("channelSettings.24Hours"),
+					]}
+				/>
+				<ButtonWithIcon
+					icon={<KickOutIcon />}
+					text={t("channelSettings.kickOut")}
+					dropDown={false}
+				/>
+				<ButtonWithIcon
+					icon={<></>}
+					text={t(`roles.${props.member.role}`)}
+					dropDown={true}
+					options={[
+						`${
+							props.member.role === "admin" ||
+							props.member.role === "owner"
+								? "member"
+								: "admin"
+						}`,
+					]}
+				/>
+			</div>
+		</>
+	);
+
+	if (props.member.role === "owner") {
+		actions = (
+			<>
+				<ButtonWithIcon
+					icon={<></>}
+					text={t(`roles.${props.member.role}`)}
+					dropDown={false}
+				/>
+			</>
+		);
+	} else if (props.member.status === "banned") {
+		actions = (
+			<>
+				<div className="flex flex-row">
+					<ButtonWithIcon
+						icon={<BanIcon />}
+						text={t("channelSettings.unban")}
+						dropDown={false}
+					/>
+					<ButtonWithIcon
+						icon={<KickOutIcon />}
+						text={t("channelSettings.kickOut")}
+						dropDown={false}
+					/>
+					<ButtonWithIcon
+						icon={<></>}
+						text={t(`roles.${props.member.role}`)}
+						dropDown={true}
+						options={[
+							`${
+								props.member.role === "admin"
+									? "member"
+									: "admin"
+							}`,
+						]}
+					/>
+				</div>
+			</>
+		);
+	} else if (props.member.status === "muted") {
+		actions = (
+			<>
+				<div className="flex flex-row">
+					<ButtonWithIcon
+						icon={<BanIcon />}
+						text={t("channelSettings.ban")}
+						dropDown={true}
+						options={[
+							t("channelSettings.1Hour"),
+							t("channelSettings.5Hours"),
+							t("channelSettings.24Hours"),
+						]}
+					/>
+					<ButtonWithIcon
+						icon={<MuteIcon />}
+						text={t("channelSettings.unmute")}
+						dropDown={false}
+					/>
+					<ButtonWithIcon
+						icon={<KickOutIcon />}
+						text={t("channelSettings.kickOut")}
+						dropDown={false}
+					/>
+					<ButtonWithIcon
+						icon={<></>}
+						text={t(`roles.${props.member.role}`)}
+						dropDown={true}
+						options={[
+							`${
+								props.member.role === "admin"
+									? "member"
+									: "admin"
+							}`,
+						]}
+					/>
+				</div>
+			</>
+		);
+	}
 
 	return (
 		<div className="container">
@@ -23,31 +148,7 @@ const MemberCart: React.FC<{
 						<p>{props.member.fullName}</p>
 					</div>
 				</div>
-				<div className="flex flex-row">
-					<ButtonWithIcon
-						icon={<BanIcon />}
-						text={t("channelSettings.ban")}
-						dropDown={true}
-						options={[t("channelSettings.1Hour"), t("channelSettings.5Hours"), t("channelSettings.24Hours")]}
-					/>
-					<ButtonWithIcon
-						icon={<MuteIcon />}
-						text={t("channelSettings.mute")}
-						dropDown={true}
-						options={[t("channelSettings.1Hour"), t("channelSettings.5Hours"), t("channelSettings.24Hours")]}
-					/>
-					<ButtonWithIcon
-						icon={<KickOutIcon />}
-						text={t("channelSettings.kickOut")}
-						dropDown={false}
-					/>
-					<ButtonWithIcon
-						icon={<></>}
-						text={t("roles.member")} 
-						dropDown={true}
-						options={["Test"]}
-					/>
-				</div>
+				{actions}
 			</li>
 		</div>
 	);

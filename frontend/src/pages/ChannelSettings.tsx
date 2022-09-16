@@ -4,37 +4,7 @@ import { ReactComponent as SearchIcon } from "../assets/icons/search.svg";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import MembersList from "../components/Pages/ChannelSettings/MembersList";
-import { channelMemberInterface } from "../utils/types/channelMember";
-
-const members: channelMemberInterface[] = [
-	{
-		fullName: "Khalid Belyazid",
-		username: "Seven",
-		imgUrl: "https://myanimelist.tech/api/avatar?name=seven&animeName=One_Piece",
-		isAdmin: true,
-		isOwner: true,
-		isMuted: false,
-		isBanned: false,
-	},
-	{
-		fullName: "Abdelali Ait hmid",
-		username: "twelve",
-		imgUrl: "https://myanimelist.tech/api/avatar?name=twelve&animeName=One_Piece",
-		isAdmin: true,
-		isOwner: false,
-		isMuted: false,
-		isBanned: false,
-	},
-	{
-		fullName: "Annette Black",
-		username: "Darlene",
-		imgUrl: "https://myanimelist.tech/api/avatar?name=Darlene&animeName=One_Piece",
-		isAdmin: false,
-		isOwner: false,
-		isMuted: false,
-		isBanned: true,
-	},
-];
+import { membersData } from "../utils/data/ChannelSettings";
 
 const ChannelSettings: React.FC = () => {
 	const { channelId } = useParams();
@@ -48,10 +18,14 @@ const ChannelSettings: React.FC = () => {
 			<h2 className="text-xl font-semibold text-white">
 				{channelId} {t("channelSettings.channelSettings")}
 			</h2>
-			<MembersList members={members} />
+			<MembersList members={membersData} />
 
 			<div className="flex">
 				<div>
+					<h2 className="text-xl font-semibold text-white">
+						Add friends to room {channelId}
+					</h2>
+					<div className="pt-4"/>
 					<InputWithIcon
 						icon={<SearchIcon />}
 						type="text"

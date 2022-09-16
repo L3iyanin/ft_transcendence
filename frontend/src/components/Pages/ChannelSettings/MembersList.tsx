@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { channelMemberInterface } from "../../../utils/types/channelMember";
+import { channelMemberInterface } from "../../../utils/types/channelSettings";
 import MemberCart from "./MemberCart";
 
 const MembersList: React.FC<{ members: channelMemberInterface[] }> = (
