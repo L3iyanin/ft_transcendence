@@ -11,7 +11,8 @@ export const enum RolesEnum {
 }
 
 export const enum ChannleStatusEnum {
-	BOT,
+	BOTONDM,
+	BOTONCHANNEL,
     DM,
     PUBLIC,
     PRIVATE,

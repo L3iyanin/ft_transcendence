@@ -9,7 +9,8 @@ import { ChannleStatusEnum } from "../../../utils/constants/enum";
 const ChatActions: React.FC<{
 	currentChannel: IChatChannel;
 	username?: string;
-}> = ({ currentChannel, username }) => {
+	onOpenCreateChannelHandler: () => void;
+}> = ({ currentChannel, username, onOpenCreateChannelHandler }) => {
 	const { t } = useTranslation();
 
 	return (
@@ -46,20 +47,21 @@ const ChatActions: React.FC<{
 						/>
 					</>
 				)}
-				{currentChannel.status !== ChannleStatusEnum.BOT && currentChannel.status !== ChannleStatusEnum.DM && (
-					<>
-						<ButtonWithIcon
-							className="bg-yellow"
-							icon={<CogIcon className=" " />}
-							label={t("chatPage.channelSettings")}
-						/>
-						<ButtonWithIcon
-							className="bg-red text-white"
-							icon={<AddIcon />}
-							label={t("chatPage.createChannel")}
-						/>
-					</>
+				{currentChannel.status !== ChannleStatusEnum.BOTONDM && currentChannel.status !== ChannleStatusEnum.BOTONCHANNEL && currentChannel.status !== ChannleStatusEnum.DM && (
+					<ButtonWithIcon
+						className="bg-yellow"
+						icon={<CogIcon className=" " />}
+						label={t("chatPage.channelSettings")}
+					/>
 				)}
+				{currentChannel.status !== ChannleStatusEnum.DM && currentChannel.status !== ChannleStatusEnum.BOTONDM  &&
+					<ButtonWithIcon
+						className="bg-red text-white"
+						onClick={onOpenCreateChannelHandler}
+						icon={<AddIcon />}
+						label={t("chatPage.createChannel")}
+					/>
+				}
 			</div>
 		</div>
 	);
