@@ -30,3 +30,5 @@ interface IChatChannel {
     lastMessage?: IMessage;
 	uneadMessages?: number;
 }
+
+

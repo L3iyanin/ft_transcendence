@@ -22,7 +22,7 @@ const MessageCard: React.FC<{
 					message.invite && (
 						<div className="flex gap-4 items-center">
 							<p>{t("pongInvitation")}</p>
-							<ButtonWithIcon icon={<PlayIcon />} label="Play Now" className="!py-1 rounded-lg px-3 bg-red" />
+							<ButtonWithIcon icon={<PlayIcon />} label={t("chatPage.playNow")} className="!py-1 rounded-lg px-3 bg-red" />
 						</div>
 					)
 				}
