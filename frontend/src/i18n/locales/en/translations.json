@@ -55,6 +55,23 @@
 			]
 		}
 	},
+	"channelSettings" : {
+		"channelSettings": "channel settings",
+		"ban": "ban",
+		"mute": "mute",
+		"unmute": "unmute",
+		"unban": "unban",
+		"kickOut": "kick out",
+		"1Hour": "1 Hour",
+		"5Hours": "5 Hours",
+		"24Hours": "24 Hours",
+		"addMember": "add member"
+	},
+	"roles" : {
+		"member": "member",
+		"admin": "admin",
+		"owner": "owner"
+	},
 	"send": "Send",
 	"playerOne": "Player 1",
 	"playerTwo": "Player 2",
