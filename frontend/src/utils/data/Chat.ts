@@ -1,4 +1,4 @@
-import { ChannleStatusEnum } from "../constants/enum";
+import { ChannleStatusEnum, RolesEnum } from "../constants/enum";
 import { users } from "./Users";
 
 export const members: IMember[] = users.map((user, index) => ({
@@ -6,66 +6,68 @@ export const members: IMember[] = users.map((user, index) => ({
 	user,
 }));
 
+members[2].role = RolesEnum.ADMIN;
+
 export const messages: IMessage[] = [
 	{
 		id: 0,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[0],
+		sender: members[0],
 		date: new Date(),
 	},
 	{
 		id: 1,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[1],
+		sender: members[1],
 		date: new Date(),
 	},
 	{
 		id: 2,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[0],
+		sender: members[0],
 		date: new Date(),
 	},
 	{
 		id: 3,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[1],
+		sender: members[1],
 		date: new Date(),
 	},
 	{
 		id: 4,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[0],
+		sender: members[0],
 		date: new Date(),
 	},
 	{
 		id: 5,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[0],
+		sender: members[0],
 		date: new Date(),
 	},
 	{
 		id: 6,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[1],
+		sender: members[1],
 		date: new Date(),
 	},
 	{
 		id: 7,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[1],
+		sender: members[1],
 		date: new Date(),
 		invite: true,
 	},
 	{
 		id: 8,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[0],
+		sender: members[0],
 		date: new Date(),
 	},
 	{
 		id: 9,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[1],
+		sender: members[1],
 		date: new Date(),
 	},
 ];
@@ -85,61 +87,61 @@ const NotDMessages: IMessage[] = [
 	{
 		id: 0,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[0],
+		sender: members[0],
 		date: new Date(),
 	},
 	{
 		id: 1,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[1],
+		sender: members[1],
 		date: new Date(),
 	},
 	{
 		id: 2,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[2],
+		sender: members[2],
 		date: new Date(),
 	},
 	{
 		id: 3,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[3],
+		sender: members[3],
 		date: new Date(),
 	},
 	{
 		id: 4,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[4],
+		sender: members[4],
 		date: new Date(),
 	},
 	{
 		id: 5,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[0],
+		sender: members[0],
 		date: new Date(),
 	},
 	{
 		id: 6,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[1],
+		sender: members[1],
 		date: new Date(),
 	},
 	{
 		id: 7,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[2],
+		sender: members[2],
 		date: new Date(),
 	},
 	{
 		id: 8,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[3],
+		sender: members[3],
 		date: new Date(),
 	},
 	{
 		id: 9,
 		content: "fik may organizer wahed event f um6p",
-		sender: users[4],
+		sender: members[4],
 		date: new Date(),
 	},
 ];

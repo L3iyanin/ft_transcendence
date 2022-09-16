@@ -2,7 +2,7 @@
 interface IMessage {
 	id: number;
     content: string;
-    sender: IUser;
+    sender: IMember;
     Channel?: IChatChannel;
     // channelId: number;
     date: Date;
@@ -30,5 +30,4 @@ interface IChatChannel {
     lastMessage?: IMessage;
 	uneadMessages?: number;
 }
-
 
