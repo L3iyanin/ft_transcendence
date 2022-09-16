@@ -10,14 +10,14 @@ import FirendsList from "../components/pages/Profile/FriendsList";
 
 const Profile = () => {
 	return (
-		<div>
+		<div className="container">
 			<NavBar />
-			<main className="container mx-9 flex flex-col justify-between items-center gap-10">
-				<section className="container flex justify-between items-center gap-8">
+			<main className="container flex flex-col justify-between items-center gap-10">
+				<section className="container flex justify-between items-center gap-4">
 					<UserCard>{players[0]}</UserCard>
 					<LastMatches>{matches}</LastMatches>
 				</section>
-				<section className="container flex justify-between items-center gap-8">
+				<section className="container flex justify-between items-center gap-4">
 					<FirendsList friends={players} />
 					<AchievementsList achievements={achievements} />
 				</section>
