@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { friendInterface } from "../../../utils/types/channelSettings";
-import ButtonWithIcon from "../../UI/button/buttonWithIcon";
+import ButtonWithIcon from "../../UI/button/ButtonWithDropdown";
 import { ReactComponent as PlusSignIcon } from "../../../assets/icons/plusSign.svg";
 
 const FriendCart: React.FC<{ friend: friendInterface }> = (props) => {

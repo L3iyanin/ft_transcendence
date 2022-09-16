@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { channelMemberInterface } from "../../../utils/types/channelSettings";
-import ButtonWithIcon from "../../UI/button/buttonWithIcon";
+import ButtonWithIcon from "../../UI/button/ButtonWithDropdown";
 import { ReactComponent as BanIcon } from "../../../assets/icons/ban.svg";
 import { ReactComponent as MuteIcon } from "../../../assets/icons/mute.svg";
 import { ReactComponent as KickOutIcon } from "../../../assets/icons/kickOut.svg";
