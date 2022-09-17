@@ -264,4 +264,32 @@ export class UsersService {
 
 		}
 	}
+
+	async updateUserName(newUserName : string, userId : number){
+		try {
+
+			await prisma.user.update({
+				where : {id : userId},
+				data : {username : newUserName}
+			})
+		}
+		catch(err){
+			console.log(err);
+			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	async update2ff(newUserName : string, userId : number){
+
+	}
+
+	async updateImageProfile(newUserName : string, userId : number){
+		try{
+			
+		}
+		catch(err){
+			console.log(err);
+			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
