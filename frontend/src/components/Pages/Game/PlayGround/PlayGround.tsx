@@ -9,6 +9,7 @@ import {
 	PADDLE_WIDTH,
 	PADDLE_X_MARGIN,
 	PADDLE_Y_MARGIN,
+	PLAYER_FIRST_POSITION,
 	PLAYER_ONE,
 	PLAYER_TWO,
 	PLAY_GROUND_HEIGHT,
@@ -31,12 +32,14 @@ const PlayGround: React.FC<{
 	const {
 		playerY: player1Y,
 		movePlayer: movePlayer1,
-	} = usePlayerMove(313, PLAYER_ONE);
+		updatePlayerPosition: updatePlayerPosition1,
+	} = usePlayerMove(PLAYER_FIRST_POSITION, PLAYER_ONE);
 
 	const {
 		playerY: player2Y,
 		movePlayer: movePlayer2,
-	} = usePlayerMove(313, PLAYER_TWO);
+		updatePlayerPosition: updatePlayerPosition2
+	} = usePlayerMove(PLAYER_FIRST_POSITION, PLAYER_TWO);
 
 	const setPlayersScoreHandler = (
 		playerIndex: number,
@@ -53,7 +56,7 @@ const PlayGround: React.FC<{
 		});
 	};
 
-	const { ballPosition } = useBallMove(setPlayersScoreHandler);
+	const { ballPosition, setBallPosition } = useBallMove(setPlayersScoreHandler);
 
 	const ref = useRef(null);
 
@@ -81,6 +84,15 @@ const PlayGround: React.FC<{
 			window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
 
 			window.ballSize = BALL_SIZE * window.widthRatio;
+
+			setBallPosition(prevBallState => ({
+				...prevBallState,
+				x: prevBallState.x * window.widthRatio,
+				y: prevBallState.y * window.heightRatio,
+			}))
+
+			updatePlayerPosition1();
+			updatePlayerPosition2();
 		}
 	}, []);
 
@@ -89,17 +101,52 @@ const PlayGround: React.FC<{
 			if (playgroundRef.current) {
 				window.widthRatio = playgroundRef.current.offsetWidth / PLAY_GROUND_WIDTH;
 				window.heightRatio = playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
-	
+
+				if (isNaN(window.player1Y)) {
+					window.player1Y = PLAYER_FIRST_POSITION;
+				}
+
+				if (isNaN(window.player2Y)) {
+					window.player2Y = PLAYER_FIRST_POSITION;
+				}
+
+				window.positionRatio120 = window.player1Y / window.playgroundHeight;
+
+				console.log("ration", window.positionRatio120);
+				console.log(window.player1Y);
+				console.log(window.playgroundHeight);
+				
+
+				// console.log(window.playgroundWidth)
+				
 				window.playgroundWidth = playgroundRef.current.offsetWidth;
 				window.playgroundHeight = playgroundRef.current.offsetHeight;
 
+				console.log('[]][][][][][][][][][][');
+
+				console.log(window.playgroundWidth)
+
+				console.log("----------------------------");
+				console.log(window.paddleHeight);
+				console.log("----------------------------");
+
 				window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
 				window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
+
 
 				window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
 				window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
 
 				window.ballSize = BALL_SIZE * window.widthRatio;
+
+				setBallPosition(prevBallState => ({
+					...prevBallState,
+					x: prevBallState.x * window.widthRatio,
+					y: prevBallState.y * window.heightRatio,
+				}))
+	
+				updatePlayerPosition1();
+				updatePlayerPosition2();
 			}
 		});
 	}, []);

@@ -175,6 +175,7 @@ const useBallMove = (
 
 	return {
 		ballPosition,
+		setBallPosition
 	};
 };
 
