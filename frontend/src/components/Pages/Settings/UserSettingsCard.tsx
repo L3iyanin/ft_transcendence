@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { ReactComponent as UploadIcon } from "../../../assets/icons/UploadAvatar.svg";
 
-const UserSettingsCard: React.FC<{ user: IUser }> = ({ user }) => {
+const UserSettingsCard: React.FC<{ user: IUser, enabledhandler: () =>void }> = ({ user, enabledhandler }) => {
 	const { t } = useTranslation();
 
 	return (
@@ -28,7 +28,7 @@ const UserSettingsCard: React.FC<{ user: IUser }> = ({ user }) => {
 						className="h-8 w-36 rounded-md text-xs px-2 bg-dark-60 border border-white"
 					/>
 				</form>
-				<button className="h-8 w-36 bg-red rounded-md px-2 py-1 text-xs">
+				<button onClick={enabledhandler} className="h-8 w-36 bg-red rounded-md px-2 py-1 text-xs">
 					{t("Enable  2FA")}
 				</button>
 			</section>
