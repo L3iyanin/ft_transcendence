@@ -94,8 +94,8 @@ const useBallMove = (
 
 	const updateBall = (delta: number) => {
 		setBallPosition((prev) => {
-			// const distance = prev.velocity * delta / 2;
-			const distance = 5;
+			const distance = prev.velocity * delta / 2;
+			// const distance = 5;
 
 			let newDirectionX = prev.directionX;
 			let newDirectionY = prev.directionY;
@@ -109,6 +109,7 @@ const useBallMove = (
 				newY + window.ballSize / 2 >=
 				window.playgroundHeight - PLAYGROUND_BORDERSIZE
 			) {
+				console.log("collision with bottom");
 				newDirectionY = newDirectionY * -1;
 				newY = window.ballYPoistion + newDirectionY * distance;
 			}
