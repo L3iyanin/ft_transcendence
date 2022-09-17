@@ -12,6 +12,7 @@ import {
 	PLAYER_FIRST_POSITION,
 	PLAYER_ONE,
 	PLAYER_TWO,
+	PLAYGROUND_BORDERSIZE,
 	PLAY_GROUND_HEIGHT,
 	PLAY_GROUND_WIDTH,
 } from "../../../../utils/constants/Game";
@@ -56,7 +57,7 @@ const PlayGround: React.FC<{
 		});
 	};
 
-	const { ballPosition, setBallPosition } = useBallMove(setPlayersScoreHandler);
+	const { ballPosition, updateBallOutside, setBallPosition } = useBallMove(setPlayersScoreHandler);
 
 	const ref = useRef(null);
 
@@ -85,14 +86,29 @@ const PlayGround: React.FC<{
 
 			window.ballSize = BALL_SIZE * window.widthRatio;
 
-			setBallPosition(prevBallState => ({
-				...prevBallState,
-				x: prevBallState.x * window.widthRatio,
-				y: prevBallState.y * window.heightRatio,
-			}))
+			// setBallPosition(prevBallState => ({
+			// 	...prevBallState,
+			// 	x: prevBallState.x * window.widthRatio,
+			// 	y: prevBallState.y * window.heightRatio,
+			// }))
 
-			updatePlayerPosition1();
-			updatePlayerPosition2();
+			window.ballXPoistion = window.playgroundWidth / 2 -
+					window.ballSize / 2 +
+					PLAYGROUND_BORDERSIZE +
+					window.paddleXMargin / 2 - 2;
+
+			window.ballYPoistion = window.playgroundHeight / 2 -
+					window.ballSize / 2 +
+					PLAYGROUND_BORDERSIZE +
+					window.paddleYMargin / 2 - 2;
+
+			console.log("kjdsahkjghkasjdhgkjasdhgkjhasdkjghkajsdhgkjhkksadjhgkjhs")
+
+			window.ballXPositionRatio = window.ballXPoistion / window.playgroundWidth;
+			window.ballYPositionRatio = window.ballYPoistion / window.playgroundHeight;
+
+			updatePlayerPosition1(PLAYER_ONE);
+			updatePlayerPosition2(PLAYER_TWO);
 		}
 	}, []);
 
@@ -110,43 +126,43 @@ const PlayGround: React.FC<{
 					window.player2Y = PLAYER_FIRST_POSITION;
 				}
 
-				window.positionRatio120 = window.player1Y / window.playgroundHeight;
-
-				console.log("ration", window.positionRatio120);
-				console.log(window.player1Y);
-				console.log(window.playgroundHeight);
+				window.player1YPositionRatio = window.player1Y / window.playgroundHeight;
+				window.player2YPositionRatio = window.player2Y / window.playgroundHeight;
 				
+				// if (window.playgroundWidth !== playgroundRef.current.offsetWidth) {
+					window.ballXPositionRatio = window.ballXPoistion / window.playgroundWidth;
+					window.ballYPositionRatio = window.ballYPoistion / window.playgroundHeight;
+				// }
+				
+				// setBallPosition(prevBallState => {
+				// 	console.log(`newX: ${window.playgroundWidth * window.ballXPositionRatio}`)
+				// 	return {
+				// 		...prevBallState,
+				// 		x: window.playgroundWidth * window.ballXPositionRatio,
+				// 		y: playgroundRef.current.offsetHeight * window.ballYPositionRatio,
+				// 	}
+				// })
 
-				// console.log(window.playgroundWidth)
+				
 				
 				window.playgroundWidth = playgroundRef.current.offsetWidth;
 				window.playgroundHeight = playgroundRef.current.offsetHeight;
-
-				console.log('[]][][][][][][][][][][');
-
-				console.log(window.playgroundWidth)
-
-				console.log("----------------------------");
-				console.log(window.paddleHeight);
-				console.log("----------------------------");
-
+				
 				window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
 				window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
-
-
+				
+				
 				window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
 				window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
-
+				
 				window.ballSize = BALL_SIZE * window.widthRatio;
+				
+				updateBallOutside();
 
-				setBallPosition(prevBallState => ({
-					...prevBallState,
-					x: prevBallState.x * window.widthRatio,
-					y: prevBallState.y * window.heightRatio,
-				}))
-	
-				updatePlayerPosition1();
-				updatePlayerPosition2();
+				updatePlayerPosition1(PLAYER_ONE);
+				updatePlayerPosition2(PLAYER_TWO);
+				
+				
 			}
 		});
 	}, []);
@@ -188,8 +204,8 @@ const PlayGround: React.FC<{
 				/>
 			</div>
 			<Ball
-				top={ballPosition.y}
-				left={ballPosition.x}
+				top={window.ballYPoistion}
+				left={window.ballXPoistion}
 			/>
 			<div className="relative w-full h-full rounded-2xl" onMouseMove={movePlayer} />
 			<div ref={ref} />

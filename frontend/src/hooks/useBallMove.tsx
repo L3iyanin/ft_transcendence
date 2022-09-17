@@ -40,17 +40,20 @@ const useBallMove = (
 		}
 
 		setBallPosition((_) => {
+
+			window.ballXPoistion = window.playgroundWidth / 2 -
+					window.ballSize / 2 +
+					PLAYGROUND_BORDERSIZE +
+					window.paddleXMargin / 2 - 2;
+
+			window.ballYPoistion = window.playgroundHeight / 2 -
+					window.ballSize / 2 +
+					PLAYGROUND_BORDERSIZE +
+					window.paddleYMargin / 2 - 2;
+
 			return {
-				x:
-					window.playgroundWidth / 2 -
-					window.ballSize / 2 +
-					PLAYGROUND_BORDERSIZE +
-					window.paddleXMargin / 2 - 2,
-				y:
-					window.playgroundHeight / 2 -
-					window.ballSize / 2 +
-					PLAYGROUND_BORDERSIZE +
-					window.paddleYMargin / 2 - 2,
+				x: window.ballXPoistion,
+				y: window.ballYPoistion,
 				directionX: direction.x,
 				directionY: direction.y,
 				// directionX: -1,
@@ -91,13 +94,14 @@ const useBallMove = (
 
 	const updateBall = (delta: number) => {
 		setBallPosition((prev) => {
-			const distance = prev.velocity * delta / 2;
+			// const distance = prev.velocity * delta / 2;
+			const distance = 5;
 
 			let newDirectionX = prev.directionX;
 			let newDirectionY = prev.directionY;
 
-			let newX = prev.x + newDirectionX * distance * window.widthRatio;
-			let newY = prev.y + newDirectionY * distance * window.heightRatio;
+			let newX = window.ballXPoistion + newDirectionX * distance;
+			let newY = window.ballYPoistion + newDirectionY * distance;
 
 			let newVelocity = prev.velocity + VELOCITY_INCREASE * delta;
 
@@ -106,24 +110,24 @@ const useBallMove = (
 				window.playgroundHeight - PLAYGROUND_BORDERSIZE
 			) {
 				newDirectionY = newDirectionY * -1;
-				newY = prev.y + newDirectionY * distance * window.heightRatio;
+				newY = window.ballYPoistion + newDirectionY * distance;
 			}
 
 			if (newY - window.ballSize / 2 <= 0) {
 				newDirectionY = newDirectionY * -1;
-				newY = prev.y + newDirectionY * distance * window.heightRatio;
+				newY = window.ballYPoistion + newDirectionY * distance;
 			}
 
 			if (isCollisionWithPlayer(newX, newY, window.player1Y, PLAYER_ONE)) {
-				cancelAnimationFrame(requestRef.current!)
+				// cancelAnimationFrame(requestRef.current!)
 				newDirectionX = newDirectionX * -1;
-				newX = prev.x + newDirectionX * distance * window.widthRatio;
+				newX = window.ballXPoistion + newDirectionX * distance;
 			}
 
 			if (isCollisionWithPlayer(newX, newY, window.player2Y, PLAYER_TWO)) {
-				cancelAnimationFrame(requestRef.current!)
+				// cancelAnimationFrame(requestRef.current!)
 				newDirectionX = newDirectionX * -1;
-				newX = prev.x + newDirectionX * distance * window.widthRatio;
+				newX = window.ballXPoistion + newDirectionX * distance;
 			}
 
 			if (
@@ -147,6 +151,9 @@ const useBallMove = (
 				);
 			}
 
+			window.ballXPoistion = newX;
+			window.ballYPoistion = newY;
+
 			return {
 				x: newX,
 				y: newY,
@@ -156,6 +163,26 @@ const useBallMove = (
 			};
 		});
 	};
+
+	const updateBallOutside = () => {
+		setBallPosition((prev) => {
+			console.log(`prev.y: ${prev.y}`);
+			console.log(`window.ballXPositionRatio: ${window.ballXPositionRatio}`);
+			const newX = window.playgroundWidth * window.ballXPositionRatio;
+			const newY = window.playgroundHeight * window.ballYPositionRatio;
+			console.log(`newX: ${newX}`);
+			window.ballXPoistion = newX;
+			window.ballYPoistion = newY;
+			console.log(`window.ballXPoistion: ${window.ballXPoistion}`);
+			// window.ballYPoistion = newY;
+			
+			return {
+				...prev,
+				x: newX,
+				y: newY,
+			};
+		});
+	}
 
 	const animate = (time: DOMHighResTimeStamp) => {
 		if (lastTime != null) {
@@ -175,6 +202,7 @@ const useBallMove = (
 
 	return {
 		ballPosition,
+		updateBallOutside,
 		setBallPosition
 	};
 };

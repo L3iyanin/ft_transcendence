@@ -27,26 +27,18 @@ const usePlayerMove = (initialY: number, playerIndex: number) => {
 		}
 	};
 
-	const updatePlayerPosition = () => {
+	const updatePlayerPosition = (playerIndex: number) => {
 
-		setPlayerY(prevPlayerY => {
-
-
-			// const newY = prevPlayerY * window.positionRatio120;
-			
-			// if (newY + (window.paddleHeight / 2) + PLAYGROUND_BORDERSIZE >= window.playgroundHeight) {
-			// 	return (window.playgroundHeight - PLAYGROUND_BORDERSIZE - window.paddleHeight / 2 - window.paddleYMargin) * window.heightRatio;
-			// }
-			// else if (newY - window.paddleHeight / 2 <= 0) {
-	
-			// 	return (window.paddleHeight / 2 + window.paddleYMargin) * window.heightRatio;
-			// }
-			
-			// return newY;
-
-			return window.playgroundHeight * window.positionRatio120
-
-		})
+		if (playerIndex === PLAYER_ONE) {
+			setPlayerY(prevPlayerY => {
+				return window.playgroundHeight * window.player1YPositionRatio
+			})
+		}
+		else {
+			setPlayerY(prevPlayerY => {
+				return window.playgroundHeight * window.player2YPositionRatio
+			})
+		}
 	};
 
 	
