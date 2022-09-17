@@ -16,5 +16,11 @@ export declare global {
 		paddleXMargin: number;
 		paddleYMargin: number;
 		ballSize: number;
+		player1YPositionRatio: number;
+		player2YPositionRatio: number;
+		ballXPoistion: number;
+		ballYPoistion: number;
+		ballXPositionRatio: number;
+		ballYPositionRatio: number;
 	}
 }
