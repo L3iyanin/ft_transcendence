@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class Leaderboard {
+export class userInLeaderboard {
 
 	@ApiProperty()
 	rank: number;

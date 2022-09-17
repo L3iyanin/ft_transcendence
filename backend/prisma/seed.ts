@@ -63,7 +63,7 @@ async function addAchivementsToUser(userId : number){
 				where : {id : userId},
 				data : {
 					achievements : {
-						connect : [{id : 9}, {id : 10}]
+						connect : [{id : 1}, {id : 2}]
 					}
 				}
 			}
@@ -95,9 +95,9 @@ async function addAFriendsToUser(userId : number){
 }
 
 async function main() {
-	await addAchivements();
+	// await addAchivements();
 	// await addUsers();
-	// await addAchivementsToUser(2)
+	await addAchivementsToUser(1)
 	// await addAFriendsToUser(2)
 }
 main()

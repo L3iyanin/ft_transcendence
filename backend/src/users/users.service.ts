@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { Achievement } from "./dto/achievement.dto";
 import { Friend } from "./dto/friend.dto";
 import { FriendRequest } from "./dto/friendRequest.dto";
-import { Leaderboard } from "./dto/leaderboard.dto";
+import { userInLeaderboard } from "./dto/userInLeaderboard";
 import { UserInfo } from "./dto/userInfo.dto";
 
 const prisma = new PrismaClient();
@@ -16,43 +16,57 @@ export class UsersService {
 				where: {
 					id: userId,
 				},
-				include: {
-					achievements: true,
-					friends: true,
-					friendRequests : true
+				select: {
+					id: true,
+					username: true,
+					fullName: true,
+					imgUrl: true,
+					wins: true,
+					loses: true,
+					achievements: {
+						select: {
+							id: true,
+						},
+					},
+					friends: {
+						select: {
+							id: true,
+						},
+					},
 				},
 			});
-			if (!user)
-				throw new HttpException("USER NOT FOUND", HttpStatus.BAD_REQUEST);
 			const userInfo: UserInfo = {
-				fullName: user.fullName,
+				id: user.id,
 				username: user.username,
+				fullName: user.fullName,
 				imgUrl: user.imgUrl,
-				numberOfachivements: user.achievements.length,
-				numberOfFreind: user.friends.length,
-				loses: user.loses,
 				wins: user.wins,
+				loses: user.loses,
+				numberOfAchievements: user.achievements.length,
+				numberOfFriends: user.friends.length,
 			};
 			return userInfo;
-		}
-		catch (err) {
+		} catch (err) {
 			console.error(err);
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
-
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async getLeaderboard(): Promise<Leaderboard[]> {
+	async getLeaderboard(): Promise<userInLeaderboard[]> {
 		try {
 			const users = await prisma.user.findMany();
-			let transformedUsers: Leaderboard[] = users.map((user) => {
+			let transformedUsers: userInLeaderboard[] = users.map((user) => {
 				return {
-					WinsMinusLoses: user.wins - user.loses,
 					rank: 1,
-					...user,
+					username: user.username,
+					fullName: user.fullName,
+					imgUrl: user.imgUrl,
+					wins: user.wins,
+					loses: user.loses,
+					WinsMinusLoses: user.wins - user.loses,
 				};
 			});
-			let leaderboard: Leaderboard[] = transformedUsers.sort((user1, user2) => {
+			let leaderboard: userInLeaderboard[] = transformedUsers.sort((user1, user2) => {
 				if (user1.WinsMinusLoses > user2.WinsMinusLoses) {
 					return -1;
 				}
@@ -65,7 +79,7 @@ export class UsersService {
 			return leaderboard;
 		} catch (err) {
 			console.error(err);
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
@@ -89,25 +103,29 @@ export class UsersService {
 	async getAchievemnets(userId: number): Promise<Achievement[]> {
 		try {
 			const allAchievements = await this.getAllAchievements();
-			const userAchivement = await this.getUserAchievements(userId);
+			const userAchievements = await this.getUserAchievements(userId);
 			let achievements: Achievement[] = [];
-			allAchievements.forEach((acheiv) => {
-				if (userAchivement.some((userAchiev) => userAchiev.id == acheiv.id)) {
+			allAchievements.forEach((Achievements) => {
+				if (
+					userAchievements.some(
+						(userAchievement) => userAchievement.id == Achievements.id
+					)
+				) {
 					achievements.push({
-						...acheiv,
+						...Achievements,
 						achieved: true,
 					});
 				} else {
 					achievements.push({
-						...acheiv,
+						...Achievements,
 						achieved: false,
 					});
 				}
 			});
 			return achievements;
-		} catch (exception) {
-			console.log(exception);
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (err) {
+			console.log(err);
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
@@ -132,10 +150,9 @@ export class UsersService {
 				});
 			});
 			return friends;
-		}
-		catch (err) {
+		} catch (err) {
 			console.log(err);
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
@@ -145,15 +162,14 @@ export class UsersService {
 				where: { id: to },
 				select: {
 					friendRequests: true,
-					friends : true
+					friends: true,
 				},
 			});
 			let alreadyExist = user.friendRequests.some((req) => req.id == from);
 			if (alreadyExist)
-				return new HttpException("Request already sent", HttpStatus.BAD_REQUEST);
+				throw new HttpException("Friend request already sent", HttpStatus.BAD_REQUEST);
 			alreadyExist = user.friends.some((friend) => friend.id == from);
-			if (alreadyExist)
-				return new HttpException("They are already friend", HttpStatus.BAD_REQUEST);
+			if (alreadyExist) throw new HttpException("Already friends", HttpStatus.BAD_REQUEST);
 			await prisma.user.update({
 				where: {
 					id: to,
@@ -164,11 +180,12 @@ export class UsersService {
 					},
 				},
 			});
-			return new HttpException("Friend Request Has ben sent", HttpStatus.CREATED);
-		}
-		catch (err) {
+			return {
+				message: "Friend request sent",
+			};
+		} catch (err) {
 			console.log(err);
-			return new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
@@ -182,36 +199,36 @@ export class UsersService {
 			});
 			const friendRequestExist = user.friendRequests.some((req) => req.id == friendId);
 			if (!friendRequestExist)
-				return new HttpException("Friend Request dosnt exist", HttpStatus.BAD_REQUEST);
-				await prisma.user.update({
-					where: { id: userId },
-					data: {
-						friendRequests: {
-							disconnect: { id: friendId },
-						},
-						friends: {
-							connect: { id: friendId },
-						},
+				throw new HttpException("Friend request doesn't exist", HttpStatus.BAD_REQUEST);
+			await prisma.user.update({
+				where: { id: userId },
+				data: {
+					friendRequests: {
+						disconnect: { id: friendId },
 					},
-				});
-				await prisma.user.update({
-					where: { id: friendId },
-					data: {
-						friends: {
-							connect: { id: userId },
-						},
+					friends: {
+						connect: { id: friendId },
 					},
-				});
-			return new HttpException("Friend Request Has be accepted", HttpStatus.CREATED);
-		}
-		catch (err) {
-			return new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+				},
+			});
+			await prisma.user.update({
+				where: { id: friendId },
+				data: {
+					friends: {
+						connect: { id: userId },
+					},
+				},
+			});
+			return {
+				message: "Friend request accepted",
+			};
+		} catch (err) {
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
 	async discardFriendRequest(userId: number, friendId: number) {
 		try {
-			userId = 4
 			let user = await prisma.user.findUnique({
 				where: { id: userId },
 				select: {
@@ -221,18 +238,19 @@ export class UsersService {
 			const friendRequestExist = user.friendRequests.some((req) => req.id == friendId);
 			if (!friendRequestExist)
 				return new HttpException("Friend Request dosnt exist", HttpStatus.BAD_REQUEST);
-				await prisma.user.update({
-					where: { id: userId },
-					data: {
-						friendRequests: {
-							disconnect: { id: friendId },
-						},
+			await prisma.user.update({
+				where: { id: userId },
+				data: {
+					friendRequests: {
+						disconnect: { id: friendId },
 					},
-				});
-			return new HttpException("FRIEND REQUEST HAS BEEN DISCARDED", HttpStatus.CREATED);
-		}
-		catch (err) {
-			return new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+				},
+			});
+			return {
+				message: "Friend request discarded",
+			};
+		} catch (err) {
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
@@ -243,51 +261,43 @@ export class UsersService {
 					id: userId,
 				},
 				select: {
-					friendRequests: true
+					friendRequests: true,
 				},
 			});
 			const friendRequests: FriendRequest[] = [];
 			user.friendRequests.map((friend) => {
 				friendRequests.push({
-					userName : friend.username,
-					friendId : friend.id,
-					imgUrl :  friend.imgUrl
+					userName: friend.username,
+					friendId: friend.id,
+					imgUrl: friend.imgUrl,
 				});
 			});
 			return friendRequests;
-		}
-		catch (err) {
+		} catch (err) {
 			console.log(err);
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
-
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async updateUserName(newUserName : string, userId : number){
+	async updateUserName(newUserName: string, userId: number) {
 		try {
-
 			await prisma.user.update({
-				where : {id : userId},
-				data : {username : newUserName}
-			})
-		}
-		catch(err){
+				where: { id: userId },
+				data: { username: newUserName },
+			});
+		} catch (err) {
 			console.log(err);
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async update2ff(newUserName : string, userId : number){
+	async update2ff(newUserName: string, userId: number) {}
 
-	}
-
-	async updateImageProfile(newUserName : string, userId : number){
-		try{
-			
-		}
-		catch(err){
+	async updateImageProfile(newUserName: string, userId: number) {
+		try {
+		} catch (err) {
 			console.log(err);
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(err.response, err.status);
 		}
 	}
 }
