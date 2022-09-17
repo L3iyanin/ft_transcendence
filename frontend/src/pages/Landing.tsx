@@ -5,8 +5,11 @@ import TextSection from "../components/Pages/LandingPage/TextSection";
 import TopSection from "../components/Pages/LandingPage/TopSection";
 import { auth42 } from "../services/auth/auth42";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const Landing = () => {
+
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -14,19 +17,15 @@ const Landing = () => {
 		if (code) {
 			auth42(code)
 				.then((res) => {
-					console.log(res);
-					// toast.success("You login success !!", {
-					// 	position: toast.POSITION.TOP_CENTER,
-					// });
-					toast("Wow so easy!", {
+					// console.log(res);
+					toast.success(t("signInSuccess"), {
 						position: toast.POSITION.TOP_CENTER,
 					});
 				})
 				.catch((err) => {
 					console.log(err);
-					toast.error("You login success !!", {
+					toast.error(err.message, {
 						position: toast.POSITION.TOP_CENTER,
-						pauseOnFocusLoss: false
 					});
 				});
 		}
