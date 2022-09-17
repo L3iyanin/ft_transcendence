@@ -7,10 +7,6 @@ module.exports = {
 			center: true,
 		},
 		extend: {
-			fontSize: {
-				'3xs': '0.25rem',
-				'xxs': '0.5rem',
-			},
 			colors: {
 				"red": "#E30039",
 				"white": "#FFFFFF",

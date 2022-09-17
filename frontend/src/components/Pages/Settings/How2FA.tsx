@@ -11,7 +11,7 @@ const How2FA = () => {
 	return (
 		<section className="container min-w-[350px] p-8 rounded-lg flex flex-col gap-10 bg-dark-60 bg-opacity-60 text-white text-base">
 			<h2 className="text-xl font-bold">
-				How to Enable Two Factor Authentication:
+				{t("How to Enable Two Factor Authentication")}
 			</h2>
 			<div className="container flex justify-center items-center gap-8">
 				<article
@@ -28,7 +28,7 @@ const How2FA = () => {
 				<article
 					className={style + " justify-center items-center gap-9"}
 				>
-					<h3>Scan the QR</h3>
+					<h3>{t("settingsPage.ScanTheQR")}</h3>
 					<div className="container flex flex-col items-center gap-2">
 						<QRIcon className="w-48 h-48" />
 						<p className="text-sm">nbkvcwthrwsvm2s4</p>
@@ -38,7 +38,7 @@ const How2FA = () => {
 				<article
 					className={style + " justify-center items-center gap-20"}
 				>
-					<h3>Verify your device</h3>
+					<h3>{t("settingsPage.VerifyYourDevice")}</h3>
 					<form
 						action=""
 						className="container flex flex-col justify-center items-center gap-14"

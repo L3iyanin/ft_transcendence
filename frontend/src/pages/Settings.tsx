@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Footer from "../components/Footer/Footer";
 import NavBar from "../components/NavBar/NavBar";
 import Hifd from "../components/pages/Settings/Hifd";
 import How2FA from "../components/pages/Settings/How2FA";
@@ -25,6 +26,7 @@ const Settings = () => {
 				<How2FA/>
 				<Hifd/>
 			</main>
+			<Footer />
 		</div>
 	);
 };
