@@ -10,6 +10,7 @@ import { Friend } from "./dto/friend.dto";
 import { FriendRequest } from "./dto/friendRequest.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Form } from "./dto/updateProfile.dto";
+import { IsOptional } from "class-validator";
 
 @UseGuards(UserGuard)
 @ApiTags("users")
@@ -114,6 +115,8 @@ export class UsersController {
 			// 	this.userService.updateUserName
 			// if (req.body.twoFF)
 			// 	this.userService.update2ff
+
+			console.log(typeof(req.body.file))
 		return new HttpException("PROFILE REQUEST HAS BEEN UPDATED", HttpStatus.CREATED);
 	}
 }
