@@ -13,45 +13,23 @@ const usePlayerMove = (initialY: number, PADDLE_HEIGHT: number, playerIndex: num
 	}, [playerY])
 
 	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-		if (e.clientY - e.target.offsetTop + (PADDLE_HEIGHT / 2) + PLAYGROUND_BORDERSIZE >= window.playgroundHeight) {
+		const newY = e.clientY - e.target.offsetTop - PADDLE_HEIGHT / 2;
+		console.log(e.clientY);
+		if (newY + (PADDLE_HEIGHT / 2) + PLAYGROUND_BORDERSIZE >= window.playgroundHeight) {
 			setPlayerY(window.playgroundHeight - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN);
-			// window.playerY = window.playgroundHeight - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN;
 		}
-		else if (e.clientY - e.target.offsetTop - PADDLE_HEIGHT / 2 <= 0) {
+		else if (newY - PADDLE_HEIGHT / 2 <= 0) {
 			setPlayerY(PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN);
-			// window.playerY = PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN;
 		}
 		else {
-			setPlayerY(e.clientY - e.target.offsetTop);
-			// window.playerY = e.clientY - e.target.offsetTop;
-		}
-	};
-
-	const stopPropagation = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-		e.stopPropagation();
-	};
-
-	const playerMoveOnPaddle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-		e.stopPropagation();
-		if (e.clientY - e.target.offsetParent.offsetTop + PADDLE_HEIGHT / 2 + PLAYGROUND_BORDERSIZE >= window.playgroundHeight) {
-			setPlayerY(window.playgroundHeight - PADDLE_HEIGHT / 2 - PLAYGROUND_BORDERSIZE - PADDLE_Y_MARGIN);
-			window.playerY = window.playgroundHeight - PADDLE_HEIGHT / 2 - PLAYGROUND_BORDERSIZE - PADDLE_Y_MARGIN;
-		}
-		else if (e.clientY - e.target.offsetParent.offsetTop - PADDLE_HEIGHT / 2 <= 0) {
-			setPlayerY(PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN);
-			window.playerY = PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN;
-		}
-		else {
-			setPlayerY(e.clientY - e.target.offsetParent.offsetTop);
-			window.playerY = e.clientY - e.target.offsetParent.offsetTop;
+			// setPlayerY(newY);
+			setPlayerY(newY);
 		}
 	};
 
 	return {
 		playerY,
 		movePlayer,
-		stopPropagation,
-		playerMoveOnPaddle,
 	};
 }
 

@@ -3,8 +3,13 @@ declare module "*.svg" {
 	export default content;
 }
 
-declare global {
+export declare global {
 	interface Window {
-		playerX: number;
+		player1Y: number;
+		player2Y: number;
+		playgroundHeight: number;
+		playgroundWidth: number;
+		widthRatio: number;
+		heightRatio: number;
 	}
 }

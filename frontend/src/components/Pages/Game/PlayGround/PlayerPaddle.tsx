@@ -4,13 +4,11 @@ const PlayerPaddle: React.FC<{
 	isOnLeft: boolean;
 	top: string;
 	PADDLE_HEIGHT: number;
-	playerMoveOnPaddle: any;
-}> = ({ isOnLeft, top, PADDLE_HEIGHT, playerMoveOnPaddle }) => {
+}> = ({ isOnLeft, top, PADDLE_HEIGHT }) => {
 	
 
 	return (
 		<div
-			onMouseMove={playerMoveOnPaddle}
 			className={`absolute rounded-sm bg-beige ${
 				isOnLeft ? "left-[12px]" : "right-[12px]"
 			}`}
