@@ -8,9 +8,9 @@ const TopSection = () => {
 		<div className="flex justify-center gap-36 pb-14 mt-28">
 			<div className="h-96 flex flex-col">
 				<Logo className="max-h-full" />
-				<button className="text-white p-4 m-4 bg-red rounded-xl">
+				<a href={import.meta.env.VITE_APP_42_AUTH_LINK} className="text-center text-white p-4 m-4 bg-red rounded-xl">
 					{t("signinWith42")}
-				</button>
+				</a>
 			</div>
 			<div className="h-96">
 				<Arcade className="max-h-full" />
