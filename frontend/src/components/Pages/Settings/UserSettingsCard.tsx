@@ -29,7 +29,7 @@ const UserSettingsCard: React.FC<{ user: IUser, enabledhandler: () =>void }> = (
 					/>
 				</form>
 				<button onClick={enabledhandler} className="h-8 w-36 bg-red rounded-md px-2 py-1 text-xs">
-					{t("Enable  2FA")}
+					{t("settingsPage.Enable2FA")}
 				</button>
 			</section>
 		</section>

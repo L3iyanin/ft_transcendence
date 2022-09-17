@@ -11,13 +11,13 @@ const How2FA = () => {
 	return (
 		<section className="container min-w-[350px] p-8 rounded-lg flex flex-col gap-10 bg-dark-60 bg-opacity-60 text-white text-base">
 			<h2 className="text-xl font-bold">
-				{t("How to Enable Two Factor Authentication")}
+				{t("settingsPage.HowToEnable2FA")}
 			</h2>
 			<div className="container flex justify-center items-center gap-8">
 				<article
 					className={style + " justify-center items-center gap-9"}
 				>
-					<h3>Install Google Auth</h3>
+					<h3>{t("settingsPage.InstallGoogleAuth")}</h3>
 					<GoogleAuth className="w-40 h-40" />
 					<div className="container flex justify-between items-center gap-4">
 						<AppStoreLogo />
@@ -45,7 +45,7 @@ const How2FA = () => {
 					>
 						<div className="container flex flex-col justify-center items-center gap-3">
 							<label htmlFor="AuthCodeInput">
-								{t("Enter your code")}
+								{t("settingsPage.EnterYourCode")}
 							</label>
 							<input
 								type="number"
@@ -56,7 +56,7 @@ const How2FA = () => {
 							/>
 						</div>
 						<button className="w-36 py-2 rounded-lg bg-light-gray text-black text-center">
-							{t("verify")}
+							{t("settingsPage.verify")}
 						</button>
 					</form>
 				</article>

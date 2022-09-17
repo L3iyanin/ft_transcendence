@@ -39,8 +39,14 @@
 	"vipGame": "Wano Pong",
 	"pongInvitation": "You've been invited to play a pong game",
 	"settingsPage": {
+		"Enable2FA" : "Enable 2FA",
+		"EnableTwoFA" : "Enable 2FA",
+		"GenerateQR" : "Click to generate your 2FA QR code",
 		"HowToEnable2FA": "How to Enable Two Factor Authentication",
+		"InstallGoogleAuth" : "Install Google Auth",
+		"ScanTheQR": "Scan the QR",
 		"VerifyYourDevice": "Verify your device",
-		"ScanTheQR": "Scan the QR"
+		"EnterYourCode" : "Enter your code",
+		"verify" : "verify"
 	}
 }

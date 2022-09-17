@@ -29,8 +29,14 @@
 		"textTwo": "1337 المستقبل في تحميل"
 	},
 	"settingsPage": {
-		"HowToEnable2FA": "كيفية تفعيل التوثيق الثنائي العامل",
+		"Enable2FA" : "2FA تفعيل",
+		"EnableTwoFA" : "(2FA) تفعيل المصادقة الثنائية",
+		"GenerateQR" : "اضغط لانشاء رمز QR الخاص بك",
+		"HowToEnable2FA": "كيفية تفعيل المصادقة الثنائية",
+		"InstallGoogleAuth" : "Google Auth تحميل",
+		"ScanTheQR" : "QR امسح رمز",
 		"VerifyYourDevice": "تأكيد هوية جهازك",
-		"ScanTheQR" : "QR امسح رمز"
+		"EnterYourCode" : "أدخل رمزك",
+		"verify" : "تحقق"
 	}
 }
