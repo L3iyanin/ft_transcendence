@@ -5,7 +5,7 @@ const UserSettingsCard: React.FC<{ user: IUser }> = ({ user }) => {
 	const { t } = useTranslation();
 
 	return (
-		<section className="container rounded-lg w-72 p-10 flex flex-col gap-4 items-center bg-dark-60 bg-opacity-60 text-white ">
+		<section className="container min-w-[235px] rounded-lg w-72 p-10 flex flex-col gap-4 items-center bg-dark-60 bg-opacity-60 text-white ">
 			<article className="relative">
 				<img
 					src={user.imgUrl}
