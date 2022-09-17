@@ -1,4 +1,4 @@
-import { Controller, Get, HttpException, HttpStatus, Param, ParseFilePipe, ParseFilePipeBuilder, ParseIntPipe, Post, Put, Req, UploadedFile, UseGuards, UseInterceptors} from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Param, ParseFilePipe, ParseFilePipeBuilder, ParseIntPipe, Post, Put, Req, UploadedFile, UseGuards, UseInterceptors, UsePipes} from "@nestjs/common";
 import { UserGuard } from "./user.guard";
 import { UsersService } from "./users.service";
 import { UserInfo } from "./dto/userInfo.dto";
@@ -9,7 +9,7 @@ import { Leaderboard } from "./dto/leaderboard.dto";
 import { Friend } from "./dto/friend.dto";
 import { FriendRequest } from "./dto/friendRequest.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
-
+import { Form } from "./dto/updateProfile.dto";
 
 @UseGuards(UserGuard)
 @ApiTags("users")
@@ -109,16 +109,17 @@ export class UsersController {
 		  .addFileTypeValidator({
 			fileType : new RegExp("\.(png|jpg|jpeg|webp)")
 		  })
+
 		  .build({
 			errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-		  }),
-	  ) file: Express.Multer.File, @Req() req){
-		// const userId = req.user.id;
-		console.log(file.mimetype)
-		console.log(file.filename)
-		console.log(JSON.stringify(req.body))
-		// console.log(req.body.name)
-		// console.log(req.body.ff)
-		return file
+		  })
+	  ,) file: Express.Multer.File, @Req() req, @Body() form : Form){
+			// if (file)
+			// 	this.userService.updateImageProfile
+			// if (req.body.name)
+			// 	this.userService.updateUserName
+			// if (req.body.twoFF)
+			// 	this.userService.update2ff
+		return new HttpException("PROFILE REQUEST HAS BEEN UPDATED", HttpStatus.CREATED);
 	}
 }

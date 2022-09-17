@@ -47,21 +47,19 @@ export class UsersService {
 			const users = await prisma.user.findMany();
 			let transformedUsers: Leaderboard[] = users.map((user) => {
 				return {
-					data: {
-						WinsMinusLoses: user.wins - user.loses,
-						rank: 1,
-						...user,
-					},
+					WinsMinusLoses: user.wins - user.loses,
+					rank: 1,
+					...user,
 				};
 			});
 			let leaderboard: Leaderboard[] = transformedUsers.sort((user1, user2) => {
-				if (user1.data.WinsMinusLoses > user2.data.WinsMinusLoses) {
+				if (user1.WinsMinusLoses > user2.WinsMinusLoses) {
 					return -1;
 				}
 			});
 
 			leaderboard.forEach((user, index) => {
-				user.data.rank = index + 1;
+				user.rank = index + 1;
 			});
 
 			return leaderboard;
@@ -261,6 +259,34 @@ export class UsersService {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 
+		}
+	}
+
+	async updateUserName(newUserName : string, userId : number){
+		try {
+
+			await prisma.user.update({
+				where : {id : userId},
+				data : {username : newUserName}
+			})
+		}
+		catch(err){
+			console.log(err);
+			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	async update2ff(newUserName : string, userId : number){
+
+	}
+
+	async updateImageProfile(newUserName : string, userId : number){
+		try{
+
+		}
+		catch(err){
+			console.log(err);
+			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
