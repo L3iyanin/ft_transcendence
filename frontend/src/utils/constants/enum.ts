@@ -28,3 +28,9 @@ export enum ChatOptionsEnum {
     DMS = 3,
     CHANNELS = 7
 }
+
+export enum LanguagesEnum {
+	EN = "en",
+	AR = "ar",
+	TI = "ti",
+}

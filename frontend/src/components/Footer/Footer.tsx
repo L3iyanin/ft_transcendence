@@ -1,18 +1,26 @@
 import { useTranslation } from "react-i18next";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import { LanguagesEnum } from "../../utils/constants/enum";
+import { LNG } from "../../utils/constants/settings";
 
 const Footer = () => {
 	const { t, i18n } = useTranslation();
 
+	const [lng, setLng] = useLocalStorage(LNG, LanguagesEnum.EN);
+
 	const changeLanguageToEnglish = () => {
-		i18n.changeLanguage("en");
+		i18n.changeLanguage(LanguagesEnum.EN);
+		setLng(LanguagesEnum.EN);
 	};
 
 	const changeLanguageToArabic = () => {
-		i18n.changeLanguage("ar");
+		i18n.changeLanguage(LanguagesEnum.AR);
+		setLng(LanguagesEnum.AR);
 	};
 
 	const changeLanguageToTifinagh = () => {
-		i18n.changeLanguage("ti");
+		i18n.changeLanguage(LanguagesEnum.TI);
+		setLng(LanguagesEnum.TI);
 	};
 
 	return (
