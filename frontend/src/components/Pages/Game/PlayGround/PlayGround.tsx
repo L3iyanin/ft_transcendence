@@ -4,7 +4,11 @@ import Ball from "./Ball";
 import usePlayerMove from "../../../../hooks/usePlayerMove";
 import useBallMove from "../../../../hooks/useBallMove";
 import {
+	BALL_SIZE,
 	PADDLE_HEIGHT,
+	PADDLE_WIDTH,
+	PADDLE_X_MARGIN,
+	PADDLE_Y_MARGIN,
 	PLAYER_ONE,
 	PLAYER_TWO,
 	PLAY_GROUND_HEIGHT,
@@ -27,12 +31,12 @@ const PlayGround: React.FC<{
 	const {
 		playerY: player1Y,
 		movePlayer: movePlayer1,
-	} = usePlayerMove(313, PADDLE_HEIGHT, PLAYER_ONE);
+	} = usePlayerMove(313, PLAYER_ONE);
 
 	const {
 		playerY: player2Y,
 		movePlayer: movePlayer2,
-	} = usePlayerMove(313, PADDLE_HEIGHT, PLAYER_TWO);
+	} = usePlayerMove(313, PLAYER_TWO);
 
 	const setPlayersScoreHandler = (
 		playerIndex: number,
@@ -66,8 +70,17 @@ const PlayGround: React.FC<{
 		if (playgroundRef.current) {
 			window.playgroundWidth = playgroundRef.current.offsetWidth;
 			window.playgroundHeight = playgroundRef.current.offsetHeight;
+
 			window.widthRatio = playgroundRef.current.offsetWidth / PLAY_GROUND_WIDTH;
 			window.heightRatio = playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
+			
+			window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
+			window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
+
+			window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
+			window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
+
+			window.ballSize = BALL_SIZE * window.widthRatio;
 		}
 	}, []);
 
@@ -79,6 +92,14 @@ const PlayGround: React.FC<{
 	
 				window.playgroundWidth = playgroundRef.current.offsetWidth;
 				window.playgroundHeight = playgroundRef.current.offsetHeight;
+
+				window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
+				window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
+
+				window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
+				window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
+
+				window.ballSize = BALL_SIZE * window.widthRatio;
 			}
 		});
 	}, []);
@@ -96,12 +117,10 @@ const PlayGround: React.FC<{
 			ref={playgroundRef}
 		>
 			<PlayerPaddle
-				PADDLE_HEIGHT={PADDLE_HEIGHT}
 				isOnLeft={true}
 				top={`${player1Y}px`}
 			/>
 			<PlayerPaddle
-				PADDLE_HEIGHT={PADDLE_HEIGHT}
 				isOnLeft={false}
 				top={`${player2Y}px`}
 			/>

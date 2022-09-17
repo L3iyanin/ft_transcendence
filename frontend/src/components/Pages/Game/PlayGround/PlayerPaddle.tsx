@@ -1,10 +1,8 @@
-import { PADDLE_WIDTH, PADDLE_X_MARGIN } from "../../../../utils/constants/Game";
 
 const PlayerPaddle: React.FC<{
 	isOnLeft: boolean;
 	top: string;
-	PADDLE_HEIGHT: number;
-}> = ({ isOnLeft, top, PADDLE_HEIGHT }) => {
+}> = ({ isOnLeft, top }) => {
 
 	return (
 		<div
@@ -13,11 +11,11 @@ const PlayerPaddle: React.FC<{
 			}`}
 			style={{
 				top: top,
-				height: `${PADDLE_HEIGHT}px`,
-				width: `${PADDLE_WIDTH}px`,
+				height: `${window.paddleHeight}px`,
+				width: `${window.paddleWidth}px`,
 				transform: `translateY(-50%)`,
-				left: isOnLeft ? `${PADDLE_X_MARGIN}px` : "auto",
-				right: !isOnLeft ? `${PADDLE_X_MARGIN}px` :"auto",
+				left: isOnLeft ? `${window.paddleXMargin}px` : "auto",
+				right: !isOnLeft ? `${window.paddleXMargin}px` :"auto",
 			}}
 		/>
 	);

@@ -1,12 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import {
-	BALL_SIZE,
 	INITIAL_BALL_X,
 	INITIAL_BALL_Y,
 	INITIAL_VELOCITY,
-	PADDLE_HEIGHT,
-	PADDLE_WIDTH,
-	PADDLE_X_MARGIN,
 	PLAYER_ONE,
 	PLAYER_TWO,
 	PLAYGROUND_BORDERSIZE,
@@ -47,16 +43,18 @@ const useBallMove = (
 			return {
 				x:
 					window.playgroundWidth / 2 -
-					BALL_SIZE / 2 +
+					window.ballSize / 2 +
 					PLAYGROUND_BORDERSIZE +
-					2,
+					window.paddleXMargin / 2 - 2,
 				y:
 					window.playgroundHeight / 2 -
-					BALL_SIZE / 2 +
+					window.ballSize / 2 +
 					PLAYGROUND_BORDERSIZE +
-					2,
+					window.paddleYMargin / 2 - 2,
 				directionX: direction.x,
 				directionY: direction.y,
+				// directionX: -1,
+				// directionY: 0,
 				velocity: INITIAL_VELOCITY,
 			};
 		});
@@ -64,14 +62,14 @@ const useBallMove = (
 
 	const isCollisionWithPlayer = (ballXposition: number, ballYposition: number, playerYposition: number, playerNumber: number): boolean =>
 	{
-		const cornerX = playerNumber === PLAYER_ONE ? PADDLE_X_MARGIN + PADDLE_WIDTH - PLAYGROUND_BORDERSIZE / 2 : window.playgroundWidth - PADDLE_X_MARGIN - PADDLE_WIDTH  - PLAYGROUND_BORDERSIZE / 2;
+		const cornerX = playerNumber === PLAYER_ONE ? window.paddleXMargin + window.paddleWidth - PLAYGROUND_BORDERSIZE / 2 : window.playgroundWidth - window.paddleXMargin - window.paddleWidth  - PLAYGROUND_BORDERSIZE / 2;
 
-		const radius = BALL_SIZE / 2;
+		const radius = window.ballSize / 2;
 		const distX = (cornerX - ballXposition) * (cornerX - ballXposition);
-		const topCornerY = playerYposition - PADDLE_HEIGHT / 2;
-		const bottomCornerY = playerYposition + PADDLE_HEIGHT / 2;
+		const topCornerY = playerYposition - window.paddleHeight / 2;
+		const bottomCornerY = playerYposition + window.paddleHeight / 2;
 
-		if ( distX + (topCornerY - ballYposition) * (topCornerY - ballYposition) <= radius * radius)
+		if (distX + (topCornerY - ballYposition) * (topCornerY - ballYposition) <= radius * radius)
 		{
 			return true;
 		}
@@ -104,31 +102,33 @@ const useBallMove = (
 			let newVelocity = prev.velocity + VELOCITY_INCREASE * delta;
 
 			if (
-				newY + BALL_SIZE / 2 >=
+				newY + window.ballSize / 2 >=
 				window.playgroundHeight - PLAYGROUND_BORDERSIZE
 			) {
 				newDirectionY = newDirectionY * -1;
 				newY = prev.y + newDirectionY * distance * window.heightRatio;
 			}
 
-			if (newY - BALL_SIZE / 2 <= 0) {
+			if (newY - window.ballSize / 2 <= 0) {
 				newDirectionY = newDirectionY * -1;
 				newY = prev.y + newDirectionY * distance * window.heightRatio;
 			}
 
 			if (isCollisionWithPlayer(newX, newY, window.player1Y, PLAYER_ONE)) {
+				cancelAnimationFrame(requestRef.current!)
 				newDirectionX = newDirectionX * -1;
 				newX = prev.x + newDirectionX * distance * window.widthRatio;
 			}
 
 			if (isCollisionWithPlayer(newX, newY, window.player2Y, PLAYER_TWO)) {
+				cancelAnimationFrame(requestRef.current!)
 				newDirectionX = newDirectionX * -1;
 				newX = prev.x + newDirectionX * distance * window.widthRatio;
 			}
 
 			if (
-				newX - BALL_SIZE / 2 <=
-				PADDLE_X_MARGIN + PLAYGROUND_BORDERSIZE - PLAYGROUND_BORDERSIZE
+				newX - window.ballSize / 2 <=
+				window.paddleXMargin + PLAYGROUND_BORDERSIZE - PLAYGROUND_BORDERSIZE
 			) {
 				resetBall();
 				setPlayersScoreHandler(PLAYER_TWO, 1);
@@ -138,7 +138,7 @@ const useBallMove = (
 				);
 			}
 
-			if (newX + BALL_SIZE / 2 >= window.playgroundWidth - PADDLE_WIDTH) {
+			if (newX + window.ballSize / 2 >= window.playgroundWidth - window.paddleWidth) {
 				resetBall();
 				setPlayersScoreHandler(PLAYER_ONE, 1);
 				console.log(

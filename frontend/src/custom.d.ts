@@ -13,5 +13,8 @@ export declare global {
 		heightRatio: number;
 		paddleHeight: number;
 		paddleWidth: number;
+		paddleXMargin: number;
+		paddleYMargin: number;
+		ballSize: number;
 	}
 }
