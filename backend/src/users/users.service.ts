@@ -22,8 +22,9 @@ export class UsersService {
 					friendRequests : true
 				},
 			});
-			if (!user)
-				throw new HttpException("USER NOT FOUND", HttpStatus.BAD_REQUEST);
+			if (!user) {
+				throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+			}
 			const userInfo: UserInfo = {
 				fullName: user.fullName,
 				username: user.username,
@@ -34,11 +35,10 @@ export class UsersService {
 				wins: user.wins,
 			};
 			return userInfo;
-		} 
+		}
 		catch (err) {
 			console.error(err);
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
-	
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
@@ -67,7 +67,7 @@ export class UsersService {
 			return leaderboard;
 		} catch (err) {
 			console.error(err);
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
@@ -107,9 +107,9 @@ export class UsersService {
 				}
 			});
 			return achievements;
-		} catch (exception) {
-			console.log(exception);
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (err) {
+			console.log(err);
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
@@ -134,10 +134,10 @@ export class UsersService {
 				});
 			});
 			return friends;
-		} 
+		}
 		catch (err) {
 			console.log(err);
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
@@ -152,10 +152,10 @@ export class UsersService {
 			});
 			let alreadyExist = user.friendRequests.some((req) => req.id == from);
 			if (alreadyExist)
-				return new HttpException("Request already sent", HttpStatus.BAD_REQUEST);
+				return new HttpException("Friend request already sent", HttpStatus.BAD_REQUEST);
 			alreadyExist = user.friends.some((friend) => friend.id == from);
 			if (alreadyExist)
-				return new HttpException("They are already friend", HttpStatus.BAD_REQUEST);
+				return new HttpException("Already friends", HttpStatus.BAD_REQUEST);
 			await prisma.user.update({
 				where: {
 					id: to,
@@ -166,11 +166,11 @@ export class UsersService {
 					},
 				},
 			});
-			return new HttpException("Friend Request Has ben sent", HttpStatus.CREATED);	
+			return new HttpException("Friend request sent", HttpStatus.OK);
 		}
 		catch (err) {
 			console.log(err);
-			return new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(err.response, err.status);
 		}
 	}
 
@@ -205,15 +205,14 @@ export class UsersService {
 					},
 				});
 			return new HttpException("Friend Request Has be accepted", HttpStatus.CREATED);
-		} 
+		}
 		catch (err) {
-			return new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(err.response, err.status);
 		}
 	}
-	
+
 	async discardFriendRequest(userId: number, friendId: number) {
 		try {
-			userId = 4
 			let user = await prisma.user.findUnique({
 				where: { id: userId },
 				select: {
@@ -231,13 +230,13 @@ export class UsersService {
 						},
 					},
 				});
-			return new HttpException("FRIEND REQUEST HAS BEEN DISCARDED", HttpStatus.CREATED);
+			return new HttpException("Friend Request Has be discarded", HttpStatus.CREATED);
 		}
 		catch (err) {
-			return new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(err.response, err.status);
 		}
 	}
-	
+
 	async getFriendRequests(userId: number): Promise<FriendRequest[]> {
 		try {
 			const user = await prisma.user.findUnique({
@@ -260,7 +259,7 @@ export class UsersService {
 		}
 		catch (err) {
 			console.log(err);
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new HttpException(err.response, err.status);
 
 		}
 	}

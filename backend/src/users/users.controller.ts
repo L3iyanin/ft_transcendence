@@ -9,6 +9,8 @@ import { Leaderboard } from "./dto/leaderboard.dto";
 import { Friend } from "./dto/friend.dto";
 import { FriendRequest } from "./dto/friendRequest.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
+
+
 @UseGuards(UserGuard)
 @ApiTags("users")
 @Controller("users")
@@ -16,12 +18,17 @@ export class UsersController {
 	constructor(private readonly userService: UsersService) {}
 
 	@ApiResponse({ type: UserInfo })
+	@Get("/my-info")
+	async getCurrentUserInfo(@Req() req): Promise<UserInfo> {
+		const id = req.user.id;
+		const userInfo: UserInfo = await this.userService.getUserInfoById(id);
+		return userInfo;
+	}
+
+	@ApiResponse({ type: UserInfo })
 	@Get("/:userId/info")
 	async getUserInfo(@Param("userId", ParseIntPipe) userId: number): Promise<UserInfo> {
 		const userInfo: UserInfo = await this.userService.getUserInfoById(userId);
-		if (!userInfo)
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
-
 		return userInfo;
 	}
 
@@ -57,7 +64,7 @@ export class UsersController {
 			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
 		return friends
 	}
-	
+
 	@ApiResponse({type : HttpException})
 	@Post("/:friendId/sendFriendRequest")
 	async sendFriendRequest(@Param("friendId", ParseIntPipe) friendId: number, @Req() req){
@@ -66,9 +73,10 @@ export class UsersController {
 		if (userId == friendId)
 			return new HttpException('BAD REQUEST', HttpStatus.BAD_REQUEST);
 		const httpExceptionreturn = await this.userService.sendFriendRequest(userId, friendId)
+
 		return httpExceptionreturn
 	}
-	
+
 	@ApiResponse({type : HttpException})
 	@Post("/:friendId/acceptFriendRequest")
 	async acceptFriendRequest(@Param("friendId", ParseIntPipe) friendId: number, @Req() req){
