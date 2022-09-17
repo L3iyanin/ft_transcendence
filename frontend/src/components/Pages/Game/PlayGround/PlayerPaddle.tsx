@@ -5,7 +5,6 @@ const PlayerPaddle: React.FC<{
 	top: string;
 	PADDLE_HEIGHT: number;
 }> = ({ isOnLeft, top, PADDLE_HEIGHT }) => {
-	
 
 	return (
 		<div

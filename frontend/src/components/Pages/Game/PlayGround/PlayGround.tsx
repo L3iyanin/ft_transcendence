@@ -54,6 +54,8 @@ const PlayGround: React.FC<{
 	const ref = useRef(null);
 
 	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		// console.log(`e.clientY: ${e.clientY - e.target.getBoundingClientRect().top}`);
+		// console.log(`e.screenY: ${e.screenY}`);
 		movePlayer1(e);
 		movePlayer2(e);
 	};

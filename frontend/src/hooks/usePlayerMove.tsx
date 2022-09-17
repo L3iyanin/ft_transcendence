@@ -13,16 +13,16 @@ const usePlayerMove = (initialY: number, PADDLE_HEIGHT: number, playerIndex: num
 	}, [playerY])
 
 	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-		const newY = e.clientY - e.target.offsetTop - PADDLE_HEIGHT / 2;
-		console.log(e.clientY);
+		const newY = e.clientY - e.target.getBoundingClientRect().top;
+		
 		if (newY + (PADDLE_HEIGHT / 2) + PLAYGROUND_BORDERSIZE >= window.playgroundHeight) {
 			setPlayerY(window.playgroundHeight - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN);
 		}
 		else if (newY - PADDLE_HEIGHT / 2 <= 0) {
+
 			setPlayerY(PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN);
 		}
 		else {
-			// setPlayerY(newY);
 			setPlayerY(newY);
 		}
 	};

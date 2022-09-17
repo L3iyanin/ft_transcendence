@@ -11,5 +11,7 @@ export declare global {
 		playgroundWidth: number;
 		widthRatio: number;
 		heightRatio: number;
+		paddleHeight: number;
+		paddleWidth: number;
 	}
 }

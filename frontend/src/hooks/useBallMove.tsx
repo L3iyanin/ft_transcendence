@@ -7,7 +7,6 @@ import {
 	PADDLE_HEIGHT,
 	PADDLE_WIDTH,
 	PADDLE_X_MARGIN,
-	PADDLE_Y_MARGIN,
 	PLAYER_ONE,
 	PLAYER_TWO,
 	PLAYGROUND_BORDERSIZE,
@@ -65,7 +64,7 @@ const useBallMove = (
 
 	const isCollisionWithPlayer = (ballXposition: number, ballYposition: number, playerYposition: number, playerNumber: number): boolean =>
 	{
-		const cornerX = playerNumber === PLAYER_ONE ? PADDLE_X_MARGIN + PADDLE_WIDTH : window.playgroundWidth - PADDLE_X_MARGIN - PADDLE_WIDTH;
+		const cornerX = playerNumber === PLAYER_ONE ? PADDLE_X_MARGIN + PADDLE_WIDTH - PLAYGROUND_BORDERSIZE / 2 : window.playgroundWidth - PADDLE_X_MARGIN - PADDLE_WIDTH  - PLAYGROUND_BORDERSIZE / 2;
 
 		const radius = BALL_SIZE / 2;
 		const distX = (cornerX - ballXposition) * (cornerX - ballXposition);
