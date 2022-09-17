@@ -1,25 +1,26 @@
-import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import { LanguagesEnum } from "../../utils/constants/enum";
 import { LNG } from "../../utils/constants/settings";
 
 const Footer = () => {
 	const { t, i18n } = useTranslation();
 
-	const [cookies, setCookie, removeCookie] = useCookies([LNG]);
+	const [lng, setLng] = useLocalStorage(LNG, LanguagesEnum.EN);
 
 	const changeLanguageToEnglish = () => {
-		i18n.changeLanguage("en");
-		setCookie(LNG, "en", { path: "/" });
+		i18n.changeLanguage(LanguagesEnum.EN);
+		setLng(LanguagesEnum.EN);
 	};
 
 	const changeLanguageToArabic = () => {
-		i18n.changeLanguage("ar");
-		setCookie(LNG, "ar", { path: "/" });
+		i18n.changeLanguage(LanguagesEnum.AR);
+		setLng(LanguagesEnum.AR);
 	};
 
 	const changeLanguageToTifinagh = () => {
-		i18n.changeLanguage("ti");
-		setCookie(LNG, "ti", { path: "/"});
+		i18n.changeLanguage(LanguagesEnum.TI);
+		setLng(LanguagesEnum.TI);
 	};
 
 	return (

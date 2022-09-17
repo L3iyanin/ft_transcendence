@@ -1,25 +1,24 @@
 import { useEffect } from "react";
-import { CookiesProvider, useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
+import useLocalStorage from "./hooks/useLocalStorage";
 import Router from "./routes/Router";
+import { LanguagesEnum } from "./utils/constants/enum";
 import { LNG } from "./utils/constants/settings";
 
 const App: React.FC = () => {
 
-	const [cookies, setCookie, removeCookie] = useCookies([LNG]);
+	const [lng, setLng] = useLocalStorage(LNG, LanguagesEnum.EN);
 
 	const { i18n } = useTranslation();
 
 	useEffect(() => {
-		if (cookies[LNG]) {
-			i18n.changeLanguage(cookies[LNG]);
+		if (lng) {
+			i18n.changeLanguage(lng);
 		}
-	}, []);
+	}, [lng]);
 
 	return (
-		<CookiesProvider>
-			<Router />
-		</CookiesProvider>
+		<Router />
 	);
 };
 
