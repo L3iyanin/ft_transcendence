@@ -1,6 +1,9 @@
 import {ApiProperty } from "@nestjs/swagger";
 export class UserInfo {
 	@ApiProperty()
+	id: number;
+
+	@ApiProperty()
 	username: string;
 
 	@ApiProperty()
@@ -10,10 +13,10 @@ export class UserInfo {
 	imgUrl: string;
 
 	@ApiProperty()
-	numberOfFreind: number;
+	numberOfFriends: number;
 
 	@ApiProperty()
-	numberOfachivements: number;
+	numberOfAchievements: number;
 
 	@ApiProperty()
 	wins: number;

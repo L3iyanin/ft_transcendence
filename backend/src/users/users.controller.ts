@@ -5,7 +5,7 @@ import { UserInfo } from "./dto/userInfo.dto";
 import { ApiProperty, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { I18n, I18nContext } from "nestjs-i18n";
 import { Achievement } from "./dto/achievement.dto";
-import { Leaderboard } from "./dto/leaderboard.dto";
+import { userInLeaderboard } from "./dto/userInLeaderboard";
 import { Friend } from "./dto/friend.dto";
 import { FriendRequest } from "./dto/friendRequest.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -33,16 +33,13 @@ export class UsersController {
 	}
 
 	@Get("leaderboard")
-	@ApiResponse({type : [Leaderboard]})
-	async getLeaderboard(): Promise<Leaderboard[]> {
-		const leaderboard: Leaderboard[] = await this.userService.getLeaderboard();
-		if (!leaderboard)
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
-
+	@ApiResponse({type : [userInLeaderboard]})
+	async getLeaderboard(): Promise<userInLeaderboard[]> {
+		const leaderboard: userInLeaderboard[] = await this.userService.getLeaderboard();
 		return leaderboard;
 	}
 
-	@Get("wrongPassword")
+	@Get("wrong-password")
 	async getHello(@I18n() i18n: I18nContext) {
 		return await i18n.t("tr.errors.user.wrongPassword");
 	}
@@ -50,59 +47,51 @@ export class UsersController {
 	@ApiResponse({ type: [Achievement] })
 	@Get("/:userId/achievements")
 	async getUserachievements(@Param("userId", ParseIntPipe) userId: number): Promise<Achievement[]> {
-		const achievement: Achievement[] = await this.userService.getAchievemnets(userId);
-		if (!achievement)
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
-		return achievement;
+		const achievements: Achievement[] = await this.userService.getAchievemnets(userId);
+		return achievements;
 	}
 
 	@ApiResponse({ type: [Friend]})
 	@Get("/:userId/friends")
 	async getUserFriends(@Param("userId", ParseIntPipe) userId: number): Promise<Friend[]> {
 		const friends =  await this.userService.getUserFriends(userId);
-		if (!friends)
-			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
 		return friends
 	}
 
-	@ApiResponse({type : HttpException})
-	@Post("/:friendId/sendFriendRequest")
+	@Post("/:friendId/send-friend-request")
 	async sendFriendRequest(@Param("friendId", ParseIntPipe) friendId: number, @Req() req){
 		const userId = req.user.id;
-		console.log(req.user.id)
 		if (userId == friendId)
 			return new HttpException('BAD REQUEST', HttpStatus.BAD_REQUEST);
-		const httpExceptionreturn = await this.userService.sendFriendRequest(userId, friendId)
-
-		return httpExceptionreturn
+		const ret = await this.userService.sendFriendRequest(userId, friendId)
+		return ret
 	}
 
-	@ApiResponse({type : HttpException})
-	@Post("/:friendId/acceptFriendRequest")
+	@Post("/:friendId/accept-friend-request")
 	async acceptFriendRequest(@Param("friendId", ParseIntPipe) friendId: number, @Req() req){
 		const userId = req.user.id;
-		const httpExceptionreturn  = await this.userService.acceptFriendRequest(userId, friendId)
-		return httpExceptionreturn
+		const ret  = await this.userService.acceptFriendRequest(userId, friendId)
+		return ret
 	}
 
 	@ApiResponse({type : [FriendRequest]})
-	@Get("/:userId/friendRequests")
+	@Get("/:userId/friend-requests")
 	async geFriendRequests(@Param("userId", ParseIntPipe) userId: number, @Req() req){
 		const friendRequests = await this.userService.getFriendRequests(userId)
 		return friendRequests;
 	}
 
 	@ApiResponse({type : HttpException})
-	@Post("/:friendId/discardFriendRequest")
+	@Post("/:friendId/discard-friend-request")
 	async discardFriendRequest(@Param("friendId", ParseIntPipe) friendId: number, @Req() req){
 		const userId = req.user.id;
-		const httpExceptionreturn  = await this.userService.discardFriendRequest(userId, friendId)
-		return httpExceptionreturn
+		const ret  = await this.userService.discardFriendRequest(userId, friendId)
+		return ret
 	}
 
 
-	@ApiResponse({type : HttpException})
-	@Post("/updateProfile")
+	// @ApiResponse({type : HttpException})
+	@Post("/update-profile")
 	@UseInterceptors(FileInterceptor('file'))
 	async updatepUserProfile(@UploadedFile(
 		new ParseFilePipeBuilder()
