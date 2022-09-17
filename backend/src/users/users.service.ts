@@ -34,11 +34,11 @@ export class UsersService {
 				wins: user.wins,
 			};
 			return userInfo;
-		} 
+		}
 		catch (err) {
 			console.error(err);
 			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
-	
+
 		}
 	}
 
@@ -47,21 +47,19 @@ export class UsersService {
 			const users = await prisma.user.findMany();
 			let transformedUsers: Leaderboard[] = users.map((user) => {
 				return {
-					data: {
-						WinsMinusLoses: user.wins - user.loses,
-						rank: 1,
-						...user,
-					},
+					WinsMinusLoses: user.wins - user.loses,
+					rank: 1,
+					...user,
 				};
 			});
 			let leaderboard: Leaderboard[] = transformedUsers.sort((user1, user2) => {
-				if (user1.data.WinsMinusLoses > user2.data.WinsMinusLoses) {
+				if (user1.WinsMinusLoses > user2.WinsMinusLoses) {
 					return -1;
 				}
 			});
 
 			leaderboard.forEach((user, index) => {
-				user.data.rank = index + 1;
+				user.rank = index + 1;
 			});
 
 			return leaderboard;
@@ -134,7 +132,7 @@ export class UsersService {
 				});
 			});
 			return friends;
-		} 
+		}
 		catch (err) {
 			console.log(err);
 			throw new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -166,7 +164,7 @@ export class UsersService {
 					},
 				},
 			});
-			return new HttpException("Friend Request Has ben sent", HttpStatus.CREATED);	
+			return new HttpException("Friend Request Has ben sent", HttpStatus.CREATED);
 		}
 		catch (err) {
 			console.log(err);
@@ -205,12 +203,12 @@ export class UsersService {
 					},
 				});
 			return new HttpException("Friend Request Has be accepted", HttpStatus.CREATED);
-		} 
+		}
 		catch (err) {
 			return new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	async discardFriendRequest(userId: number, friendId: number) {
 		try {
 			userId = 4
@@ -237,7 +235,7 @@ export class UsersService {
 			return new HttpException("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	async getFriendRequests(userId: number): Promise<FriendRequest[]> {
 		try {
 			const user = await prisma.user.findUnique({
