@@ -50,7 +50,8 @@ model Achievement {
 
 model Channel {
     id            Int           @id @default(autoincrement())
-    name          String
+    name          String // in case of dm, it will be the name of the other user, in case of group, it will be the name of the group
+    imgUrl        String // same as above
     owner         User          @relation(fields: [userId], references: [id])
     userId        Int
     members       Member[]
