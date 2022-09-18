@@ -22,6 +22,7 @@ const Landing = () => {
 			auth42(code)
 				.then((res) => {
 					// console.log(res.data);
+					console.log(res.data);
 					dispatch(login(res.data));
 					toast.success(t("signInSuccess"), {
 						position: toast.POSITION.TOP_CENTER,

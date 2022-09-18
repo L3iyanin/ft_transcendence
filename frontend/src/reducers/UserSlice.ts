@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { USER_KEY } from "../utils/constants/settings";
 
 const calculateRemainingTime = (expirationTime: string) => {
 	const currentTime = new Date().getTime();
@@ -22,25 +23,26 @@ export const userSlice = createSlice({
 		login: (state, action: PayloadAction<UserInterface>) => {
 			state.user = action.payload;
 			state.isLoggedIn = true;
-			localStorage.setItem("user", JSON.stringify(state.user));
+			localStorage.setItem(USER_KEY, JSON.stringify(state.user));
 		},
 		logout: (state) => {
 			state.user = null;
 			state.isLoggedIn = false;
-			localStorage.removeItem("user");
+			localStorage.removeItem(USER_KEY);
 		},
 		getUser: (state) => {
-			const user = localStorage.getItem("user");
+			const user = localStorage.getItem(USER_KEY);
 			if (user) {
 				state.user = JSON.parse(user);
 				state.isLoggedIn = true;
+				state.isLoading = false;
 				return ;
 				// if (state.user) {
 				// 	const remainingTime = calculateRemainingTime(state.user.expiresIn);
 				// 	if (remainingTime <= 3600) {
 				// 		state.user = null;
 				// 		state.isLoggedIn = false;
-				// 		localStorage.removeItem("user");
+				// 		localStorage.removeItem(USER_KEY);
 				// 		state.isLoading = false;
 				// 		return ;
 				// 	}
