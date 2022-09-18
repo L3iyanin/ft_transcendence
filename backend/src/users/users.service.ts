@@ -5,6 +5,9 @@ import { Friend } from "./dto/friend.dto";
 import { FriendRequest } from "./dto/friendRequest.dto";
 import { userInLeaderboard } from "./dto/userInLeaderboard";
 import { UserInfo } from "./dto/userInfo.dto";
+import multer from "multer";
+import { extname, join } from "path";
+import { PostResponce } from "./dto/postResponce.dto";
 
 const prisma = new PrismaClient();
 
@@ -46,7 +49,8 @@ export class UsersService {
 				numberOfFriends: user.friends.length,
 			};
 			return userInfo;
-		} catch (err) {
+		} 
+		catch (err) {
 			console.error(err);
 			throw new HttpException(err.response, err.status);
 		}
@@ -77,7 +81,8 @@ export class UsersService {
 			});
 
 			return leaderboard;
-		} catch (err) {
+		} 
+		catch (err) {
 			console.error(err);
 			throw new HttpException(err.response, err.status);
 		}
@@ -123,7 +128,8 @@ export class UsersService {
 				}
 			});
 			return achievements;
-		} catch (err) {
+		} 
+		catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
@@ -150,13 +156,14 @@ export class UsersService {
 				});
 			});
 			return friends;
-		} catch (err) {
+		} 
+		catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async sendFriendRequest(from: number, to: number) {
+	async sendFriendRequest(from: number, to: number) : Promise<PostResponce>{
 		try {
 			let user = await prisma.user.findUnique({
 				where: { id: to },
@@ -183,13 +190,14 @@ export class UsersService {
 			return {
 				message: "Friend request sent",
 			};
-		} catch (err) {
+		} 
+		catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async acceptFriendRequest(userId: number, friendId: number) {
+	async acceptFriendRequest(userId: number, friendId: number) : Promise<PostResponce> {
 		try {
 			let user = await prisma.user.findUnique({
 				where: { id: userId },
@@ -222,14 +230,15 @@ export class UsersService {
 			return {
 				message: "Friend request accepted",
 			};
-		} catch (err) {
+		} 
+		catch (err) {
 			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async discardFriendRequest(userId: number, friendId: number) {
+	async discardFriendRequest(userId: number, friendId: number) : Promise<PostResponce>{
 		try {
-			let user = await prisma.user.findUnique({
+			const user = await prisma.user.findUnique({
 				where: { id: userId },
 				select: {
 					friendRequests: true,
@@ -249,7 +258,8 @@ export class UsersService {
 			return {
 				message: "Friend request discarded",
 			};
-		} catch (err) {
+		} 
+		catch (err) {
 			throw new HttpException(err.response, err.status);
 		}
 	}
@@ -273,31 +283,58 @@ export class UsersService {
 				});
 			});
 			return friendRequests;
-		} catch (err) {
+		} 
+		catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async updateUserName(newUserName: string, userId: number) {
+	async updateUserName(newUserName: string, userId: number) : Promise<PostResponce>{
 		try {
 			await prisma.user.update({
 				where: { id: userId },
 				data: { username: newUserName },
 			});
-		} catch (err) {
+			return {
+				message: "User name updated",
+			};
+		} 
+		catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async update2ff(newUserName: string, userId: number) {}
+	async update2ff(userId: number) : Promise<PostResponce> {
+		return {
+			message: "2ff is not yet implemented",
+		};
+	}
 
-	async updateImageProfile(newUserName: string, userId: number) {
+	async updateImageProfile(file: Express.Multer.File, userId: number, username : string) : Promise<PostResponce> {
 		try {
-		} catch (err) {
+			const name = file.originalname.split('.')[0];
+			const fileExtName = extname(file.originalname);
+			const fileName = `/${name}-${username}${fileExtName}`
+			const filePath = join(process.env.BACKEND_URL, fileName)
+			await prisma.user.update({
+				where : {id : userId},
+				data : {imgUrl : filePath}
+			})
+			return {
+				message: "User avatar updated",
+			}
+		} 
+		catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
 }
+
+export function editFileName  (req, file, callback){
+	const name = file.originalname.split('.')[0];
+	const fileExtName = extname(file.originalname);
+	callback(null, `${name}-${req.user.username}${fileExtName}`);
+  };
