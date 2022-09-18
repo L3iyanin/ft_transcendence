@@ -1,4 +1,21 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, ParseFilePipe, ParseFilePipeBuilder, ParseIntPipe, Post, Put, Req, UploadedFile, UseGuards, UseInterceptors, UsePipes} from "@nestjs/common";
+import {
+	Body,
+	Controller,
+	Get,
+	HttpException,
+	HttpStatus,
+	Param,
+	ParseFilePipe,
+	ParseFilePipeBuilder,
+	ParseIntPipe,
+	Post,
+	Put,
+	Req,
+	UploadedFile,
+	UseGuards,
+	UseInterceptors,
+	UsePipes,
+} from "@nestjs/common";
 import { UserGuard } from "./user.guard";
 import { editFileName, UsersService } from "./users.service";
 import { UserInfo } from "./dto/userInfo.dto";
@@ -32,9 +49,9 @@ export class UsersController {
 	}
 
 	@Get("leaderboard")
-	@ApiResponse({type : [userInLeaderboard]})
+	@ApiResponse({ type: [userInLeaderboard] })
 	async getLeaderboard(): Promise<userInLeaderboard[]> {
-		return  await this.userService.getLeaderboard();
+		return await this.userService.getLeaderboard();
 	}
 
 	@Get("wrong-password")
@@ -44,82 +61,99 @@ export class UsersController {
 
 	@ApiResponse({ type: [Achievement] })
 	@Get("/:userId/achievements")
-	async getUserachievements(@Param("userId", ParseIntPipe) userId: number): Promise<Achievement[]> {
+	async getUserachievements(
+		@Param("userId", ParseIntPipe) userId: number
+	): Promise<Achievement[]> {
 		const achievements: Achievement[] = await this.userService.getAchievemnets(userId);
 		return achievements;
 	}
 
-	@ApiResponse({ type: [Friend]})
+	@ApiResponse({ type: [Friend] })
 	@Get("/:userId/friends")
 	async getUserFriends(@Param("userId", ParseIntPipe) userId: number): Promise<Friend[]> {
 		return await this.userService.getUserFriends(userId);
 	}
 
-	@ApiResponse({type : PostResponce})
+	@ApiResponse({ type: PostResponce })
 	@Post("/:friendId/send-friend-request")
-	async sendFriendRequest(@Param("friendId", ParseIntPipe) friendId: number, @Req() req) : Promise<PostResponce>{
+	async sendFriendRequest(
+		@Param("friendId", ParseIntPipe) friendId: number,
+		@Req() req
+	): Promise<PostResponce> {
 		const userId = req.user.id;
-		if (userId == friendId)
-			return new HttpException('BAD REQUEST', HttpStatus.BAD_REQUEST);
-		return await this.userService.sendFriendRequest(userId, friendId)
+		if (userId == friendId) return new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST);
+		return await this.userService.sendFriendRequest(userId, friendId);
 	}
 
-	@ApiResponse({type : PostResponce})
+	@ApiResponse({ type: PostResponce })
 	@Post("/:friendId/accept-friend-request")
-	async acceptFriendRequest(@Param("friendId", ParseIntPipe) friendId: number, @Req() req) : Promise<PostResponce>{
+	async acceptFriendRequest(
+		@Param("friendId", ParseIntPipe) friendId: number,
+		@Req() req
+	): Promise<PostResponce> {
 		const userId = req.user.id;
-		return await this.userService.acceptFriendRequest(userId, friendId)
+		return await this.userService.acceptFriendRequest(userId, friendId);
 	}
 
-	@ApiResponse({type : [FriendRequest]})
+	@ApiResponse({ type: [FriendRequest] })
 	@Get("/:userId/friend-requests")
-	async geFriendRequests(@Param("userId", ParseIntPipe) userId: number, @Req() req) : Promise<FriendRequest[]>{
-		return  await this.userService.getFriendRequests(userId)
+	async geFriendRequests(
+		@Param("userId", ParseIntPipe) userId: number,
+		@Req() req
+	): Promise<FriendRequest[]> {
+		return await this.userService.getFriendRequests(userId);
 	}
 
-	@ApiResponse({type : PostResponce})
+	@ApiResponse({ type: PostResponce })
 	@Post("/:friendId/discard-friend-request")
-	async discardFriendRequest(@Param("friendId", ParseIntPipe) friendId: number, @Req() req) : Promise<PostResponce>{
+	async discardFriendRequest(
+		@Param("friendId", ParseIntPipe) friendId: number,
+		@Req() req
+	): Promise<PostResponce> {
 		const userId = req.user.id;
-		return  await this.userService.discardFriendRequest(userId, friendId)
+		return await this.userService.discardFriendRequest(userId, friendId);
 	}
 
-	@ApiResponse({type : PostResponce})
+	@ApiResponse({ type: PostResponce })
 	@Post("/update-profile-image")
-	@UseInterceptors(FileInterceptor('file', {
-		storage : diskStorage({
-			filename : editFileName,
-			destination : "./public"
+	@UseInterceptors(
+		FileInterceptor("file", {
+			storage: diskStorage({
+				filename: editFileName,
+				destination: "./public",
+			}),
 		})
-	}))
-	async updatepUserProfileImage(@UploadedFile(
-		new ParseFilePipeBuilder()
-		  .addFileTypeValidator({
-			fileType : new RegExp("\.(png|jpg|jpeg|webp)")
-		  })
-		  .build({
-			errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-		  })
-	  ,) file: Express.Multer.File, @Req() req) :  Promise<PostResponce>{
-			const userId = req.user.id
-			if (file)
-				return  await this.userService.updateImageProfile(file, userId, req.user.username)
+	)
+	async updatepUserProfileImage(
+		@UploadedFile(
+			new ParseFilePipeBuilder()
+				.addFileTypeValidator({
+					fileType: new RegExp(".(png|jpg|jpeg|webp)"),
+				})
+				.build({
+					errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+				})
+		)
+		file: Express.Multer.File,
+		@Req() req
+	): Promise<PostResponce> {
+		const userId = req.user.id;
+		if (file) return await this.userService.updateImageProfile(file, userId, req.user.username);
 	}
 
-	@ApiResponse({type : PostResponce})
+	@ApiResponse({ type: PostResponce })
 	@Post("/update-profile-info")
-	async updateProfileInfo(@Req() req,  @Body() form :Form) : Promise<PostResponce>{
-		const userId : number = req.user.id
-			if (form.name && !form.twoFF)
-				return await this.userService.updateUserName(form.name, userId)
-			if (form.twoFF && !form.name)
-				return await this.userService.update2ff(userId)
-			if (form.name && form.twoFF){
-				await this.userService.update2ff(userId)
-				await this.userService.updateUserName(form.name, userId)
-				return {
-					message : "Profile has be updated"
-				}
-			}
+	async updateProfileInfo(@Req() req, @Body() form: Form): Promise<PostResponce> {
+		const userId: number = req.user.id;
+		if (form.name && !form.twoFF)
+			return await this.userService.updateUserName(form.name, userId);
+		if (form.twoFF && !form.name) return await this.userService.update2ff(userId);
+		if (form.name && form.twoFF) {
+			await this.userService.update2ff(userId);
+			await this.userService.updateUserName(form.name, userId);
+			return {
+				message: "Profile has be updated",
+			};
+		}
 	}
 }
