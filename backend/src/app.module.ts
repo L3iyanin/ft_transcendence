@@ -4,6 +4,8 @@ import { UsersModule } from "./users/users.module";
 import { AuthModuls } from "./auth/auth.module";
 import { AcceptLanguageResolver, I18nJsonLoader, I18nModule, QueryResolver } from "nestjs-i18n";
 import * as path from 'path';
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 
 @Module({
 	imports: [
@@ -21,6 +23,9 @@ import * as path from 'path';
 		}),
 		UsersModule,
 		AuthModuls,
+		ServeStaticModule.forRoot({
+			rootPath : join(__dirname, "..", "../public")
+		})
 	],
 })
 export class AppModule {}
