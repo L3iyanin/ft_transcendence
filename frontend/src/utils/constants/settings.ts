@@ -1,2 +1,2 @@
 
-export const LNG = "lng";
+export const LNG_KEY = "lng";

@@ -1,26 +1,23 @@
 import { useTranslation } from "react-i18next";
-import useLocalStorage from "../../hooks/useLocalStorage";
 import { LanguagesEnum } from "../../utils/constants/enum";
-import { LNG } from "../../utils/constants/settings";
+import { useDispatch } from "react-redux";
+import { changeLng } from "../../reducers/SettingsSlice";
 
 const Footer = () => {
-	const { t, i18n } = useTranslation();
+	const { t } = useTranslation();
 
-	const [lng, setLng] = useLocalStorage(LNG, LanguagesEnum.EN);
+	const dispatch = useDispatch();
 
 	const changeLanguageToEnglish = () => {
-		i18n.changeLanguage(LanguagesEnum.EN);
-		setLng(LanguagesEnum.EN);
+		dispatch(changeLng(LanguagesEnum.EN));
 	};
 
 	const changeLanguageToArabic = () => {
-		i18n.changeLanguage(LanguagesEnum.AR);
-		setLng(LanguagesEnum.AR);
+		dispatch(changeLng(LanguagesEnum.AR));
 	};
 
 	const changeLanguageToTifinagh = () => {
-		i18n.changeLanguage(LanguagesEnum.TI);
-		setLng(LanguagesEnum.TI);
+		dispatch(changeLng(LanguagesEnum.TI));
 	};
 
 	return (
