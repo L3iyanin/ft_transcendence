@@ -49,8 +49,7 @@ export class UsersService {
 				numberOfFriends: user.friends.length,
 			};
 			return userInfo;
-		} 
-		catch (err) {
+		} catch (err) {
 			console.error(err);
 			throw new HttpException(err.response, err.status);
 		}
@@ -81,8 +80,7 @@ export class UsersService {
 			});
 
 			return leaderboard;
-		} 
-		catch (err) {
+		} catch (err) {
 			console.error(err);
 			throw new HttpException(err.response, err.status);
 		}
@@ -128,8 +126,7 @@ export class UsersService {
 				}
 			});
 			return achievements;
-		} 
-		catch (err) {
+		} catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
@@ -156,27 +153,38 @@ export class UsersService {
 				});
 			});
 			return friends;
-		} 
-		catch (err) {
+		} catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async sendFriendRequest(from: number, to: number) : Promise<PostResponce>{
+	async sendFriendRequest(from: number, to: number): Promise<PostResponce> {
 		try {
-			let user = await prisma.user.findUnique({
-				where: { id: to },
-				select: {
-					friendRequests: true,
+			let users = await prisma.user.findMany({
+				where: {
+					id: {
+						in: [from, to],
+					},
+				},
+				include: {
 					friends: true,
+					friendRequests: true,
 				},
 			});
-			let alreadyExist = user.friendRequests.some((req) => req.id == from);
-			if (alreadyExist)
+			let toUser = users.find((user) => user.id == to);
+			let fromUser = users.find((user) => user.id == from);
+
+			if (
+				toUser.friendRequests.some((request) => request.id == from) ||
+				fromUser.friendRequests.some((request) => request.id == to)
+			) {
 				throw new HttpException("Friend request already sent", HttpStatus.BAD_REQUEST);
-			alreadyExist = user.friends.some((friend) => friend.id == from);
-			if (alreadyExist) throw new HttpException("Already friends", HttpStatus.BAD_REQUEST);
+			}
+			if (toUser.friends.some((friend) => friend.id == from)) {
+				throw new HttpException("Users are already friends", HttpStatus.BAD_REQUEST);
+			}
+
 			await prisma.user.update({
 				where: {
 					id: to,
@@ -190,14 +198,13 @@ export class UsersService {
 			return {
 				message: "Friend request sent",
 			};
-		} 
-		catch (err) {
+		} catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async acceptFriendRequest(userId: number, friendId: number) : Promise<PostResponce> {
+	async acceptFriendRequest(userId: number, friendId: number): Promise<PostResponce> {
 		try {
 			let user = await prisma.user.findUnique({
 				where: { id: userId },
@@ -230,13 +237,12 @@ export class UsersService {
 			return {
 				message: "Friend request accepted",
 			};
-		} 
-		catch (err) {
+		} catch (err) {
 			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async discardFriendRequest(userId: number, friendId: number) : Promise<PostResponce>{
+	async discardFriendRequest(userId: number, friendId: number): Promise<PostResponce> {
 		try {
 			const user = await prisma.user.findUnique({
 				where: { id: userId },
@@ -258,8 +264,7 @@ export class UsersService {
 			return {
 				message: "Friend request discarded",
 			};
-		} 
-		catch (err) {
+		} catch (err) {
 			throw new HttpException(err.response, err.status);
 		}
 	}
@@ -283,14 +288,13 @@ export class UsersService {
 				});
 			});
 			return friendRequests;
-		} 
-		catch (err) {
+		} catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async updateUserName(newUserName: string, userId: number) : Promise<PostResponce>{
+	async updateUserName(newUserName: string, userId: number): Promise<PostResponce> {
 		try {
 			await prisma.user.update({
 				where: { id: userId },
@@ -299,42 +303,44 @@ export class UsersService {
 			return {
 				message: "User name updated",
 			};
-		} 
-		catch (err) {
+		} catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
 
-	async update2ff(userId: number) : Promise<PostResponce> {
+	async update2ff(userId: number): Promise<PostResponce> {
 		return {
 			message: "2ff is not yet implemented",
 		};
 	}
 
-	async updateImageProfile(file: Express.Multer.File, userId: number, username : string) : Promise<PostResponce> {
+	async updateImageProfile(
+		file: Express.Multer.File,
+		userId: number,
+		username: string
+	): Promise<PostResponce> {
 		try {
-			const name = file.originalname.split('.')[0];
+			const name = file.originalname.split(".")[0];
 			const fileExtName = extname(file.originalname);
-			const fileName = `/${name}-${username}${fileExtName}`
-			const filePath = join(process.env.BACKEND_URL, fileName)
+			const fileName = `/${name}-${username}${fileExtName}`;
+			const filePath = join(process.env.BACKEND_URL, fileName);
 			await prisma.user.update({
-				where : {id : userId},
-				data : {imgUrl : filePath}
-			})
+				where: { id: userId },
+				data: { imgUrl: filePath },
+			});
 			return {
 				message: "User avatar updated",
-			}
-		} 
-		catch (err) {
+			};
+		} catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
 }
 
-export function editFileName  (req, file, callback){
-	const name = file.originalname.split('.')[0];
+export function editFileName(req, file, callback) {
+	const name = file.originalname.split(".")[0];
 	const fileExtName = extname(file.originalname);
 	callback(null, `${name}-${req.user.username}${fileExtName}`);
-  };
+}
