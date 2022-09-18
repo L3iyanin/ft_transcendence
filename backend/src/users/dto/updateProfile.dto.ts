@@ -1,24 +1,16 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
-
+import { ApiProperty } from "@nestjs/swagger";
+import {IsAlpha, IsNotEmpty, IsOptional, IsString } from "class-validator";
 export class Form {
-    // Validates for a non-empty string
+
+    @ApiProperty()
     @IsString()
     @IsNotEmpty()
     @IsOptional()
+    @IsAlpha()
     name: string;
-
-  // Gets only validated if it's part of the request's body
-    // @HasM
     @IsNotEmpty()
+    @ApiProperty()
     @IsOptional()
-    email: string;
-
-  // Validates for an integer
-    @IsNumber()
-    age: number;
-
-  // Validates for an integer
-    @IsBoolean()
-    acceptedTOS: boolean;
-
+    twoFF: string;
 }
+

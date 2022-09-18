@@ -63,7 +63,7 @@ async function addAchivementsToUser(userId : number){
 				where : {id : userId},
 				data : {
 					achievements : {
-						connect : [{id : 9}, {id : 10}]
+						connect : [{id : 1}, {id : 2}]
 					}
 				}
 			}
