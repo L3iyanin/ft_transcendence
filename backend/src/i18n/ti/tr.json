@@ -1,0 +1,8 @@
+{
+	"hello": "Tifinagh",
+	"errors": {
+		"user" : {
+			"wrongPassword": "ⵡⵔⵓⵏⴳ ⵒⴰⵙⵙⵡⵓⵔⴷ"
+		}
+	}
+}

@@ -33,7 +33,7 @@ npm install
 ## Init env file
 
 ```bash
-# criet your env file
+# create your env file
 $ cp  .env.sample .env
 
 #change the UID , SECRET, JWT_SECRET in the .env
