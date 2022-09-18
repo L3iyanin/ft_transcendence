@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpCode, HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import Authenticator from "api42client";
 import { PrismaClient } from "@prisma/client";
 // https://api.intra.42.fr/oauth/authorize?client_id=0db615c858576d32d6d34de5d45ec58e758fbd4a2b1e3adce1ed8f90bbee2a44&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fauth%2F42&response_type=code
@@ -18,6 +18,9 @@ export class AuthService {
 				process.env.REDIRECT_URI
 			);
 			const token = await auth.get_Access_token(code);
+
+			console.log(token);
+
 			const data = await auth.get_user_data(token.access_token);
 			const fullName: any = data.first_name + " " + data.last_name;
 			const userData: AuthUserData = {
@@ -27,7 +30,8 @@ export class AuthService {
 			return userData;
 		} catch (exception) {
 			//! return exception 500
-			console.log("ERROR " + exception);
+			console.log(exception);
+			throw new HttpException("42 code not correct", HttpStatus.UNAUTHORIZED);
 		}
 	}
 
