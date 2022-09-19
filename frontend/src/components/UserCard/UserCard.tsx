@@ -10,12 +10,13 @@ const UserCard: React.FC<{
 	children: IGamePlayer;
 }> = ({ children: user }) => {
 	return (
-		<section className="container min-w-[200px] max-w-[300px] m-4 bg-dark-60 rounded-lg ">
-			<div className="m-0 flex flex-col items-center p-6 gap-y-1.5 text-white">
+		// <section className="container m-2 min-w-[200px] w-[347px] h-[395px] rounded-lg flex flex-col justify-between bg-dark-60">
+		<section className="container m-2 w-[350px] h-[395px] rounded-lg flex flex-col justify-between gap-3 bg-dark-60">
+			<div className="container m-0 pt-10 flex flex-col items-center justify-center gap-3 text-white">
 				<img
 					src={user.imageUrl}
-					alt=""
-					className="w-[51px] h-[51px] rounded-full"
+					alt={user.username + ": avatar"}
+					className="w-32 rounded-full"
 				/>
 				<h3 className="text-xl font-bold m-0">{user.fullName}</h3>
 				<p className="m-0 text-beige">{user.username}</p>

@@ -1,37 +1,34 @@
 import Player from "./Player";
 import Score from "./Score";
-import Live from "./SeeLive";
+import { ReactComponent as FirstCrown } from "../../assets/icons/FirstCrown.svg"
 
-const Match = ({ children, className, scoreStyle }: IMatchProps) => {
-	let player1 = children.player1;
-	console.log(player1);
-	let player2 = children.player2;
+const Match : React.FC <{match : IGameMatch, className : string, scoreStyle : string}> = ({ match, className, scoreStyle }) => {
+	const winner = match.player1.score > match.player2.score ? match.player1 : match.player2;
+	const loser = match.player1.score <= match.player2.score ? match.player1 : match.player2;
 	return (
 		<article
 			className={
-				"container m-0 flex justify-center min-w-[400px] max-h-8 border rounded-lg " +
+				"container m-0 pr-3 pl-5 py-2 flex justify-center items-center border rounded-lg " +
 				className
 			}
 		>
-			<div className="container w-4/5 flex justify-center items-center gap-0 grow-2">
+			<div className="container flex justify-center items-center gap-2 grow-2">
 				<Player
-					username={player1.username}
-					avatar={player1.imageUrl}
+					username={loser.username}
+					avatar={loser.imageUrl}
 					className="flex-row"
 				/>
 				<Score
-					score1={player1.score}
-					score2={player2.score}
+					score1={loser.score}
+					score2={winner.score}
 					className={scoreStyle}
 				/>
 				<Player
-					username={player2.username}
-					avatar={player2.imageUrl}
+					username={winner.username}
+					avatar={winner.imageUrl}
 					className="flex-row-reverse"
 				/>
-			</div>
-			<div className="container flex justify-end items-center w-1/5">
-				<Live />
+				<FirstCrown className="h-16 w-32 "/>
 			</div>
 		</article>
 	);

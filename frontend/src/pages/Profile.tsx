@@ -10,10 +10,10 @@ import FirendsList from "../components/pages/Profile/FriendsList";
 
 const Profile = () => {
 	return (
-		<div className="container">
+		<>
 			<NavBar />
-			<main className="container flex flex-col justify-between items-center gap-10">
-				<section className="container flex justify-between items-center gap-4">
+			<main className="container flex flex-col justify-between items-center gap-16">
+				<section className="container flex justify-between items-center gap-14">
 					<UserCard>{players[0]}</UserCard>
 					<LastMatches>{matches}</LastMatches>
 				</section>
@@ -22,7 +22,7 @@ const Profile = () => {
 					<AchievementsList achievements={achievements} />
 				</section>
 			</main>
-		</div>
+		</>
 	);
 };
 
