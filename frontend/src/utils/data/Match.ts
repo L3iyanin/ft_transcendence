@@ -53,5 +53,3 @@ export const matches:IGameMatch[] = [
 		type: GameType.Vip
 	},
 ]
-
-console.log(matches);
