@@ -3,10 +3,10 @@ import ChatActions from "./ChatActions";
 import ConversationsList from "./ConversationsList";
 import MessagesList from "./MessagesList";
 import { ReactComponent as SearchIcon } from "../../../assets/icons/search.svg";
-import { dmChannels, NotDmChannels } from "../../../utils/data/Chat";
+import { dmChannels, GroupChannels } from "../../../utils/data/Chat";
 import { useTranslation } from "react-i18next";
 import {
-	ChannleStatusEnum,
+	ChannleTypesEnum,
 	ChatOptionsEnum,
 } from "../../../utils/constants/enum";
 import { useState } from "react";
@@ -36,11 +36,11 @@ const DiscussionSection: React.FC = () => {
 
 	const onSelectChannelsConversationHandler = () => {
 		setActiveChatOption(ChatOptionsEnum.CHANNELS);
-		setChannels(NotDmChannels);
+		setChannels(GroupChannels);
 		setCurrentChannel(_ => {
 			return {
 				...botChannel,
-				status: ChannleStatusEnum.BOTONCHANNEL,
+				status: ChannleTypesEnum.CHANNEL_BOT,
 			}
 		});
 	};
@@ -81,7 +81,7 @@ const DiscussionSection: React.FC = () => {
 				<MessagesList
 					messages={currentChannel.messages}
 					disableSend={
-						(currentChannel.status === ChannleStatusEnum.BOTONDM || currentChannel.status == ChannleStatusEnum.BOTONCHANNEL)
+						(currentChannel.status === ChannleTypesEnum.DM_BOT || currentChannel.status == ChannleTypesEnum.CHANNEL_BOT)
 					}
 				/>
 			</div>
