@@ -25,7 +25,7 @@ interface IChatChannel {
     owner?: number;
     members: IMember[];
     messages: Message[];
-    status: ChannleStatusEnum;
+    status: ChannleTypesEnum;
     password?: string;
     lastMessage?: IMessage;
 	uneadMessages?: number;
