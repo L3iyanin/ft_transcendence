@@ -23,7 +23,6 @@ const Game: React.FC = () => {
 			</div>
 			<Footer />
 		</>
-
 	);
 };
 

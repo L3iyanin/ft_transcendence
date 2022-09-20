@@ -42,5 +42,38 @@ export const players: IGamePlayer[] = [
 		wins: 15,
 		losses: 4,
 		achievements: 3,
+	},
+	{
+		id: "5",
+		fullName: "Youssef Eraki",
+		score: 5,
+		username: "Peacover",
+		imageUrl:
+			"https://myanimelist.tech/api/avatar?name=your-c854766332147ustom-seed&animeName=One_Piece",
+		wins: 6,
+		losses: 1,
+		achievements: 2,
+	},
+	{
+		id: "6",
+		fullName: "Ismail Elkharroub",
+		score: 4,
+		username: "Ismail",
+		imageUrl:
+			"https://myanimelist.tech/api/avatar?name=yhhjk,mgfd&animeName=One_Piece",
+		wins: 13,
+		losses: 5,
+		achievements: 4,
+	},
+	{
+		id: "7",
+		fullName: "Abdessamad EL bourki",
+		score: 8,
+		username: "El3etay",
+		imageUrl:
+			"https://myanimelist.tech/api/avatar?name=ll,jjmbgfv&animeName=One_Piece",
+		wins: 9,
+		losses: 20,
+		achievements: 4,
 	}
 ]

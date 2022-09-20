@@ -1,8 +1,8 @@
+import { ReactComponent as AchivementIcon } from "../../../../assets/icons/achivement.svg";
+import { ReactComponent as StartChatIcon } from "../../../../assets/icons/StartChat.svg";
+import { ReactComponent as BlockUserIcon } from "../../../../assets/icons/BlockUser.svg";
 
-import { ReactComponent as AchivementIcon } from "../../assets/icons/achivement.svg";
-import { ReactComponent as StartChatIcon } from "../../assets/icons/StartChat.svg";
-import { ReactComponent as BlockUserIcon } from "../../assets/icons/BlockUser.svg";
-import Stat from "../Stat/Stat";
+import Stat from "../../../Stat/Stat";
 
 const MAX_ACHIVEMENTS = import.meta.env.VITE_APP_MAX_ACHIVEMENTS;
 

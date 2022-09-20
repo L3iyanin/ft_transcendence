@@ -28,5 +28,17 @@ export const achievements : IAchievement[] = [
 		description: 'Win 5 Match in row',
 		achieved: false,
 		imgUrl: '/imgs/achievements/Roger.png'
-	}
+	},
+	{
+		name: 'King Of Pirates duplicate',
+		description: 'Win 5 Match in row',
+		achieved: false,
+		imgUrl: '/imgs/achievements/Roger.png'
+	},
+	{
+		name: 'King Of Pirates duplicate',
+		description: 'Win 5 Match in row',
+		achieved: false,
+		imgUrl: '/imgs/achievements/Roger.png'
+	},
 ]

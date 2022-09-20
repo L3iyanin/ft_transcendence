@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
-import { ReactComponent as Unlocked } from "../../../assets/icons/Unlocked.svg";
-import { ReactComponent as Locked } from "../../../assets/icons/Locked.svg";
+import { ReactComponent as Unlocked } from "../../../../assets/icons/Unlocked.svg";
+import { ReactComponent as Locked } from "../../../../assets/icons/Locked.svg";
 
 const Achievement = ({ achievement }: IAchievementProps) => {
 	const { name, achieved, description, imgUrl } = achievement;
@@ -11,7 +11,7 @@ const Achievement = ({ achievement }: IAchievementProps) => {
 	return (
 		<article
 			className={
-				"flex h-1/6 w-full m-2 px-2 justify-between items-center gap-4 text-white " +
+				"container w-full my-5 px-2 flex justify-between items-center gap-4 text-white " +
 				opacity
 			}
 		>

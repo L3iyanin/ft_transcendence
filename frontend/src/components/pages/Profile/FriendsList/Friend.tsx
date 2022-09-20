@@ -1,10 +1,10 @@
-import { players } from "../../../utils/data/Players";
-import Stat from "../../Stat/Stat";
+import { players } from "../../../../utils/data/Players";
+import Stat from "../../../Stat/Stat";
 
 const Friend = ({ user }: IFriendProps) => {
 	return (
-		<article className="container w-full h-1/6 flex justify-between items-center text-white">
-			<div className="container w-5/12 h-full m-2 flex justify-start items-center gap-4">
+		<article className="container w-full flex justify-between items-center text-white">
+			<div className="container w-5/12 m-2 flex justify-start items-center gap-4">
 				<img
 					src={user.imageUrl}
 					alt={user.username + ": avatar"}

@@ -1,15 +1,16 @@
 import Player from "./Player";
 import Score from "./Score";
-import { ReactComponent as FirstCrown } from "../../assets/icons/FirstCrown.svg"
+import { ReactComponent as FirstCrown } from "../../../../assets/icons/FirstCrown.svg"
 
-const Match : React.FC <{match : IGameMatch, className : string, scoreStyle : string}> = ({ match, className, scoreStyle }) => {
+const Match : React.FC <{match : IGameMatch}> = ({ match }) => {
 	const winner = match.player1.score > match.player2.score ? match.player1 : match.player2;
 	const loser = match.player1.score <= match.player2.score ? match.player1 : match.player2;
+	// const border = user.id === winner.id ? "border-green" : "border-red";
+	const border = "border-beige";
 	return (
 		<article
 			className={
-				"container mb-2 mt-1 pr-3 pl-5 py-1 flex justify-center items-center border rounded-lg " +
-				className
+				"container mb-4 mt-1 pr-3 pl-5 py-1 flex justify-center items-center border rounded-lg " + border
 			}
 		>
 			<div className="container flex justify-center items-center gap-2 grow-2">
@@ -21,7 +22,6 @@ const Match : React.FC <{match : IGameMatch, className : string, scoreStyle : st
 				<Score
 					score1={loser.score}
 					score2={winner.score}
-					className={scoreStyle}
 				/>
 				<Player
 					username={winner.username}

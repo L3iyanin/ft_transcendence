@@ -1,4 +1,3 @@
-import { IPlayerProps } from "../../utils/types/Game";
 
 const Player : React.FC <{username : string, avatar : string, className : string }> = ({ username, avatar, className }) => {
 	return (
