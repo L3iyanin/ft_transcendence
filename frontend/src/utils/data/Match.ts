@@ -1,4 +1,4 @@
-import { GameType } from "../constants/enum";
+import { MatchTypeEnum as GameType } from "../constants/enum";
 import {players } from "../data/Players"
 
 export const matches:IGameMatch[] = [
@@ -10,7 +10,7 @@ export const matches:IGameMatch[] = [
 		isMatching: false,
 		isLive: true,
 		date: new Date("2022-05-12T23:50:21.817Z"),
-		type: GameType.MarinFord
+		type: GameType.Classic
 	},
 	{
 		player1: players[2],
@@ -20,7 +20,7 @@ export const matches:IGameMatch[] = [
 		isMatching: false,
 		isLive: true,
 		date: new Date("2022-12-12T23:50:21.817Z"),
-		type: GameType.Wano
+		type: GameType.Vip
 	},
 	{
 		player1: players[1],
@@ -30,7 +30,7 @@ export const matches:IGameMatch[] = [
 		isMatching: false,
 		isLive: true,
 		date: new Date("2022-05-12T23:50:21.817Z"),
-		type: GameType.MarinFord
+		type: GameType.Classic
 	},
 	{
 		player1: players[0],
@@ -40,7 +40,7 @@ export const matches:IGameMatch[] = [
 		isMatching: false,
 		isLive: true,
 		date: new Date("2022-12-12T23:50:21.817Z"),
-		type: GameType.Wano
+		type: GameType.Vip
 	},
 	{
 		player1: players[1],
@@ -50,7 +50,7 @@ export const matches:IGameMatch[] = [
 		isMatching: false,
 		isLive: true,
 		date: new Date("2022-12-12T23:50:21.817Z"),
-		type: GameType.Wano
+		type: GameType.Vip
 	},
 ]
 
