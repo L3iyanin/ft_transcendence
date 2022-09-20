@@ -8,11 +8,7 @@ const Match : React.FC <{match : IGameMatch}> = ({ match }) => {
 	// const border = user.id === winner.id ? "border-green" : "border-red";
 	const border = "border-beige";
 	return (
-		<article
-			className={
-				"container mb-4 mt-1 pr-3 pl-5 py-1 flex justify-center items-center border rounded-lg " + border
-			}
-		>
+		<article className={`container mb-4 mt-1 pr-3 pl-5 py-1 flex justify-center items-center border rounded-2xl ${border}`}>
 			<div className="container flex justify-center items-center gap-2 grow-2">
 				<Player
 					username={loser.username}
