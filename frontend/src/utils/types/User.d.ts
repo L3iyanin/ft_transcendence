@@ -41,3 +41,8 @@ interface UserInterface {
 	fullName: string,
 	expiresIn?: string,
 }
+
+interface IOnlineUser {
+	socketId: string;
+	user: UserInterface;
+}

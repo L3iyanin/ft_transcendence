@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { ChatOptionsEnum } from "../../../utils/constants/enum";
 import RoundedHr from "../../UI/Hr/RoundedHr";
 import RoundedFilter from "../../UI/RoundedFilter";
@@ -17,7 +18,10 @@ const ConversationsList: React.FC<{
 	onSelectChannelsConversation,
 	onSelectConversation,
 }) => {
+
 	const { t } = useTranslation();
+
+	const onlineUsers:IOnlineUser[] = useSelector((state: any) => state.chat.onlineUsers);
 
 	const onSelectConversationHandler = (channel: IChatChannel) => {
 		onSelectConversation(channel);
@@ -36,7 +40,7 @@ const ConversationsList: React.FC<{
 				{channels.map((channel, index) => {
 					return (
 						<div key={channel.id}>
-							<ConversationCard channel={channel} onClick={onSelectConversationHandler} />
+							<ConversationCard channel={channel} onClick={onSelectConversationHandler} isOnline={isUserOnline(channel.name, onlineUsers)} />
 							{index !== channels.length - 1 && <RoundedHr />}
 						</div>
 					);
@@ -47,3 +51,7 @@ const ConversationsList: React.FC<{
 };
 
 export default ConversationsList;
+
+const isUserOnline = (name: string, onlineUsers: IOnlineUser[]): boolean => {
+	return onlineUsers.some((userData) => userData.user.fullName.toLocaleLowerCase() === name.toLocaleLowerCase());
+}
