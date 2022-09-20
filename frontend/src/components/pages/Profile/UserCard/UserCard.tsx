@@ -24,7 +24,7 @@ const UserCard: React.FC <{user: IGamePlayer}> = ({ user: user }) => {
 				<div className="flex items-center gap-2">
 					<AchivementIcon />
 					<span className="text-xs">
-						{user.achievements}/{MAX_ACHIVEMENTS} achivments
+						{user.achievements}/{MAX_ACHIVEMENTS} achievments
 					</span>
 				</div>
 			</div>
