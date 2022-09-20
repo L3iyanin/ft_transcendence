@@ -1,7 +1,7 @@
 import { players } from "../../../../utils/data/Players";
 import Stat from "../../../Stat/Stat";
 
-const Friend = ({ user }: IFriendProps) => {
+const Friend :React.FC < {user : IGamePlayer} > = ({ user }) => {
 	return (
 		<article className="container w-full flex justify-between items-center text-white">
 			<div className="container w-5/12 m-2 flex justify-start items-center gap-4">

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ReactComponent as Unlocked } from "../../../../assets/icons/Unlocked.svg";
 import { ReactComponent as Locked } from "../../../../assets/icons/Locked.svg";
 
-const Achievement = ({ achievement }: IAchievementProps) => {
+const Achievement : React.FC < {achievement : IAchievement} > = ({ achievement }) => {
 	const { name, achieved, description, imgUrl } = achievement;
 
 	const { t } = useTranslation();
