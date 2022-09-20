@@ -10,7 +10,7 @@ const Router: React.FC = () => {
 		<>
 			<BrowserRouter>
 				<Routes>
-					<Route path="/game" element={<Game />} />
+					{/* <Route path="/game" element={<Game />} /> */}
 					<Route path="/profile" element={<Profile />} />
 					<Route path="/settings" element={<Settings />} />
 					<Route path="/" element={<Landing />} />
