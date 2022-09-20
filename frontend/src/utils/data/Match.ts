@@ -42,6 +42,16 @@ export const matches:IGameMatch[] = [
 		date: new Date("2022-12-12T23:50:21.817Z"),
 		type: GameType.Wano
 	},
+	{
+		player1: players[1],
+		player2: players[3],
+		player1Score: 7,
+		player2Score: 2,
+		isMatching: false,
+		isLive: true,
+		date: new Date("2022-12-12T23:50:21.817Z"),
+		type: GameType.Wano
+	},
 ]
 
 console.log(matches);

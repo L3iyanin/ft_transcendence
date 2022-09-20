@@ -4,7 +4,7 @@ const Player : React.FC <{username : string, avatar : string, className : string
 	return (
 		<div
 			className={
-				"container px-3 flex justify-start items-center gap-4 text-sm text-white " +
+				"container flex justify-start items-center gap-4 text-sm text-white " +
 				className
 			}
 		>

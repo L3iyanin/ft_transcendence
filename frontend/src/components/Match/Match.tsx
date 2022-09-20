@@ -8,7 +8,7 @@ const Match : React.FC <{match : IGameMatch, className : string, scoreStyle : st
 	return (
 		<article
 			className={
-				"container m-0 pr-3 pl-5 py-2 flex justify-center items-center border rounded-lg " +
+				"container mb-2 mt-1 pr-3 pl-5 py-1 flex justify-center items-center border rounded-lg " +
 				className
 			}
 		>
@@ -28,7 +28,7 @@ const Match : React.FC <{match : IGameMatch, className : string, scoreStyle : st
 					avatar={winner.imageUrl}
 					className="flex-row-reverse"
 				/>
-				<FirstCrown className="h-16 w-32 "/>
+				<FirstCrown className="h-16 w-28 "/>
 			</div>
 		</article>
 	);

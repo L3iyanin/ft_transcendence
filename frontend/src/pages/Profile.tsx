@@ -14,7 +14,7 @@ const Profile = () => {
 			<NavBar />
 			<main className="container flex flex-col justify-between items-center gap-16">
 				<section className="container flex justify-between items-center gap-14">
-					<UserCard>{players[0]}</UserCard>
+					<UserCard user={players[0]}></UserCard>
 					<LastMatches>{matches}</LastMatches>
 				</section>
 				<section className="container flex justify-between items-center gap-4">
