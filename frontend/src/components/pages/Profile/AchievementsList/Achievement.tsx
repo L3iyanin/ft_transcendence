@@ -9,24 +9,19 @@ const Achievement: React.FC<{ achievement: IAchievement }> = ({
 	const { name, achieved, description, imgUrl } = achievement;
 
 	const { t } = useTranslation();
-	const opacity = "opacity-" + String(achieved ? 100 : 20);
-	console.log(opacity);
 	return (
 		<article
-			className={
-				"container w-full my-5 px-2 flex justify-between items-center gap-4 text-white " 
-				+ opacity
-			}
+			className={`container w-full my-5 px-2 flex justify-between items-center gap-4 text-white ${achieved ? "opacity-100" : "opacity-20"}`}
 		>
-			<div className="container h-full w-4/6 m-0 px-0 flex justify-start items-center gap-2 text-sm">
-				<div className="relative h-[55px] w-[55px] rounded-lg bg-red">
+			<div className="container m-0 px-0 flex justify-start items-center gap-2 text-sm">
+				<div className="relative h-[55px] w-[55px] grow-0 shrink-0 rounded-lg bg-red">
 					<img
 						src={imgUrl}
 						alt={name + ": achievement image"}
-						className={"h-full w-full " + (achieved ? "" : "opacity-60")}
+						className={`h-[55px] w-[55px] ${achieved ? "" : "opacity-60"}`}
 					/>
 					{!achieved && (
-						<div className="absolute left-0 top-0 w-full h-full flex justify-center items-center opacity">
+						<div className="absolute left-0 top-0 h-[55px] w-[55px] flex justify-center items-center">
 							<Locked className="w-[20px] h-[30px]" />
 						</div>
 					)}
@@ -36,7 +31,7 @@ const Achievement: React.FC<{ achievement: IAchievement }> = ({
 					<p className="text-xs">{t(name)}</p>
 				</div>
 			</div>
-			<div className="container h-full w-1/4 m-0 flex justify-end items-center gap-1 text-xs">
+			<div className="container h-full m-0 flex justify-end items-center gap-1 text-xs">
 				<p>{achieved ? t("Unlocked") : t("locked")}</p>
 				{achieved ? (
 					<Unlocked className="h-2.5 w-2.5" />

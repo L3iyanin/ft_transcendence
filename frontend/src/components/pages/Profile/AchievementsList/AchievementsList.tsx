@@ -9,8 +9,8 @@ const AchievementsList : React.FC < {achievements : IAchievement[]} > = ({ achie
 				{t("Achievements")}
 			</h2>
 			<div className="container max-h-[410px] pl-6 pr-3 rounded-lg overflow-y-auto">
-				{achievements.map((achievement: IAchievement) => (
-					<Achievement achievement={achievement} />
+				{achievements.map((achievement: IAchievement, index) => (
+					<Achievement key={index} achievement={achievement} />
 				))}
 			</div>
 		</section>
