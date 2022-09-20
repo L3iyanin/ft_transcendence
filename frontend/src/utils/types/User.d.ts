@@ -25,3 +25,19 @@ interface IUser {
     members?: IMember[],
     messages?: Message[],
 }
+
+interface IUserState {
+	user: UserInterface | null;
+	isLoggedIn: boolean;
+	isLoading: boolean;
+}
+
+interface ISettingsState {
+	lng: LanguagesEnum;
+}
+
+interface UserInterface {
+	username: string,
+	fullName: string,
+	expiresIn?: string,
+}

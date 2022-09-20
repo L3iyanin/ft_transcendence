@@ -81,5 +81,6 @@
 	},
 	"classicGame": "Marineford Pong",
 	"vipGame": "Wano Pong",
-	"pongInvitation": "You've been invited to play a pong game"
+	"pongInvitation": "You've been invited to play a pong game",
+	"signInSuccess": "You login success !!"
 }

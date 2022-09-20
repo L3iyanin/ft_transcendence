@@ -26,11 +26,11 @@
 		"channels": "القنوات",
 		"publicChannel": "قناة عامة",
 		"typeMessage": "اكتب رسالتك هنا",
-		"protectedChannel": "Protected Channel",
-		"privateChannel": "Private Channel",
-		"seeProfile": "See Profile",
-		"inviteToPlay": "Invite to play",
-		"playNow": "Play Now"
+		"protectedChannel": "قناة محمية",
+		"privateChannel": "قناة خاصة",
+		"seeProfile": "عرض الملف الشخصي",
+		"inviteToPlay": "دعوة للعب",
+		"playNow": "العب الآن"
 	},
 	"gamePage": {
 		"goalsToWin": "أهداف لتفوز"
@@ -39,7 +39,7 @@
 		"channelSettings": "اعدادات القناة"
 	},
 	"footer": {
-		"textOne": "تم تطويره ب💪🏼 بواسطة الضعاف",
+		"textOne": "تم تطويره ب 💪🏼 بواسطة الضعاف",
 		"textTwo": "1337 المستقبل في تحميل"
 	}
 }
