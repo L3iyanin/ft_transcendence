@@ -6,7 +6,7 @@ const MAX_ACHIVEMENTS = import.meta.env.VITE_APP_MAX_ACHIVEMENTS;
 
 const UserCard: React.FC <{user: IUser}> = ({ user: user }) => {
 	return (
-		<section className="container m-2 min-w-[250px] w-[350px] h-[395px] rounded-lg flex flex-col justify-between gap-3 bg-dark-60">
+		<section className="container m-2 min-w-[250px] w-[350px] h-[332px] rounded-lg flex flex-col justify-between gap-3 bg-dark-60">
 			<div className="container m-0 pt-10 flex flex-col items-center justify-center gap-3 text-white">
 				<img
 					src={user.imgUrl}
