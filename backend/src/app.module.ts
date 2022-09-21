@@ -6,6 +6,8 @@ import { AcceptLanguageResolver, I18nJsonLoader, I18nModule, QueryResolver } fro
 import * as path from 'path';
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
+// import { ChatGateway } from './chat/chat.gateway';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
 	imports: [
@@ -23,9 +25,11 @@ import { join } from "path";
 		}),
 		UsersModule,
 		AuthModuls,
+		ChatModule,
 		ServeStaticModule.forRoot({
 			rootPath : join(__dirname, "..", "../public")
-		})
+		}),
 	],
+	// providers: [ChatGateway],
 })
 export class AppModule {}
