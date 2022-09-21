@@ -24,6 +24,10 @@
 		"teamMateThree": "khalid benlyazid",
 		"teamMateFour": "imran baali"
 	},
+	"homePage" : {
+		"LiveMatches" : "Live Matches:",
+		"SeeMatchLive" : "See match live"
+	},
 	"gamePage": {
 		"goalsToWin": "Goals to win",
 		"watchTheMatch": "Watching The Match"

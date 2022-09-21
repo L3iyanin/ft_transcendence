@@ -2,9 +2,7 @@
 const Player : React.FC <{username : string, avatar : string, className : string }> = ({ username, avatar, className }) => {
 	return (
 		<div
-			className={
-				"container flex justify-start items-center gap-4 text-sm text-white " +
-				className
+			className={`container flex justify-start items-center gap-4 text-sm text-white ${className}`
 			}
 		>
 			<img
