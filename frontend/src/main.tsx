@@ -8,6 +8,7 @@ import axios from "axios";
 import { LNG_KEY } from "./utils/constants/settings";
 
 axios.defaults.baseURL = `${import.meta.env.VITE_APP_API_BASE_URL}`;
+axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(
 	(config: any) => {
@@ -24,8 +25,8 @@ axios.interceptors.request.use(
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	// <React.StrictMode>
-	<Provider store={store}>
-		<App />
-	</Provider>
+		<Provider store={store}>
+			<App />
+		</Provider>
 	// </React.StrictMode>
 );
