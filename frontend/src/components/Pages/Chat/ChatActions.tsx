@@ -4,7 +4,7 @@ import { ReactComponent as CogIcon } from "../../../assets/icons/cog.svg";
 import { ReactComponent as PlayIcon } from "../../../assets/icons/play.svg";
 import { ReactComponent as AddIcon } from "../../../assets/icons/add.svg";
 import { useTranslation } from "react-i18next";
-import { ChannleStatusEnum } from "../../../utils/constants/enum";
+import { ChannleTypesEnum } from "../../../utils/constants/enum";
 
 const ChatActions: React.FC<{
 	currentChannel: IChatChannel;
@@ -22,18 +22,18 @@ const ChatActions: React.FC<{
 					alt={currentChannel.name}
 				/>
 				
-				{currentChannel.status === ChannleStatusEnum.DM && (
+				{currentChannel.status === ChannleTypesEnum.DM && (
 					<span className="text-grey-2 font-bold">@{username ? username : currentChannel.name }</span>
 				)}
 
-				{currentChannel.status !== ChannleStatusEnum.DM && (
+				{currentChannel.status !== ChannleTypesEnum.DM && (
 					<span className="text-grey-2 font-bold">
 						@{currentChannel.name}
 					</span>
 				)}
 			</div>
 			<div className="flex gap-4">
-				{currentChannel.status === ChannleStatusEnum.DM && (
+				{currentChannel.status === ChannleTypesEnum.DM && (
 					<>
 						<ButtonWithIcon
 							className="bg-yellow"
@@ -47,14 +47,14 @@ const ChatActions: React.FC<{
 						/>
 					</>
 				)}
-				{currentChannel.status !== ChannleStatusEnum.BOTONDM && currentChannel.status !== ChannleStatusEnum.BOTONCHANNEL && currentChannel.status !== ChannleStatusEnum.DM && (
+				{currentChannel.status !== ChannleTypesEnum.DM_BOT && currentChannel.status !== ChannleTypesEnum.CHANNEL_BOT && currentChannel.status !== ChannleTypesEnum.DM && (
 					<ButtonWithIcon
 						className="bg-yellow"
 						icon={<CogIcon className=" " />}
 						label={t("chatPage.channelSettings")}
 					/>
 				)}
-				{currentChannel.status !== ChannleStatusEnum.DM && currentChannel.status !== ChannleStatusEnum.BOTONDM  &&
+				{currentChannel.status !== ChannleTypesEnum.DM && currentChannel.status !== ChannleTypesEnum.DM_BOT  &&
 					<ButtonWithIcon
 						className="bg-red text-white"
 						onClick={onOpenCreateChannelHandler}

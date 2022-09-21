@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ChannleStatusEnum } from "../utils/constants/enum";
+import { ChannleTypesEnum } from "../utils/constants/enum";
 
 const useBotChannel = (): IChatChannel => {
 
@@ -50,7 +50,7 @@ const useBotChannel = (): IChatChannel => {
 			name: t("chatPage.bot.name"),
 			members: members,
 			messages: messages,
-			status: ChannleStatusEnum.BOTONDM,
+			status: ChannleTypesEnum.DM_BOT,
 			imgUrl: `https://myanimelist.tech/api/avatar?name=${t("chatPage.bot.name")}&animeName=Inazuma_Eleven`,
 		}
 	);
