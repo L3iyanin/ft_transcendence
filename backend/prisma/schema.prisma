@@ -24,7 +24,6 @@ model User {
     friendRequests         User[]        @relation("friendRequests")
     friendRequestsRelation User[]        @relation("friendRequests")
     achievements           Achievement[]
-    createdChannles        Channel[]
     members                Member[]
 }
 
@@ -49,19 +48,16 @@ model Achievement {
 }
 
 model Channel {
-    id            Int           @id @default(autoincrement())
-    name          String // in case of dm, it will be the name of the other user, in case of group, it will be the name of the group
-    imgUrl        String // same as above
-    owner         User          @relation(fields: [userId], references: [id])
-    userId        Int
-    members       Member[]
-    messages      Message[]
-    status        ChannleStatus
-    password      String?
-    lastMessagdID Int?
+    id       Int         @id @default(autoincrement())
+    name     String      @unique // in case of dm, it will be the name of the other user, in case of group, it will be the name of the group
+    imgUrl   String // same as above
+    members  Member[]
+    messages Message[]
+    type     ChannelType
+    password String?
 }
 
-enum ChannleStatus {
+enum ChannelType {
     DM
     PUBLIC
     PRIVATE
@@ -81,6 +77,7 @@ model Member {
 }
 
 enum MemberStatus {
+    BLOCKED
     BANNED
     MUTED
     NONE
@@ -95,9 +92,9 @@ enum Roles {
 model Message {
     id        Int      @id @default(autoincrement())
     content   String
-    sender    Member   @relation(fields: [memberId], references: [id])
+    from      Member   @relation(fields: [memberId], references: [id])
     channel   Channel  @relation(fields: [channelId], references: [id])
-    date      DateTime @default(now())
     channelId Int
     memberId  Int
+    createdAt DateTime @default(now())
 }
