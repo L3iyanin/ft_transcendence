@@ -26,7 +26,6 @@ model User {
     achievements           Achievement[]
     createdChannles        Channel[]
     members                Member[]
-    messages               Message[]
 }
 
 model Match {
@@ -51,14 +50,15 @@ model Achievement {
 
 model Channel {
     id            Int           @id @default(autoincrement())
-    name          String
+    name          String // in case of dm, it will be the name of the other user, in case of group, it will be the name of the group
+    imgUrl        String // same as above
     owner         User          @relation(fields: [userId], references: [id])
     userId        Int
     members       Member[]
     messages      Message[]
     status        ChannleStatus
-    password      String
-    lastMessagdID Int
+    password      String?
+    lastMessagdID Int?
 }
 
 enum ChannleStatus {
@@ -77,6 +77,7 @@ model Member {
     Channel   Channel      @relation(fields: [channelId], references: [id])
     channelId Int
     userId    Int
+    messages  Message[]
 }
 
 enum MemberStatus {
@@ -94,9 +95,9 @@ enum Roles {
 model Message {
     id        Int      @id @default(autoincrement())
     content   String
-    sender    User     @relation(fields: [userId], references: [id])
+    sender    Member   @relation(fields: [memberId], references: [id])
     channel   Channel  @relation(fields: [channelId], references: [id])
     date      DateTime @default(now())
     channelId Int
-    userId    Int
+    memberId  Int
 }

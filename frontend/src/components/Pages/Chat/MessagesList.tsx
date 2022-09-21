@@ -1,14 +1,17 @@
+import { useTranslation } from "react-i18next";
 import ButtonWithIcon from "../../UI/Buttons/ButtonWithIcon";
 import Input from "../../UI/inputs/Input";
 import MessageCard from "./MessageCard";
 
 const MessagesList: React.FC<{
 	messages: IMessage[];
-}> = ({ messages }) => {
-	const message = messages[0];
+	disableSend?: boolean;
+}> = ({ messages, disableSend }) => {
+
+	const { t } = useTranslation();
 
 	return (
-		<div className="flex flex-col bg-dark-60 mt-5 rounded-2xl p-5 text-white h-[70vh] overflow-y-auto">
+		<div className="flex flex-col bg-dark-60 mt-5 rounded-2xl p-5 text-white h-[75vh] overflow-y-auto">
 			<div className="overflow-auto">
 				{
 					messages.map((message) => (
@@ -16,8 +19,8 @@ const MessagesList: React.FC<{
 					))
 				}
 			</div>
-			<div className="mt-auto flex gap-4">
-				<Input type="text" placeholder="Type a message..." />
+			{!disableSend && <div className="mt-auto flex gap-4">
+				<Input type="text" placeholder={t("chatPage.typeMessage")} />
 				<ButtonWithIcon
 					icon={
 						<img
@@ -25,10 +28,10 @@ const MessagesList: React.FC<{
 							alt="muchi muchi"
 						/>
 					}
-					label="Send"
+					label={t("send")}
 					className="bg-white text-dark-60 !rounded-lg"
 				/>
-			</div>
+			</div>}
 		</div>
 	);
 };
