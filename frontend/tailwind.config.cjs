@@ -3,6 +3,9 @@ module.exports = {
 	mode: "jit",
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 	theme: {
+		letterSpacing: {
+			superwide : '0.5em'
+		},
 		container: {
 			center: true,
 		},
