@@ -15,10 +15,10 @@ const FirendsList: React.FC<{ friends: IGamePlayer[] }> = ({
 				{friends.map((friend, index, array) => {
 					if (index < array.length - 1) {
 						return (
-							<>
-								<Friend key={index} user={friend} />
+							<div  key={index}>
+								<Friend user={friend} />
 								<hr className="my-2 rounded-md border-dark-blue border-t-4" />
-							</>
+							</div>
 						);
 					} else {
 						return <Friend key={index} user={friend} />;
