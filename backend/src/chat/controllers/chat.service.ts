@@ -46,6 +46,7 @@ export class ChatService {
 						(member) => member.user.id !== userId
 					).user.imgUrl;
 				}
+			});
 
 			return {
 				channels,
