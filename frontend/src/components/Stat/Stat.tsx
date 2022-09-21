@@ -21,7 +21,7 @@ const Stat: React.FC < {stat : string, qty : number} > = (props) => {
 	return (
 		<div className="flex items-center gap-2">
 			{ statIcon }
-			<span className="text-xs">{ !isOnline ? props.qty + " " : ""} { props.stat }</span>
+			<span className="">{ !isOnline ? props.qty + " " : ""} { props.stat }</span>
 		</div>
 	);
 }

@@ -31,8 +31,8 @@ interface IGameWatcher {
 
 
 interface IGameMatch {
-	player1: IGamePlayer;
-	player2: IGamePlayer;
+	player1: IUser;
+	player2: IUser;
 	player1Score: number;
 	player2Score: number;
 	isMatching: boolean;

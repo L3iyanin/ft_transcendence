@@ -3,7 +3,7 @@ const Player : React.FC <{username : string, avatar : string, className : string
 	return (
 		<div
 			className={
-				"container flex justify-start items-center gap-4 text-sm text-white " +
+				"w-full flex justify-start items-center gap-4 text-sm text-white " +
 				className
 			}
 		>
@@ -12,7 +12,7 @@ const Player : React.FC <{username : string, avatar : string, className : string
 				alt={username + ": avatar"}
 				className="block h-[49px] w-[49px] rounded-full"
 			/>
-			<p>{username}</p>
+			<p className="text-lg">{username}</p>
 		</div>
 	);
 };

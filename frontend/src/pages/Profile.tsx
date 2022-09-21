@@ -13,17 +13,19 @@ import Footer from "../components/Footer/Footer";
 const Profile = () => {
 	return (
 		<>
-			<NavBar />
-			<main className="container flex flex-col justify-between items-center gap-16">
-				<section className="container flex justify-between items-center gap-14">
-					<UserCard user={players[0]} />
-					<LastMatches matches={matches} />
-				</section>
-				<section className="container flex justify-between items-center gap-4">
-					<FirendsList friends={players} />
-					<AchievementsList achievements={achievements} />
-				</section>
-			</main>
+			<div className="container">
+				<NavBar />
+				<main className="flex flex-col justify-between items-center gap-y-16">
+					<section className="w-full flex justify-between items-center gap-14">
+						<UserCard user={players[0]} />
+						<LastMatches matches={matches} />
+					</section>
+					<section className="gap-14 w-full flex justify-between items-center">
+						<FirendsList friends={players} />
+						<AchievementsList achievements={achievements} />
+					</section>
+				</main>
+			</div>
 			<Footer />
 		</>
 	);
