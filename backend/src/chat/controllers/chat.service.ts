@@ -29,8 +29,25 @@ export class ChatService {
 						},
 						take: 1,
 					},
+					members: {
+						include: {
+							user: true,
+						},
+					},
 				},
 			});
+
+			channels.forEach((channel) => {
+				if (channel.type === "DM") {
+					channel.name = channel.members.find(
+						(member) => member.user.id !== userId
+					).user.username;
+					channel.imgUrl = channel.members.find(
+						(member) => member.user.id !== userId
+					).user.imgUrl;
+				}
+			});
+
 			return {
 				channels,
 				message: "channels fetched successfully",
