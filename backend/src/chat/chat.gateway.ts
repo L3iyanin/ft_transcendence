@@ -8,6 +8,7 @@ import { Message } from "./dto/message.dto";
 import { Server, Socket } from "socket.io";
 import { ChatService } from "./chat.service";
 import { JsonWebTokenError } from "jsonwebtoken";
+import { NewUser } from "./dto/newUser.dto";
 
 @WebSocketGateway({
 	cors: {
@@ -21,9 +22,10 @@ export class ChatGateway {
 	server: Server;
 
 	@SubscribeMessage("connectUser")
-	addConnectedUser(client: Socket, userId: number) {
-		console.log(client.id + "   " + userId);
-		this.chatService.addUerToOnlineUsers(userId, client.id, client);
+	addConnectedUser(client: Socket, newUser : NewUser) {
+		console.log(client.id + "   " + newUser.user.id);
+		// this.chatService.addUerToOnlineUsers(userId, client.id, client);
+		// client.broadcast()
 	}
 
 	@SubscribeMessage("disconnectUser")
