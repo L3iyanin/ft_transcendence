@@ -2,6 +2,9 @@
 
 import { PrismaClient } from "@prisma/client";
 
+import { faker } from '@faker-js/faker';
+
+
 // initialize Prisma Client
 const prisma = new PrismaClient();
 
@@ -20,43 +23,83 @@ async function addAchivements() {
 			imgUrl: "/home/image1.jpg",
 		},
 	});
-	console.log({ achivement0, achivement1 });
+	const achivement2 = await prisma.achievement.create({
+		data: {
+			name: "achivement2",
+			description: "achivement2 desc",
+			imgUrl: "/home/image2.jpg",
+		},
+	});
+	const achivement3 = await prisma.achievement.create({
+		data: {
+			name: "achivement3",
+			description: "achivement3 desc",
+			imgUrl: "/home/image3.jpg",
+		},
+	});
+	console.table({ achivement0, achivement1 , achivement2, achivement3});
 }
 
-async function addUsers() {
-	const user0 = await prisma.user.create({
-		data: {
-			username: "user0",
-			fullName: "fdfdff",
-			imgUrl: "/path/image/profile",
-			login: "user0",
-		},
-	});
-	const user1 = await prisma.user.create({
-		data: {
-			username: "user1",
-			fullName: "cdcdcd",
-			imgUrl: "/path/image/profile",
-			login: "user1",
-		},
-	});
-	const user2 = await prisma.user.create({
-		data: {
-			username: "user2",
-			fullName: "fdfdfd",
-			imgUrl: "/path/image/profile",
-			login: "user2",
-		},
-	});
-	console.log({ user0, user1, user2 });
+async function addUsers(howManyUsers : number = 10) {
+
+	for (let i = 0; i < howManyUsers; i++) {
+		const username = faker.internet.userName();
+		const user = await prisma.user.create({
+			data: {
+				username: username,
+				fullName: faker.name.fullName(),
+				imgUrl: faker.image.avatar(),
+				login: username,
+			},
+		});
+		console.log("user created: ", user);
+	}
+}
+
+async function addAchivementsToUser(userId : number){
+	try {
+		const  userUpdated = await prisma.user.update(
+			{
+				where : {id : userId},
+				data : {
+					achievements : {
+						connect : [{id : 1}, {id : 2}]
+					}
+				}
+			}
+		)
+		console.table(userUpdated)
+	}
+	catch(exception){
+		console.log(exception)
+	}
+}
+
+async function addAFriendsToUser(userId : number){
+	try {
+		const  userUpdated = await prisma.user.update(
+			{
+				where : {id : userId},
+				data : {
+					friends : {
+						connect : [{id : 5}, {id : 4},  {id : 3}]
+					}
+				}
+			}
+		)
+		console.table(userUpdated)
+	}
+	catch(exception){
+		console.log(exception)
+	}
 }
 
 async function main() {
-	await addAchivements();
+	// await addAchivements();
 	await addUsers();
+	// await addAchivementsToUser(2)
+	// await addAFriendsToUser(2)
 }
-
-// execute the main function
 main()
 	.catch((e) => {
 		console.error(e);

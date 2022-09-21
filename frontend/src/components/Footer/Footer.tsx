@@ -1,18 +1,23 @@
 import { useTranslation } from "react-i18next";
+import { LanguagesEnum } from "../../utils/constants/enum";
+import { useDispatch } from "react-redux";
+import { changeLng } from "../../reducers/SettingsSlice";
 
 const Footer = () => {
-	const { t, i18n } = useTranslation();
+	const { t } = useTranslation();
+
+	const dispatch = useDispatch();
 
 	const changeLanguageToEnglish = () => {
-		i18n.changeLanguage("en");
+		dispatch(changeLng(LanguagesEnum.EN));
 	};
 
 	const changeLanguageToArabic = () => {
-		i18n.changeLanguage("ar");
+		dispatch(changeLng(LanguagesEnum.AR));
 	};
 
 	const changeLanguageToTifinagh = () => {
-		i18n.changeLanguage("ti");
+		dispatch(changeLng(LanguagesEnum.TI));
 	};
 
 	return (

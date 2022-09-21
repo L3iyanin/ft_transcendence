@@ -9,9 +9,9 @@ const TeamSection = () => {
 		{
 			imageUrl: "/imgs/team/yarroubi.png",
 			fullName: t("landingPage.teamMateOne"),
-			twitterLink: '',
-			githubLink: '',
-			websiteLink: '',
+			twitterLink: 'https://github.com/procrastinator-101',
+			githubLink: 'https://github.com/procrastinator-101',
+			websiteLink: 'https://github.com/procrastinator-101',
 		},
 		{
 			imageUrl: "/imgs/team/aait-hmi.png",
@@ -23,9 +23,9 @@ const TeamSection = () => {
 		{
 			imageUrl: "/imgs/team/kbenlyaz.png",
 			fullName: t("landingPage.teamMateThree"),
-			twitterLink: '',
-			githubLink: '',
-			websiteLink: '',
+			twitterLink: 'https://github.com/benlyazid',
+			githubLink: 'https://github.com/benlyazid',
+			websiteLink: 'https://benlyazid.github.io/',
 		},
 		{
 			imageUrl: "/imgs/team/ibaali.png",

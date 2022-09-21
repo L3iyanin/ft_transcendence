@@ -32,3 +32,5 @@ export const INITIAL_BALL_Y = PLAY_GROUND_HEIGHT / 2 - BALL_SIZE / 2 + PLAYGROUN
 export const PLAYER_ONE = 1;
 
 export const PLAYER_TWO = 2;
+
+export const PLAYER_FIRST_POSITION = 313;

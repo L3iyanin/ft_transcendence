@@ -3,11 +3,15 @@ include .env
 
 Author = l3iyanin
 
-all: volumes
+all: volumes up prisma
+	
+
+update_env:
 	@ cp ./backend/.env.sample ./backend/.env
 	@echo "✅ .env for backend with database url \033[1;32m[Created]\033[0m"
-	@docker-compose up
 
+prisma:
+	cd backend/prisma && echo $(PWD) && npx  prisma migrate dev --name "init" && cd ../..
 up:
 	@docker-compose up
 
@@ -25,6 +29,9 @@ clean: down
 fclean: clean
 	@rm -rf $(LOCAL_DATABASE_VLPATH)
 	@bash dockerCleanup.sh
+
+drop:
+	@rm -rf $(LOCAL_DATABASE_VLPATH)
 
 re: fclean all
 
