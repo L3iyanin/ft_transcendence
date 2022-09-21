@@ -49,16 +49,15 @@ model Achievement {
 }
 
 model Channel {
-    id            Int           @id @default(autoincrement())
-    name          String        @unique // in case of dm, it will be the name of the other user, in case of group, it will be the name of the group
-    imgUrl        String // same as above
-    owner         User          @relation(fields: [userId], references: [id])
-    userId        Int
-    members       Member[]
-    messages      Message[]
-    status        ChannleStatus
-    password      String?
-    lastMessagdID Int?
+    id       Int           @id @default(autoincrement())
+    name     String        @unique // in case of dm, it will be the name of the other user, in case of group, it will be the name of the group
+    imgUrl   String // same as above
+    owner    User          @relation(fields: [userId], references: [id])
+    userId   Int
+    members  Member[]
+    messages Message[]
+    status   ChannleStatus
+    password String?
 }
 
 enum ChannleStatus {
@@ -97,7 +96,7 @@ model Message {
     content   String
     sender    Member   @relation(fields: [memberId], references: [id])
     channel   Channel  @relation(fields: [channelId], references: [id])
-    date      DateTime @default(now())
     channelId Int
     memberId  Int
+    createdAt DateTime @default(now())
 }
