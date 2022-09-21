@@ -4,11 +4,11 @@ import {
 	WebSocketGateway,
 	WebSocketServer,
 } from "@nestjs/websockets";
-import { Message } from "./dto/message.dto";
+import { Message } from "../dto/message.dto";
 import { Server, Socket } from "socket.io";
 import { ChatService } from "./chat.service";
 import { JsonWebTokenError } from "jsonwebtoken";
-import { NewUser } from "./dto/newUser.dto";
+import { NewUser } from "../dto/newUser.dto";
 
 @WebSocketGateway({
 	cors: {
