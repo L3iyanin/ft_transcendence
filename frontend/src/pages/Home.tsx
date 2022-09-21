@@ -7,6 +7,7 @@ import { users } from "../utils/data/Users"
 import { matches } from "../utils/data/Match"
 import GameMode from "../components/Pages/Home/GameMode/GameMode";
 import { MatchTypeEnum } from "../utils/constants/enum";
+import LastMatches from "../components/Pages/Home/LastMatches/LastMatches";
 
 const Home: React.FC = () => {
 
@@ -21,6 +22,9 @@ const Home: React.FC = () => {
 				<section className="container flex justify-between items-center gap-4">
 					<GameMode mode={MatchTypeEnum.Classic} />
 					<GameMode mode={MatchTypeEnum.Vip} />
+				</section>
+				<section className="container flex justify-between items-center gap-4">
+					<LastMatches matches={matches} />
 				</section>
 			</main>
 			<Footer />
