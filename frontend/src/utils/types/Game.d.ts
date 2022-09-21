@@ -3,11 +3,12 @@ interface IGamePlayer {
 	id: string;
 	fullName: string;
 	username: string;
-	score: number;
+	score?: number;
 	imageUrl: string;
 	wins: number;
 	losses: number;
 	achievements: number;
+	
 }
 
 interface IGameSettings {

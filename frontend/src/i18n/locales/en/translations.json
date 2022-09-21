@@ -12,6 +12,10 @@
 	"search": "Search",
 	"admin": "admin",
 	"password": "Password",
+	"wins": "wins",
+	"loses": "loses",
+	"friends": "friends",
+	"online": "online",
 	"landingPage": {
 		"aboutParagrapOne": "Ft_transcendence is the last project in the commen core of 1337 School (42Network).",
 		"aboutParagrapTwo": "It's a Pong Multiplayer Game.",

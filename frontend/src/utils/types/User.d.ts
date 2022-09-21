@@ -12,11 +12,13 @@ interface IUser {
     username: string,
     fullName: string,
     imgUrl: string,
+	numberOfAchievements?: number,
     achievements?: IAchievement[]
     wins?: number,
     loses?: number,
     login?: string,
     twoFactorAuth?: boolean,
+	numberOfFriends?: number,
     friends?: IUser[],
     friendsRelation?: IUser[],
     friendRequests?: IUser[],
