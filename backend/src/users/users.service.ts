@@ -324,7 +324,7 @@ export class UsersService {
 			const name = file.originalname.split(".")[0];
 			const fileExtName = extname(file.originalname);
 			const fileName = `/${name}-${username}${fileExtName}`;
-			const filePath = join(process.env.BACKEND_URL, fileName);
+			const filePath = process.env.BACKEND_URL + fileName;
 			await prisma.user.update({
 				where: { id: userId },
 				data: { imgUrl: filePath },
