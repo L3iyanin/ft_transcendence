@@ -1,15 +1,14 @@
-import { HttpException, Injectable } from "@nestjs/common";
-import { PrismaClient } from "@prisma/client";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { Member, PrismaClient } from "@prisma/client";
 import { Socket } from "socket.io";
 import { Message } from "../dto/message.dto";
 import { User } from "../dto/user.dto";
-import { userWithSocket } from "../dto/userWithSocket.dto";
+import { UserWithSocket } from "../dto/userWithSocket.dto";
 
 const prisma = new PrismaClient();
 @Injectable()
 export class ChatService {
-	
-	onlineUsers: userWithSocket[] = [];
+	onlineUsers: UserWithSocket[] = [];
 	generateChannelName(memebrId1: number, memebrId2: number): string {
 		const channelName =
 			memebrId1 < memebrId2
@@ -29,34 +28,76 @@ export class ChatService {
 
 	addUserToOnlineUsers(newUser: User, socket: Socket) {
 		const alreadyExist = this.onlineUsers.some((user) => user.user.id == newUser.id);
-		if (alreadyExist) 
-			return;
+		if (alreadyExist) return;
 		this.onlineUsers.push({
 			user: newUser,
 			socket: socket,
 		});
 	}
-	
-	async saveMessageInDatabase(message : Message){
+
+	async saveMessageInDatabase(message: Message) {
 		try {
 			const messageSaved = await prisma.message.create({
-				data : {
-					content : message.content,
-					channel :{
+				data: {
+					content: message.content,
+					channel: {
 						connect: {
-							name : message.channelName					
-						}
+							name: message.channelName,
+						},
 					},
-					from : {
-						connect : {
-							id : message.userId
-						}
-					}
-				}
-			})
-		}
-		catch(err){
+					from: {
+						connect: {
+							id: message.userId,
+						},
+					},
+				},
+			});
+		} catch (err) {
 			throw new HttpException(err.response, err.status);
 		}
+	}
+
+	async getUserData(userId: number) {
+		try {
+			const user = await prisma.user.findUnique({
+				where: {
+					id: userId,
+				},
+			});
+			if (!user)
+				throw new HttpException("There is no user with is id", HttpStatus.BAD_REQUEST);
+			return user;
+		} catch (err) {
+			throw new HttpException(err.response, err.status);
+		}
+	}
+
+	async getChannelMembers(channelId: number) {
+		try {
+			const chat = await prisma.channel.findUnique({
+				where: {
+					id: channelId,
+				},
+				select: {
+					members: true,
+				},
+			});
+			//! check if it's baned
+			const memmbers = chat.members.filter((member) => member.status != "BANNED");
+			return memmbers;
+		} catch (err) {
+			throw new HttpException(err.response, err.status);
+		}
+	}
+
+	getsocketofMembers(memebers: Member[]): Socket[] {
+		const sockets: Socket[] = [];
+		memebers.forEach((member) => {
+			const memberId = member.id;
+			if (this.checkIfReceiverIsOnline(memberId)) {
+				sockets.push(this.getReceiverSocket(memberId));
+			}
+		});
+		return sockets;
 	}
 }
