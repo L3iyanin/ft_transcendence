@@ -140,7 +140,7 @@ export class UsersController {
 		@Req() req
 	): Promise<PostResponce> {
 		const userId = req.user.id;
-		if (file) return await this.userService.updateImageProfile(file, userId, req.user.username);
+		return await this.userService.updateImageProfile(file, userId, req.user.username);
 	}
 
 	@ApiResponse({ type: PostResponce })

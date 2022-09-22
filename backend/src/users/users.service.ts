@@ -319,7 +319,7 @@ export class UsersService {
 		file: Express.Multer.File,
 		userId: number,
 		username: string
-	): Promise<PostResponce> {
+	) {
 		try {
 			const name = file.originalname.split(".")[0];
 			const fileExtName = extname(file.originalname);
@@ -331,6 +331,7 @@ export class UsersService {
 			});
 			return {
 				message: "User avatar updated",
+				imgUrl : filePath
 			};
 		} catch (err) {
 			console.log(err);
