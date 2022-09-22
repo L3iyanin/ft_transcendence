@@ -11,18 +11,18 @@ datasource db {
 }
 
 model User {
-    id                     Int           @id @default(autoincrement())
-    username               String        @unique
-    fullName               String
-    login                  String        @unique
-    imgUrl                 String
-    wins                   Int           @default(0)
-    loses                  Int           @default(0)
-    twoFactorAuth          Boolean       @default(false)
-    friends                User[]        @relation("friends")
-    friendsRelation        User[]        @relation("friends")
-    achievements           Achievement[]
-    members                Member[]
+    id              Int           @id @default(autoincrement())
+    username        String        @unique
+    fullName        String
+    login           String        @unique
+    imgUrl          String
+    wins            Int           @default(0)
+    loses           Int           @default(0)
+    twoFactorAuth   Boolean       @default(false)
+    friends         User[]        @relation("friends")
+    friendsRelation User[]        @relation("friends")
+    achievements    Achievement[]
+    members         Member[]
 }
 
 model Match {
@@ -95,4 +95,5 @@ model Message {
     channelId Int
     memberId  Int
     createdAt DateTime @default(now())
+    invite    Boolean  @default(false)
 }

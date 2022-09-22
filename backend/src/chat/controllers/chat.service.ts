@@ -65,7 +65,15 @@ export class ChatService {
 					id: channelId,
 				},
 				include: {
-					messages: true,
+					messages: {
+						include: {
+							from: {
+								include: {
+									user: true,
+								},
+							}
+						},
+					},
 					members: {
 						select: {
 							userId: true,
@@ -73,6 +81,8 @@ export class ChatService {
 					},
 				},
 			});
+
+
 			if (channel.members.some((member) => member.userId === userId)) {
 				return {
 					messages: channel.messages,
