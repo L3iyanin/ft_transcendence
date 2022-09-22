@@ -76,7 +76,7 @@ export class UsersService {
 				loses: user.loses,
 				numberOfAchievements: user.achievements.length,
 				numberOfFriends: user.friends.length,
-				status
+				userStatus: status,
 			};
 			return userInfo;
 		} catch (err) {
