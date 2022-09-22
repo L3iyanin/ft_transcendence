@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Req, UseGuards } from "@nestjs/common";
 import { ApiProperty, ApiTags } from "@nestjs/swagger";
 import { UserGuard } from "src/users/user.guard";
+import { CreateChannelDto } from "../dto/chat.dto";
 import { ChatService } from "./chat.service";
 
 @UseGuards(UserGuard)
@@ -38,11 +39,7 @@ export class ChatController {
 	createGroupChannel(
 		@Req() req,
 		@Body()
-		preferences: {
-			name: string;
-			type: "PUBLIC" | "PRIVATE" | "PROTECTED";
-			password?: string;
-		}
+		preferences: CreateChannelDto
 	) {
 		return this.chatService.createGroupChannel(req.user.id, preferences);
 	}
@@ -154,7 +151,11 @@ export class ChatController {
 	// change group name as an admin
 	@ApiProperty()
 	@Post("change-name/:channelId") // @ To be tested
-	changeGroupName(@Req() req, @Param("channelId", ParseIntPipe) channelId: number, @Body() name: string) {
+	changeGroupName(
+		@Req() req,
+		@Param("channelId", ParseIntPipe) channelId: number,
+		@Body() name: string
+	) {
 		return this.chatService.changeGroupName(req.user.id, channelId, name);
 	}
 
