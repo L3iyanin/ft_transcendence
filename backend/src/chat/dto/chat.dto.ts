@@ -17,3 +17,18 @@ export class CreateChannelDto {
 	@IsOptional()
 	password?: string;
 }
+
+export class MessageDto {
+	id: number;
+	content: string;
+	channelId: number;
+	sender: {
+		id: number;
+		username: string;
+		fullName: string;
+		login: string;
+		imgUrl: string;
+	};
+	date: Date;
+	invite?: boolean;
+}
