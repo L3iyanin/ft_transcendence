@@ -349,18 +349,19 @@ export class UsersService {
 		file: Express.Multer.File,
 		userId: number,
 		username: string
-	): Promise<PostResponce> {
+	) {
 		try {
 			const name = file.originalname.split(".")[0];
 			const fileExtName = extname(file.originalname);
 			const fileName = `/${name}-${username}${fileExtName}`;
-			const filePath = join(process.env.BACKEND_URL, fileName);
+			const filePath = process.env.BACKEND_URL + fileName;
 			await prisma.user.update({
 				where: { id: userId },
 				data: { imgUrl: filePath },
 			});
 			return {
 				message: "User avatar updated",
+				imgUrl : filePath
 			};
 		} catch (err) {
 			console.log(err);
