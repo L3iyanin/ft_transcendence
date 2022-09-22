@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import { ReactComponent as UploadIcon } from "../../../assets/icons/UploadAvatar.svg";
 import { getProfileSettings, updateProfileSettings } from "../../../services/profile/settings";
 import { isResNotOk } from "../../../utils/helper/httpHelper";
@@ -33,8 +34,29 @@ const UserSettingsCard: React.FC<{
 		);
 
 		updateProfileSettings(formData)
-		.then(res => console.log(res))
-		.catch(err => console.error(err))
+		.then(res => {
+			console.log(res)
+			if (isResNotOk(res)) {
+				ErrorAlert(res);
+				return ;
+			}
+			toast.success(res.message, {
+				position: toast.POSITION.TOP_CENTER,
+			});
+			setUser((prevState) => {
+				if (prevState) {
+					return {
+						...prevState,
+						imgUrl: res.imgUrl,
+					};
+				}
+				return null;
+			})
+		})
+		.catch(err => {
+			console.error(err);
+			ErrorAlert(err);
+		})
 	};
 
 	useEffect(() => {
