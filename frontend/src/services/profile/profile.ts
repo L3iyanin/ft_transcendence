@@ -29,3 +29,9 @@ export const startChat = (userId: string) => {
 		.then(res => res.data)
 		// .catch(err => console.error(`err`, err))
 }
+
+export const blockUser = (userId: string) => {
+	return axios.post(`/chat/block-dm/${userId}`)
+		.then(res => res.data)
+		// .catch(err => console.error(`err`, err))
+}

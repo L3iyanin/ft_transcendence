@@ -5,12 +5,12 @@ import { ReactComponent as AddIcon } from "../../../../assets/icons/add.svg";
 import { ReactComponent as UnLockedIcon } from "../../../../assets/icons/unlockDark.svg";
 import Stat from "../../../Stat/Stat";
 import { useEffect, useState } from "react";
-import { addFriend, getProfileInfo, startChat } from "../../../../services/profile/profile";
+import { addFriend, blockUser, getProfileInfo, startChat } from "../../../../services/profile/profile";
 import LoadingSpinner from "../../../UI/Loading/LoadingSpinner";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { isResNotOk } from "../../../../utils/helper/httpHelper";
-import ErrorAlert from "../../../UI/Error";
+import ErrorAlert, { ErrorAlertWithMessage } from "../../../UI/Error";
 import { useSelector } from "react-redux";
 import { users } from "../../../../utils/data/Users";
 import { UserStatusEnum } from "../../../../utils/constants/enum";
@@ -86,6 +86,21 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 		});
 	}
 
+	const blockUserHandler = () => {
+		blockUser(userId!)
+		.then(res => {
+			console.log(res);
+			SuccesAlert(res.message);
+			setUser(prevUser => ({
+				...prevUser!,
+				userStatus: UserStatusEnum.BLOCKED,
+			}))
+		})
+		.catch((err) => {
+			ErrorAlertWithMessage(err.response.data.message);
+		});
+	}
+
 	if (!user) {
 		return (
 			<section className="relative w-[395px] h-[368px] rounded-2xl flex flex-col bg-dark-60">
@@ -121,7 +136,7 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 				</div>
 			</div>
 			{ !isMe && user.userStatus === UserStatusEnum.NONE && <UserCardFooterForNONE addFriendHandler={addFriendHandler} /> }
-			{ !isMe && user.userStatus === UserStatusEnum.FRIEND && <UserCardFooterForFRIEND startChatHandler={startChatHandler} /> }
+			{ !isMe && user.userStatus === UserStatusEnum.FRIEND && <UserCardFooterForFRIEND startChatHandler={startChatHandler} blockUserHandler={blockUserHandler} /> }
 			{ !isMe && user.userStatus === UserStatusEnum.BLOCKED && <UserCardFooterForBLOCK /> }
 		</section>
 	);
@@ -131,7 +146,8 @@ export default UserCard;
 
 const UserCardFooterForFRIEND: React.FC<{
 	startChatHandler: () => void;
-}> = ({ startChatHandler }) => {
+	blockUserHandler: () => void;
+}> = ({ startChatHandler, blockUserHandler }) => {
 	const { t } = useTranslation();
 	return (
 		<footer className="container h-10 flex justify-center items-center gap-0">
@@ -139,7 +155,7 @@ const UserCardFooterForFRIEND: React.FC<{
 				<StartChatIcon className="" />
 				<p>{t("startchat")}</p>
 			</div>
-			<div className="cursor-pointer container py-3 rounded-br-2xl flex justify-center items-center gap-1 bg-red text-white">
+			<div onClick={blockUserHandler} className="cursor-pointer container py-3 rounded-br-2xl flex justify-center items-center gap-1 bg-red text-white">
 				<BlockUserIcon className="" />
 				<p>{t("blockUser")}</p>
 			</div>
