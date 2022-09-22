@@ -29,7 +29,7 @@ const FirendsList: React.FC<{ userId?: string }> = ({ userId }) => {
 			.catch((err) => {
 				ErrorAlert(err);
 			});
-	}, []);
+	}, [userId]);
 
 	if (friends === null) {
 		return (

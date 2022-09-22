@@ -18,6 +18,13 @@ const MessagesList: React.FC<{
 						<MessageCard key={message.id} message={message} />
 					))
 				}
+				{
+					messages.length === 0 && (
+						<div className="flex flex-col items-center gap-2">
+							<p className="text-center">{t("chatPage.noMessages")}</p>
+						</div>
+					)
+				}
 			</div>
 			{!disableSend && <div className="mt-auto flex gap-4">
 				<Input type="text" placeholder={t("chatPage.typeMessage")} />

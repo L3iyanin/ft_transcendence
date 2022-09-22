@@ -26,11 +26,12 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 
 	const [user, setUser] = useState<IUser | null>(null);
 
-	let isMe = LocalUserData.id === userId || userId === undefined;
+	let isMe = userId === undefined || LocalUserData.id === +userId;
 
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		isMe = LocalUserData.id === userId || userId === undefined;
 		const profileId = userId || LocalUserData.id;
 
 		getProfileInfo(profileId)
@@ -57,7 +58,7 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 			.catch((err) => {
 				ErrorAlert(err);
 			});
-	}, []);
+	}, [userId]);
 
 	const addFriendHandler = () => {
 		addFriend(userId!)

@@ -13,3 +13,10 @@ export const getChannels = () => {
 			.then(res => res.data)
 			// .catch(err => console.error(`err`, err))
 }
+
+export const getChannelMessages = (channelId: number) => {
+	return axios.get(`/chat/${channelId}`)
+			.then(res => res.data)
+			// .catch(err => console.error(`err`, err))
+}
+

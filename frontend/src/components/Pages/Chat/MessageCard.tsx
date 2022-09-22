@@ -14,19 +14,19 @@ const MessageCard: React.FC<{
 		<div className="flex gap-2 mb-5">
 			<img
 				className="w-[50px] h-[50px] rounded-full"
-				src={message.sender.user.imgUrl}
-				alt={message.sender.user.fullName}
+				src={message.from.user.imgUrl}
+				alt={message.from.user.fullName}
 			/>
 			<div className="flex flex-col justify-between">
 				<div className="flex gap-2 items-center">
 					<span className="font-bold">
-						{message.sender.user.username}
+						{message.from.user.username}
 					</span>
 					<span className="text-xs text-grey-2">
 						{moment(message.date).format("MMM D, YYYY [at] HH:mm")}
 					</span>
-					{message.sender.role &&
-						message.sender.role === RolesEnum.ADMIN && (
+					{message.from.role &&
+						message.from.role === RolesEnum.ADMIN && (
 							<div className="bg-red py-[2px] px-3 rounded-2xl flex items-center gap-1">
 								{" "}
 								<ShieldIcon />{" "}

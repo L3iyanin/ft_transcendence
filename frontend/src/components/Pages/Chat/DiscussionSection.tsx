@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import useBotChannel from "../../../hooks/useBotChannel";
 import CreateChannelPopup from "./CreateChannelPopup";
-import { getChannels } from "../../../services/chat/chat";
+import { getChannelMessages, getChannels } from "../../../services/chat/chat";
 
 const DiscussionSection: React.FC = () => {
 
@@ -28,19 +28,17 @@ const DiscussionSection: React.FC = () => {
 	const [activeChatOption, setActiveChatOption] = useState<ChatOptionsEnum>(
 		ChatOptionsEnum.DMS
 	);
-	// const [channels, setChannels] = useState<IChatChannel[]>(dmChannels);
+
 	const [currentChannel, setCurrentChannel] =
 		useState<IChatChannel>(botChannel);
 
 	const onSelectDMsConversationHandler = () => {
 		setActiveChatOption(ChatOptionsEnum.DMS);
-		// setChannels(dmChannels);
 		setCurrentChannel(botChannel);
 	};
 
 	const onSelectChannelsConversationHandler = () => {
 		setActiveChatOption(ChatOptionsEnum.CHANNELS);
-		// setChannels(GroupChannels);
 		setCurrentChannel(_ => {
 			return {
 				...botChannel,
@@ -50,7 +48,21 @@ const DiscussionSection: React.FC = () => {
 	};
 
 	const onSelectConversationHandler = (channel: IChatChannel) => {
-		setCurrentChannel(channel);
+		getChannelMessages(channel.id)
+		.then((res) => {
+				console.log(res);
+				setCurrentChannel(_ => {
+					const newChannel = {
+						...channel,
+						messages: res.messages,
+					}
+					return newChannel;
+				});
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+		console.log(channel);
 	};
 
 	const onOpenCreateChannelHandler = () => {
@@ -72,19 +84,14 @@ const DiscussionSection: React.FC = () => {
 					}
 				}
 
-				console.log(dms);
-
 				setChannelsOfDms(dms);
 				setChannelsOfGroups(groups);
 
-				// console.log(allChannels);
 			})
 			.catch((err) => {
 				console.error(err);
 			});
 	}, []);
-
-	console.log(ChatOptionsEnum.DMS);
 
 	return (
 		<div className="flex gap-4">

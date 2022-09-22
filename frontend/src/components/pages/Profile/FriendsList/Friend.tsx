@@ -1,12 +1,21 @@
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import Stat from "../../../Stat/Stat";
 
 const Friend :React.FC < {user : IUser} > = ({ user }) => {
 
 	const { t } = useTranslation();
 
+	const navigate = useNavigate();
+
+	const showUserProfileHandler = () => {
+		navigate(`/profile/${user.id}`);
+	}
+
+	console.log(user);
+
 	return (
-		<article className="w-full flex justify-between items-center text-white">
+		<article className="cursor-pointer w-full flex justify-between items-center text-white" onClick={showUserProfileHandler}>
 			<div className="my-2 flex justify-start items-center gap-4">
 				<img
 					src={user.imgUrl}
