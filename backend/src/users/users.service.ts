@@ -58,7 +58,9 @@ export class UsersService {
 					},
 				});
 				if (channel) {
-					const userInChannel = channel.members.find((member) => member.id === userId);
+					console.log(channel);
+					const userInChannel = channel.members.find((member) => member.userId === userId);
+					console.log(userInChannel);
 					if (userInChannel.status === "BLOCKED") {
 						status = "BLOCKED";
 					}

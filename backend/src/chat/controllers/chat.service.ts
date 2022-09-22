@@ -39,8 +39,6 @@ export class ChatService {
 				},
 			});
 
-			console.log(channels);
-
 			channels.forEach((channel) => {
 				if (channel.type === "DM") {
 					channel.name = channel.members.find(
