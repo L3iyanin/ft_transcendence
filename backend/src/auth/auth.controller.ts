@@ -27,7 +27,7 @@ export class AuthController {
 		res.cookie("jwt", token, { httpOnly: true });
 		return res.send({
 			status: 200,
-			data: userData,
+			data: user,
 		});
 	}
 }

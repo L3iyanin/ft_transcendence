@@ -50,7 +50,7 @@ model Achievement {
 model Channel {
     id       Int         @id @default(autoincrement())
     name     String      @unique // in case of dm, it will be the name of the other user, in case of group, it will be the name of the group
-    imgUrl   String // same as above
+    imgUrl   String? // same as above
     members  Member[]
     messages Message[]
     type     ChannelType

@@ -1,16 +1,15 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
 import { Socket } from "socket.io";
+import { Message } from "../dto/message.dto";
+import { User } from "../dto/user.dto";
+import { userWithSocket } from "../dto/userWithSocket.dto";
 
-export interface clientInterface {
-	userId: number;
-	socketId: string;
-    socket : Socket
-}
-
+const prisma = new PrismaClient();
 @Injectable()
 export class ChatService {
-	onlineUsers: clientInterface[] = [];
-
+	
+	onlineUsers: userWithSocket[] = [];
 	generateChannelName(memebrId1: number, memebrId2: number): string {
 		const channelName =
 			memebrId1 < memebrId2
@@ -19,19 +18,45 @@ export class ChatService {
 		return channelName;
 	}
 
-	checkIfReceiverIsOnline(receiverId: number) : boolean {
-		return this.onlineUsers.some((user) => user.userId == receiverId);
-	}
-	getReceiverSocket(receiverId: number) : Socket {
-		const user = this.onlineUsers.find((user) => user.userId == receiverId);
-        return user.socket
+	checkIfReceiverIsOnline(receiverId: number): boolean {
+		return this.onlineUsers.some((user) => user.user.id == receiverId);
 	}
 
-	addUerToOnlineUsers(userId : number, socketId : string, socket : Socket) {
+	getReceiverSocket(receiverId: number): Socket {
+		const user = this.onlineUsers.find((user) => user.user.id == receiverId);
+		return user.socket;
+	}
+
+	addUserToOnlineUsers(newUser: User, socket: Socket) {
+		const alreadyExist = this.onlineUsers.some((user) => user.user.id == newUser.id);
+		if (alreadyExist) 
+			return;
 		this.onlineUsers.push({
-            userId : userId,
-            socketId : socketId,
-            socket : socket
-        });
+			user: newUser,
+			socket: socket,
+		});
+	}
+	
+	async saveMessageInDatabase(message : Message){
+		try {
+			const messageSaved = await prisma.message.create({
+				data : {
+					content : message.content,
+					channel :{
+						connect: {
+							name : message.channelName					
+						}
+					},
+					from : {
+						connect : {
+							id : message.userId
+						}
+					}
+				}
+			})
+		}
+		catch(err){
+			throw new HttpException(err.response, err.status);
+		}
 	}
 }

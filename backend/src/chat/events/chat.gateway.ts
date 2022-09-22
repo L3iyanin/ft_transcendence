@@ -8,7 +8,8 @@ import { Message } from "../dto/message.dto";
 import { Server, Socket } from "socket.io";
 import { ChatService } from "./chat.service";
 import { JsonWebTokenError } from "jsonwebtoken";
-import { NewUser } from "../dto/newUser.dto";
+import { User } from "../dto/user.dto";
+
 
 @WebSocketGateway({
 	cors: {
@@ -22,39 +23,38 @@ export class ChatGateway {
 	server: Server;
 
 	@SubscribeMessage("connectUser")
-	addConnectedUser(client: Socket, newUser : NewUser) {
-		console.log(client.id + "   " + newUser.user.id);
-		// this.chatService.addUerToOnlineUsers(userId, client.id, client);
-		// client.broadcast()
+	addConnectedUser(client: Socket, newUser : User) {
+		console.log(client.id + "   " + newUser.id);
+		this.chatService.addUserToOnlineUsers(newUser, client);
+		console.table(this.chatService.onlineUsers[0])
+		const users = []
+		this.chatService.onlineUsers.map( user => {
+			users.push({
+				user : user.user
+			})
+		})
+		console.log(users)
+		client.broadcast.emit("connectUserResponce", users)
 	}
-
+	
 	@SubscribeMessage("disconnectUser")
 	removeConnectedUser(client: Socket, userId: number) {
 		console.log("function not implemented yet !!");
 	}
 
 	@SubscribeMessage("message")
-	handleMessage(client: Socket, payload: Message) {
-		console.log(payload);
-		console.log(client.rooms);
-		if (payload.isDm == true) {
-			const channelName: string = this.chatService.generateChannelName(
-				payload.userId,
-				payload.receiverId
-			);
-			if (this.chatService.checkIfReceiverIsOnline(payload.receiverId)) {
-				const receiverSocket: Socket = this.chatService.getReceiverSocket(
-					payload.receiverId
-				);
+	async handleMessage(client: Socket, payload: Message) {
+		if (payload.isDm == true){
+			const channelName: string = this.chatService.generateChannelName(payload.userId, payload.receiverId);
+			const receiverIsOnline =  this.chatService.checkIfReceiverIsOnline(payload.receiverId)
+			if (receiverIsOnline){
+				const receiverSocket: Socket = this.chatService.getReceiverSocket(payload.receiverId);
 				client.join(channelName);
 				receiverSocket.join(channelName);
-				client.to(channelName).emit("message", payload.content);
+				client.to(channelName).emit("receivedMessage", payload.content);
 			}
-			//? save in database
-			// check if receiver is online
-			// if true
-			// get receiver id , join it to room and send message to room
-			// save message in database
+			//! you need to test this function !!!
+			await this.chatService.saveMessageInDatabase(payload)
 		}
 		return;
 	}
