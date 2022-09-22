@@ -4,40 +4,60 @@ import { Socket } from "socket.io";
 import { Message } from "../dto/message.dto";
 import { User } from "../dto/user.dto";
 import { UserWithSocket } from "../dto/userWithSocket.dto";
+import { generateChannelName } from "../helpers";
 
-const prisma = new PrismaClient();
 @Injectable()
 export class ChatService {
-	onlineUsers: UserWithSocket[] = [];
-	generateChannelName(memebrId1: number, memebrId2: number): string {
-		const channelName =
-			memebrId1 < memebrId2
-				? `${memebrId1.toString()}_${memebrId2.toString()}`
-				: `${memebrId2.toString()}_${memebrId1.toString()}`;
-		return channelName;
+	onlineUsers: UserWithSocket[];
+	prisma :PrismaClient;
+
+	constructor(){
+		this.onlineUsers = [];
+		this.prisma = new PrismaClient()
+	}	
+
+	//? ========================================CONNECT USER EVENT========================================
+	addConnectedUser(client: Socket, newUser : User){
+		this.addUserToOnlineUsers(newUser, client);
+		const users = this.getAllonlineUsers()
+		return users
+	}
+	//? __________________________________________________________________________________________________
+	
+	//? ========================================MESSAGE EVENT=============================================
+	async handleMessage(client: Socket, payload: Message) {
+		try{
+
+			let response, channelName
+			if (payload.isDm == true){
+				channelName = generateChannelName(payload.userId, payload.receiverId);
+				response = this.insertUsersInRoom(client, payload, channelName)
+				await this.saveMessageInDatabase(payload) //! you need to test this function !!!
+			}
+			else{
+				const members = await this.getChannelMembers(payload.channelId)
+				const sockets  : Socket[] = this.getsocketofMembers(members)
+				sockets.forEach(socket => socket.join(payload.channelName))
+				response = this.generateResponse(payload)
+				await this.saveMessageInDatabase(payload)
+			}
+			return {
+				response : response,
+				channelName : channelName
+			}
+		}	
+		catch(err){
+			throw new HttpException(err.response, err.status);
+		}
 	}
 
-	checkIfReceiverIsOnline(receiverId: number): boolean {
-		return this.onlineUsers.some((user) => user.user.id == receiverId);
-	}
-
-	getReceiverSocket(receiverId: number): Socket {
-		const user = this.onlineUsers.find((user) => user.user.id == receiverId);
-		return user.socket;
-	}
-
-	addUserToOnlineUsers(newUser: User, socket: Socket) {
-		const alreadyExist = this.onlineUsers.some((user) => user.user.id == newUser.id);
-		if (alreadyExist) return;
-		this.onlineUsers.push({
-			user: newUser,
-			socket: socket,
-		});
-	}
+	//? __________________________________________________________________________________________________
+	
+	//? ========================================HELPER FUNCTION===========================================
 
 	async saveMessageInDatabase(message: Message) {
 		try {
-			const messageSaved = await prisma.message.create({
+			const messageSaved = await this.prisma.message.create({
 				data: {
 					content: message.content,
 					channel: {
@@ -57,24 +77,84 @@ export class ChatService {
 		}
 	}
 
+	async generateResponse(payload : Message){
+		let response;
+
+		if (payload.isDm){
+			response = {
+				sender : await this.getUserData(payload.userId),
+				content : payload.content,
+				isDm : true
+			}
+		}
+		else{
+			response = {
+				sender : await this.getUserData(payload.userId),
+				content : payload.content,
+				isDm : false,
+				channelId : payload.channelId,
+				channelName : payload.channelName			
+			}
+		}
+		return response
+	}
+
+
+	addUserToOnlineUsers(newUser: User, socket: Socket) {
+		const alreadyExist = this.onlineUsers.some((user) => user.user.id == newUser.id);
+		if (alreadyExist) return;
+		this.onlineUsers.push({
+			user: newUser,
+			socket: socket,
+		});
+	}
+
+	getAllonlineUsers(){
+		const users = []
+		this.onlineUsers.map( user => {
+			users.push({
+				user : user.user
+			})
+		})
+	}
+	checkIfReceiverIsOnline(receiverId: number): boolean {
+		return this.onlineUsers.some((user) => user.user.id == receiverId);
+	}
+	
+	getReceiverSocket(receiverId: number): Socket {
+		const user = this.onlineUsers.find((user) => user.user.id == receiverId);
+		return user.socket;
+	}
+
 	async getUserData(userId: number) {
 		try {
-			const user = await prisma.user.findUnique({
+			const user = await this.prisma.user.findUnique({
 				where: {
 					id: userId,
 				},
 			});
 			if (!user)
-				throw new HttpException("There is no user with is id", HttpStatus.BAD_REQUEST);
+				throw new HttpException("There is no user with is ID", HttpStatus.BAD_REQUEST);
 			return user;
 		} catch (err) {
 			throw new HttpException(err.response, err.status);
 		}
 	}
 
+	insertUsersInRoom(client : Socket, payload : Message, channelName : string){
+		const receiverIsOnline =  this.checkIfReceiverIsOnline(payload.receiverId)
+		client.join(channelName);
+		if (receiverIsOnline){
+			const receiverSocket: Socket = this.getReceiverSocket(payload.receiverId);
+			receiverSocket.join(channelName);
+		}
+		const response = this.generateResponse(payload)
+		return response
+	}
+
 	async getChannelMembers(channelId: number) {
 		try {
-			const chat = await prisma.channel.findUnique({
+			const chat = await this.prisma.channel.findUnique({
 				where: {
 					id: channelId,
 				},
@@ -100,4 +180,5 @@ export class ChatService {
 		});
 		return sockets;
 	}
+	//? __________________________________________________________________________________________________
 }
