@@ -3,7 +3,7 @@ import { ApiProperty, ApiTags } from "@nestjs/swagger";
 import { UserGuard } from "src/users/user.guard";
 import { ChatService } from "./chat.service";
 
-// @UseGuards(UserGuard)
+@UseGuards(UserGuard)
 @ApiTags("chat-controller")
 @Controller("chat")
 export class ChatController {
@@ -140,7 +140,6 @@ export class ChatController {
 		return this.chatService.muteUserFromGroup(req.user.id, channelId, userId, time);
 	}
 
-
 	// unmute user from group as an admin
 	@ApiProperty()
 	@Post("unmute/:channelId/:userId") // @ To be tested
@@ -155,11 +154,7 @@ export class ChatController {
 	// change group name as an admin
 	@ApiProperty()
 	@Post("change-name/:channelId") // @ To be tested
-	changeGroupName(
-		@Req() req,
-		@Param("channelId") channelId: number,
-		@Body() name: string
-	) {
+	changeGroupName(@Req() req, @Param("channelId") channelId: number, @Body() name: string) {
 		return this.chatService.changeGroupName(req.user.id, channelId, name);
 	}
 
@@ -173,7 +168,6 @@ export class ChatController {
 	) {
 		return this.chatService.makeUserAdmin(req.user.id, channelId, userId);
 	}
-
 
 	// remove user as an admin as an admin, (owner can't be removed)
 	@ApiProperty()

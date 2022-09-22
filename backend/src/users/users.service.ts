@@ -8,12 +8,13 @@ import { UserInfo } from "./dto/userInfo.dto";
 import multer from "multer";
 import { extname, join } from "path";
 import { PostResponce } from "./dto/postResponce.dto";
+import { generateChannelName } from "src/chat/helpers";
 
 const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService {
-	async getUserInfoById(userId: number): Promise<UserInfo> {
+	async getUserInfoById(userId: number, currentUserID: number): Promise<UserInfo> {
 		try {
 			const user = await prisma.user.findUnique({
 				where: {
@@ -38,6 +39,34 @@ export class UsersService {
 					},
 				},
 			});
+
+			let status: "NONE" |  "BLOCKED" | "FRIEND" = "NONE"
+			if (userId !== currentUserID) {
+				// check if currentUserId is in user.friends
+				const isFriend = user.friends.some((friend) => friend.id === currentUserID);
+				if (isFriend) {
+					status = "FRIEND";
+				}
+				// check if current user blocked user
+				const channelName = generateChannelName(userId, currentUserID);
+				const channel = await prisma.channel.findUnique({
+					where: {
+						name: channelName,
+					},
+					include: {
+						members: true,
+					},
+				});
+				if (channel) {
+					const userInChannel = channel.members.find(
+						(member) => member.id === userId
+					);
+					if (userInChannel.status === "BLOCKED") {
+						status = "BLOCKED";
+					}
+				}
+			}
+
 			const userInfo: UserInfo = {
 				id: user.id,
 				username: user.username,
@@ -47,6 +76,7 @@ export class UsersService {
 				loses: user.loses,
 				numberOfAchievements: user.achievements.length,
 				numberOfFriends: user.friends.length,
+				status
 			};
 			return userInfo;
 		} catch (err) {
