@@ -17,3 +17,15 @@ export const getAchivements = (userId: string) => {
 		.then(res => res.data)
 		// .catch(err => console.error(`err`, err))
 };
+
+export const addFriend = (userId: string) => {
+	return axios.post(`/users/${userId}/add-friend`)
+		.then(res => res.data)
+		// .catch(err => console.error(`err`, err))
+}
+
+export const startChat = (userId: string) => {
+	return axios.post(`/chat/start-dm/${userId}`)
+		.then(res => res.data)
+		// .catch(err => console.error(`err`, err))
+}

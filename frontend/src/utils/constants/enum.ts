@@ -13,10 +13,10 @@ export const enum RolesEnum {
 export const enum ChannleTypesEnum {
 	DM_BOT,
 	CHANNEL_BOT,
-	DM,
-	PUBLIC,
-	PRIVATE,
-	PROTECTED,
+	DM = "DM",
+	PUBLIC = "PUBLIC",
+	PRIVATE = "PRIVATE",
+	PROTECTED = "PROTECTED",
 }
 
 export enum MatchTypeEnum {
@@ -33,4 +33,10 @@ export enum LanguagesEnum {
 	EN = "en",
 	AR = "ar",
 	TI = "ti",
+}
+
+export enum UserStatusEnum {
+	NONE = "NONE",
+	BLOCKED = "BLOCKED",
+	FRIEND = "FRIEND"
 }

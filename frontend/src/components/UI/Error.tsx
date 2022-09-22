@@ -6,4 +6,10 @@ const ErrorAlert = (res: any) => {
 	});
 }
 
+export const ErrorAlertWithMessage = (message: string) => {
+	toast.error(message, {
+		position: toast.POSITION.TOP_CENTER,
+	});
+}
+
 export default ErrorAlert;

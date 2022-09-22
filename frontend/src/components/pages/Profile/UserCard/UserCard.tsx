@@ -1,39 +1,47 @@
 import { ReactComponent as AchivementIcon } from "../../../../assets/icons/achivement.svg";
 import { ReactComponent as StartChatIcon } from "../../../../assets/icons/StartChat.svg";
 import { ReactComponent as BlockUserIcon } from "../../../../assets/icons/BlockUser.svg";
+import { ReactComponent as AddIcon } from "../../../../assets/icons/add.svg";
+import { ReactComponent as UnLockedIcon } from "../../../../assets/icons/unlockDark.svg";
 import Stat from "../../../Stat/Stat";
 import { useEffect, useState } from "react";
-import { getProfileInfo } from "../../../../services/profile/profile";
+import { addFriend, getProfileInfo, startChat } from "../../../../services/profile/profile";
 import LoadingSpinner from "../../../UI/Loading/LoadingSpinner";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { isResNotOk } from "../../../../utils/helper/httpHelper";
 import ErrorAlert from "../../../UI/Error";
 import { useSelector } from "react-redux";
+import { users } from "../../../../utils/data/Users";
+import { UserStatusEnum } from "../../../../utils/constants/enum";
+import SuccesAlert from "../../../UI/SuccesAlert";
+import { useNavigate } from "react-router-dom";
 
 const MAX_ACHIVEMENTS = import.meta.env.VITE_APP_MAX_ACHIVEMENTS;
 
-const UserCard: React.FC <{userId?: string}> = ({ userId }) => {
-
+const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 	const LocalUserData = useSelector((state: any) => state.user.user);
 
 	const { t } = useTranslation();
 
-	const [user, setUser] = useState<IUser | null> (null);
+	const [user, setUser] = useState<IUser | null>(null);
+
+	let isMe = LocalUserData.id === userId || userId === undefined;
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
-
 		const profileId = userId || LocalUserData.id;
 
 		getProfileInfo(profileId)
 			.then((res) => {
-				// console.log(res);
-				if (isResNotOk(res)) {
+				if (isResNotOk(res) === true) {
 					ErrorAlert(res);
-					return ;
+					return;
 				}
 
 				const userData = res;
+				// setUser(users[0]);
 				setUser(_ => ({
 					id: userData.id,
 					username: userData.username,
@@ -43,13 +51,39 @@ const UserCard: React.FC <{userId?: string}> = ({ userId }) => {
 					numberOfFriends: userData.numberOfFriends,
 					wins: userData.wins,
 					loses: userData.loses,
+					userStatus: userData.userStatus,
 				}))
-			}
-		)
+			})
+			.catch((err) => {
+				ErrorAlert(err);
+			});
+	}, []);
+
+	const addFriendHandler = () => {
+		addFriend(userId!)
+		.then(res => {
+			console.log(res);
+			SuccesAlert(res.message);
+			setUser(prevUser => ({
+				...prevUser!,
+				userStatus: UserStatusEnum.FRIEND,
+			}))
+		})
 		.catch((err) => {
 			ErrorAlert(err);
 		});
-	}, []);
+	}
+
+	const startChatHandler = () => {
+		console.log("start chat");
+		startChat(userId!)
+		.then(res => {
+			navigate(`/chat`);
+		})
+		.catch((err) => {
+			ErrorAlert(err);
+		});
+	}
 
 	if (!user) {
 		return (
@@ -80,22 +114,57 @@ const UserCard: React.FC <{userId?: string}> = ({ userId }) => {
 				<div className="flex items-center gap-2">
 					<AchivementIcon />
 					<span className="text-xs">
-						{user.numberOfAchievements}/{MAX_ACHIVEMENTS} achievments
+						{user.numberOfAchievements}/{MAX_ACHIVEMENTS}{" "}
+						achievments
 					</span>
 				</div>
 			</div>
-			<footer className="container h-10 flex justify-center items-center gap-0">
-				<div className="container py-3 rounded-bl-2xl flex justify-center items-center gap-1 bg-yellow text-xs text-black">
-					<StartChatIcon className="" />
-					<p>Start Chat</p>
-				</div>
-				<div className="container py-3 rounded-br-2xl flex justify-center items-center gap-1 bg-red text-xs text-white">
-					<BlockUserIcon className="" />
-					<p>Block User</p>
-				</div>
-			</footer>
+			{ !isMe && user.userStatus === UserStatusEnum.NONE && <UserCardFooterForNONE addFriendHandler={addFriendHandler} /> }
+			{ !isMe && user.userStatus === UserStatusEnum.FRIEND && <UserCardFooterForFRIEND startChatHandler={startChatHandler} /> }
+			{ !isMe && user.userStatus === UserStatusEnum.BLOCKED && <UserCardFooterForBLOCK /> }
 		</section>
 	);
 };
 
 export default UserCard;
+
+const UserCardFooterForFRIEND: React.FC<{
+	startChatHandler: () => void;
+}> = ({ startChatHandler }) => {
+	const { t } = useTranslation();
+	return (
+		<footer className="container h-10 flex justify-center items-center gap-0">
+			<div onClick={startChatHandler} className="cursor-pointer container py-3 rounded-bl-2xl flex justify-center items-center gap-1 bg-yellow text-black">
+				<StartChatIcon className="" />
+				<p>{t("startchat")}</p>
+			</div>
+			<div className="cursor-pointer container py-3 rounded-br-2xl flex justify-center items-center gap-1 bg-red text-white">
+				<BlockUserIcon className="" />
+				<p>{t("blockUser")}</p>
+			</div>
+		</footer>
+	);
+};
+
+const UserCardFooterForNONE: React.FC<{
+	addFriendHandler: () => void;
+}> = ({ addFriendHandler }) => {
+	const { t } = useTranslation();
+	return (
+		<div onClick={addFriendHandler} className="cursor-pointer container py-3 rounded-bl-2xl rounded-br-2xl flex justify-center items-center gap-2 bg-green text-white">
+			<AddIcon />
+			<p>{t("addFriend")}</p>
+		</div>
+	);
+};
+
+const UserCardFooterForBLOCK: React.FC = () => {
+	const { t } = useTranslation();
+	return (
+		<div className="cursor-pointer container py-3 rounded-bl-2xl rounded-br-2xl flex justify-center items-center gap-2 bg-beige text-dark-blue">
+			<UnLockedIcon />
+			<p>{t("unblockUser")}</p>
+		</div>
+	);
+};
+

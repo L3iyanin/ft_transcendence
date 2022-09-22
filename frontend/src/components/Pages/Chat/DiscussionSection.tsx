@@ -9,13 +9,17 @@ import {
 	ChannleTypesEnum,
 	ChatOptionsEnum,
 } from "../../../utils/constants/enum";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useBotChannel from "../../../hooks/useBotChannel";
 import CreateChannelPopup from "./CreateChannelPopup";
+import { getChannels } from "../../../services/chat/chat";
 
 const DiscussionSection: React.FC = () => {
 
 	const [openCreateChannel, setOpenCreateChannel] = useState(false);
+
+	const [channelsOfDms, setChannelsOfDms] = useState<IChatChannel[]>([]);
+	const [channelsOfGroups, setChannelsOfGroups] = useState<IChatChannel[]>([]);
 
 	const botChannel = useBotChannel();
 
@@ -24,19 +28,19 @@ const DiscussionSection: React.FC = () => {
 	const [activeChatOption, setActiveChatOption] = useState<ChatOptionsEnum>(
 		ChatOptionsEnum.DMS
 	);
-	const [channels, setChannels] = useState<IChatChannel[]>(dmChannels);
+	// const [channels, setChannels] = useState<IChatChannel[]>(dmChannels);
 	const [currentChannel, setCurrentChannel] =
 		useState<IChatChannel>(botChannel);
 
 	const onSelectDMsConversationHandler = () => {
 		setActiveChatOption(ChatOptionsEnum.DMS);
-		setChannels(dmChannels);
+		// setChannels(dmChannels);
 		setCurrentChannel(botChannel);
 	};
 
 	const onSelectChannelsConversationHandler = () => {
 		setActiveChatOption(ChatOptionsEnum.CHANNELS);
-		setChannels(GroupChannels);
+		// setChannels(GroupChannels);
 		setCurrentChannel(_ => {
 			return {
 				...botChannel,
@@ -53,6 +57,35 @@ const DiscussionSection: React.FC = () => {
 		setOpenCreateChannel(true);
 	};
 
+	useEffect(() => {
+		getChannels()
+			.then((res) => {
+				const allChannels = res.channels;
+				const dms:IChatChannel[] = [];
+				const groups:IChatChannel[] = [];
+
+				for (let i = 0; i < allChannels.length; i++) {
+					if (allChannels[i].type === ChannleTypesEnum.DM) {
+						dms.push({...allChannels[i], status: allChannels[i].type});
+					} else {
+						groups.push({...allChannels[i], status: allChannels[i].type});
+					}
+				}
+
+				console.log(dms);
+
+				setChannelsOfDms(dms);
+				setChannelsOfGroups(groups);
+
+				// console.log(allChannels);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	}, []);
+
+	console.log(ChatOptionsEnum.DMS);
+
 	return (
 		<div className="flex gap-4">
 			<CreateChannelPopup open={openCreateChannel} setOpen={setOpenCreateChannel} />
@@ -64,7 +97,7 @@ const DiscussionSection: React.FC = () => {
 				/>
 				<ConversationsList
 					activeChatOption={activeChatOption}
-					channels={channels}
+					channels={activeChatOption === ChatOptionsEnum.DMS ? channelsOfDms : channelsOfGroups}
 					onSelectDMsConversation={onSelectDMsConversationHandler}
 					onSelectChannelsConversation={
 						onSelectChannelsConversationHandler

@@ -26,6 +26,7 @@ interface IUser {
     createdChannles?: IChatChannel[],
     members?: IMember[],
     messages?: Message[],
+	userStatus?: UserStatusEnum,
 }
 
 interface IUserState {
