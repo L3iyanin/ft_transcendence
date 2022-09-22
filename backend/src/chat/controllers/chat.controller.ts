@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Req, UseGuards } from "@nestjs/common";
 import { ApiProperty, ApiTags } from "@nestjs/swagger";
 import { UserGuard } from "src/users/user.guard";
 import { ChatService } from "./chat.service";
@@ -21,14 +21,14 @@ export class ChatController {
 	// Get all messages in a Channel, knowing the Channel id
 	@ApiProperty()
 	@Get(":channelId") // @ To be tested
-	getAllMessagesInChannels(@Req() req, @Param("channelId") channelId: number) {
+	getAllMessagesInChannels(@Req() req, @Param("channelId", ParseIntPipe) channelId: number) {
 		return this.chatService.getAllMessagesInChannels(req.user.id, channelId);
 	}
 
 	// Start DM with a user, if it doesn't exist, create it, if it does, return it
 	@ApiProperty()
 	@Post("start-dm/:userId") // @ To be tested
-	startDMWithUser(@Req() req, @Param("userId") userId: number) {
+	startDMWithUser(@Req() req, @Param("userId", ParseIntPipe) userId: number) {
 		return this.chatService.startDMWithUser(req.user.id, userId);
 	}
 
@@ -54,14 +54,14 @@ export class ChatController {
 	// block user from dm, if channel doesn't exist, create it and block user
 	@ApiProperty()
 	@Post("block-dm/:userId") // @ To be tested
-	blockUserFromDM(@Req() req, @Param("userId") userId: number) {
+	blockUserFromDM(@Req() req, @Param("userId", ParseIntPipe) userId: number) {
 		return this.chatService.blockUserFromDM(req.user.id, userId);
 	}
 
 	// unblock user from dm
 	@ApiProperty()
 	@Post("unblock-dm/:userId") // @ To be tested
-	unblockUserFromDM(@Req() req, @Param("userId") userId: number) {
+	unblockUserFromDM(@Req() req, @Param("userId", ParseIntPipe) userId: number) {
 		return this.chatService.unblockUserFromDM(req.user.id, userId);
 	}
 
@@ -70,14 +70,14 @@ export class ChatController {
 	// leave group as a user
 	@ApiProperty()
 	@Post("leave/:channelId") // @ To be tested
-	leaveGroup(@Req() req, @Param("channelId") channelId: number) {
+	leaveGroup(@Req() req, @Param("channelId", ParseIntPipe) channelId: number) {
 		return this.chatService.leaveGroup(req.user.id, channelId);
 	}
 
 	// delete group as an admin
 	@ApiProperty()
 	@Post("delete/:channelId") // @ To be tested
-	deleteGroup(@Req() req, @Param("channelId") channelId: number) {
+	deleteGroup(@Req() req, @Param("channelId", ParseIntPipe) channelId: number) {
 		return this.chatService.deleteGroup(req.user.id, channelId);
 	}
 
@@ -86,8 +86,8 @@ export class ChatController {
 	@Post("add/:userId/:channelId") // @ To be tested
 	addFriendToGroup(
 		@Req() req,
-		@Param("channelId") channelId: number,
-		@Param("userId") userId: number
+		@Param("channelId", ParseIntPipe) channelId: number,
+		@Param("userId", ParseIntPipe) userId: number
 	) {
 		return this.chatService.addFriendToGroup(req.user.id, channelId, userId);
 	}
@@ -97,8 +97,8 @@ export class ChatController {
 	@Post("kick/:userId/:channelId") // @ To be tested
 	kickUserFromGroup(
 		@Req() req,
-		@Param("channelId") channelId: number,
-		@Param("userId") userId: number
+		@Param("channelId", ParseIntPipe) channelId: number,
+		@Param("userId", ParseIntPipe) userId: number
 	) {
 		return this.chatService.kickUserFromGroup(req.user.id, channelId, userId);
 	}
@@ -109,8 +109,8 @@ export class ChatController {
 	@Post("block/:userId/:channelId") // @ To be tested
 	blockUserFromGroup(
 		@Req() req,
-		@Param("channelId") channelId: number,
-		@Param("userId") userId: number,
+		@Param("channelId", ParseIntPipe) channelId: number,
+		@Param("userId", ParseIntPipe) userId: number,
 		@Body() time: 5 | 60 | 300 | 1440
 	) {
 		return this.chatService.blockUserFromGroup(req.user.id, channelId, userId, time);
@@ -121,8 +121,8 @@ export class ChatController {
 	@Post("unblock/:userId/:channelId") // @ To be tested
 	unblockUserFromGroup(
 		@Req() req,
-		@Param("channelId") channelId: number,
-		@Param("userId") userId: number
+		@Param("channelId", ParseIntPipe) channelId: number,
+		@Param("userId", ParseIntPipe) userId: number
 	) {
 		return this.chatService.unblockUserFromGroup(req.user.id, channelId, userId);
 	}
@@ -133,8 +133,8 @@ export class ChatController {
 	@Post("mute/:userId/:channelId") // @ To be tested
 	muteUserFromGroup(
 		@Req() req,
-		@Param("channelId") channelId: number,
-		@Param("userId") userId: number,
+		@Param("channelId", ParseIntPipe) channelId: number,
+		@Param("userId", ParseIntPipe) userId: number,
 		@Body() time: 5 | 60 | 300 | 1440
 	) {
 		return this.chatService.muteUserFromGroup(req.user.id, channelId, userId, time);
@@ -145,8 +145,8 @@ export class ChatController {
 	@Post("unmute/:userId/:channelId") // @ To be tested
 	unmuteUserFromGroup(
 		@Req() req,
-		@Param("channelId") channelId: number,
-		@Param("userId") userId: number
+		@Param("channelId", ParseIntPipe) channelId: number,
+		@Param("userId", ParseIntPipe) userId: number
 	) {
 		return this.chatService.unmuteUserFromGroup(req.user.id, channelId, userId);
 	}
@@ -154,7 +154,7 @@ export class ChatController {
 	// change group name as an admin
 	@ApiProperty()
 	@Post("change-name/:channelId") // @ To be tested
-	changeGroupName(@Req() req, @Param("channelId") channelId: number, @Body() name: string) {
+	changeGroupName(@Req() req, @Param("channelId", ParseIntPipe) channelId: number, @Body() name: string) {
 		return this.chatService.changeGroupName(req.user.id, channelId, name);
 	}
 
@@ -163,8 +163,8 @@ export class ChatController {
 	@Post("make-admin/:userId/:channelId") // @ To be tested
 	makeUserAdmin(
 		@Req() req,
-		@Param("channelId") channelId: number,
-		@Param("userId") userId: number
+		@Param("channelId", ParseIntPipe) channelId: number,
+		@Param("userId", ParseIntPipe) userId: number
 	) {
 		return this.chatService.makeUserAdmin(req.user.id, channelId, userId);
 	}
@@ -174,8 +174,8 @@ export class ChatController {
 	@Post("make-member/:userId/:channelId") // @ To be tested
 	makeUserMember(
 		@Req() req,
-		@Param("channelId") channelId: number,
-		@Param("userId") userId: number
+		@Param("channelId", ParseIntPipe) channelId: number,
+		@Param("userId", ParseIntPipe) userId: number
 	) {
 		return this.chatService.makeUserMember(req.user.id, channelId, userId);
 	}

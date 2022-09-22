@@ -236,7 +236,7 @@ export class UsersService {
 				},
 			});
 			return {
-				message: "Friend request sent",
+				message: "Friend added successfully",
 			};
 		} catch (err) {
 			console.log(err);

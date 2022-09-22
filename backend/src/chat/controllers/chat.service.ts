@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { generateChannelName } from "../helpers";
 import { add } from "date-fns";
-import { async } from "rxjs"; 
+import { async } from "rxjs";
 
 @Injectable()
 export class ChatService {
@@ -101,6 +101,7 @@ export class ChatService {
 					message: "channel fetched successfully",
 				};
 			} else {
+				console.log("channel not found");
 				const newChannel = await this.prisma.channel.create({
 					data: {
 						name: channelName,
@@ -130,12 +131,14 @@ export class ChatService {
 						type: "DM",
 					},
 				});
+				console.log(newChannel);
 				return {
 					channel: newChannel,
 					message: "channel created successfully",
 				};
 			}
 		} catch (err) {
+			console.log(err);
 			throw new HttpException(err, err.status);
 		}
 	}
