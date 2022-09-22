@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { generateChannelName } from "../helpers";
 import { add } from "date-fns";
-import { async } from "rxjs";
+import { async } from "rxjs"; 
 
 @Injectable()
 export class ChatService {
@@ -46,7 +46,7 @@ export class ChatService {
 						(member) => member.user.id !== userId
 					).user.imgUrl;
 				}
-
+			})
 			return {
 				channels,
 				message: "channels fetched successfully",
