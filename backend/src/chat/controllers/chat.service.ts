@@ -43,7 +43,7 @@ export class ChatService {
 				if (channel.type === "DM") {
 					channel.name = channel.members.find(
 						(member) => member.user.id !== userId
-					).user.username;
+					).user.fullName;
 					channel.imgUrl = channel.members.find(
 						(member) => member.user.id !== userId
 					).user.imgUrl;
