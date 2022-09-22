@@ -102,7 +102,7 @@ async function addAFriendsToUser(userId : number){
 }
 
 async function main() {
-	// await addAchivements();
+	await addAchivements();
 	await addUsers();
 	// await addAchivementsToUser(2)
 	// await addAFriendsToUser(2)

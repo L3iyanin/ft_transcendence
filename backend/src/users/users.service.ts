@@ -175,6 +175,7 @@ export class UsersService {
 			const friends: Friend[] = [];
 			user.friends.map((friend) => {
 				friends.push({
+					id: friend.id,
 					fullName: friend.fullName,
 					username: friend.username,
 					imgUrl: friend.imgUrl,
