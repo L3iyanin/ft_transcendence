@@ -83,7 +83,7 @@ export class ChatController {
 
 	// add friend to group as an admin
 	@ApiProperty()
-	@Post("add/:channelId/:userId") // @ To be tested
+	@Post("add/:userId/:channelId") // @ To be tested
 	addFriendToGroup(
 		@Req() req,
 		@Param("channelId") channelId: number,
@@ -94,7 +94,7 @@ export class ChatController {
 
 	// kick out user from group as an admin
 	@ApiProperty()
-	@Post("kick/:channelId/:userId") // @ To be tested
+	@Post("kick/:userId/:channelId") // @ To be tested
 	kickUserFromGroup(
 		@Req() req,
 		@Param("channelId") channelId: number,
@@ -106,7 +106,7 @@ export class ChatController {
 	// block user from group as an admin for a certain amount of time
 	// ! NEED to implement a way to unblock user after time is up
 	@ApiProperty()
-	@Post("block/:channelId/:userId") // @ To be tested
+	@Post("block/:userId/:channelId") // @ To be tested
 	blockUserFromGroup(
 		@Req() req,
 		@Param("channelId") channelId: number,
@@ -118,7 +118,7 @@ export class ChatController {
 
 	// unblock user from group as an admin
 	@ApiProperty()
-	@Post("unblock/:channelId/:userId") // @ To be tested
+	@Post("unblock/:userId/:channelId") // @ To be tested
 	unblockUserFromGroup(
 		@Req() req,
 		@Param("channelId") channelId: number,
@@ -130,7 +130,7 @@ export class ChatController {
 	// mute user from group as an admin for a certain amount of time
 	// ! NEED to implement a way to unmute user after time is up
 	@ApiProperty()
-	@Post("mute/:channelId/:userId") // @ To be tested
+	@Post("mute/:userId/:channelId") // @ To be tested
 	muteUserFromGroup(
 		@Req() req,
 		@Param("channelId") channelId: number,
@@ -143,7 +143,7 @@ export class ChatController {
 
 	// unmute user from group as an admin
 	@ApiProperty()
-	@Post("unmute/:channelId/:userId") // @ To be tested
+	@Post("unmute/:userId/:channelId") // @ To be tested
 	unmuteUserFromGroup(
 		@Req() req,
 		@Param("channelId") channelId: number,
@@ -165,7 +165,7 @@ export class ChatController {
 
 	// make user an admin as an admin
 	@ApiProperty()
-	@Post("make-admin/:channelId/:userId") // @ To be tested
+	@Post("make-admin/:userId/:channelId") // @ To be tested
 	makeUserAdmin(
 		@Req() req,
 		@Param("channelId") channelId: number,
@@ -177,7 +177,7 @@ export class ChatController {
 
 	// remove user as an admin as an admin, (owner can't be removed)
 	@ApiProperty()
-	@Post("make-member/:channelId/:userId") // @ To be tested
+	@Post("make-member/:userId/:channelId") // @ To be tested
 	makeUserMember(
 		@Req() req,
 		@Param("channelId") channelId: number,
