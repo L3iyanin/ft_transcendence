@@ -30,7 +30,6 @@ import { Form } from "./dto/updateProfile.dto";
 import { diskStorage } from "multer";
 import { PostResponce } from "./dto/postResponce.dto";
 
-
 @UseGuards(UserGuard)
 @ApiTags("users")
 @Controller("users")
@@ -46,7 +45,10 @@ export class UsersController {
 
 	@ApiResponse({ type: UserInfo })
 	@Get("/:userId/info")
-	async getUserInfo(@Req() req, @Param("userId", ParseIntPipe) userId: number): Promise<UserInfo> {
+	async getUserInfo(
+		@Req() req,
+		@Param("userId", ParseIntPipe) userId: number
+	): Promise<UserInfo> {
 		const currentUserID = req.user.id;
 		return await this.userService.getUserInfoById(userId, currentUserID);
 	}
@@ -78,43 +80,15 @@ export class UsersController {
 	}
 
 	@ApiResponse({ type: PostResponce })
-	@Post("/:friendId/send-friend-request")
-	async sendFriendRequest(
+	@Post("/:friendId/add-friend")
+	async addFriend(
 		@Param("friendId", ParseIntPipe) friendId: number,
 		@Req() req
 	): Promise<PostResponce> {
 		const currentUserID = req.user.id;
-		if (currentUserID == friendId) return new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST);
-		return await this.userService.sendFriendRequest(currentUserID, friendId);
-	}
-
-	@ApiResponse({ type: PostResponce })
-	@Post("/:friendId/accept-friend-request")
-	async acceptFriendRequest(
-		@Param("friendId", ParseIntPipe) friendId: number,
-		@Req() req
-	): Promise<PostResponce> {
-		const currentUserID = req.user.id;
-		return await this.userService.acceptFriendRequest(currentUserID, friendId);
-	}
-
-	@ApiResponse({ type: [FriendRequest] })
-	@Get("/:userId/friend-requests")
-	async geFriendRequests(
-		@Param("userId", ParseIntPipe) userId: number,
-		@Req() req
-	): Promise<FriendRequest[]> {
-		return await this.userService.getFriendRequests(userId);
-	}
-
-	@ApiResponse({ type: PostResponce })
-	@Post("/:friendId/discard-friend-request")
-	async discardFriendRequest(
-		@Param("friendId", ParseIntPipe) friendId: number,
-		@Req() req
-	): Promise<PostResponce> {
-		const currentUserID = req.user.id;
-		return await this.userService.discardFriendRequest(currentUserID, friendId);
+		if (currentUserID == friendId)
+			return new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST);
+		return await this.userService.addFriend(currentUserID, friendId);
 	}
 
 	@ApiResponse({ type: PostResponce })
@@ -141,7 +115,12 @@ export class UsersController {
 		@Req() req
 	): Promise<PostResponce> {
 		const currentUserID = req.user.id;
-		if (file) return await this.userService.updateImageProfile(file, currentUserID, req.user.username);
+		if (file)
+			return await this.userService.updateImageProfile(
+				file,
+				currentUserID,
+				req.user.username
+			);
 	}
 
 	@ApiResponse({ type: PostResponce })

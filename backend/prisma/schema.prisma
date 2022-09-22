@@ -21,8 +21,6 @@ model User {
     twoFactorAuth          Boolean       @default(false)
     friends                User[]        @relation("friends")
     friendsRelation        User[]        @relation("friends")
-    friendRequests         User[]        @relation("friendRequests")
-    friendRequestsRelation User[]        @relation("friendRequests")
     achievements           Achievement[]
     members                Member[]
 }

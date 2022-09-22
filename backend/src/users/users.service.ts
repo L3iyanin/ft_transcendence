@@ -40,7 +40,7 @@ export class UsersService {
 				},
 			});
 
-			let status: "NONE" |  "BLOCKED" | "FRIEND" = "NONE"
+			let status: "NONE" | "BLOCKED" | "FRIEND" = "NONE";
 			if (userId !== currentUserID) {
 				// check if currentUserId is in user.friends
 				const isFriend = user.friends.some((friend) => friend.id === currentUserID);
@@ -58,9 +58,7 @@ export class UsersService {
 					},
 				});
 				if (channel) {
-					const userInChannel = channel.members.find(
-						(member) => member.id === userId
-					);
+					const userInChannel = channel.members.find((member) => member.id === userId);
 					if (userInChannel.status === "BLOCKED") {
 						status = "BLOCKED";
 					}
@@ -189,135 +187,57 @@ export class UsersService {
 		}
 	}
 
-	async sendFriendRequest(from: number, to: number): Promise<PostResponce> {
+	async addFriend(from: number, to: number): Promise<PostResponce> {
 		try {
-			let users = await prisma.user.findMany({
+			const fromUser = await prisma.user.findUnique({
 				where: {
-					id: {
-						in: [from, to],
-					},
+					id: from,
 				},
-				include: {
+				select: {
 					friends: true,
-					friendRequests: true,
 				},
 			});
-			let toUser = users.find((user) => user.id == to);
-			let fromUser = users.find((user) => user.id == from);
-
+			const toUser = await prisma.user.findUnique({
+				where: {
+					id: to,
+				},
+				select: {
+					friends: true,
+				},
+			});
 			if (
-				toUser.friendRequests.some((request) => request.id == from) ||
-				fromUser.friendRequests.some((request) => request.id == to)
+				fromUser.friends.some((friend) => friend.id === to) ||
+				toUser.friends.some((friend) => friend.id === from)
 			) {
-				throw new HttpException("Friend request already sent", HttpStatus.BAD_REQUEST);
+				throw new HttpException("User already friends", HttpStatus.BAD_REQUEST);
 			}
-			if (toUser.friends.some((friend) => friend.id == from)) {
-				throw new HttpException("Users are already friends", HttpStatus.BAD_REQUEST);
-			}
-
+			await prisma.user.update({
+				where: {
+					id: from,
+				},
+				data: {
+					friends: {
+						connect: {
+							id: to,
+						},
+					},
+				},
+			});
 			await prisma.user.update({
 				where: {
 					id: to,
 				},
 				data: {
-					friendRequests: {
-						connect: { id: from },
+					friends: {
+						connect: {
+							id: from,
+						},
 					},
 				},
 			});
 			return {
 				message: "Friend request sent",
 			};
-		} catch (err) {
-			console.log(err);
-			throw new HttpException(err.response, err.status);
-		}
-	}
-
-	async acceptFriendRequest(userId: number, friendId: number): Promise<PostResponce> {
-		try {
-			let user = await prisma.user.findUnique({
-				where: { id: userId },
-				select: {
-					friendRequests: true,
-				},
-			});
-			const friendRequestExist = user.friendRequests.some((req) => req.id == friendId);
-			if (!friendRequestExist)
-				throw new HttpException("Friend request doesn't exist", HttpStatus.BAD_REQUEST);
-			await prisma.user.update({
-				where: { id: userId },
-				data: {
-					friendRequests: {
-						disconnect: { id: friendId },
-					},
-					friends: {
-						connect: { id: friendId },
-					},
-				},
-			});
-			await prisma.user.update({
-				where: { id: friendId },
-				data: {
-					friends: {
-						connect: { id: userId },
-					},
-				},
-			});
-			return {
-				message: "Friend request accepted",
-			};
-		} catch (err) {
-			throw new HttpException(err.response, err.status);
-		}
-	}
-
-	async discardFriendRequest(userId: number, friendId: number): Promise<PostResponce> {
-		try {
-			const user = await prisma.user.findUnique({
-				where: { id: userId },
-				select: {
-					friendRequests: true,
-				},
-			});
-			const friendRequestExist = user.friendRequests.some((req) => req.id == friendId);
-			if (!friendRequestExist)
-				return new HttpException("Friend Request dosnt exist", HttpStatus.BAD_REQUEST);
-			await prisma.user.update({
-				where: { id: userId },
-				data: {
-					friendRequests: {
-						disconnect: { id: friendId },
-					},
-				},
-			});
-			return {
-				message: "Friend request discarded",
-			};
-		} catch (err) {
-			throw new HttpException(err.response, err.status);
-		}
-	}
-
-	async getFriendRequests(userId: number): Promise<FriendRequest[]> {
-		try {
-			const user = await prisma.user.findUnique({
-				where: {
-					id: userId,
-				},
-				select: {
-					friendRequests: true,
-				},
-			});
-			const friendRequests: FriendRequest[] = [];
-			user.friendRequests.map((friend) => {
-				friendRequests.push({
-					userName: friend.username,
-					friendId: friend.id,
-					imgUrl: friend.imgUrl,
-				});
-			});
-			return friendRequests;
 		} catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
@@ -345,11 +265,7 @@ export class UsersService {
 		};
 	}
 
-	async updateImageProfile(
-		file: Express.Multer.File,
-		userId: number,
-		username: string
-	) {
+	async updateImageProfile(file: Express.Multer.File, userId: number, username: string) {
 		try {
 			const name = file.originalname.split(".")[0];
 			const fileExtName = extname(file.originalname);
@@ -361,7 +277,7 @@ export class UsersService {
 			});
 			return {
 				message: "User avatar updated",
-				imgUrl : filePath
+				imgUrl: filePath,
 			};
 		} catch (err) {
 			console.log(err);
