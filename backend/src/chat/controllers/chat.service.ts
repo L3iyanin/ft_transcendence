@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { generateChannelName } from "../helpers";
 import { add } from "date-fns";
-import { async } from "rxjs"; 
+import { CreateChannelDto } from "../dto/chat.dto";
 
 @Injectable()
 export class ChatService {
@@ -18,7 +18,9 @@ export class ChatService {
 				where: {
 					members: {
 						some: {
-							id: userId,
+							user: {
+								id: userId,
+							},
 						},
 					},
 				},
@@ -36,6 +38,8 @@ export class ChatService {
 					},
 				},
 			});
+
+			console.log(channels);
 
 			channels.forEach((channel) => {
 				if (channel.type === "DM") {
@@ -101,6 +105,7 @@ export class ChatService {
 					message: "channel fetched successfully",
 				};
 			} else {
+				console.log("channel not found");
 				const newChannel = await this.prisma.channel.create({
 					data: {
 						name: channelName,
@@ -130,30 +135,48 @@ export class ChatService {
 						type: "DM",
 					},
 				});
+				console.log(newChannel);
 				return {
 					channel: newChannel,
 					message: "channel created successfully",
 				};
 			}
 		} catch (err) {
+			console.log(err);
 			throw new HttpException(err, err.status);
 		}
 	}
 
 	async createGroupChannel(
 		userId: number,
-		preferences: {
-			name: string;
-			type: "PUBLIC" | "PRIVATE" | "PROTECTED";
-			password?: string;
-		}
+		preferences: CreateChannelDto
 	) {
 		try {
 			const { name, type, password } = preferences;
-			const channel = await this.prisma.channel.create({
+			if (type === "PROTECTED" && !password) {
+				throw new HttpException(
+					"Password is required for protected channel",
+					HttpStatus.BAD_REQUEST
+				);
+			}
+			// check if channel with same name exists
+			const channel = await this.prisma.channel.findUnique({
+				where: {
+					name,
+				},
+			});
+			if (channel) {
+				throw new HttpException(
+					"Channel with same name already exists",
+					HttpStatus.BAD_REQUEST
+				);
+			}
+
+
+			const newChannel = await this.prisma.channel.create({
 				data: {
 					name,
-					imgUrl: `https://myanimelist.tech/api/avatar?name=${name}&animeName=One_Piece`, // @ To be generated
+					imgUrl: `https://myanimelist.tech/api/avatar?name=${name}&animeName=one_Piece_Crews`, // @ To be generated
 					members: {
 						create: [
 							{
@@ -172,10 +195,11 @@ export class ChatService {
 				},
 			});
 			return {
-				channel,
+				newChannel,
 				message: "Group channel created successfully",
 			};
 		} catch (err) {
+			console.log(err);
 			throw new HttpException(err, err.status);
 		}
 	}
