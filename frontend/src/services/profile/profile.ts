@@ -35,3 +35,9 @@ export const blockUser = (userId: string) => {
 		.then(res => res.data)
 		// .catch(err => console.error(`err`, err))
 }
+
+export const unblockUser = (userId: string) => {
+	return axios.post(`/chat/unblock-dm/${userId}`)
+		.then(res => res.data)
+		// .catch(err => console.error(`err`, err))
+}

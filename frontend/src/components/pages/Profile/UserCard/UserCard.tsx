@@ -5,7 +5,7 @@ import { ReactComponent as AddIcon } from "../../../../assets/icons/add.svg";
 import { ReactComponent as UnLockedIcon } from "../../../../assets/icons/unlockDark.svg";
 import Stat from "../../../Stat/Stat";
 import { useEffect, useState } from "react";
-import { addFriend, blockUser, getProfileInfo, startChat } from "../../../../services/profile/profile";
+import { addFriend, blockUser, getProfileInfo, startChat, unblockUser } from "../../../../services/profile/profile";
 import LoadingSpinner from "../../../UI/Loading/LoadingSpinner";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -101,6 +101,21 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 		});
 	}
 
+	const unblockUserHandler = () => {
+		unblockUser(userId!)
+		.then(res => {
+			console.log(res);
+			SuccesAlert(res.message);
+			setUser(prevUser => ({
+				...prevUser!,
+				userStatus: UserStatusEnum.NONE,
+			}))
+		})
+		.catch((err) => {
+			ErrorAlertWithMessage(err.response.data.message);
+		});
+	}
+
 	if (!user) {
 		return (
 			<section className="relative w-[395px] h-[368px] rounded-2xl flex flex-col bg-dark-60">
@@ -137,7 +152,7 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 			</div>
 			{ !isMe && user.userStatus === UserStatusEnum.NONE && <UserCardFooterForNONE addFriendHandler={addFriendHandler} /> }
 			{ !isMe && user.userStatus === UserStatusEnum.FRIEND && <UserCardFooterForFRIEND startChatHandler={startChatHandler} blockUserHandler={blockUserHandler} /> }
-			{ !isMe && user.userStatus === UserStatusEnum.BLOCKED && <UserCardFooterForBLOCK /> }
+			{ !isMe && user.userStatus === UserStatusEnum.BLOCKED && <UserCardFooterForBLOCK unblockUserHandler={unblockUserHandler} /> }
 		</section>
 	);
 };
@@ -175,10 +190,12 @@ const UserCardFooterForNONE: React.FC<{
 	);
 };
 
-const UserCardFooterForBLOCK: React.FC = () => {
+const UserCardFooterForBLOCK: React.FC<{
+	unblockUserHandler: () => void;
+}> = ({ unblockUserHandler }) => {
 	const { t } = useTranslation();
 	return (
-		<div className="cursor-pointer container py-3 rounded-bl-2xl rounded-br-2xl flex justify-center items-center gap-2 bg-beige text-dark-blue">
+		<div onClick={unblockUserHandler} className="cursor-pointer container py-3 rounded-bl-2xl rounded-br-2xl flex justify-center items-center gap-2 bg-beige text-dark-blue">
 			<UnLockedIcon />
 			<p>{t("unblockUser")}</p>
 		</div>
