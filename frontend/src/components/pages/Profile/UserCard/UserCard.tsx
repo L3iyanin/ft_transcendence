@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 
 const MAX_ACHIVEMENTS = import.meta.env.VITE_APP_MAX_ACHIVEMENTS;
 
-const UserCard: React.FC <{user?: IUser}> = () => {
+const UserCard: React.FC <{userId?: string}> = ({ userId }) => {
 
 	const LocalUserData = useSelector((state: any) => state.user.user);
 
@@ -22,10 +22,12 @@ const UserCard: React.FC <{user?: IUser}> = () => {
 	const [user, setUser] = useState<IUser | null> (null);
 
 	useEffect(() => {
-		getProfileInfo(LocalUserData.id)
+
+		const profileId = userId || LocalUserData.id;
+
+		getProfileInfo(profileId)
 			.then((res) => {
-				console.log(res);
-				
+				// console.log(res);
 				if (isResNotOk(res)) {
 					ErrorAlert(res);
 					return ;
@@ -44,6 +46,9 @@ const UserCard: React.FC <{user?: IUser}> = () => {
 				}))
 			}
 		)
+		.catch((err) => {
+			ErrorAlert(err);
+		});
 	}, []);
 
 	if (!user) {
