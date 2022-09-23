@@ -5,6 +5,7 @@ import { ReactComponent as PlayIcon } from "../../../assets/icons/play.svg";
 import { ReactComponent as AddIcon } from "../../../assets/icons/add.svg";
 import { useTranslation } from "react-i18next";
 import { ChannleTypesEnum } from "../../../utils/constants/enum";
+import { useNavigate } from "react-router-dom";
 
 const ChatActions: React.FC<{
 	currentChannel: IChatChannel;
@@ -12,6 +13,12 @@ const ChatActions: React.FC<{
 	onOpenCreateChannelHandler: () => void;
 }> = ({ currentChannel, username, onOpenCreateChannelHandler }) => {
 	const { t } = useTranslation();
+
+	const navigate = useNavigate();
+
+	const navigateToChannelSettingsHandler = () => {
+		navigate(`/channel/${currentChannel.id}/settings`);
+	}
 
 	return (
 		<div className="flex justify-between">
@@ -51,6 +58,7 @@ const ChatActions: React.FC<{
 					<ButtonWithIcon
 						className="bg-yellow"
 						icon={<CogIcon className=" " />}
+						onClick={navigateToChannelSettingsHandler}
 						label={t("chatPage.channelSettings")}
 					/>
 				)}

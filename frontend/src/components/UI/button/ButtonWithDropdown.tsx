@@ -8,8 +8,16 @@ const ButtonWithDropdown: React.FC<{
 	text: string;
 	dropDown: boolean;
 	options?: string[];
+	optionsOnClick?: (() => void)[];
 	onClickWithoutDropdown?: () => void;
 }> = (props) => {
+
+	const onSelectOptionHandler = (index: number) => {
+		if (props.optionsOnClick) {
+			props.optionsOnClick[index]();
+		}
+	}
+
 	return (
 		<div className="flex items-center gap-1 px-5 py-3 text-lg bg-dark-60 rounded-2xl">
 			<Menu as="div" className="relative inline-block text-left">
@@ -46,6 +54,7 @@ const ButtonWithDropdown: React.FC<{
 										<div
 											className="cursor-pointer hover:text-dark-grey "
 											key={index}
+											onClick={onSelectOptionHandler.bind(null, index)}
 										>
 											<Menu.Item>
 												<p className="p-1 mx-4">

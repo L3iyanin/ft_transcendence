@@ -77,11 +77,13 @@
 		"unmute": "unmute",
 		"unban": "unban",
 		"kickOut": "kick out",
+		"2minutes": "2 Minutes",
 		"1Hour": "1 Hour",
 		"5Hours": "5 Hours",
 		"24Hours": "24 Hours",
 		"addMember": "add member",
-		"addFriendsToRoom": "Add friends to room"
+		"addFriendsToRoom": "Add friends to room",
+		"youHaveNoFriendToadd": "You have no friends to add"
 	},
 	"roles" : {
 		"member": "member",

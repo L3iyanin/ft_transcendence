@@ -6,6 +6,8 @@ import { ReactComponent as KickOutIcon } from "../../../assets/icons/kickOut.svg
 
 const MemberCart: React.FC<{
 	member: IMember;
+	makeAdminHandler: (memberId: string) => void;
+	makeMemberHandler: (memberId: string) => void;
 }> = (props) => {
 	const { t } = useTranslation();
 
@@ -17,6 +19,7 @@ const MemberCart: React.FC<{
 					text={t("channelSettings.ban")}
 					dropDown={true}
 					options={[
+						t("channelSettings.2minutes"),
 						t("channelSettings.1Hour"),
 						t("channelSettings.5Hours"),
 						t("channelSettings.24Hours"),
@@ -27,6 +30,7 @@ const MemberCart: React.FC<{
 					text={t("channelSettings.mute")}
 					dropDown={true}
 					options={[
+						t("channelSettings.2minutes"),
 						t("channelSettings.1Hour"),
 						t("channelSettings.5Hours"),
 						t("channelSettings.24Hours"),
@@ -39,27 +43,33 @@ const MemberCart: React.FC<{
 				/>
 				<ButtonWithIcon
 					icon={<></>}
-					text={t(`roles.${props.member.role}`)}
+					text={t(`roles.${props.member.role.toLowerCase()}`)}
 					dropDown={true}
 					options={[
 						`${
-							props.member.role === "admin" ||
-							props.member.role === "owner"
+							props.member.role === "ADMIN" ||
+							props.member.role === "OWNER"
 								? "member"
 								: "admin"
 						}`,
+					]}
+					optionsOnClick={[
+						props.member.role === "ADMIN" ||
+						props.member.role === "OWNER"
+							? props.makeMemberHandler.bind(null, props.member.user.id.toString())
+							: props.makeAdminHandler.bind(null, props.member.user.id.toString()),
 					]}
 				/>
 			</div>
 		</>
 	);
 
-	if (props.member.role === "owner") {
+	if (props.member.role === "OWNER") {
 		actions = (
 			<>
 				<ButtonWithIcon
 					icon={<></>}
-					text={t(`roles.${props.member.role}`)}
+					text={t(`roles.${props.member.role.toLowerCase()}`)}
 					dropDown={false}
 				/>
 			</>
@@ -80,11 +90,11 @@ const MemberCart: React.FC<{
 					/>
 					<ButtonWithIcon
 						icon={<></>}
-						text={t(`roles.${props.member.role}`)}
+						text={t(`roles.${props.member.role.toLowerCase()}`)}
 						dropDown={true}
 						options={[
 							`${
-								props.member.role === "admin"
+								props.member.role === "ADMIN"
 									? "member"
 									: "admin"
 							}`,
@@ -102,6 +112,7 @@ const MemberCart: React.FC<{
 						text={t("channelSettings.ban")}
 						dropDown={true}
 						options={[
+							 t("channelSettings.2minutes"),
 							t("channelSettings.1Hour"),
 							t("channelSettings.5Hours"),
 							t("channelSettings.24Hours"),
@@ -119,11 +130,11 @@ const MemberCart: React.FC<{
 					/>
 					<ButtonWithIcon
 						icon={<></>}
-						text={t(`roles.${props.member.role}`)}
+						text={t(`roles.${props.member.role.toLowerCase()}`)}
 						dropDown={true}
 						options={[
 							`${
-								props.member.role === "admin"
+								props.member.role === "ADMIN"
 									? "member"
 									: "admin"
 							}`,

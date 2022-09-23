@@ -1,13 +1,51 @@
 import { useTranslation } from "react-i18next";
+import { makeAdminMember, makeMemberAdmin } from "../../../services/channel/settings";
 import { channelMemberInterface } from "../../../utils/types/channelSettings";
+import ErrorAlert from "../../UI/Error";
 import LoadingSpinner from "../../UI/Loading/LoadingSpinner";
+import SuccesAlert from "../../UI/SuccesAlert";
 import MemberCart from "./MemberCart";
 
 const MembersList: React.FC<{
 	members: channelMemberInterface[];
 	channelInfo: IChatChannel | null;
-}> = ({ channelInfo }) => {
+	setAdminInChannelState: (userId: string) => void;
+	setMemberInChannelState: (userId: string) => void;
+}> = ({ channelInfo, setAdminInChannelState, setMemberInChannelState }) => {
+
 	const { t } = useTranslation();
+
+	const makeAdminHandler = (userId: string) => {
+		if (channelInfo) {
+			makeMemberAdmin(channelInfo.id.toString(), userId)
+				.then((res) => {
+					console.log(res);
+					SuccesAlert(res.message);
+					setAdminInChannelState(userId);
+				})
+				.catch((err) => {
+					console.log(err);
+					ErrorAlert(err.message);
+				});
+			console.log(`make admin ${userId}`);
+		}
+	};
+
+	const makeMemberHandler = (userId: string) => {
+		if (channelInfo) {
+			makeAdminMember(channelInfo.id.toString(), userId)
+				.then((res) => {
+					console.log(res);
+					SuccesAlert(res.message);
+					setMemberInChannelState(userId);
+				})
+				.catch((err) => {
+					console.log(err);
+					ErrorAlert(err.message);
+				});
+			console.log(`make member ${userId}`);
+		}
+	};
 
 	if (!channelInfo) {
 		return (
@@ -21,7 +59,12 @@ const MembersList: React.FC<{
 		<div className="">
 			<ul>
 				{channelInfo.members.map((member, index) => {
-					return <MemberCart member={member} key={index} />;
+					return <MemberCart
+							member={member}
+							key={index}
+							makeAdminHandler={makeAdminHandler}
+							makeMemberHandler={makeMemberHandler}
+							/>;
 				})}
 			</ul>
 		</div>
