@@ -3,6 +3,7 @@
 import { PrismaClient } from "@prisma/client";
 
 import { faker } from '@faker-js/faker';
+import { CreateChannelDto } from "src/chat/dto/chat.dto";
 
 
 // initialize Prisma Client
@@ -101,11 +102,87 @@ async function addAFriendsToUser(userId : number){
 	}
 }
 
+async function CreateChannelDm(user1 : number, user2 : number){
+	const channelName = user1.toString() + '_' +  user2.toString() 
+	const newChannel = await prisma.channel.create({
+		data: {
+			name: channelName,
+			imgUrl: `https://myanimelist.tech/api/avatar?name=${channelName}&animeName=One_Piece`, // @ To be generated
+			members: {
+				create: [
+					{
+						user: {
+							connect: {
+								id: user1,
+							},
+						},
+						role: "MEMBER",
+						status: "NONE",
+					},
+					{
+						user: {
+							connect: {
+								id: user2,
+							},
+						},
+						role: "MEMBER",
+						status: "NONE",
+					},
+				],
+			},
+			type: "DM",
+		},
+	});
+}
+
+async function CreateChannelGroup(user1 : number, user2 : number, user3 : number){
+	const channelName = "l3iyanin"
+	const newChannel = await prisma.channel.create({
+		data: {
+			name: channelName,
+			imgUrl: `https://myanimelist.tech/api/avatar?name=${channelName}&animeName=One_Piece`, // @ To be generated
+			members: {
+				create: [
+					{
+						user: {
+							connect: {
+								id: user1,
+							},
+						},
+						role: "ADMIN",
+						status: "NONE",
+					},
+					{
+						user: {
+							connect: {
+								id: user2,
+							},
+						},
+						role: "MEMBER",
+						status: "NONE",
+					},
+					{
+						user: {
+							connect: {
+								id: user3,
+							},
+						},
+						role: "MEMBER",
+						status: "NONE",
+					},
+				],
+			},
+			type: "PUBLIC",
+		},
+	});
+}
 async function main() {
-	await addAchivements();
-	await addUsers();
+	// await addAchivements();
+	// await addUsers();
 	// await addAchivementsToUser(2)
 	// await addAFriendsToUser(2)
+	// await CreateChannelDm(5, 6)
+	await CreateChannelGroup(5, 6, 7)
 }
 main()
 	.catch((e) => {

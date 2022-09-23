@@ -38,6 +38,7 @@ export class ChatGateway {
 	@SubscribeMessage("message")
 	async handleMessage(client: Socket, payload: Message) {
 		const messageData = await this.chatService.handleMessage(client, payload)
+		console.log("channelName : " + messageData.channelName)
 		client.to(messageData.channelName).emit("receivedMessage", messageData.response);
 	}
 }

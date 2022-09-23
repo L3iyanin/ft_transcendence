@@ -18,9 +18,25 @@ export class ChatService {
 
 	//? ========================================CONNECT USER EVENT========================================
 	addConnectedUser(client: Socket, newUser : User){
-		this.addUserToOnlineUsers(newUser, client);
-		const users = this.getAllonlineUsers()
+		const alreadyExist = this.onlineUsers.some((user) => user.user.id == newUser.id); //! corretc this for one user in multiple tab 
+		if (alreadyExist) 
+			return;
+		this.onlineUsers.push({
+			user: newUser,
+			socket: client,
+		});
+		const users = []
+		this.onlineUsers.map( user => {
+			users.push({
+				user : user.user
+			})
+		})
+		console.log("connect User")
+		console.table(newUser)
+		console.log(newUser.id)
+		console.log("--------------------------------------------")
 		return users
+
 	}
 	//? __________________________________________________________________________________________________
 	
@@ -31,16 +47,28 @@ export class ChatService {
 			let response, channelName
 			if (payload.isDm == true){
 				channelName = generateChannelName(payload.userId, payload.receiverId);
-				response = this.insertUsersInRoom(client, payload, channelName)
-				await this.saveMessageInDatabase(payload) //! you need to test this function !!!
+				const receiverIsOnline =  this.checkIfReceiverIsOnline(payload.receiverId)
+				if (receiverIsOnline){
+					const receiverSocket: Socket = this.getReceiverSocket(payload.receiverId);
+					receiverSocket.join(channelName);
+				}
+				client.join(channelName);
+				response = await this.generateResponse(payload)
 			}
 			else{
+				channelName = payload.channelName
 				const members = await this.getChannelMembers(payload.channelId)
-				const sockets  : Socket[] = this.getsocketofMembers(members)
+				const sockets: Socket[] = [];
+				members.forEach((member) => {
+					if (this.checkIfReceiverIsOnline(member.userId)) {
+						sockets.push(this.getReceiverSocket(member.userId));
+					}
+				});
+				sockets.forEach(socket => console.log(socket.id))
 				sockets.forEach(socket => socket.join(payload.channelName))
-				response = this.generateResponse(payload)
-				await this.saveMessageInDatabase(payload)
+				response = await this.generateResponse(payload)
 			}
+			await this.saveMessageInDatabase(payload)
 			return {
 				response : response,
 				channelName : channelName
@@ -57,6 +85,15 @@ export class ChatService {
 
 	async saveMessageInDatabase(message: Message) {
 		try {
+			const channel = await this.prisma.channel.findUnique({
+				include : {
+					members : true
+				},
+				where : {
+					name : message.channelName
+				}
+			})
+			const memberSender =  channel.members.find(member => member.userId == message.userId) //? get memberId by userId
 			const messageSaved = await this.prisma.message.create({
 				data: {
 					content: message.content,
@@ -67,11 +104,12 @@ export class ChatService {
 					},
 					from: {
 						connect: {
-							id: message.userId,
+							id: memberSender.id
 						},
 					},
 				},
 			});
+			console.log("+++++++++++++++++++++++++++++++")
 		} catch (err) {
 			throw new HttpException(err.response, err.status);
 		}
@@ -79,44 +117,38 @@ export class ChatService {
 
 	async generateResponse(payload : Message){
 		let response;
-
-		if (payload.isDm){
-			response = {
-				sender : await this.getUserData(payload.userId),
-				content : payload.content,
-				isDm : true
+		try {
+			const user = await this.prisma.user.findUnique({
+				where: {
+					id: payload.userId,
+				},
+			});
+			if (!user)
+				throw new HttpException("There is no user with is ID", HttpStatus.BAD_REQUEST);
+			
+			if (payload.isDm){
+				response = {
+					sender : user,
+					content : payload.content,
+					isDm : true
+				}
 			}
-		}
-		else{
-			response = {
-				sender : await this.getUserData(payload.userId),
-				content : payload.content,
-				isDm : false,
-				channelId : payload.channelId,
-				channelName : payload.channelName			
+			else{
+				response = {
+					sender : user,
+					content : payload.content,
+					isDm : false,
+					channelId : payload.channelId,
+					channelName : payload.channelName			
+				}
 			}
+			return response
+	} 
+		catch (err) {
+			throw new HttpException(err.response, err.status);
 		}
-		return response
 	}
 
-
-	addUserToOnlineUsers(newUser: User, socket: Socket) {
-		const alreadyExist = this.onlineUsers.some((user) => user.user.id == newUser.id);
-		if (alreadyExist) return;
-		this.onlineUsers.push({
-			user: newUser,
-			socket: socket,
-		});
-	}
-
-	getAllonlineUsers(){
-		const users = []
-		this.onlineUsers.map( user => {
-			users.push({
-				user : user.user
-			})
-		})
-	}
 	checkIfReceiverIsOnline(receiverId: number): boolean {
 		return this.onlineUsers.some((user) => user.user.id == receiverId);
 	}
@@ -126,31 +158,6 @@ export class ChatService {
 		return user.socket;
 	}
 
-	async getUserData(userId: number) {
-		try {
-			const user = await this.prisma.user.findUnique({
-				where: {
-					id: userId,
-				},
-			});
-			if (!user)
-				throw new HttpException("There is no user with is ID", HttpStatus.BAD_REQUEST);
-			return user;
-		} catch (err) {
-			throw new HttpException(err.response, err.status);
-		}
-	}
-
-	insertUsersInRoom(client : Socket, payload : Message, channelName : string){
-		const receiverIsOnline =  this.checkIfReceiverIsOnline(payload.receiverId)
-		client.join(channelName);
-		if (receiverIsOnline){
-			const receiverSocket: Socket = this.getReceiverSocket(payload.receiverId);
-			receiverSocket.join(channelName);
-		}
-		const response = this.generateResponse(payload)
-		return response
-	}
 
 	async getChannelMembers(channelId: number) {
 		try {
@@ -162,23 +169,11 @@ export class ChatService {
 					members: true,
 				},
 			});
-			//! check if it's baned
-			const memmbers = chat.members.filter((member) => member.status != "BANNED");
-			return memmbers;
+			const members = chat.members.filter((member) => member.status != "BANNED");
+			return members;
 		} catch (err) {
 			throw new HttpException(err.response, err.status);
 		}
-	}
-
-	getsocketofMembers(memebers: Member[]): Socket[] {
-		const sockets: Socket[] = [];
-		memebers.forEach((member) => {
-			const memberId = member.id;
-			if (this.checkIfReceiverIsOnline(memberId)) {
-				sockets.push(this.getReceiverSocket(memberId));
-			}
-		});
-		return sockets;
 	}
 	//? __________________________________________________________________________________________________
 }
