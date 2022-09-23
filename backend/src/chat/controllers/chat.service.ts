@@ -99,6 +99,39 @@ export class ChatService {
 		}
 	}
 
+	async getAllMembersInChannels(userId: number, channelId: number) {
+		try {
+			const channel = await this.prisma.channel.findUnique({
+				where: {
+					id: channelId,
+				},
+				include: {
+					members: {
+						include: {
+						user: true,
+						}
+					},
+				},
+			});
+
+
+			// if (channel.members.some((member) => member.userId === userId)) {
+				return {
+					// name: channel.name,
+					channel,
+					message: "Members fetched successfully",
+				};
+			// } else {
+			// 	throw new HttpException(
+			// 		"You are not a member of this channel",
+			// 		HttpStatus.UNAUTHORIZED
+			// 	);
+			// }
+		} catch (err) {
+			throw new HttpException(err, err.status);
+		}
+	}
+
 	async startDMWithUser(userId: number, otherUserId: number) {
 		try {
 			const channelName = generateChannelName(userId, otherUserId);

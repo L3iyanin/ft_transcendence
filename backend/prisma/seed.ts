@@ -103,7 +103,7 @@ async function addAFriendsToUser(userId : number){
 }
 
 async function CreateChannelDm(user1 : number, user2 : number){
-	const channelName = user1.toString() + '_' +  user2.toString() 
+	const channelName = user1.toString() + '_' +  user2.toString()
 	const newChannel = await prisma.channel.create({
 		data: {
 			name: channelName,
@@ -177,12 +177,12 @@ async function CreateChannelGroup(user1 : number, user2 : number, user3 : number
 	});
 }
 async function main() {
-	// await addAchivements();
+	await addAchivements();
 	// await addUsers();
 	// await addAchivementsToUser(2)
 	// await addAFriendsToUser(2)
 	// await CreateChannelDm(5, 6)
-	await CreateChannelGroup(5, 6, 7)
+	// await CreateChannelGroup(5, 6, 7)
 }
 main()
 	.catch((e) => {

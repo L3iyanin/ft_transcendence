@@ -26,6 +26,13 @@ export class ChatController {
 		return this.chatService.getAllMessagesInChannels(req.user.id, channelId);
 	}
 
+	// Get all messages in a Channel, knowing the Channel id
+	@ApiProperty()
+	@Get("/members/:channelId") // @ To be tested
+	getAllMembersInChannels(@Req() req, @Param("channelId", ParseIntPipe) channelId: number) {
+		return this.chatService.getAllMembersInChannels(req.user.id, channelId);
+	}
+
 	// Start DM with a user, if it doesn't exist, create it, if it does, return it
 	@ApiProperty()
 	@Post("start-dm/:userId") // @ To be tested
