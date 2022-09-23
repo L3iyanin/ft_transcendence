@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpException, Param, ParseIntPipe, Post, Req, UseGuards } from "@nestjs/common";
 import { ApiProperty, ApiTags } from "@nestjs/swagger";
 import { UserGuard } from "src/users/user.guard";
-import { CreateChannelDto } from "../dto/chat.dto";
+import { CreateChannelDto, MuteOrBlockDto } from "../dto/chat.dto";
 import { ChatService } from "./chat.service";
 
 @UseGuards(UserGuard)
@@ -116,8 +116,9 @@ export class ChatController {
 		@Req() req,
 		@Param("channelId", ParseIntPipe) channelId: number,
 		@Param("userId", ParseIntPipe) userId: number,
-		@Body() time: 5 | 60 | 300 | 1440
+		@Body() preferences: MuteOrBlockDto
 	) {
+		const { time } = preferences;
 		return this.chatService.blockUserFromGroup(req.user.id, channelId, userId, time);
 	}
 
@@ -140,8 +141,9 @@ export class ChatController {
 		@Req() req,
 		@Param("channelId", ParseIntPipe) channelId: number,
 		@Param("userId", ParseIntPipe) userId: number,
-		@Body() time: 5 | 60 | 300 | 1440
+		@Body() preferences: MuteOrBlockDto
 	) {
+		const { time } = preferences;
 		return this.chatService.muteUserFromGroup(req.user.id, channelId, userId, time);
 	}
 
