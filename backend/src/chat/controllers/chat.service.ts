@@ -529,7 +529,7 @@ export class ChatService {
 		userId: number,
 		channelId: number,
 		otherUserId: number,
-		time: 5 | 60 | 300 | 1440
+		time: 2 | 60 | 300 | 1440
 	) {
 		try {
 			const channel = await this.prisma.channel.findUnique({
@@ -636,7 +636,7 @@ export class ChatService {
 		userId: number,
 		channelId: number,
 		otherUserId: number,
-		time: 5 | 60 | 300 | 1440
+		time: 2 | 60 | 300 | 1440
 	) {
 		try {
 			const channel = await this.prisma.channel.findUnique({
