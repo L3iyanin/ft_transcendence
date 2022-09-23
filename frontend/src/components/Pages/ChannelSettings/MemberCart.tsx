@@ -1,12 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { channelMemberInterface } from "../../../utils/types/channelSettings";
 import ButtonWithIcon from "../../UI/button/ButtonWithDropdown";
 import { ReactComponent as BanIcon } from "../../../assets/icons/ban.svg";
 import { ReactComponent as MuteIcon } from "../../../assets/icons/mute.svg";
 import { ReactComponent as KickOutIcon } from "../../../assets/icons/kickOut.svg";
 
 const MemberCart: React.FC<{
-	member: channelMemberInterface;
+	member: IMember;
 }> = (props) => {
 	const { t } = useTranslation();
 
@@ -137,15 +136,15 @@ const MemberCart: React.FC<{
 
 	return (
 		<div className="container">
-			<li className="flex flex-row p-3 pl-6 my-4 text-white rounded-lg bg-dark-60 justify-between">
-				<div className="flex flex-row">
+			<li className="flex flex-row p-3 pl-6 my-4 text-white rounded-2xl bg-dark-60 justify-between">
+				<div className="flex flex-row items-center">
 					<img
-						src={props.member.imgUrl}
+						src={props.member.user.imgUrl}
 						className="w-12 h-12 rounded-full"
 					/>
 					<div className="flex flex-col ml-2">
-						<p>{props.member.username}</p>
-						<p>{props.member.fullName}</p>
+						<p className="font-bold">{props.member.user.username}</p>
+						<p>{props.member.user.fullName}</p>
 					</div>
 				</div>
 				{actions}

@@ -6,25 +6,48 @@ import { useParams } from "react-router-dom";
 import MembersList from "../components/Pages/ChannelSettings/MembersList";
 import { membersData, friendsListData } from "../utils/data/ChannelSettings";
 import FriendsList from "../components/Pages/ChannelSettings/FriendsList";
+import { useEffect, useState } from "react";
+import { getChannelInfo } from "../services/channel/settings";
+import ErrorAlert from "../components/UI/Error";
+import { isResNotOk } from "../utils/helper/httpHelper";
 
 const ChannelSettings: React.FC = () => {
+
 	const { channelId } = useParams();
+
 	const { t } = useTranslation();
 
-	// ! get channel info using channelId
+	const [channelInfo, setChannelInfo] = useState<IChatChannel| null>(null);
+
+	useEffect(() => {
+		if (channelId) {
+			getChannelInfo(channelId)
+				.then(res => {
+					// console.log(res)
+					if (isResNotOk(res) === true) {
+						ErrorAlert(res);
+						return;
+					}
+					setChannelInfo(res.channel);
+				})
+				.catch(err => {
+					ErrorAlert(err);
+				});
+		}
+	}, []);
 
 	return (
 		<div className="container">
 			<NavBar />
 			<h2 className="text-xl font-semibold text-white">
-				{channelId} {t("channelSettings.channelSettings")}
+				{channelInfo && channelInfo.name} {t("channelSettings.channelSettings")}
 			</h2>
-			<MembersList members={membersData} />
+			<MembersList channelInfo={channelInfo} members={membersData} />
 
-			<div className="flex">
+			<div className="flex mt-11">
 				<div>
 					<h2 className="text-xl font-semibold text-white">
-						Add friends to room {channelId}
+						{t("channelSettings.addFriendsToRoom")} {channelInfo && channelInfo.name}
 					</h2>
 					<div className="pt-4" />
 					<InputWithIcon
@@ -34,7 +57,7 @@ const ChannelSettings: React.FC = () => {
 					/>
 				</div>
 			</div>
-			<FriendsList friends={friendsListData} />
+			<FriendsList channelId={channelId!} />
 		</div>
 	);
 };

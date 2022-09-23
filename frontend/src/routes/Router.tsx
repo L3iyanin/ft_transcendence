@@ -20,7 +20,7 @@ const Router: React.FC = () => {
 						<Route path="/settings" element={<Settings />} />
 						<Route path="/chat" element={<Chat />} />
 						<Route
-							path="/:channelId/channel-settings"
+							path="/channel/:channelId/settings"
 							element={<ChannelSettings />}
 						/>
 						<Route path="/game" element={<Game />} />

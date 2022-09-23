@@ -55,6 +55,7 @@
 		"channelName": "Channel Name",
 		"channelNameError": "Channel name is required and must be at least 3",
 		"channelPasswordError": "Channel password is required and must be at least 3",
+		"noMessages": "No messages",
 		"channelType": {
 			"public": "Public",
 			"private": "Private",
@@ -79,7 +80,8 @@
 		"1Hour": "1 Hour",
 		"5Hours": "5 Hours",
 		"24Hours": "24 Hours",
-		"addMember": "add member"
+		"addMember": "add member",
+		"addFriendsToRoom": "Add friends to room"
 	},
 	"roles" : {
 		"member": "member",
