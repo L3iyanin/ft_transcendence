@@ -28,7 +28,7 @@ interface IChatChannel {
     status: ChannleTypesEnum;
     password?: string;
     lastMessage?: IMessage;
-	uneadMessages?: number;
+	unreadMessages: number | null;
 	IamNotMember?: boolean;
 	isProtectedChannel?: boolean;
 }

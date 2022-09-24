@@ -36,6 +36,7 @@ const MessagesList: React.FC<{
 	};
 
 	const sendMessageHandler = () => {
+		if (messageContent.trim() === "") return;
 		onSendMessageHandler(messageContent);
 		setMessageContent("");
 	}
@@ -44,8 +45,8 @@ const MessagesList: React.FC<{
 		<div className="relative flex flex-col bg-dark-60 mt-5 rounded-2xl p-5 text-white h-[75vh] overflow-y-auto">
 			<div className="overflow-auto">
 				{!IamNotMember &&
-					messages.map((message) => (
-						<MessageCard key={message.id} message={message} />
+					messages.map((message, index) => (
+						<MessageCard key={index} message={message} />
 					))}
 				{!IamNotMember && messages.length === 0 && (
 					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -mt-[28px]">
@@ -70,6 +71,7 @@ const MessagesList: React.FC<{
 						type="text"
 						placeholder={t("chatPage.typeMessage")}
 						onChange={onTypeMessageHandler}
+						value={messageContent}
 					/>
 					<ButtonWithIcon
 						icon={

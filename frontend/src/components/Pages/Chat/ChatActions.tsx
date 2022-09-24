@@ -35,6 +35,12 @@ const ChatActions: React.FC<{
 
 	const LocalUserData = useSelector((state: any) => state.user.user);
 
+	const seeProfile = () => {
+		if (userId) {
+			navigate(`/profile/${userId}`);
+		}
+	}
+
 	return (
 		<div className="flex justify-between">
 			<div className="flex items-center gap-3 bg-dark-60 rounded-2xl py-2 px-6">
@@ -65,6 +71,7 @@ const ChatActions: React.FC<{
 							className="bg-yellow"
 							icon={<ProfileIcon className=" stroke-dark-60" />}
 							label={t("chatPage.seeProfile")}
+							onClick={seeProfile}
 						/>
 						<ButtonWithIcon
 							className="bg-red text-white"

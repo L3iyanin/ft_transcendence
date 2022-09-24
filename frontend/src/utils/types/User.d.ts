@@ -46,7 +46,9 @@ interface UserInterface {
 }
 
 interface IOnlineUser {
-	username: string;
-	fullName: string;
-	id: number;
+	user: {
+		username: string;
+		fullName: string;
+		id: number;
+	}
 }

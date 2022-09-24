@@ -24,13 +24,16 @@ import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 
 const DiscussionSection: React.FC = () => {
-	
 	const [openCreateChannel, setOpenCreateChannel] = useState(false);
 	const [refresh, setRefresh] = useState(false);
 	const [channelsOfDms, setChannelsOfDms] = useState<IChatChannel[]>([]);
-	const [channelsOfGroups, setChannelsOfGroups] = useState<IChatChannel[]>([]);
+	const [channelsOfGroups, setChannelsOfGroups] = useState<IChatChannel[]>(
+		[]
+	);
 
-	const clientSocket: Socket = useSelector((state: any) => state.chat.clientSocket);
+	const clientSocket: Socket = useSelector(
+		(state: any) => state.chat.clientSocket
+	);
 
 	const userData: IUserState = useSelector((state: any) => state.user);
 
@@ -63,7 +66,7 @@ const DiscussionSection: React.FC = () => {
 	const onSelectConversationHandler = (channel: IChatChannel) => {
 		getChannelMessages(channel.id)
 			.then((res) => {
-				// console.log(res);
+
 				setCurrentChannel((_) => {
 					const newChannel = {
 						...channel,
@@ -71,21 +74,38 @@ const DiscussionSection: React.FC = () => {
 					};
 					return newChannel;
 				});
+
+				setChannelsOfDms((channels) => {
+					const newChannels = [...channels];
+					
+					const index = newChannels.findIndex(
+						(singleChannel) => singleChannel.id === channel.id
+					);
+
+					if (index !== -1) {
+						newChannels[index].unreadMessages = 0;
+					}
+
+					return newChannels;
+				});
 			})
 			.catch((err) => {
 				console.log(err.response.status);
 				if (err.response.status === 401) {
+
 					ErrorAlertWithMessage(t("chatPage.notMemberOfChannel"));
-					// console.log(channel);
+
 					setCurrentChannel((_) => {
 						const newChannel = {
 							...channel,
 							messages: [],
 							IamNotMember: true,
-							isProtectedChannel: channel.status === ChannleTypesEnum.PROTECTED,
+							isProtectedChannel:
+								channel.status === ChannleTypesEnum.PROTECTED,
 						};
 						return newChannel;
 					});
+
 				}
 				console.error(err);
 			});
@@ -133,7 +153,7 @@ const DiscussionSection: React.FC = () => {
 		joinChannel(currentChannel.id, password)
 			.then((res) => {
 				console.log(res);
-				return getChannelMessages(currentChannel.id)
+				return getChannelMessages(currentChannel.id);
 			})
 			.then((res) => {
 				console.log(res);
@@ -149,7 +169,7 @@ const DiscussionSection: React.FC = () => {
 			.catch((err) => {
 				console.error(err);
 				ErrorAlert(err);
-			}); 
+			});
 	};
 
 	const leaveChannelHandler = () => {
@@ -164,23 +184,48 @@ const DiscussionSection: React.FC = () => {
 					ErrorAlert(err);
 				});
 		}
-	}
+	};
 
 	useEffect(() => {
 		if (!clientSocket) return;
-		console.log("listen on receivedMessage");
 		clientSocket.on("receivedMessage", (message: any) => {
-			console.log("message", message);
 			setCurrentChannel((channelInfo) => {
-				const newChannel = {
-					...channelInfo,
-					messages: [...channelInfo.messages, message],
-				};
-				return newChannel;
-			});
-		});
 
-	}, [clientSocket])
+				if (message.isDm) {
+					setChannelsOfDms((channels) => {
+						const newChannels = [...channels];
+						const index = newChannels.findIndex(
+							(channel) => channel.id === message.channelId
+						);
+						if (index !== -1) {
+							newChannels[index].lastMessage = message;
+							if (message.channelId !== channelInfo.id) {
+								if (!newChannels[index].unreadMessages) {
+									newChannels[index].unreadMessages = 0;
+								}
+								newChannels[index].unreadMessages! += 1;
+							}
+						}
+						return newChannels;
+					});
+				}
+
+
+				if (message.channelId === channelInfo.id) {
+					const newChannel = {
+						...channelInfo,
+						messages: [...channelInfo.messages, message],
+					};
+					return newChannel;
+				}
+
+
+				return channelInfo;
+			});
+
+			
+		});
+	}, [clientSocket]);
 
 	const onSendMessageHandler = (messageContent: string) => {
 		clientSocket.emit("sendMessage", {
@@ -190,8 +235,11 @@ const DiscussionSection: React.FC = () => {
 			userId: userData.user?.id,
 			content: messageContent,
 		});
+
 		setCurrentChannel((channelInfo) => {
-			const getCurrentMember:IMember = channelInfo.members.find(member => member.user.id === userData.user?.id)!;
+			const getCurrentMember: IMember = channelInfo.members.find(
+				(member) => member.user.id === userData.user?.id
+			)!;
 			const newMessage: IMessage = {
 				id: channelInfo.messages.length + 1,
 				content: messageContent,
@@ -205,6 +253,32 @@ const DiscussionSection: React.FC = () => {
 			};
 			return newChannel;
 		});
+
+		if (activeChatOption === ChatOptionsEnum.DMS) {
+			setChannelsOfDms((channels) => {
+				const newChannels = [...channels];
+				const index = newChannels.findIndex(
+					(channel) => channel.id === currentChannel.id
+				);
+				if (index !== -1) {
+					newChannels[index].lastMessage = {
+						id: 1,
+						from: {
+							id: userData.user?.id!,
+							user: {
+								id: userData.user?.id!,
+								username: userData.user?.username!,
+								fullName: userData.user?.fullName!,
+								imgUrl: userData.user?.username!,
+							},
+						},
+						content: messageContent,
+						date: new Date(),
+					};
+				}
+				return newChannels;
+			});
+		}
 	};
 
 	return (
