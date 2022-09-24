@@ -65,7 +65,7 @@ export class ChatService {
 					},
 				});
 				const member: Member = channel.members.find(
-					(member) => (member.userId = payload.userId)
+					(member) => (member.userId == payload.userId)
 				);
 				if (member.status != "NONE") {
 					response = this.generateResponse(payload, member.status, member.until);
@@ -76,7 +76,10 @@ export class ChatService {
 				members.forEach((member) => {
 					if (this.checkIfReceiverIsOnline(member.userId)) {
 						const memberSockets: Socket[] = this.getReceiversSocket(member.userId);
-						memberSockets.forEach((socket) => socket.join(payload.channelName));
+						if (member.status != "BLOCKED")
+							memberSockets.forEach((socket) => socket.join(payload.channelName));
+						else
+							memberSockets.forEach((socket) => socket.leave(payload.channelName));
 					}
 				});
 				response = await this.generateResponse(payload);
@@ -243,8 +246,8 @@ export class ChatService {
 					members: true,
 				},
 			});
-			const members = chat.members.filter((member) => member.status != "BLOCKED");
-			return members;
+			// const members = chat.members.filter((member) => member.status != "BLOCKED");
+			return chat.members;
 		} catch (err) {
 			throw new HttpException(err.response, err.status);
 		}
