@@ -26,7 +26,7 @@ export class ChatController {
 		return this.chatService.getAllMessagesInChannels(req.user.id, channelId);
 	}
 
-	// Get all messages in a Channel, knowing the Channel id
+	// Get all members in a Channel, knowing the Channel id
 	@ApiProperty()
 	@Get("/members/:channelId") // @ To be tested
 	getAllMembersInChannels(@Req() req, @Param("channelId", ParseIntPipe) channelId: number) {

@@ -16,13 +16,20 @@ export class ChatService {
 		try {
 			const channels = await this.prisma.channel.findMany({
 				where: {
-					members: {
-						some: {
-							user: {
-								id: userId,
+					OR: [
+						{
+							members: {
+								some: {
+									user: {
+										id: userId,
+									},
+								},
 							},
 						},
-					},
+						{
+							type: "PUBLIC" || "PROTECTED",
+						},
+					],
 				},
 				include: {
 					messages: {
@@ -39,6 +46,7 @@ export class ChatService {
 				},
 			});
 
+			// in case of dm get other user info
 			channels.forEach((channel) => {
 				if (channel.type === "DM") {
 					channel.name = channel.members.find(
@@ -49,8 +57,14 @@ export class ChatService {
 					).user.imgUrl;
 				}
 			})
+
+			const channelsWithoutPassword = channels.map((channel) => {
+				const { password, ...rest } = channel;
+				return rest;
+			});
+
 			return {
-				channels,
+				channels: channelsWithoutPassword,
 				message: "channels fetched successfully",
 			};
 		} catch (err) {
