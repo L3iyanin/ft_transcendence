@@ -27,7 +27,10 @@ export class ChatService {
 							},
 						},
 						{
-							type: "PUBLIC" || "PROTECTED",
+							type: "PROTECTED",
+						},
+						{
+							type: "PUBLIC",
 						},
 					],
 				},
