@@ -7,7 +7,7 @@ import { UserWithSocket } from "../dto/userWithSocket.dto";
 import { generateChannelName } from "../helpers";
 
 @Injectable()
-export class ChatService {
+export class ChatService {  
 	onlineUsers: UserWithSocket[];
 	prisma :PrismaClient;
 
@@ -47,6 +47,7 @@ export class ChatService {
 
 			let response, channelName
 			if (payload.isDm == true){
+				payload.receiverId = await this.getReceiverId(payload)
 				channelName = generateChannelName(payload.userId, payload.receiverId);
 				const receiverIsOnline =  this.checkIfReceiverIsOnline(payload.receiverId)
 				if (receiverIsOnline){
@@ -83,7 +84,23 @@ export class ChatService {
 	//? __________________________________________________________________________________________________
 	
 	//? ========================================HELPER FUNCTION===========================================
-
+	async getReceiverId(message : Message) : number{
+		try{
+			const channel = await this.prisma.channel.findUnique({
+				include : {
+					members : true
+				},
+				where : {
+					name : message.channelName
+				}
+			})
+			const memberReceiver =  channel.members.find(member => member.userId != message.userId)
+			return memberReceiver.userId
+		}
+		catch(err){
+			throw new HttpException(err, err.status)
+		}
+	}
 	async saveMessageInDatabase(message: Message) {
 		try {
 			const channel = await this.prisma.channel.findUnique({
