@@ -18,7 +18,7 @@ export class ChatService {
 
 	//? ========================================CONNECT USER EVENT========================================
 	addConnectedUser(client: Socket, newUser : User){
-		const alreadyExist = this.onlineUsers.some((user) => user.user.id == newUser.id); //! corretc this for one user in multiple tab
+		const alreadyExist = this.onlineUsers.some((user) => user.socket.id == user.socket.id); //! corretc this for one user in multiple tab
 		if (!alreadyExist){
 
 			this.onlineUsers.push({
@@ -52,8 +52,9 @@ export class ChatService {
 				channelName = generateChannelName(payload.userId, payload.receiverId);
 				const receiverIsOnline =  this.checkIfReceiverIsOnline(payload.receiverId)
 				if (receiverIsOnline){
-					const receiverSocket: Socket = this.getReceiverSocket(payload.receiverId);
-					receiverSocket.join(channelName);
+					const receiverSocket: Socket[] = this.getReceiversSocket(payload.receiverId);
+					receiverSocket.forEach(receiver => receiver.join(channelName))
+					// receiverSocket.join(channelName);
 				}
 				client.join(channelName);
 				response = await this.generateResponse(payload)
@@ -61,14 +62,16 @@ export class ChatService {
 			else{
 				channelName = payload.channelName
 				const members = await this.getChannelMembers(payload.channelId)
-				const sockets: Socket[] = [];
+				// const sockets: Socket[] = []
 				members.forEach((member) => {
 					if (this.checkIfReceiverIsOnline(member.userId)) {
-						sockets.push(this.getReceiverSocket(member.userId));
+						// sockets.push(this.getReceiverSocket(member.userId));
+						const memberSockets : Socket[] = this.getReceiversSocket(member.userId)
+						memberSockets.forEach(socket => socket.join(payload.channelName))
 					}
 				});
-				sockets.forEach(socket => console.log(socket.id))
-				sockets.forEach(socket => socket.join(payload.channelName))
+				// sockets.forEach(socket => console.log(socket.id))
+				// sockets.forEach(socket => socket.join(payload.channelName))
 				response = await this.generateResponse(payload)
 			}
 			await this.saveMessageInDatabase(payload)
@@ -190,9 +193,13 @@ export class ChatService {
 		return this.onlineUsers.some((user) => user.user.id == receiverId);
 	}
 
-	getReceiverSocket(receiverId: number): Socket {
-		const user = this.onlineUsers.find((user) => user.user.id == receiverId);
-		return user.socket;
+	getReceiversSocket(receiverId: number): Socket[] {
+		const sockets: Socket[] = [];
+		this.onlineUsers.forEach((user) => {
+			if (user.user.id == receiverId)
+				sockets.push(user.socket)
+	});
+		return sockets;
 	}
 
 
