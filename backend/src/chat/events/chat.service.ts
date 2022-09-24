@@ -48,6 +48,7 @@ export class ChatService {
 			let response, channelName
 			if (payload.isDm == true){
 				payload.receiverId = await this.getReceiverId(payload)
+				console.log("receiverId : ", payload.receiverId)
 				channelName = generateChannelName(payload.userId, payload.receiverId);
 				const receiverIsOnline =  this.checkIfReceiverIsOnline(payload.receiverId)
 				if (receiverIsOnline){
@@ -85,14 +86,14 @@ export class ChatService {
 
 	//? ========================================HELPER FUNCTION===========================================
 
-	async getReceiverId(message : Message) : number{
+	async getReceiverId(message : Message) : Promise<number>{
 		try{
 			const channel = await this.prisma.channel.findUnique({
 				include : {
 					members : true
 				},
 				where : {
-					name : message.channelName
+					id : message.channelId
 				}
 			})
 			const memberReceiver =  channel.members.find(member => member.userId != message.userId)
@@ -150,7 +151,7 @@ export class ChatService {
 
 			if (payload.isDm){
 				response = {
-					sender : user,
+					from : user,
 					content : payload.content,
 					channelId : payload.channelId,
 					isDm : true
@@ -158,7 +159,7 @@ export class ChatService {
 			}
 			else{
 				response = {
-					sender : user,
+					from : user,
 					content : payload.content,
 					isDm : false,
 					channelId : payload.channelId,
