@@ -14,33 +14,33 @@ export class ChatService {
 	constructor(){
 		this.onlineUsers = [];
 		this.prisma = new PrismaClient()
-	}	
+	}
 
 	//? ========================================CONNECT USER EVENT========================================
 	addConnectedUser(client: Socket, newUser : User){
-		const alreadyExist = this.onlineUsers.some((user) => user.user.id == newUser.id); //! corretc this for one user in multiple tab 
+		const alreadyExist = this.onlineUsers.some((user) => user.user.id == newUser.id); //! corretc this for one user in multiple tab
 		if (!alreadyExist){
 
 			this.onlineUsers.push({
 				user: newUser,
 				socket: client,
 			});
-		} 
+		}
 		const users = []
 		this.onlineUsers.map( user => {
 			users.push({
 				user : user.user
 			})
 		})
-		console.log("connect User")
-		console.table(newUser)
-		console.log(newUser.id)
-		console.log("--------------------------------------------")
+		// console.log("connect User")
+		// console.table(newUser)
+		// console.log(newUser.id)
+		// console.log("--------------------------------------------")
 		return users
 
 	}
 	//? __________________________________________________________________________________________________
-	
+
 	//? ========================================MESSAGE EVENT=============================================
 	async handleMessage(client: Socket, payload: Message) {
 		try{
@@ -74,14 +74,14 @@ export class ChatService {
 				response : response,
 				channelName : channelName
 			}
-		}	
+		}
 		catch(err){
 			throw new HttpException(err.response, err.status);
 		}
 	}
 
 	//? __________________________________________________________________________________________________
-	
+
 	//? ========================================HELPER FUNCTION===========================================
 
 	async saveMessageInDatabase(message: Message) {
@@ -91,16 +91,17 @@ export class ChatService {
 					members : true
 				},
 				where : {
-					name : message.channelName
+					id : message.channelId
 				}
 			})
 			const memberSender =  channel.members.find(member => member.userId == message.userId) //? get memberId by userId
+
 			const messageSaved = await this.prisma.message.create({
 				data: {
 					content: message.content,
 					channel: {
 						connect: {
-							name: message.channelName,
+							id: message.channelId,
 						},
 					},
 					from: {
@@ -110,6 +111,7 @@ export class ChatService {
 					},
 				},
 			});
+
 			console.log("+++++++++++++++++++++++++++++++")
 		} catch (err) {
 			throw new HttpException(err.response, err.status);
@@ -126,11 +128,12 @@ export class ChatService {
 			});
 			if (!user)
 				throw new HttpException("There is no user with is ID", HttpStatus.BAD_REQUEST);
-			
+
 			if (payload.isDm){
 				response = {
 					sender : user,
 					content : payload.content,
+					channelId : payload.channelId,
 					isDm : true
 				}
 			}
@@ -140,11 +143,11 @@ export class ChatService {
 					content : payload.content,
 					isDm : false,
 					channelId : payload.channelId,
-					channelName : payload.channelName			
+					channelName : payload.channelName
 				}
 			}
 			return response
-	} 
+	}
 		catch (err) {
 			throw new HttpException(err.response, err.status);
 		}
@@ -153,7 +156,7 @@ export class ChatService {
 	checkIfReceiverIsOnline(receiverId: number): boolean {
 		return this.onlineUsers.some((user) => user.user.id == receiverId);
 	}
-	
+
 	getReceiverSocket(receiverId: number): Socket {
 		const user = this.onlineUsers.find((user) => user.user.id == receiverId);
 		return user.socket;
