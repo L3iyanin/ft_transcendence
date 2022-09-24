@@ -5,7 +5,7 @@ const Option = ({ url, children } : IOptionProps) => {
 		<NavLink
 			to={url}
 			className={(state) =>
-				"container text-center text-base text-white font-medium" +
+				"text-center text-base text-white font-medium" +
 				(state.isActive
 					? " text-yellow underline underline-offset-8 decoration-2"
 					: "")
