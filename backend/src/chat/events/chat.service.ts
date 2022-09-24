@@ -48,6 +48,7 @@ export class ChatService {
 			let response, channelName
 			if (payload.isDm == true){
 				payload.receiverId = await this.getReceiverId(payload)
+				console.log("receiverId : ", payload.receiverId)
 				channelName = generateChannelName(payload.userId, payload.receiverId);
 				const receiverIsOnline =  this.checkIfReceiverIsOnline(payload.receiverId)
 				if (receiverIsOnline){
@@ -92,7 +93,7 @@ export class ChatService {
 					members : true
 				},
 				where : {
-					name : message.channelName
+					id : message.channelId
 				}
 			})
 			const memberReceiver =  channel.members.find(member => member.userId != message.userId)
@@ -140,17 +141,30 @@ export class ChatService {
 	async generateResponse(payload : Message){
 		let response;
 		try {
-			const user = await this.prisma.user.findUnique({
-				where: {
-					id: payload.userId,
+			const channel = await this.prisma.channel.findUnique({
+				include : {
+					members : true
 				},
+				where : {
+					id : payload.channelId
+				}
+			})
+			const memberSender =  channel.members.find(member => member.userId == payload.userId) //? get memberId by userId
+
+			const member = await this.prisma.member.findUnique({
+				where: {
+					id : memberSender.id
+				},
+				include : {
+					user : true
+				}
 			});
-			if (!user)
+			if (!member)
 				throw new HttpException("There is no user with is ID", HttpStatus.BAD_REQUEST);
 
 			if (payload.isDm){
 				response = {
-					sender : user,
+					from : member,
 					content : payload.content,
 					channelId : payload.channelId,
 					isDm : true
@@ -158,7 +172,7 @@ export class ChatService {
 			}
 			else{
 				response = {
-					sender : user,
+					from : member,
 					content : payload.content,
 					isDm : false,
 					channelId : payload.channelId,

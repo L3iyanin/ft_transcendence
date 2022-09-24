@@ -40,6 +40,9 @@ export class ChatGateway {
 		console.log("message received", payload);
 		const messageData = await this.chatService.handleMessage(client, payload)
 		console.log("channelName : " + messageData.channelName)
+		console.log("--------------------------------------------")
+		console.log(messageData.response)
+		console.log("--------------------------------------------")
 		client.to(messageData.channelName).emit("receivedMessage", messageData.response);
 	}
 }
