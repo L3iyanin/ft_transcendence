@@ -17,9 +17,8 @@ export class ChatService {
 	}
 
 	//? ========================================CONNECT USER EVENT========================================
-	async addConnectedUser(client: Socket, newUser: User) {
+	addConnectedUser(client: Socket, newUser: User) {
 		const alreadyExist = this.onlineUsers.some((user) => user.socket.id == client.id); //! corretc this for one user in multiple tab
-		await this.unmuteAndUnbanMembersAfterTime();
 		if (!alreadyExist) {
 			this.onlineUsers.push({
 				user: newUser,
