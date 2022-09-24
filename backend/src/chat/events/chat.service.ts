@@ -85,7 +85,7 @@ export class ChatService {
 
 	//? ========================================HELPER FUNCTION===========================================
 
-	async getReceiverId(message : Message) : number{
+	async getReceiverId(message : Message) : Promise<number>{
 		try{
 			const channel = await this.prisma.channel.findUnique({
 				include : {
