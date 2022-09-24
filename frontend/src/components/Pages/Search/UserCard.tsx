@@ -3,7 +3,7 @@ import { ReactComponent as PlusSignIcon } from "../../../assets/icons/plusSign.s
 import ButtonWithDropdown from "../../UI/button/ButtonWithDropdown";
 
 const UserCard: React.FC<{ user: IUser }> = ({ user }) => {
-	const { id, fullName, username, imgUrl } = user;
+	const { id, fullName, username, imgUrl, isFriend } = user;
 	const { t } = useTranslation();
 
 	return (
@@ -17,11 +17,12 @@ const UserCard: React.FC<{ user: IUser }> = ({ user }) => {
 					</div>
 				</div>
 				<div className="flex flex-row">
-					<ButtonWithDropdown
+					{isFriend && <p className="px-8 my-auto">{t("alreadyFriends")}</p>}
+					{!isFriend && <ButtonWithDropdown
 						icon={<PlusSignIcon />}
 						text={t("addFriend")}
 						dropDown={false}
-					/>
+					/>}
 				</div>
 			</div>
 		</li>

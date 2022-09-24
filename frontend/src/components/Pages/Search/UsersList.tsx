@@ -8,27 +8,31 @@ import UserCard from "./UserCard";
 const usersOriginalList: IUser[] = [
 	{
 		id: 1,
-		fullName: "Abdelali Ait hmid",
-		username: "aait-hmi",
-		imgUrl: "https://myanimelist.tech/api/avatar?&name=aait-hmi&animeName=One_Piece",
+		fullName: "someone",
+		username: "hola",
+		imgUrl: "https://myanimelist.tech/api/avatar?&name=aaitsdmi&animeName=One_Piece",
+		isFriend: false,
 	},
 	{
 		id: 2,
 		fullName: "user zero",
 		username: "user0",
 		imgUrl: "https://myanimelist.tech/api/avatar?&name=cxdD&animeName=One_Piece",
+		isFriend: false,
 	},
 	{
 		id: 3,
 		fullName: "user one",
 		username: "user1",
 		imgUrl: "https://myanimelist.tech/api/avatar?&name=casdxd&animeName=One_Piece",
+		isFriend: true,
 	},
 	{
 		id: 4,
 		fullName: "user two",
 		username: "user2",
 		imgUrl: "https://myanimelist.tech/api/avatar?&name=cxdXX&animeName=One_Piece",
+		isFriend: false,
 	},
 ];
 
@@ -47,7 +51,7 @@ const UsersList: React.FC = () => {
 
 	return (
 		<div className="container">
-			<div className="container w-[40%]">
+			<div className="flex flex-row justify-start">
 				<InputWithIcon
 					icon={<SearchIcon />}
 					type="text"
