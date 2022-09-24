@@ -12,35 +12,14 @@ import FriendCart from "./FriendCart";
 
 const FriendsList: React.FC<{
 		channelInfo: IChatChannel,
-		addMemberInChannelState: (user: IUser) => void,
+		refreshHandler: () => void,
+		friends: IUser[] | null,
 	}> = ({
 	channelInfo,
-	addMemberInChannelState,
+	refreshHandler,
+	friends
 }) => {
 	const { t } = useTranslation();
-
-	const [friends, setFriends] = useState<IUser[] | null>(null);
-
-	const LocalUserData = useSelector((state: any) => state.user.user);
-
-	useEffect(() => {
-		const userId = LocalUserData.id;
-		getFriends(userId)
-			.then((res) => {
-				// console.log(res);
-				if (isResNotOk(res)) {
-					ErrorAlert(res);
-					return;
-				}
-
-				const friendsNotInChannel = returnNotMembersFriends(channelInfo, res);
-
-				setFriends(friendsNotInChannel);
-			})
-			.catch((err) => {
-				ErrorAlert(err);
-			});
-	}, []);
 
 	if (!friends) {
 		return <LoadingBar />;
@@ -51,13 +30,13 @@ const FriendsList: React.FC<{
 			.then((res) => {
 				console.log(res);
 				SuccesAlert(res.message);
-				setFriends((prevFriends) => {
-					if (prevFriends) {
-						addMemberInChannelState(prevFriends.find((friend) => friend.id === +friendId)!);
-						return prevFriends.filter((friend) => friend.id !== +friendId);
-					}
-					return null;
-				});
+				refreshHandler();
+				// setFriends((prevFriends) => {
+				// 	if (prevFriends) {
+				// 		return prevFriends.filter((friend) => friend.id !== +friendId);
+				// 	}
+				// 	return null;
+				// });
 			})
 			.catch((err) => {
 				console.log(err);
@@ -100,23 +79,3 @@ const LoadingBar = () => {
 		</div>
 	);
 };
-
-const returnNotMembersFriends = (channelInfo: IChatChannel, frineds: IUser[]) => {
-	const friendsNotInChannel = [];
-
-	for (let j = 0; j < frineds.length; j++) {
-		let isFound = false;
-		for (let i = 0; i < channelInfo.members.length; i++) {
-			const member = channelInfo.members[i];
-			if (member.user.id === frineds[j].id) {
-				isFound = true;
-				break;
-			}
-		}
-		if (!isFound) {
-			friendsNotInChannel.push(frineds[j]);
-		}
-	}
-
-	return friendsNotInChannel;
-}

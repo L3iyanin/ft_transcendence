@@ -1,5 +1,13 @@
 import { useTranslation } from "react-i18next";
-import { kickOutMember, makeAdminMember, makeMemberAdmin } from "../../../services/channel/settings";
+import {
+	banMember,
+	kickOutMember,
+	makeAdminMember,
+	makeMemberAdmin,
+	muteMember,
+	unbanMember,
+	unmuteMember,
+} from "../../../services/channel/settings";
 import { channelMemberInterface } from "../../../utils/types/channelSettings";
 import ErrorAlert from "../../UI/Error";
 import LoadingSpinner from "../../UI/Loading/LoadingSpinner";
@@ -9,58 +17,9 @@ import MemberCart from "./MemberCart";
 const MembersList: React.FC<{
 	members: channelMemberInterface[];
 	channelInfo: IChatChannel | null;
-	setAdminInChannelState: (userId: string) => void;
-	setMemberInChannelState: (userId: string) => void;
-}> = ({ channelInfo, setAdminInChannelState, setMemberInChannelState }) => {
-
+	refreshHandler: () => void;
+}> = ({ channelInfo, refreshHandler }) => {
 	const { t } = useTranslation();
-
-	const makeAdminHandler = (userId: string) => {
-		if (channelInfo) {
-			makeMemberAdmin(channelInfo.id.toString(), userId)
-				.then((res) => {
-					console.log(res);
-					SuccesAlert(res.message);
-					setAdminInChannelState(userId);
-				})
-				.catch((err) => {
-					console.log(err);
-					ErrorAlert(err.message);
-				});
-		}
-	};
-
-	const kickOutHandler = (userId: string) => {
-		if (channelInfo) {
-			kickOutMember(channelInfo.id.toString(), userId)
-				.then((res) => {
-					console.log(res);
-					SuccesAlert(res.message);
-					// setMemberInChannelState(userId);
-				}
-				)
-				.catch((err) => {
-					console.log(err);
-					ErrorAlert(err.message);
-				}
-				);
-		}
-	};
-
-	const makeMemberHandler = (userId: string) => {
-		if (channelInfo) {
-			makeAdminMember(channelInfo.id.toString(), userId)
-				.then((res) => {
-					console.log(res);
-					SuccesAlert(res.message);
-					setMemberInChannelState(userId);
-				})
-				.catch((err) => {
-					console.log(err);
-					ErrorAlert(err.message);
-				});
-		}
-	};
 
 	if (!channelInfo) {
 		return (
@@ -70,17 +29,115 @@ const MembersList: React.FC<{
 		);
 	}
 
+	const makeAdminHandler = (userId: string) => {
+		makeMemberAdmin(channelInfo.id.toString(), userId)
+			.then((res) => {
+				console.log(res);
+				SuccesAlert(res.message);
+				refreshHandler();
+			})
+			.catch((err) => {
+				console.log(err);
+				ErrorAlert(err.message);
+			});
+	};
+
+	const kickOutHandler = (userId: string) => {
+		kickOutMember(channelInfo.id.toString(), userId)
+			.then((res) => {
+				console.log(res);
+				SuccesAlert(res.message);
+				refreshHandler();
+			})
+			.catch((err) => {
+				console.log(err);
+				ErrorAlert(err.message);
+			});
+	};
+
+	const makeMemberHandler = (userId: string) => {
+		makeAdminMember(channelInfo.id.toString(), userId)
+			.then((res) => {
+				console.log(res);
+				SuccesAlert(res.message);
+				refreshHandler();
+			})
+			.catch((err) => {
+				console.log(err);
+				ErrorAlert(err.message);
+			});
+	};
+
+	const banMemberHandler = (userId: string, duration: number) => {
+		banMember(channelInfo.id.toString(), userId, duration)
+			.then((res) => {
+				console.log(res);
+				SuccesAlert(res.message);
+				refreshHandler();
+			})
+			.catch((err) => {
+				console.log(err);
+				ErrorAlert(err);
+			});
+	};
+
+	const unBanMemberHandler = (userId: string) => {
+		unbanMember(channelInfo.id.toString(), userId)
+			.then((res) => {
+				console.log(res);
+				SuccesAlert(res.message);
+				refreshHandler();
+			})
+			.catch((err) => {
+				console.log(err);
+				ErrorAlert(err);
+			});
+	};
+
+	const muteMemberHandler = (userId: string, duration: number) => {
+		muteMember(channelInfo.id.toString(), userId, duration)
+			.then((res) => {
+				console.log(res);
+				SuccesAlert(res.message);
+				refreshHandler();
+			})
+			.catch((err) => {
+				console.log(err);
+				ErrorAlert(err);
+			});
+	};
+
+	const unMuteMemberHandler = (userId: string) => {
+		unmuteMember(channelInfo.id.toString(), userId)
+			.then((res) => {
+				console.log(res);
+				SuccesAlert(res.message);
+				refreshHandler();
+			})
+			.catch((err) => {
+				console.log(err);
+				ErrorAlert(err);
+			});
+	};
+
+
 	return (
 		<div className="">
 			<ul>
 				{channelInfo.members.map((member, index) => {
-					return <MemberCart
+					return (
+						<MemberCart
 							member={member}
 							key={index}
 							makeAdminHandler={makeAdminHandler}
 							makeMemberHandler={makeMemberHandler}
 							kickOutHandler={kickOutHandler}
-							/>;
+							banMemberHandler={banMemberHandler}
+							unBanMemberHandler={unBanMemberHandler}
+							muteMemberHandler={muteMemberHandler}
+							unMuteMemberHandler={unMuteMemberHandler}
+						/>
+					);
 				})}
 			</ul>
 		</div>

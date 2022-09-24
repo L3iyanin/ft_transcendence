@@ -56,6 +56,7 @@
 		"channelNameError": "Channel name is required and must be at least 3",
 		"channelPasswordError": "Channel password is required and must be at least 3",
 		"noMessages": "No messages",
+		"notMemberOfChannel": "You are not a member of this channel",
 		"channelType": {
 			"public": "Public",
 			"private": "Private",

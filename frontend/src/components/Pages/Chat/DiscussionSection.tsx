@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import useBotChannel from "../../../hooks/useBotChannel";
 import CreateChannelPopup from "./CreateChannelPopup";
 import { getChannelMessages, getChannels } from "../../../services/chat/chat";
+import ErrorAlert, { ErrorAlertWithMessage } from "../../UI/Error";
 
 const DiscussionSection: React.FC = () => {
 
@@ -50,19 +51,31 @@ const DiscussionSection: React.FC = () => {
 	const onSelectConversationHandler = (channel: IChatChannel) => {
 		getChannelMessages(channel.id)
 		.then((res) => {
-				console.log(res);
+			console.log(res);
+			setCurrentChannel(_ => {
+				const newChannel = {
+					...channel,
+					messages: res.messages,
+				}
+				return newChannel;
+			});
+		})
+		.catch((err) => {
+			console.log(err.response.status);
+			if (err.response.status === 401) {
+				ErrorAlertWithMessage(t("chatPage.notMemberOfChannel"));
+				console.log(channel)
 				setCurrentChannel(_ => {
 					const newChannel = {
 						...channel,
-						messages: res.messages,
+						messages: [],
+						IamMember: false,
 					}
 					return newChannel;
 				});
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-		console.log(channel);
+			}
+			console.error(err);
+		});
 	};
 
 	const onOpenCreateChannelHandler = () => {
@@ -90,6 +103,7 @@ const DiscussionSection: React.FC = () => {
 			})
 			.catch((err) => {
 				console.error(err);
+				ErrorAlert(err);
 			});
 	}, []);
 

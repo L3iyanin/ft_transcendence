@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import { getChannelInfo } from "../services/channel/settings";
 import ErrorAlert from "../components/UI/Error";
 import { isResNotOk } from "../utils/helper/httpHelper";
+import { useSelector } from "react-redux";
+import { getFriends } from "../services/profile/profile";
 
 const ChannelSettings: React.FC = () => {
 
@@ -18,6 +20,12 @@ const ChannelSettings: React.FC = () => {
 	const { t } = useTranslation();
 
 	const [channelInfo, setChannelInfo] = useState<IChatChannel| null>(null);
+
+	const [friends, setFriends] = useState<IUser[] | null>(null);
+
+	const [refresh, setRefresh] = useState<boolean>(false);
+	
+	const LocalUserData = useSelector((state: any) => state.user.user);
 
 	useEffect(() => {
 		if (channelId) {
@@ -34,64 +42,33 @@ const ChannelSettings: React.FC = () => {
 					ErrorAlert(err);
 				});
 		}
-	}, []);
+	}, [refresh]);
 
-	const setAdminInChannelState = (userId: string) => {
+
+
+	useEffect(() => {
 		if (channelInfo) {
-			setChannelInfo((prevChannelInfo) => {
-				if (prevChannelInfo) {
-					const newChannelInfo = {...prevChannelInfo};
-					for (let i = 0; i < prevChannelInfo.members.length; i++) {
-						if (prevChannelInfo.members[i].user.id === +userId) {
-							prevChannelInfo.members[i].role = "ADMIN";
-						}
+			const userId = LocalUserData.id;
+			getFriends(userId)
+				.then((res) => {
+	
+					if (isResNotOk(res)) {
+						ErrorAlert(res);
+						return;
 					}
-					return newChannelInfo;
-				}
-				else {
-					return null;
-				}
-			})
+	
+					const friendsNotInChannel = returnNotMembersFriends(channelInfo, res);
+					setFriends(friendsNotInChannel);
+				})
+				.catch((err) => {
+					ErrorAlert(err);
+				});
 		}
-	};
+	}, [channelInfo, refresh]);
 
-	const setMemberInChannelState = (userId: string) => {
-		if (channelInfo) {
-			setChannelInfo((prevChannelInfo) => {
-				if (prevChannelInfo) {
-					const newChannelInfo = {...prevChannelInfo};
-					for (let i = 0; i < prevChannelInfo.members.length; i++) {
-						if (prevChannelInfo.members[i].user.id === +userId) {
-							prevChannelInfo.members[i].role = "MEMBER";
-						}
-					}
-					return newChannelInfo;
-				}
-				else {
-					return null;
-				}
-			})
-		}
+	const refreshHandler = () => {
+		setRefresh(!refresh);
 	};
-
-	const addMemberInChannelState = (user: IUser) => {
-		if (channelInfo) {
-			setChannelInfo((prevChannelInfo) => {
-				if (prevChannelInfo) {
-					const newChannelInfo = {...prevChannelInfo};
-					newChannelInfo.members.push({
-						id: newChannelInfo.members.length + 1,
-						role: "MEMBER",
-						user: user
-					});
-					return newChannelInfo;
-				}
-				else {
-					return null;
-				}
-			})
-		}
-	}
 
 	return (
 		<div className="container">
@@ -102,8 +79,7 @@ const ChannelSettings: React.FC = () => {
 			<MembersList
 				channelInfo={channelInfo}
 				members={membersData}
-				setAdminInChannelState={setAdminInChannelState}
-				setMemberInChannelState={setMemberInChannelState}
+				refreshHandler={refreshHandler}
 				/>
 
 			<div className="flex mt-11">
@@ -115,13 +91,34 @@ const ChannelSettings: React.FC = () => {
 					<InputWithIcon
 						icon={<SearchIcon />}
 						type="text"
-						placeholder="Search"
+						placeholder={t("search")}
 					/>
 				</div>
 			</div>
-			{channelInfo && <FriendsList addMemberInChannelState={addMemberInChannelState} channelInfo={channelInfo} /> }
+			{channelInfo && <FriendsList friends={friends} refreshHandler={refreshHandler} channelInfo={channelInfo} /> }
 		</div>
 	);
 };
 
 export default ChannelSettings;
+
+
+const returnNotMembersFriends = (channelInfo: IChatChannel, frineds: IUser[]) => {
+	const friendsNotInChannel = [];
+
+	for (let j = 0; j < frineds.length; j++) {
+		let isFound = false;
+		for (let i = 0; i < channelInfo.members.length; i++) {
+			const member = channelInfo.members[i];
+			if (member.user.id === frineds[j].id) {
+				isFound = true;
+				break;
+			}
+		}
+		if (!isFound) {
+			friendsNotInChannel.push(frineds[j]);
+		}
+	}
+
+	return friendsNotInChannel;
+}
