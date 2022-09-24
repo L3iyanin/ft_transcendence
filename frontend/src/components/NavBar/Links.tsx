@@ -15,6 +15,7 @@ const Links = () => {
 				<Option url="/profile">{t('profile')}</Option>
 				<Option url="/settings">{t('settings')}</Option>
 				<Option url="/chat">{t('chat')}</Option>
+				<Option url="/search">{t('search')}</Option>
 				<Option url="/">{t('logout')}</Option>
 
 			</nav>

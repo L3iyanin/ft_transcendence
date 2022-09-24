@@ -6,20 +6,23 @@ import { getFriends } from "../../../services/profile/profile";
 import { isResNotOk } from "../../../utils/helper/httpHelper";
 import { friendInterface } from "../../../utils/types/channelSettings";
 import ErrorAlert from "../../UI/Error";
+import InputWithIcon from "../../UI/inputs/InputWithIcon";
 import LoadingSpinner from "../../UI/Loading/LoadingSpinner";
 import SuccesAlert from "../../UI/SuccesAlert";
 import FriendCart from "./FriendCart";
+import { ReactComponent as SearchIcon } from "../../../assets/icons/search.svg";
 
 const FriendsList: React.FC<{
-		channelInfo: IChatChannel,
-		refreshHandler: () => void,
-		friends: IUser[] | null,
-	}> = ({
-	channelInfo,
-	refreshHandler,
-	friends
-}) => {
+	channelInfo: IChatChannel;
+	refreshHandler: () => void;
+	friends: IUser[] | null;
+}> = ({ channelInfo, refreshHandler, friends }) => {
 	const { t } = useTranslation();
+	const [usersList, setUsersList] = useState(friends);
+
+	useEffect(() => {
+		setUsersList(friends);
+	}, [friends]);
 
 	if (!friends) {
 		return <LoadingBar />;
@@ -44,10 +47,26 @@ const FriendsList: React.FC<{
 			});
 	};
 
+	const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const searchValue = e.target.value;
+		const filteredUsersList = friends.filter((user) =>
+			user.username.toLowerCase().includes(searchValue.toLowerCase())
+		);
+		setUsersList(filteredUsersList);
+	};
+
 	return (
 		<div className="container">
+			<div className="flex flex-row justify-start">
+				<InputWithIcon
+					icon={<SearchIcon />}
+					type="text"
+					placeholder="Search"
+					onChange={searchHandler}
+				/>
+			</div>
 			<ul>
-				{friends.map((friend, index) => {
+				{usersList && usersList.map((friend, index) => {
 					return (
 						<FriendCart
 							addFriendToChannelHandler={
@@ -58,13 +77,13 @@ const FriendsList: React.FC<{
 						/>
 					);
 				})}
-				{
-					friends.length === 0 && (
-						<div className="flex items-center justify-center h-24 bg-dark-60 my-4 rounded-2xl">
-							<p className="text-white text-lg">{t("channelSettings.youHaveNoFriendToadd")}</p>
-						</div>
-					)
-				}
+				{usersList && usersList.length === 0 && (
+					<div className="flex items-center justify-center h-24 bg-dark-60 my-4 rounded-2xl">
+						<p className="text-white text-lg">
+							{t("channelSettings.youHaveNoFriendToadd")}
+						</p>
+					</div>
+				)}
 			</ul>
 		</div>
 	);

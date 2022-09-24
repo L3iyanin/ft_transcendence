@@ -1,6 +1,5 @@
 import NavBar from "../components/NavBar/NavBar";
 import InputWithIcon from "../components/UI/inputs/InputWithIcon";
-import { ReactComponent as SearchIcon } from "../assets/icons/search.svg";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import MembersList from "../components/Pages/ChannelSettings/MembersList";
@@ -88,11 +87,6 @@ const ChannelSettings: React.FC = () => {
 						{t("channelSettings.addFriendsToRoom")} {channelInfo && channelInfo.name}
 					</h2>
 					<div className="pt-4" />
-					<InputWithIcon
-						icon={<SearchIcon />}
-						type="text"
-						placeholder={t("search")}
-					/>
 				</div>
 			</div>
 			{channelInfo && <FriendsList friends={friends} refreshHandler={refreshHandler} channelInfo={channelInfo} /> }
