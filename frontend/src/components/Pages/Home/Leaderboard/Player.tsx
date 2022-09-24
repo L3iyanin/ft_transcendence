@@ -1,7 +1,10 @@
+import { useTranslation } from "react-i18next";
 import Stat from "../../../Stat/Stat";
 
 
 const Friend :React.FC < {user : IUser} > = ({ user }) => {
+	const { t } = useTranslation();
+
 	return (
 		<article className="flex justify-between items-center grow text-white">
 			<div className=" flex justify-start items-center gap-3 grow">

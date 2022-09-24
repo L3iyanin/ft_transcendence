@@ -8,11 +8,11 @@ const ModeDescription : React.FC < {mode : MatchTypeEnum} > = ({mode}) => {
 		<div className="flex flex-col justify-center items-center gap-0">
 			<h2 className="text-3xl font-bold text-white">
 				{mode === MatchTypeEnum.Classic
-					? t("Marineford Pong")
-					: t("Wano Pong")}
+					? t("homePage.MarinefordPong")
+					: t("homePage.WanoPong")}
 			</h2>
 			<h3 className="text-xl font-medium text-beige">{`${mode} ${t(
-				"Goals to win"
+				"homePage.GoalsToWin"
 			)}`}</h3>
 		</div>
 	);

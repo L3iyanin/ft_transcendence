@@ -8,7 +8,7 @@ import { matches } from "../utils/data/Match";
 import GameMode from "../components/Pages/Home/GameMode/GameMode";
 import { MatchTypeEnum } from "../utils/constants/enum";
 import LastMatches from "../components/Pages/Home/LastMatches/LastMatches";
-import Leaderboard from "../components/Pages/Home/Leaderboard/LeaderBoard";
+import Leaderboard from "../components/Pages/Home/Leaderboard/Leaderboard";
 
 const Home: React.FC = () => {
 	return (

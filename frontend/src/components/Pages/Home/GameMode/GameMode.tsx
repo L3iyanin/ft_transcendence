@@ -26,7 +26,7 @@ const GameMode: React.FC<{ mode: MatchTypeEnum }> = ({ mode }) => {
 				<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 					<div className="w-[14px] h-[14px] rounded-full relative left-3/4 bg-beige"></div>
 					<button className="px-20 py-4 rounded-xl bg-red text-xl font-bold text-white text-center">
-						{t("Play")}
+						{t("homePage.Play")}
 					</button>
 				</div>
 			</article>

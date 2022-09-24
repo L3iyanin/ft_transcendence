@@ -20,13 +20,13 @@ const UserCard: React.FC<{ user: IUser }> = ({ user: user }) => {
 			<p className="text-xl font-medium text-beige">{user.username}</p>
 			<Status isOnline={true} nbFriends={user.friends?.length ?? 0} />
 			<div className="flex gap-5">
-				<Stat stat={t("wins")} qty={user.wins!} />
-				<Stat stat={t("losses")} qty={user.loses!} />
+				<Stat stat="wins" qty={user.wins!} />
+				<Stat stat="losses" qty={user.loses!} />
 			</div>
 			<div className="flex items-center gap-2">
 				<AchivementIcon />
 				<span className="text-base font-medium">
-					{user.achievements?.length ?? 0}/{MAX_ACHIVEMENTS} achievments
+					{user.achievements?.length ?? 0}/{MAX_ACHIVEMENTS} {t("homePage.achievements")}
 				</span>
 			</div>
 		</section>

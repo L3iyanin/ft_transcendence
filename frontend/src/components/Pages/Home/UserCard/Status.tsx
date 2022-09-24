@@ -8,11 +8,11 @@ const Status : React.FC < {isOnline : boolean, nbFriends : number} > = ({isOnlin
 		<div className="flex justify-between items-center gap-7 text-base font-medium">
 			<div className="flex justify-between items-center gap-2">
 				<div className={`block w-3 h-3 rounded-full ${isOnline ? "bg-green" : "bg-red"}`}></div>
-				<p className="text-base font-medium">{isOnline ? "online" : "offline"}</p>
+				<p className="text-base font-medium">{isOnline ? t("homePage.online") : t("homePage.offline")}</p>
 			</div>
 			<div className="flex justify-between items-center gap-2">
 				<FriendsIcon />
-				<p>{`${nbFriends} ${t("friends")}`}</p>
+				<p>{`${nbFriends} ${t("homePage.friends")}`}</p>
 			</div>
 		</div>
 	);

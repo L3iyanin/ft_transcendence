@@ -10,19 +10,15 @@ const Leaderboard: React.FC<{ players: IUser[] }> = ({ players }) => {
 		else if (player1.wins < player2.wins)
 		return 1;
 		else
-		{
-			console.log(player1);
-			console.log(player2);
 			return player1.loses < player2.loses ? -1 : 1;
-		}
 	});
 
 	return (
 		<section className="basis-[443px] min-w-[443px] h-[481px] pl-9 pr-1 pt-6 rounded-2xl flex flex-col justify-start gap-6 bg-dark-60">
 			<h2 className="text-3xl font-bold text-white ">
-				{t("Leaderboard")}
+				{t("homePage.Leaderboard")}
 			</h2>
-			<div className="max-h-[410px] pr-8 overflow-y-auto">
+			<div className="w-full max-h-[410px] pr-8 overflow-y-auto">
 				{players.map((player, index, array) => {
 					return (
 						<>
