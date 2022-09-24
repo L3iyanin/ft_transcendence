@@ -29,7 +29,7 @@ export class ChatGateway {
 		const users = this.chatService.addConnectedUser(client, newUser)
 		this.server.emit("connectUserResponse", users)
 	}
-	
+
 	@SubscribeMessage("disconnectUser")
 	removeConnectedUser(client: Socket, userId: number) {
 		console.log("function not implemented yet !!");
