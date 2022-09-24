@@ -19,7 +19,7 @@ import {
 import { UserGuard } from "./user.guard";
 import { editFileName, UsersService } from "./users.service";
 import { UserInfo } from "./dto/userInfo.dto";
-import { ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiProperty, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { I18n, I18nContext } from "nestjs-i18n";
 import { Achievement } from "./dto/achievement.dto";
 import { userInLeaderboard } from "./dto/userInLeaderboard";
@@ -35,6 +35,13 @@ import { PostResponce } from "./dto/postResponce.dto";
 @Controller("users")
 export class UsersController {
 	constructor(private readonly userService: UsersService) {}
+
+	@ApiProperty()
+	@Get("all")
+	async getAllUsers(@Req() req) {
+		const currentUserID = req.user.id;
+		return await this.userService.getAllUsers(currentUserID);
+	}
 
 	@ApiResponse({ type: UserInfo })
 	@Get("/my-info")
