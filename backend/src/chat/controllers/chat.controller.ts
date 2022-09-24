@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Param, ParseIntPipe, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Req, UseGuards } from "@nestjs/common";
 import { ApiProperty, ApiTags } from "@nestjs/swagger";
 import { UserGuard } from "src/users/user.guard";
 import { CreateChannelDto, MuteOrBlockDto } from "../dto/chat.dto";
@@ -30,7 +30,6 @@ export class ChatController {
 	@ApiProperty()
 	@Get("/members/:channelId") // @ To be tested
 	getAllMembersInChannels(@Req() req, @Param("channelId", ParseIntPipe) channelId: number) {
-		// throw new HttpException("Not implemented", 501);
 		return this.chatService.getAllMembersInChannels(req.user.id, channelId);
 	}
 

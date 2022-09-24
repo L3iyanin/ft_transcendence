@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { generateChannelName } from "../helpers";
 import { add } from "date-fns";
 import { CreateChannelDto } from "../dto/chat.dto";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class ChatService {
@@ -206,11 +207,15 @@ export class ChatService {
 	async createGroupChannel(userId: number, preferences: CreateChannelDto) {
 		try {
 			const { name, type, password } = preferences;
-			if (type === "PROTECTED" && !password) {
-				throw new HttpException(
-					"Password is required for protected channel",
-					HttpStatus.BAD_REQUEST
-				);
+			let hashedPassword = "";
+			if (type === "PROTECTED") {
+				if (!password) {
+					throw new HttpException(
+						"Password is required for protected channel",
+						HttpStatus.BAD_REQUEST
+					);
+				}
+				hashedPassword = await bcrypt.hash(password, 10);
 			}
 			// check if channel with same name exists
 			const channel = await this.prisma.channel.findUnique({
@@ -243,7 +248,7 @@ export class ChatService {
 						],
 					},
 					type,
-					password,
+					password: hashedPassword,
 				},
 			});
 			return {
@@ -281,9 +286,14 @@ export class ChatService {
 				);
 			}
 
-			console.log(channel.password, password);
-			if (channel.type === "PROTECTED" && channel.password !== password) {
-				throw new HttpException("Invalid password", HttpStatus.UNAUTHORIZED);
+			if (channel.type === "PROTECTED") {
+				if (!password) {
+					throw new HttpException("password is required to join PROTECTED channel", HttpStatus.BAD_REQUEST);
+				}
+				const isPasswordCorrect = await bcrypt.compare(password, channel.password);
+				if (!isPasswordCorrect) {
+					throw new HttpException("Incorrect password", HttpStatus.BAD_REQUEST);
+				}
 			}
 			if (channel.type === "PRIVATE") {
 				throw new HttpException("Channel is private", HttpStatus.UNAUTHORIZED);
