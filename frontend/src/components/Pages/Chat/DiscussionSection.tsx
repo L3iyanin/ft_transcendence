@@ -24,7 +24,6 @@ import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 
 const DiscussionSection: React.FC = () => {
-	
 	const [openCreateChannel, setOpenCreateChannel] = useState(false);
 	const [refresh, setRefresh] = useState(false);
 	const [channelsOfDms, setChannelsOfDms] = useState<IChatChannel[]>([]);
@@ -67,7 +66,6 @@ const DiscussionSection: React.FC = () => {
 	const onSelectConversationHandler = (channel: IChatChannel) => {
 		getChannelMessages(channel.id)
 			.then((res) => {
-
 				setCurrentChannel((_) => {
 					const newChannel = {
 						...channel,
@@ -76,10 +74,14 @@ const DiscussionSection: React.FC = () => {
 					return newChannel;
 				});
 
+				onRefreshHandler();
+
 				// remove the unread messages count
 				setChannelsOfDms((channels) => {
 					const newChannels = [...channels];
-					const index = newChannels.findIndex((singleChannel) => singleChannel.id === channel.id);
+					const index = newChannels.findIndex(
+						(singleChannel) => singleChannel.id === channel.id
+					);
 
 					if (index !== -1) {
 						newChannels[index].unreadMessages = 0;
@@ -91,7 +93,6 @@ const DiscussionSection: React.FC = () => {
 			.catch((err) => {
 				console.log(err.response.status);
 				if (err.response.status === 401) {
-
 					ErrorAlertWithMessage(t("chatPage.notMemberOfChannel"));
 
 					setCurrentChannel((_) => {
@@ -104,7 +105,6 @@ const DiscussionSection: React.FC = () => {
 						};
 						return newChannel;
 					});
-
 				}
 				console.error(err);
 			});
@@ -189,7 +189,6 @@ const DiscussionSection: React.FC = () => {
 		if (!clientSocket) return;
 		clientSocket.on("receivedMessage", (message: any) => {
 			setCurrentChannel((channelInfo) => {
-
 				if (message.isDm) {
 					setChannelsOfDms((channels) => {
 						const newChannels = [...channels];
@@ -209,7 +208,6 @@ const DiscussionSection: React.FC = () => {
 					});
 				}
 
-
 				if (message.channelId === channelInfo.id) {
 					const newChannel = {
 						...channelInfo,
@@ -218,16 +216,12 @@ const DiscussionSection: React.FC = () => {
 					return newChannel;
 				}
 
-
 				return channelInfo;
 			});
-
-			
 		});
 	}, [clientSocket]);
 
 	const onSendMessageHandler = (messageContent: string) => {
-
 		clientSocket.emit("sendMessage", {
 			isDm: activeChatOption === ChatOptionsEnum.DMS,
 			channelId: currentChannel.id,
@@ -313,8 +307,16 @@ const DiscussionSection: React.FC = () => {
 			<div className="basis-2/3 basis">
 				<ChatActions
 					currentChannel={currentChannel}
-					username={currentChannel.members[0].user.username}
-					userId={currentChannel.members[0].user.id}
+					username={
+						currentChannel.members[0].user.id === userData.user?.id
+							? currentChannel.members.length > 1 ? currentChannel.members[1].user.username : undefined
+							: currentChannel.members[0].user.username
+					}
+					userId={
+						currentChannel.members[0].user.id === userData.user?.id
+							? currentChannel.members.length > 1 ? currentChannel.members[1].user.id : undefined
+							: currentChannel.members[0].user.id
+					}
 					onOpenCreateChannelHandler={onOpenCreateChannelHandler}
 					IamNotMember={currentChannel.IamNotMember}
 					leaveChannelHandler={leaveChannelHandler}
@@ -329,6 +331,7 @@ const DiscussionSection: React.FC = () => {
 					isProtectedChannel={currentChannel.isProtectedChannel}
 					joinChannelHandler={joinChannelHandler}
 					onSendMessageHandler={onSendMessageHandler}
+					currentChannel={currentChannel}
 				/>
 			</div>
 		</div>

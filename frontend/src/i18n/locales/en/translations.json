@@ -44,6 +44,8 @@
 	},
 	"chatPage": {
 		"dms": "DMs",
+		"youAreBanned": "You are banned in this chat",
+		"youAreMuted": "You are muted in this chat",
 		"channels": "Channels",
 		"publicChannel": "Public Channel",
 		"protectedChannel": "Protected Channel",

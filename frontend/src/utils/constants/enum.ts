@@ -1,7 +1,7 @@
 export const enum MemberStatusEnum {
-	BANNED,
-	MUTED,
-	NONE,
+	BANNED = "BLOCKED",
+	MUTED = "MUTED",
+	NONE = "NONE",
 }
 
 export const enum RolesEnum {
