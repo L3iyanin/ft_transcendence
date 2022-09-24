@@ -56,7 +56,7 @@ export class ChatService {
 						(member) => member.user.id !== userId
 					).user.imgUrl;
 				}
-			})
+			});
 
 			const channelsWithoutPassword = channels.map((channel) => {
 				const { password, ...rest } = channel;
@@ -85,7 +85,7 @@ export class ChatService {
 								include: {
 									user: true,
 								},
-							}
+							},
 						},
 					},
 					members: {
@@ -95,7 +95,6 @@ export class ChatService {
 					},
 				},
 			});
-
 
 			if (channel.members.some((member) => member.userId === userId)) {
 				return {
@@ -122,19 +121,18 @@ export class ChatService {
 				include: {
 					members: {
 						include: {
-						user: true,
-						}
+							user: true,
+						},
 					},
 				},
 			});
 
-
 			// if (channel.members.some((member) => member.userId === userId)) {
-				return {
-					// name: channel.name,
-					channel,
-					message: "Members fetched successfully",
-				};
+			return {
+				// name: channel.name,
+				channel,
+				message: "Members fetched successfully",
+			};
 			// } else {
 			// 	throw new HttpException(
 			// 		"You are not a member of this channel",
@@ -202,10 +200,7 @@ export class ChatService {
 		}
 	}
 
-	async createGroupChannel(
-		userId: number,
-		preferences: CreateChannelDto
-	) {
+	async createGroupChannel(userId: number, preferences: CreateChannelDto) {
 		try {
 			const { name, type, password } = preferences;
 			if (type === "PROTECTED" && !password) {
@@ -226,7 +221,6 @@ export class ChatService {
 					HttpStatus.BAD_REQUEST
 				);
 			}
-
 
 			const newChannel = await this.prisma.channel.create({
 				data: {
@@ -252,6 +246,64 @@ export class ChatService {
 			return {
 				newChannel,
 				message: "Group channel created successfully",
+			};
+		} catch (err) {
+			console.log(err);
+			throw new HttpException(err, err.status);
+		}
+	}
+
+	async joinGroupChannel(userId: number, channelId: number, password: string) {
+		try {
+			const channel = await this.prisma.channel.findUnique({
+				where: {
+					id: channelId,
+				},
+				include: {
+					members: {
+						where: {
+							userId,
+						},
+					},
+				},
+			});
+			if (!channel) {
+				throw new HttpException("Channel not found", HttpStatus.NOT_FOUND);
+			}
+
+			if (channel.members.length > 0) {
+				throw new HttpException(
+					"You are already a member of this channel",
+					HttpStatus.BAD_REQUEST
+				);
+			}
+
+			console.log(channel.password, password);
+			if (channel.type === "PROTECTED" && channel.password !== password) {
+				throw new HttpException("Invalid password", HttpStatus.UNAUTHORIZED);
+			}
+			if (channel.type === "PRIVATE") {
+				throw new HttpException("Channel is private", HttpStatus.UNAUTHORIZED);
+			}
+			const user = await this.prisma.user.findUnique({
+				where: {
+					id: userId,
+				},
+			});
+			if (!user) {
+				throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+			}
+			const newMember = await this.prisma.member.create({
+				data: {
+					userId,
+					channelId,
+					role: "MEMBER",
+					status: "NONE",
+				},
+			});
+			return {
+				newMember,
+				message: "User joined channel successfully",
 			};
 		} catch (err) {
 			console.log(err);

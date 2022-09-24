@@ -51,6 +51,19 @@ export class ChatController {
 		return this.chatService.createGroupChannel(req.user.id, preferences);
 	}
 
+	// join a group channel, if it's protected, you need to know the password
+	@ApiProperty()
+	@Post("join-channel/:channelId") // @ To be tested
+	joinGroupChannel(
+		@Req() req,
+		@Param("channelId", ParseIntPipe) channelId: number,
+		@Body() preferences: { password?: string }
+	) {
+		const { password } = preferences;
+		return this.chatService.joinGroupChannel(req.user.id, channelId, password);
+	}
+
+
 	// ! channel settings
 
 	// * For DMs:
