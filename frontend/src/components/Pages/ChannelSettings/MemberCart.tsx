@@ -6,8 +6,9 @@ import { ReactComponent as KickOutIcon } from "../../../assets/icons/kickOut.svg
 
 const MemberCart: React.FC<{
 	member: IMember;
-	makeAdminHandler: (memberId: string) => void;
-	makeMemberHandler: (memberId: string) => void;
+	makeAdminHandler: (userId: string) => void;
+	makeMemberHandler: (userId: string) => void;
+	kickOutHandler: (userId: string) => void;
 }> = (props) => {
 	const { t } = useTranslation();
 
@@ -40,6 +41,7 @@ const MemberCart: React.FC<{
 					icon={<KickOutIcon />}
 					text={t("channelSettings.kickOut")}
 					dropDown={false}
+					onClickWithoutDropdown={props.kickOutHandler.bind(null, props.member.user.id.toString())}
 				/>
 				<ButtonWithIcon
 					icon={<></>}

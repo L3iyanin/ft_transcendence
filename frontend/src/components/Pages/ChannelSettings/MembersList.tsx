@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { makeAdminMember, makeMemberAdmin } from "../../../services/channel/settings";
+import { kickOutMember, makeAdminMember, makeMemberAdmin } from "../../../services/channel/settings";
 import { channelMemberInterface } from "../../../utils/types/channelSettings";
 import ErrorAlert from "../../UI/Error";
 import LoadingSpinner from "../../UI/Loading/LoadingSpinner";
@@ -27,7 +27,23 @@ const MembersList: React.FC<{
 					console.log(err);
 					ErrorAlert(err.message);
 				});
-			console.log(`make admin ${userId}`);
+		}
+	};
+
+	const kickOutHandler = (userId: string) => {
+		if (channelInfo) {
+			kickOutMember(channelInfo.id.toString(), userId)
+				.then((res) => {
+					console.log(res);
+					SuccesAlert(res.message);
+					// setMemberInChannelState(userId);
+				}
+				)
+				.catch((err) => {
+					console.log(err);
+					ErrorAlert(err.message);
+				}
+				);
 		}
 	};
 
@@ -43,7 +59,6 @@ const MembersList: React.FC<{
 					console.log(err);
 					ErrorAlert(err.message);
 				});
-			console.log(`make member ${userId}`);
 		}
 	};
 
@@ -64,6 +79,7 @@ const MembersList: React.FC<{
 							key={index}
 							makeAdminHandler={makeAdminHandler}
 							makeMemberHandler={makeMemberHandler}
+							kickOutHandler={kickOutHandler}
 							/>;
 				})}
 			</ul>

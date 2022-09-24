@@ -23,3 +23,9 @@ export const makeAdminMember = (channelId: string, userId: string) => {
 			.then(res => res.data)
 			// .catch(err => console.error(`err`, err))
 }
+
+export const kickOutMember = (channelId: string, userId: string) => {
+	return axios.post(`/chat/kick/${userId}/${channelId}`)
+			.then(res => res.data)
+			// .catch(err => console.error(`err`, err))
+}
