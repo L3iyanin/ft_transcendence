@@ -43,6 +43,13 @@ export class ChatGateway {
 		console.log("--------------------------------------------")
 		console.log(messageData.response)
 		console.log("--------------------------------------------")
-		client.to(messageData.channelName).emit("receivedMessage", messageData.response);
+		if(messageData.response.error){
+			if (messageData.response.status == "BLOCKED")
+					this.server.to(client.id).emit("youb are blocked", messageData.response);
+				else
+					client.to(client.id).emit("you are muted", messageData.response);
+		}
+		else
+			client.to(messageData.channelName).emit("receivedMessage", messageData.response);
 	}
 }
