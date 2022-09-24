@@ -18,7 +18,7 @@ export class ChatService {
 
 	//? ========================================CONNECT USER EVENT========================================
 	addConnectedUser(client: Socket, newUser : User){
-		const alreadyExist = this.onlineUsers.some((user) => user.socket.id == user.socket.id); //! corretc this for one user in multiple tab
+		const alreadyExist = this.onlineUsers.some((user) => user.socket.id == client.id); //! corretc this for one user in multiple tab
 		if (!alreadyExist){
 
 			this.onlineUsers.push({
