@@ -5,36 +5,45 @@ const Leaderboard: React.FC<{ players: IUser[] }> = ({ players }) => {
 	const { t } = useTranslation();
 
 	players.sort((player1: IUser, player2: IUser) => {
-		const wins1 = player1.wins ?? 0;
-		const wins2 = player2.wins ?? 0;
-		return wins1 < wins2 ? 1 : -1;
+		if (player1.wins > player2.wins)
+		return -1;
+		else if (player1.wins < player2.wins)
+		return 1;
+		else
+		{
+			console.log(player1);
+			console.log(player2);
+			return player1.loses < player2.loses ? -1 : 1;
+		}
 	});
 
 	return (
-		<section className="container min-w-[300px] h-[481px] m-2 py-3 pl-1 pr-2 rounded-lg flex flex-col justify-start gap-3 bg-dark-60">
-			<h2 className="m-2 px-4 text-2xl font-bold text-white ">
+		<section className="basis-[443px] min-w-[443px] h-[481px] pl-9 pr-1 pt-6 rounded-2xl flex flex-col justify-start gap-6 bg-dark-60">
+			<h2 className="text-3xl font-bold text-white ">
 				{t("Leaderboard")}
 			</h2>
-			<div className="container max-h-[410px] px-6 rounded-lg overflow-y-auto">
+			<div className="max-h-[410px] pr-8 overflow-y-auto">
 				{players.map((player, index, array) => {
-					if (index < array.length - 1) {
-						return (
-							<>
-								<article
-									className="container flex justify-between items-center gap-2"
-									key={index}
+					return (
+						<>
+							<article
+								className="my-1 flex justify-between items-center gap-3"
+								key={index}
+							>
+								<p
+									className={`text-2xl font-medium ${
+										index < 3 ? "text-yellow" : "text-white"
+									}`}
 								>
-									<p className="text-yellow text-base font-medium">
-										#{index}
-									</p>
-									<Player user={player} />
-								</article>
-								<hr className="my-2 rounded-md border-dark-blue border-t-4" />
-							</>
-						);
-					} else {
-						return <Player key={index} user={player} />;
-					}
+									#{index + 1}
+								</p>
+								<Player key={player.id} user={player} />
+							</article>
+							{index < array.length - 1 && (
+								<hr className="mt-4 mb-3 rounded-sm border-dark-blue border-t-4" />
+							)}
+						</>
+					);
 				})}
 			</div>
 		</section>

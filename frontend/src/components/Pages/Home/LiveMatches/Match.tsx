@@ -1,7 +1,6 @@
 import Player from "./Player";
 import Score from "./Score";
 import SeeLive from "./SeeLive";
-import { ReactComponent as FirstCrown } from "../../../../assets/icons/FirstCrown.svg";
 
 const Match: React.FC<{ match: IMatch }> = ({ match }) => {
 	return (

@@ -26,7 +26,8 @@
 	},
 	"homePage" : {
 		"LiveMatches" : "Live Matches:",
-		"SeeMatchLive" : "See match live"
+		"SeeMatchLive" : "See match live",
+		"LastMatches" : "Last Played Matches:"
 	},
 	"gamePage": {
 		"goalsToWin": "Goals to win",
