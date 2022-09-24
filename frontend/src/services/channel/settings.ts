@@ -57,3 +57,9 @@ export const unmuteMember = (channelId: string, userId: string) => {
 			.then(res => res.data)
 			// .catch(err => console.error(`err`, err))
 }
+
+export const leaveChannel = (channelId: string) => {
+	return axios.post(`/chat/leave/${channelId}`)
+			.then(res => res.data)
+			// .catch(err => console.error(`err`, err))
+}

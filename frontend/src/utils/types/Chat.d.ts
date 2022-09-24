@@ -29,6 +29,7 @@ interface IChatChannel {
     password?: string;
     lastMessage?: IMessage;
 	uneadMessages?: number;
-	IamMember?: boolean;
+	IamNotMember?: boolean;
+	isProtectedChannel?: boolean;
 }
 

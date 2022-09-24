@@ -12,7 +12,8 @@ import ErrorAlert, { ErrorAlertWithMessage } from "../../UI/Error";
 const CreateChannelPopup: React.FC<{
 	open: boolean;
 	setOpen: (open: boolean) => void;
-}> = ({ open, setOpen }) => {
+	onRefreshHandler: () => void;
+}> = ({ open, setOpen, onRefreshHandler }) => {
 
 	const { t } = useTranslation();
 
@@ -48,7 +49,8 @@ const CreateChannelPopup: React.FC<{
 		createChannel(channelName, selectedOption, channelPassword)
 		.then((res) => {
 				setOpen(false);
-				SuccesAlert(res.message)
+				SuccesAlert(res.message);
+				onRefreshHandler();
 			})
 			.catch((err) => {
 				console.error(err);

@@ -59,6 +59,10 @@
 		"channelPasswordError": "Channel password is required and must be at least 3",
 		"noMessages": "No messages",
 		"notMemberOfChannel": "You are not a member of this channel",
+		"joinChannel": "Join Channel",
+		"areYouIn": "Are you in ?",
+		"noChannels": "No channels Found",
+		"typeChannelPassword": "Type channel password...",
 		"channelType": {
 			"public": "Public",
 			"private": "Private",
@@ -86,7 +90,8 @@
 		"24Hours": "24 Hours",
 		"addMember": "add member",
 		"addFriendsToRoom": "Add friends to room",
-		"youHaveNoFriendToadd": "You have no friends to add"
+		"youHaveNoFriendToadd": "You have no friends to add",
+		"leaveChannel": "leave channel"
 	},
 	"roles" : {
 		"member": "member",
