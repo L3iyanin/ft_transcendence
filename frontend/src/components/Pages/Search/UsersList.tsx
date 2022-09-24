@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactComponent as SearchIcon } from "../../../assets/icons/search.svg";
 
 import { useTranslation } from "react-i18next";
 import InputWithIcon from "../../UI/inputs/InputWithIcon";
 import UserCard from "./UserCard";
+import { getAllUsers } from "../../../services/search/search";
 
 const usersOriginalList: IUser[] = [
 	{
@@ -39,6 +40,15 @@ const usersOriginalList: IUser[] = [
 const UsersList: React.FC = () => {
 	const { t } = useTranslation();
 	const [usersList, setUsersList] = useState(usersOriginalList);
+
+	useEffect(() => {
+		getAllUsers().then((users) => {
+			setUsersList(users);
+		}).catch((err) => {
+			console.log(err);
+		});
+	}, []);
+
 
 	const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const searchValue = e.target.value;
