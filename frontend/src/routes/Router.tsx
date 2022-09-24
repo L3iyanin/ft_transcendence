@@ -8,6 +8,7 @@ import Chat from "../pages/Chat";
 import ChannelSettings from "../pages/ChannelSettings";
 import RequireAuth from "./RequireAuth";
 import NotRequireAuth from "./NotRequireAuth";
+import Search from "../pages/Search";
 
 const Router: React.FC = () => {
 	return (
@@ -24,6 +25,7 @@ const Router: React.FC = () => {
 							element={<ChannelSettings />}
 						/>
 						<Route path="/game" element={<Game />} />
+						<Route path="/search" element={<Search />} />
 					</Route>
 					<Route element={<NotRequireAuth />}>
 						<Route path="/" element={<Landing />} />
