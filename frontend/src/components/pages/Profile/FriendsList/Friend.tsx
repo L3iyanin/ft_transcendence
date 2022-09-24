@@ -12,7 +12,7 @@ const Friend :React.FC < {user : IUser} > = ({ user }) => {
 		navigate(`/profile/${user.id}`);
 	}
 
-	console.log(user);
+	// console.log(user);
 
 	return (
 		<article className="cursor-pointer w-full flex justify-between items-center text-white" onClick={showUserProfileHandler}>

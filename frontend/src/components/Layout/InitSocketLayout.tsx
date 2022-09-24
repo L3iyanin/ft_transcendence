@@ -21,7 +21,7 @@ const InitSocketLayout: React.FC<{
 		if (!clientSocket || !userData) return;
 		
 		clientSocket.on("connect", () => {
-			console.log("Connected to server");
+			// console.log("Connected to server");
 			clientSocket.emit("connectUser", { username: userData.user?.username, fullName: userData.user?.fullName, id: userData.user?.id});
 		});
 
