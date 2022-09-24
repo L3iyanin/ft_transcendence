@@ -65,7 +65,7 @@ export class ChatService {
 					},
 				});
 				const member: Member = channel.members.find(
-					(member) => (member.userId == payload.userId)
+					(member) => (member.userId === payload.userId)
 				);
 				if (member.status != "NONE") {
 					response = this.generateResponse(payload, member.status, member.until);

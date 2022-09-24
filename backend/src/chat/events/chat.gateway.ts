@@ -11,13 +11,11 @@ import { JsonWebTokenError } from "jsonwebtoken";
 import { User } from "../dto/user.dto";
 import { generateChannelName } from "../helpers";
 
-
 @WebSocketGateway({
 	cors: {
 		origin: "*",
 	},
 })
-
 export class ChatGateway {
 	constructor(private readonly chatService: ChatService) {}
 
@@ -25,9 +23,9 @@ export class ChatGateway {
 	server: Server;
 
 	@SubscribeMessage("connectUser")
-	addConnectedUser(client: Socket, newUser : User) {
-		const users = this.chatService.addConnectedUser(client, newUser)
-		this.server.emit("connectUserResponse", users)
+	addConnectedUser(client: Socket, newUser: User) {
+		const users = this.chatService.addConnectedUser(client, newUser);
+		this.server.emit("connectUserResponse", users);
 	}
 
 	@SubscribeMessage("disconnectUser")
@@ -37,19 +35,19 @@ export class ChatGateway {
 
 	@SubscribeMessage("sendMessage")
 	async handleMessage(client: Socket, payload: Message) {
-		console.log("message received", payload);
-		const messageData = await this.chatService.handleMessage(client, payload)
-		console.log("channelName : " + messageData.channelName)
-		console.log("--------------------------------------------")
-		console.log(messageData.response)
-		console.log("--------------------------------------------")
-		if(messageData.response.error){
-			if (messageData.response.status == "BLOCKED")
-					this.server.to(client.id).emit("youb are blocked", messageData.response);
-				else
-					client.to(client.id).emit("you are muted", messageData.response);
-		}
-		else
-			client.to(messageData.channelName).emit("receivedMessage", messageData.response);
+		// console.log("message received", payload);
+		const messageData = await this.chatService.handleMessage(client, payload);
+		// console.log("channelName : " + messageData.channelName)
+		console.log("--------------------------------------------");
+		console.log(messageData);
+		console.log("--------------------------------------------");
+		if (messageData.error) {
+			if (messageData.status == "BLOCKED") {
+				client.emit("youbAreBlocked", messageData);
+			} else {
+				console.log(client.id);
+				client.emit("youAreMuted", messageData);
+			}
+		} else client.to(messageData.channelName).emit("receivedMessage", messageData.response);
 	}
 }
