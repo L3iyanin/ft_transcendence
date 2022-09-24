@@ -29,14 +29,15 @@ export class ChatGateway {
 		const users = this.chatService.addConnectedUser(client, newUser)
 		this.server.emit("connectUserResponse", users)
 	}
-	
+
 	@SubscribeMessage("disconnectUser")
 	removeConnectedUser(client: Socket, userId: number) {
 		console.log("function not implemented yet !!");
 	}
 
-	@SubscribeMessage("message")
+	@SubscribeMessage("sendMessage")
 	async handleMessage(client: Socket, payload: Message) {
+		console.log("message received", payload);
 		const messageData = await this.chatService.handleMessage(client, payload)
 		console.log("channelName : " + messageData.channelName)
 		client.to(messageData.channelName).emit("receivedMessage", messageData.response);
