@@ -4,7 +4,7 @@ import Modal from "../../UI/Modals/Modal";
 import ButtonWithIcon from "../../UI/Buttons/ButtonWithIcon";
 import { useState } from "react";
 import { ReactComponent as AddIcon } from "../../../assets/icons/add.svg";
-import { ChannleStatusEnum } from "../../../utils/constants/enum";
+import { ChannleTypesEnum } from "../../../utils/constants/enum";
 
 const CreateChannelPopup: React.FC<{
 	open: boolean;
@@ -13,18 +13,18 @@ const CreateChannelPopup: React.FC<{
 
 	const { t } = useTranslation();
 
-	const [selectedOption, setSelectedOption] = useState<ChannleStatusEnum>(ChannleStatusEnum.PUBLIC);
+	const [selectedOption, setSelectedOption] = useState<ChannleTypesEnum>(ChannleTypesEnum.PUBLIC);
 
 	const setPublicChannelHandler = () => {
-		setSelectedOption(ChannleStatusEnum.PUBLIC);
+		setSelectedOption(ChannleTypesEnum.PUBLIC);
 	};
 	
 	const setProtectedChannelHandler = () => {
-		setSelectedOption(ChannleStatusEnum.PROTECTED);
+		setSelectedOption(ChannleTypesEnum.PROTECTED);
 	};
 	
 	const setPrivateChannelHandler = () => {
-		setSelectedOption(ChannleStatusEnum.PRIVATE);
+		setSelectedOption(ChannleTypesEnum.PRIVATE);
 	};
 
 	return (
@@ -33,17 +33,17 @@ const CreateChannelPopup: React.FC<{
 				<h3 className="font-bold text-xl">{t("chatPage.createChannel")}</h3>
 				<Input type="text" placeholder={t("chatPage.channelName")} />
 				<div className="flex gap-4 items-center">
-					<span onClick={setPublicChannelHandler} className={`cursor-pointer border-2 py-1 px-4 rounded-full border-green ${selectedOption === ChannleStatusEnum.PUBLIC ? "bg-green" : ""}`}>
+					<span onClick={setPublicChannelHandler} className={`cursor-pointer border-2 py-1 px-4 rounded-full border-green ${selectedOption === ChannleTypesEnum.PUBLIC ? "bg-green" : ""}`}>
 						{t("chatPage.channelType.public")}
 					</span>
-					<span onClick={setProtectedChannelHandler} className={`cursor-pointer border-2 py-1 px-4 rounded-full ${selectedOption === ChannleStatusEnum.PROTECTED ? "bg-white text-black" : "text-white"}`}>
+					<span onClick={setProtectedChannelHandler} className={`cursor-pointer border-2 py-1 px-4 rounded-full ${selectedOption === ChannleTypesEnum.PROTECTED ? "bg-white text-black" : "text-white"}`}>
 						{t("chatPage.channelType.protected")}
 					</span>
-					<span onClick={setPrivateChannelHandler} className={`cursor-pointer border-2 py-1 px-4 rounded-full border-red ${selectedOption === ChannleStatusEnum.PRIVATE ? "bg-red" : ""}`}>
+					<span onClick={setPrivateChannelHandler} className={`cursor-pointer border-2 py-1 px-4 rounded-full border-red ${selectedOption === ChannleTypesEnum.PRIVATE ? "bg-red" : ""}`}>
 						{t("chatPage.channelType.private")}
 					</span>
 				</div>
-				{ selectedOption === ChannleStatusEnum.PROTECTED && <Input type="password" placeholder={t("password")} /> }
+				{ selectedOption === ChannleTypesEnum.PROTECTED && <Input type="password" placeholder={t("password")} /> }
 				<ButtonWithIcon className="bg-green justify-center" label={t("chatPage.createChannel")} />
 			</div>
 		</Modal>

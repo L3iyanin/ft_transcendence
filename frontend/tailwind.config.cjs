@@ -3,6 +3,9 @@ module.exports = {
 	mode: "jit",
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 	theme: {
+		letterSpacing: {
+			superwide : '0.5em'
+		},
 		container: {
 			center: true,
 		},
@@ -21,7 +24,15 @@ module.exports = {
 				"dark-100": "#2B3649",
 				"grey-2": "#C4C5CC",
 				"dark-grey": "#757575",
-			}
+			},
+			inset: {
+				// these units are inspired from the width tailwind definitions
+				'4/5': '80%',
+				'8/12' : '66.666667%',
+				'9/12': '75%',
+				'10/12': '83.333333%',
+				'11/12': '91.666667%',
+			},
 		},
 	},
 	plugins: [],

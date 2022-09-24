@@ -1,4 +1,5 @@
 import { MatchTypeEnum as GameType } from "../constants/enum";
+
 import { users } from "../data/Users"
 
 export const matches:IMatch[] = [
@@ -61,5 +62,6 @@ export const matches:IMatch[] = [
 		date: new Date("2022-12-12T23:50:21.817Z"),
 		scoreToWin: 3,
 		backgroundUrl: ""
+
 	},
 ]
