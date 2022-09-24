@@ -1,30 +1,33 @@
+import { useTranslation } from "react-i18next";
 import { ReactComponent as AchivementIcon } from "../../../../assets/icons/achivement.svg";
 
+import Status from "./Status";
 import Stat from "../../../Stat/Stat";
 
 const MAX_ACHIVEMENTS = import.meta.env.VITE_APP_MAX_ACHIVEMENTS;
 
-const UserCard: React.FC <{user: IUser}> = ({ user: user }) => {
+const UserCard: React.FC<{ user: IUser }> = ({ user: user }) => {
+	const { t } = useTranslation();
+
 	return (
-		<section className="container m-2 min-w-[250px] w-[350px] h-[332px] rounded-lg flex flex-col justify-between gap-3 bg-dark-60">
-			<div className="container m-0 pt-10 flex flex-col items-center justify-center gap-3 text-white">
-				<img
-					src={user.imgUrl}
-					alt={user.username + ": avatar"}
-					className="w-32 rounded-full"
-				/>
-				<h3 className="text-xl font-bold m-0">{user.fullName}</h3>
-				<p className="m-0 text-beige">{user.username}</p>
-				<div className="flex gap-4">
-					<Stat stat="wins" qty={user.wins} />
-					<Stat stat="losses" qty={user.loses} />
-				</div>
-				<div className="flex items-center gap-2">
-					<AchivementIcon />
-					<span className="text-xs">
-						{user.achievements}/{MAX_ACHIVEMENTS} achievments
-					</span>
-				</div>
+		<section className="basis-[347px] min-w-[347px] h-[332px] rounded-2xl pt-8 pb-5 flex flex-col justify-center items-center gap-3 bg-dark-60 text-white">
+			<img
+				src={user.imgUrl}
+				alt={user.username + ": avatar"}
+				className="w-[101px] h-[101px] rounded-full"
+			/>
+			<h3 className="text-2xl font-bold">{user.fullName}</h3>
+			<p className="text-xl font-medium text-beige">{user.username}</p>
+			<Status isOnline={true} nbFriends={user.friends?.length ?? 0} />
+			<div className="flex gap-5">
+				<Stat stat={t("wins")} qty={user.wins!} />
+				<Stat stat={t("losses")} qty={user.loses!} />
+			</div>
+			<div className="flex items-center gap-2">
+				<AchivementIcon />
+				<span className="text-base font-medium">
+					{user.achievements?.length ?? 0}/{MAX_ACHIVEMENTS} achievments
+				</span>
 			</div>
 		</section>
 	);

@@ -5,9 +5,9 @@ const SeeLive = () => {
 	const { t } = useTranslation();
 
 	return (
-		<div className="container flex justify-end items-center gap-1">
-			<p className="text-xxs text-yellow">{t("homePage.SeeMatchLive")}</p>
-			<Live className="h-4"/>
+		<div className="flex justify-end items-center gap-3">
+			<p className="text-xs font-medium text-yellow">{t("homePage.SeeMatchLive")}</p>
+			<Live />
 		</div>
 	);
 }

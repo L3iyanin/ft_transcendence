@@ -2,7 +2,7 @@
 const Player : React.FC <{username : string, avatar : string, className : string }> = ({ username, avatar, className }) => {
 	return (
 		<div
-			className={`container flex justify-start items-center gap-4 text-sm text-white ${className}`
+			className={`w-40 flex justify-start items-center gap-5 grow ${className}`
 			}
 		>
 			<img
@@ -10,7 +10,7 @@ const Player : React.FC <{username : string, avatar : string, className : string
 				alt={username + ": avatar"}
 				className="block h-[49px] w-[49px] rounded-full"
 			/>
-			<p>{username}</p>
+			<p className="text-xl font-medium text-white">{username}</p>
 		</div>
 	);
 };

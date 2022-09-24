@@ -1,17 +1,14 @@
 import Player from "./Player";
 import Score from "./Score";
 import SeeLive from "./SeeLive";
-import { ReactComponent as FirstCrown } from "../../../../assets/icons/FirstCrown.svg"
+import { ReactComponent as FirstCrown } from "../../../../assets/icons/FirstCrown.svg";
 
-
-const Match : React.FC <{match : IMatch}> = ({ match }) => {
+const Match: React.FC<{ match: IMatch }> = ({ match }) => {
 	return (
 		<article
-			className={
-				`container mb-4 mt-1 pr-3 pl-5 py-1 flex justify-center items-center border rounded-lg border-beige`
-			}
+			className={`h-20 mb-3 mt-2 pr-6 pl-7 py-3 flex justify-between items-center gap-14 border rounded-lg border-beige`}
 		>
-			<div className="container flex justify-center items-center gap-2 grow-2">
+			<div className="flex justify-between items-center gap-16 grow">
 				<Player
 					username={match.player1.username}
 					avatar={match.player1.imgUrl}
@@ -26,10 +23,11 @@ const Match : React.FC <{match : IMatch}> = ({ match }) => {
 					avatar={match.player2.imgUrl}
 					className="flex-row-reverse"
 				/>
-				<SeeLive />
 			</div>
+			<SeeLive />
 		</article>
 	);
 };
 
 export default Match;
+125/759

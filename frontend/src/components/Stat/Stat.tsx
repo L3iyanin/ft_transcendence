@@ -5,7 +5,7 @@ const Stat: React.FC < {stat : string, qty : number} > = (props) => {
 	return (
 		<div className="flex items-center gap-2">
 			{props.stat === "wins" ? <WinIcon /> : <LoseIcon />}
-			<span className="text-xs">{props.qty + " " + props.stat}</span>
+			<span className="text-base font-medium">{`${props.qty} ${props.stat}`}</span>
 		</div>
 	);
 }
