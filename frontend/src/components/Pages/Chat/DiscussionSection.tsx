@@ -18,6 +18,8 @@ import {
 	joinChannel,
 } from "../../../services/chat/chat";
 import ErrorAlert, { ErrorAlertWithMessage } from "../../UI/Error";
+import { leaveChannel } from "../../../services/channel/settings";
+import SuccesAlert from "../../UI/SuccesAlert";
 
 const DiscussionSection: React.FC = () => {
 	const [openCreateChannel, setOpenCreateChannel] = useState(false);
@@ -144,8 +146,23 @@ const DiscussionSection: React.FC = () => {
 			.catch((err) => {
 				console.error(err);
 				ErrorAlert(err);
-			});
+			}); 
 	};
+
+	const leaveChannelHandler = () => {
+		if (currentChannel && currentChannel.id) {
+			leaveChannel(currentChannel.id.toString())
+				.then((res) => {
+					SuccesAlert(res.message);
+					onSelectConversationHandler(currentChannel);
+					// navigate("/chat");
+				})
+				.catch((err) => {
+					console.log(err);
+					ErrorAlert(err);
+				});
+		}
+	}
 
 	return (
 		<div className="flex gap-4">
@@ -179,6 +196,8 @@ const DiscussionSection: React.FC = () => {
 					currentChannel={currentChannel}
 					username={currentChannel.members[0].user.username}
 					onOpenCreateChannelHandler={onOpenCreateChannelHandler}
+					IamNotMember={currentChannel.IamNotMember}
+					leaveChannelHandler={leaveChannelHandler}
 				/>
 				<MessagesList
 					messages={currentChannel.messages}

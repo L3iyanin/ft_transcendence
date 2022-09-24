@@ -38,7 +38,7 @@ const MembersList: React.FC<{
 			})
 			.catch((err) => {
 				console.log(err);
-				ErrorAlert(err.message);
+				ErrorAlert(err);
 			});
 	};
 
@@ -51,7 +51,7 @@ const MembersList: React.FC<{
 			})
 			.catch((err) => {
 				console.log(err);
-				ErrorAlert(err.message);
+				ErrorAlert(err);
 			});
 	};
 
@@ -64,7 +64,7 @@ const MembersList: React.FC<{
 			})
 			.catch((err) => {
 				console.log(err);
-				ErrorAlert(err.message);
+				ErrorAlert(err);
 			});
 	};
 
@@ -122,7 +122,7 @@ const MembersList: React.FC<{
 
 
 	return (
-		<div className="">
+		<div className="mt-6">
 			<ul>
 				{channelInfo.members.map((member, index) => {
 					return (

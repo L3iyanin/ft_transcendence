@@ -89,7 +89,8 @@
 		"24Hours": "24 Hours",
 		"addMember": "add member",
 		"addFriendsToRoom": "Add friends to room",
-		"youHaveNoFriendToadd": "You have no friends to add"
+		"youHaveNoFriendToadd": "You have no friends to add",
+		"leaveChannel": "leave channel"
 	},
 	"roles" : {
 		"member": "member",

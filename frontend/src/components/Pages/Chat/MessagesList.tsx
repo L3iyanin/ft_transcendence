@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ButtonWithIcon from "../../UI/Buttons/ButtonWithIcon";
 import Input from "../../UI/inputs/Input";
@@ -10,7 +11,14 @@ const MessagesList: React.FC<{
 	joinChannelHandler?: () => void;
 	isProtectedChannel?: boolean;
 }> = ({ messages, disableSend, IamNotMember, joinChannelHandler, isProtectedChannel }) => {
+	
 	const { t } = useTranslation();
+
+	const [password, setPassword] = useState("");
+
+	const onChangeChannelPasswordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setPassword(e.target.value);
+	};
 
 	return (
 		<div className="relative flex flex-col bg-dark-60 mt-5 rounded-2xl p-5 text-white h-[75vh] overflow-y-auto">
@@ -58,6 +66,8 @@ const MessagesList: React.FC<{
 					{isProtectedChannel && <Input
 						type="password"
 						placeholder={t("chatPage.typeChannelPassword")}
+						onChange={onChangeChannelPasswordHandler}
+						value={password}
 					/>}
 					<ButtonWithIcon
 						icon={
@@ -67,7 +77,7 @@ const MessagesList: React.FC<{
 							/>
 						}
 						label={t("chatPage.areYouIn")}
-						onClick={joinChannelHandler}
+						onClick={joinChannelHandler?.bind(null, password)}
 						className="bg-white text-dark-60 justify-center w-full "
 					/>
 				</div>
