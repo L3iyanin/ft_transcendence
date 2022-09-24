@@ -9,7 +9,7 @@ import {
 	ChannleTypesEnum,
 	ChatOptionsEnum,
 } from "../../../utils/constants/enum";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useBotChannel from "../../../hooks/useBotChannel";
 import CreateChannelPopup from "./CreateChannelPopup";
 import {
@@ -30,6 +30,7 @@ const DiscussionSection: React.FC = () => {
 	const [channelsOfGroups, setChannelsOfGroups] = useState<IChatChannel[]>(
 		[]
 	);
+	const [visibleChannels, setVisibleChannels] = useState<IChatChannel[]>([]);
 
 	const clientSocket: Socket = useSelector(
 		(state: any) => state.chat.clientSocket
@@ -47,6 +48,36 @@ const DiscussionSection: React.FC = () => {
 
 	const [currentChannel, setCurrentChannel] =
 		useState<IChatChannel>(botChannel);
+
+	const searchInputRef = useRef<HTMLInputElement>(null);
+
+	console.log("channelsOfDms", channelsOfDms);
+	console.log("channelsOfGroups", channelsOfGroups);
+	const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const searchValue = e.target.value;
+		if (visibleChannels) {
+			const channels =
+				activeChatOption == ChatOptionsEnum.DMS
+					? channelsOfDms
+					: channelsOfGroups;
+			setVisibleChannels(
+				channels.filter((channel) => {
+					return channel.name
+						.toLowerCase()
+						.includes(searchValue.toLowerCase());
+				})
+			);
+		}
+	};
+
+	useEffect(() => {
+		if (activeChatOption == ChatOptionsEnum.DMS) {
+			setVisibleChannels(channelsOfDms);
+		} else {
+			setVisibleChannels(channelsOfGroups);
+		}
+		searchInputRef.current!.value = "";
+	}, [activeChatOption]);
 
 	const onSelectDMsConversationHandler = () => {
 		setActiveChatOption(ChatOptionsEnum.DMS);
@@ -141,6 +172,7 @@ const DiscussionSection: React.FC = () => {
 
 				setChannelsOfDms(dms);
 				setChannelsOfGroups(groups);
+				setVisibleChannels(dms);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -289,14 +321,12 @@ const DiscussionSection: React.FC = () => {
 					icon={<SearchIcon />}
 					type="text"
 					placeholder={t("search")}
+					onChange={searchHandler}
+					ref={searchInputRef}
 				/>
 				<ConversationsList
 					activeChatOption={activeChatOption}
-					channels={
-						activeChatOption === ChatOptionsEnum.DMS
-							? channelsOfDms
-							: channelsOfGroups
-					}
+					channels={visibleChannels}
 					onSelectDMsConversation={onSelectDMsConversationHandler}
 					onSelectChannelsConversation={
 						onSelectChannelsConversationHandler
