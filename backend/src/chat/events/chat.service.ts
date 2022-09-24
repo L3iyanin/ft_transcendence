@@ -17,8 +17,9 @@ export class ChatService {
 	}
 
 	//? ========================================CONNECT USER EVENT========================================
-	addConnectedUser(client: Socket, newUser: User) {
+	async addConnectedUser(client: Socket, newUser: User) {
 		const alreadyExist = this.onlineUsers.some((user) => user.socket.id == client.id); //! corretc this for one user in multiple tab
+		await this.unmuteAndUnbanMembersAfterTime();
 		if (!alreadyExist) {
 			this.onlineUsers.push({
 				user: newUser,
@@ -38,6 +39,7 @@ export class ChatService {
 	//? ========================================MESSAGE EVENT=============================================
 	async handleMessage(client: Socket, payload: Message) {
 		try {
+			await this.unmuteAndUnbanMembersAfterTime();
 			let response, channelName;
 			if (payload.isDm == true) {
 				//? DM
@@ -54,7 +56,6 @@ export class ChatService {
 				response = await this.generateResponse(payload);
 			} else {
 				//? GROUP
-				await this.updateMemberStatus(payload.channelId);
 				//? check status of the sender
 				const channel = await this.prisma.channel.findUnique({
 					where: {
@@ -215,7 +216,7 @@ export class ChatService {
 		return sockets;
 	}
 
-	async updateMemberStatus(channelId: number) {
+	async unmuteAndUnbanMembersAfterTime() {
 		try {
 			await this.prisma.member.updateMany({
 				where: {

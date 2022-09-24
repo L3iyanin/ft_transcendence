@@ -13,8 +13,27 @@ export class ChatService {
 		this.prisma = new PrismaClient();
 	}
 
+	async unmuteAndUnbanMembersAfterTime() {
+		try {
+			await this.prisma.member.updateMany({
+				where: {
+					until: {
+						lt: new Date(),
+					},
+				},
+				data: {
+					status: "NONE",
+					until: null,
+				},
+			});
+		} catch (err) {
+			throw new HttpException(err, err.status);
+		}
+	}
+
 	async getAllChannels(userId: number) {
 		try {
+			await this.unmuteAndUnbanMembersAfterTime();
 			const channels = await this.prisma.channel.findMany({
 				where: {
 					OR: [
@@ -78,6 +97,7 @@ export class ChatService {
 
 	async getAllMessagesInChannels(userId: number, channelId: number) {
 		try {
+			await this.unmuteAndUnbanMembersAfterTime();
 			const channel = await this.prisma.channel.findUnique({
 				where: {
 					id: channelId,
@@ -118,6 +138,7 @@ export class ChatService {
 
 	async getAllMembersInChannels(userId: number, channelId: number) {
 		try {
+			await this.unmuteAndUnbanMembersAfterTime();
 			const channel = await this.prisma.channel.findUnique({
 				where: {
 					id: channelId,
@@ -288,7 +309,10 @@ export class ChatService {
 
 			if (channel.type === "PROTECTED") {
 				if (!password) {
-					throw new HttpException("password is required to join PROTECTED channel", HttpStatus.BAD_REQUEST);
+					throw new HttpException(
+						"password is required to join PROTECTED channel",
+						HttpStatus.BAD_REQUEST
+					);
 				}
 				const isPasswordCorrect = await bcrypt.compare(password, channel.password);
 				if (!isPasswordCorrect) {
