@@ -20,16 +20,19 @@ import {
 import ErrorAlert, { ErrorAlertWithMessage } from "../../UI/Error";
 import { leaveChannel } from "../../../services/channel/settings";
 import SuccesAlert from "../../UI/SuccesAlert";
+import { useSelector } from "react-redux";
+import { Socket } from "socket.io-client";
 
 const DiscussionSection: React.FC = () => {
+	
 	const [openCreateChannel, setOpenCreateChannel] = useState(false);
-
 	const [refresh, setRefresh] = useState(false);
-
 	const [channelsOfDms, setChannelsOfDms] = useState<IChatChannel[]>([]);
-	const [channelsOfGroups, setChannelsOfGroups] = useState<IChatChannel[]>(
-		[]
-	);
+	const [channelsOfGroups, setChannelsOfGroups] = useState<IChatChannel[]>([]);
+
+	const clientSocket: Socket = useSelector((state: any) => state.chat.clientSocket);
+
+	const userData: IUserState = useSelector((state: any) => state.user);
 
 	const botChannel = useBotChannel();
 
@@ -60,7 +63,7 @@ const DiscussionSection: React.FC = () => {
 	const onSelectConversationHandler = (channel: IChatChannel) => {
 		getChannelMessages(channel.id)
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				setCurrentChannel((_) => {
 					const newChannel = {
 						...channel,
@@ -73,7 +76,7 @@ const DiscussionSection: React.FC = () => {
 				console.log(err.response.status);
 				if (err.response.status === 401) {
 					ErrorAlertWithMessage(t("chatPage.notMemberOfChannel"));
-					console.log(channel);
+					// console.log(channel);
 					setCurrentChannel((_) => {
 						const newChannel = {
 							...channel,
@@ -155,7 +158,6 @@ const DiscussionSection: React.FC = () => {
 				.then((res) => {
 					SuccesAlert(res.message);
 					onSelectConversationHandler(currentChannel);
-					// navigate("/chat");
 				})
 				.catch((err) => {
 					console.log(err);
@@ -163,6 +165,47 @@ const DiscussionSection: React.FC = () => {
 				});
 		}
 	}
+
+	useEffect(() => {
+		if (!clientSocket) return;
+		console.log("listen on receivedMessage");
+		clientSocket.on("receivedMessage", (message: any) => {
+			console.log("message", message);
+			setCurrentChannel((channelInfo) => {
+				const newChannel = {
+					...channelInfo,
+					messages: [...channelInfo.messages, message],
+				};
+				return newChannel;
+			});
+		});
+
+	}, [clientSocket])
+
+	const onSendMessageHandler = (messageContent: string) => {
+		clientSocket.emit("sendMessage", {
+			isDm: activeChatOption === ChatOptionsEnum.DMS,
+			channelId: currentChannel.id,
+			channelName: currentChannel.name,
+			userId: userData.user?.id,
+			content: messageContent,
+		});
+		setCurrentChannel((channelInfo) => {
+			const getCurrentMember:IMember = channelInfo.members.find(member => member.user.id === userData.user?.id)!;
+			const newMessage: IMessage = {
+				id: channelInfo.messages.length + 1,
+				content: messageContent,
+				from: getCurrentMember,
+				date: new Date(),
+			};
+
+			const newChannel = {
+				...channelInfo,
+				messages: [...channelInfo.messages, newMessage],
+			};
+			return newChannel;
+		});
+	};
 
 	return (
 		<div className="flex gap-4">
@@ -208,6 +251,7 @@ const DiscussionSection: React.FC = () => {
 					}
 					isProtectedChannel={currentChannel.isProtectedChannel}
 					joinChannelHandler={joinChannelHandler}
+					onSendMessageHandler={onSendMessageHandler}
 				/>
 			</div>
 		</div>

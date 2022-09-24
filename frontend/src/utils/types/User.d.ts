@@ -39,12 +39,14 @@ interface ISettingsState {
 }
 
 interface UserInterface {
+	id: number;
 	username: string,
 	fullName: string,
 	expiresIn?: string,
 }
 
 interface IOnlineUser {
-	socketId: string;
-	user: UserInterface;
+	username: string;
+	fullName: string;
+	id: number;
 }
