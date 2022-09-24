@@ -2,10 +2,8 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { Achievement } from "./dto/achievement.dto";
 import { Friend } from "./dto/friend.dto";
-import { FriendRequest } from "./dto/friendRequest.dto";
 import { userInLeaderboard } from "./dto/userInLeaderboard";
 import { UserInfo } from "./dto/userInfo.dto";
-import multer from "multer";
 import { extname, join } from "path";
 import { PostResponce } from "./dto/postResponce.dto";
 import { generateChannelName } from "src/chat/helpers";
@@ -14,6 +12,40 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService {
+
+
+
+	async getAllUsers(currentUserID: number): Promise<
+		{
+			id: number;
+			fullName: string;
+			username: string;
+			imgUrl: string;
+			isFriend: Boolean;
+		}[]
+	> {
+		const users = await prisma.user.findMany({
+			include: {
+				friends: true,
+			},
+		});
+
+		let returnedUsers = users.map((user) => {
+			let isFriend = user.friends.some((friend) => friend.id === currentUserID);
+			return {
+				id: user.id,
+				fullName: user.fullName,
+				username: user.username,
+				imgUrl: user.imgUrl,
+				isFriend: isFriend,
+			};
+		})
+
+		returnedUsers = returnedUsers.filter(user => user.id !== currentUserID);
+
+		return returnedUsers;
+	}
+
 	async getUserInfoById(userId: number, currentUserID: number): Promise<UserInfo> {
 		try {
 			const user = await prisma.user.findUnique({
@@ -59,7 +91,9 @@ export class UsersService {
 				});
 				if (channel) {
 					console.log(channel);
-					const userInChannel = channel.members.find((member) => member.userId === userId);
+					const userInChannel = channel.members.find(
+						(member) => member.userId === userId
+					);
 					console.log(userInChannel);
 					if (userInChannel.status === "BLOCKED") {
 						status = "BLOCKED";
@@ -273,7 +307,7 @@ export class UsersService {
 			const name = file.originalname.split(".")[0];
 			const fileExtName = extname(file.originalname);
 			const fileName = `/${name}-${username}${fileExtName}`;
-			const filePath = process.env.BACKEND_URL +  fileName
+			const filePath = process.env.BACKEND_URL + fileName;
 			await prisma.user.update({
 				where: { id: userId },
 				data: { imgUrl: filePath },
