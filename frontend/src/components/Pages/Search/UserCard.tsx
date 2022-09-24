@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { ReactComponent as PlusSignIcon } from "../../../assets/icons/plusSign.svg";
 import { addFriend } from "../../../services/profile/profile";
 import ButtonWithDropdown from "../../UI/button/ButtonWithDropdown";
@@ -24,6 +25,7 @@ const UserCard: React.FC<{ user: IUser }> = ({ user }) => {
 
 	return (
 		<li>
+			<Link to={`/profile/${id}`}>
 			<div className="flex flex-row justify-between p-3 pl-6 my-4 text-white rounded-2xl bg-dark-60">
 				<div className="flex flex-row items-center">
 					<img src={imgUrl} className="w-12 h-12 rounded-full" />
@@ -42,6 +44,7 @@ const UserCard: React.FC<{ user: IUser }> = ({ user }) => {
 					/>}
 				</div>
 			</div>
+			</Link>
 		</li>
 	);
 };

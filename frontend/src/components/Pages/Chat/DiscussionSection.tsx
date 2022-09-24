@@ -238,6 +238,7 @@ const DiscussionSection: React.FC = () => {
 				<ChatActions
 					currentChannel={currentChannel}
 					username={currentChannel.members[0].user.username}
+					userId={currentChannel.members[0].user.id}
 					onOpenCreateChannelHandler={onOpenCreateChannelHandler}
 					IamNotMember={currentChannel.IamNotMember}
 					leaveChannelHandler={leaveChannelHandler}

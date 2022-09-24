@@ -119,5 +119,8 @@
 		"EnterYourCode" : "Enter your code",
 		"verify" : "verify"
 	},
-	"signInSuccess": "You login success !!"
+	"signInSuccess": "You login success !!",
+	"searchPage": {
+		"noUsersFound": "No users found"
+	}
 }

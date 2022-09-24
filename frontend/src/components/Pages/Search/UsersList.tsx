@@ -5,59 +5,37 @@ import { useTranslation } from "react-i18next";
 import InputWithIcon from "../../UI/inputs/InputWithIcon";
 import UserCard from "./UserCard";
 import { getAllUsers } from "../../../services/search/search";
-
-const usersOriginalList: IUser[] = [
-	{
-		id: 1,
-		fullName: "someone",
-		username: "hola",
-		imgUrl: "https://myanimelist.tech/api/avatar?&name=aaitsdmi&animeName=One_Piece",
-		isFriend: false,
-	},
-	{
-		id: 2,
-		fullName: "user zero",
-		username: "user0",
-		imgUrl: "https://myanimelist.tech/api/avatar?&name=cxdD&animeName=One_Piece",
-		isFriend: false,
-	},
-	{
-		id: 3,
-		fullName: "user one",
-		username: "user1",
-		imgUrl: "https://myanimelist.tech/api/avatar?&name=casdxd&animeName=One_Piece",
-		isFriend: true,
-	},
-	{
-		id: 4,
-		fullName: "user two",
-		username: "user2",
-		imgUrl: "https://myanimelist.tech/api/avatar?&name=cxdXX&animeName=One_Piece",
-		isFriend: false,
-	},
-];
+import LoadingSpinner from "../../UI/Loading/LoadingSpinner";
+import { ErrorAlertWithMessage } from "../../UI/Error";
 
 const UsersList: React.FC = () => {
 	const { t } = useTranslation();
-	const [usersList, setUsersList] = useState(usersOriginalList);
+	const [usersList, setUsersList] = useState<IUser[] | null>(null);
+	const [savedUsersList, setSavedUsersList] = useState<IUser[] | null>(null);
 
 	useEffect(() => {
-		getAllUsers().then((users) => {
-			setUsersList(users);
-		}).catch((err) => {
-			console.log(err);
-		});
+		getAllUsers()
+			.then((users) => {
+				setSavedUsersList(users);
+				setUsersList(users)
+			})
+			.catch((err) => {
+				ErrorAlertWithMessage(err.response.data.message);
+			});
 	}, []);
-
 
 	const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const searchValue = e.target.value;
-		const filteredUsersList = usersOriginalList.filter((user) =>
-			user.username.toLowerCase().includes(searchValue.toLowerCase())
-		);
-		setUsersList(filteredUsersList);
+		if (savedUsersList) {
+			setUsersList(
+				savedUsersList.filter((user) => {
+					return user.username
+						.toLowerCase()
+						.includes(searchValue.toLowerCase());
+				})
+			);
+		}
 	};
-
 
 	return (
 		<div className="container">
@@ -70,9 +48,22 @@ const UsersList: React.FC = () => {
 				/>
 			</div>
 			<ul className="container">
-				{usersList.map((user) => (
-					<UserCard key={user.id} user={user} />
-				))}
+				{usersList &&
+					usersList.map((user) => (
+						<UserCard key={user.id} user={user} />
+					))}
+				{!usersList && (
+					<div className="relative h-24 bg-dark-60 my-4 rounded-2xl">
+						<LoadingSpinner />
+					</div>
+				)}
+				{usersList && usersList.length === 0 && (
+					<div className="flex items-center justify-center h-24 bg-dark-60 my-4 rounded-2xl">
+						<p className="text-white text-lg">
+							{t("searchPage.noUsersFound")}
+						</p>
+					</div>
+				)}
 			</ul>
 		</div>
 	);
