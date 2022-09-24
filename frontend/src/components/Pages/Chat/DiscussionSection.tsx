@@ -24,13 +24,13 @@ import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 
 const DiscussionSection: React.FC = () => {
-	
 	const [openCreateChannel, setOpenCreateChannel] = useState(false);
 	const [refresh, setRefresh] = useState(false);
 	const [channelsOfDms, setChannelsOfDms] = useState<IChatChannel[]>([]);
 	const [channelsOfGroups, setChannelsOfGroups] = useState<IChatChannel[]>(
 		[]
 	);
+	const [visibleChannels, setVisibleChannels] = useState<IChatChannel[]>([]);
 
 	const clientSocket: Socket = useSelector(
 		(state: any) => state.chat.clientSocket
@@ -48,6 +48,33 @@ const DiscussionSection: React.FC = () => {
 
 	const [currentChannel, setCurrentChannel] =
 		useState<IChatChannel>(botChannel);
+
+	console.log("channelsOfDms", channelsOfDms);
+	console.log("channelsOfGroups", channelsOfGroups);
+	const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const searchValue = e.target.value;
+		if (visibleChannels) {
+			const channels =
+				activeChatOption == ChatOptionsEnum.DMS
+					? channelsOfDms
+					: channelsOfGroups;
+			setVisibleChannels(
+				channels.filter((channel) => {
+					return channel.name
+						.toLowerCase()
+						.includes(searchValue.toLowerCase());
+				})
+			);
+		}
+	};
+
+	useEffect(() => {
+		if (activeChatOption == ChatOptionsEnum.DMS) {
+			setVisibleChannels(channelsOfDms);
+		} else {
+			setVisibleChannels(channelsOfGroups);
+		}
+	}, [activeChatOption]);
 
 	const onSelectDMsConversationHandler = () => {
 		setActiveChatOption(ChatOptionsEnum.DMS);
@@ -67,7 +94,6 @@ const DiscussionSection: React.FC = () => {
 	const onSelectConversationHandler = (channel: IChatChannel) => {
 		getChannelMessages(channel.id)
 			.then((res) => {
-
 				setCurrentChannel((_) => {
 					const newChannel = {
 						...channel,
@@ -79,7 +105,9 @@ const DiscussionSection: React.FC = () => {
 				// remove the unread messages count
 				setChannelsOfDms((channels) => {
 					const newChannels = [...channels];
-					const index = newChannels.findIndex((singleChannel) => singleChannel.id === channel.id);
+					const index = newChannels.findIndex(
+						(singleChannel) => singleChannel.id === channel.id
+					);
 
 					if (index !== -1) {
 						newChannels[index].unreadMessages = 0;
@@ -91,7 +119,6 @@ const DiscussionSection: React.FC = () => {
 			.catch((err) => {
 				console.log(err.response.status);
 				if (err.response.status === 401) {
-
 					ErrorAlertWithMessage(t("chatPage.notMemberOfChannel"));
 
 					setCurrentChannel((_) => {
@@ -104,7 +131,6 @@ const DiscussionSection: React.FC = () => {
 						};
 						return newChannel;
 					});
-
 				}
 				console.error(err);
 			});
@@ -141,6 +167,7 @@ const DiscussionSection: React.FC = () => {
 
 				setChannelsOfDms(dms);
 				setChannelsOfGroups(groups);
+				setVisibleChannels(dms);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -189,7 +216,6 @@ const DiscussionSection: React.FC = () => {
 		if (!clientSocket) return;
 		clientSocket.on("receivedMessage", (message: any) => {
 			setCurrentChannel((channelInfo) => {
-
 				if (message.isDm) {
 					setChannelsOfDms((channels) => {
 						const newChannels = [...channels];
@@ -209,7 +235,6 @@ const DiscussionSection: React.FC = () => {
 					});
 				}
 
-
 				if (message.channelId === channelInfo.id) {
 					const newChannel = {
 						...channelInfo,
@@ -218,16 +243,12 @@ const DiscussionSection: React.FC = () => {
 					return newChannel;
 				}
 
-
 				return channelInfo;
 			});
-
-			
 		});
 	}, [clientSocket]);
 
 	const onSendMessageHandler = (messageContent: string) => {
-
 		clientSocket.emit("sendMessage", {
 			isDm: activeChatOption === ChatOptionsEnum.DMS,
 			channelId: currentChannel.id,
@@ -295,14 +316,11 @@ const DiscussionSection: React.FC = () => {
 					icon={<SearchIcon />}
 					type="text"
 					placeholder={t("search")}
+					onChange={searchHandler}
 				/>
 				<ConversationsList
 					activeChatOption={activeChatOption}
-					channels={
-						activeChatOption === ChatOptionsEnum.DMS
-							? channelsOfDms
-							: channelsOfGroups
-					}
+					channels={visibleChannels}
 					onSelectDMsConversation={onSelectDMsConversationHandler}
 					onSelectChannelsConversation={
 						onSelectChannelsConversationHandler
