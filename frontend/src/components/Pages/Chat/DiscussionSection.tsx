@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 
 const DiscussionSection: React.FC = () => {
+	
 	const [openCreateChannel, setOpenCreateChannel] = useState(false);
 	const [refresh, setRefresh] = useState(false);
 	const [channelsOfDms, setChannelsOfDms] = useState<IChatChannel[]>([]);
@@ -75,12 +76,10 @@ const DiscussionSection: React.FC = () => {
 					return newChannel;
 				});
 
+				// remove the unread messages count
 				setChannelsOfDms((channels) => {
 					const newChannels = [...channels];
-					
-					const index = newChannels.findIndex(
-						(singleChannel) => singleChannel.id === channel.id
-					);
+					const index = newChannels.findIndex((singleChannel) => singleChannel.id === channel.id);
 
 					if (index !== -1) {
 						newChannels[index].unreadMessages = 0;
@@ -228,6 +227,7 @@ const DiscussionSection: React.FC = () => {
 	}, [clientSocket]);
 
 	const onSendMessageHandler = (messageContent: string) => {
+
 		clientSocket.emit("sendMessage", {
 			isDm: activeChatOption === ChatOptionsEnum.DMS,
 			channelId: currentChannel.id,
@@ -236,6 +236,7 @@ const DiscussionSection: React.FC = () => {
 			content: messageContent,
 		});
 
+		// add message to current channel
 		setCurrentChannel((channelInfo) => {
 			const getCurrentMember: IMember = channelInfo.members.find(
 				(member) => member.user.id === userData.user?.id
@@ -255,6 +256,7 @@ const DiscussionSection: React.FC = () => {
 		});
 
 		if (activeChatOption === ChatOptionsEnum.DMS) {
+			// add message to dms channel
 			setChannelsOfDms((channels) => {
 				const newChannels = [...channels];
 				const index = newChannels.findIndex(
