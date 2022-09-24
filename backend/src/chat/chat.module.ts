@@ -7,5 +7,6 @@ import { ChatService as EventsChatService } from "./events/chat.service";
 @Module({
 	controllers: [ChatController],
 	providers: [ChatGateway, EventsChatService, ControllersChatService],
+	exports: [ControllersChatService]
 })
 export class ChatModule {}

@@ -4,16 +4,19 @@ import { Achievement } from "./dto/achievement.dto";
 import { Friend } from "./dto/friend.dto";
 import { userInLeaderboard } from "./dto/userInLeaderboard";
 import { UserInfo } from "./dto/userInfo.dto";
-import { extname, join } from "path";
+import { extname } from "path";
 import { PostResponce } from "./dto/postResponce.dto";
 import { generateChannelName } from "src/chat/helpers";
+import { ChatService } from "src/chat/controllers/chat.service";
 
 const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService {
 
+	constructor(private readonly ChatService: ChatService) {
 
+	}
 
 	async getAllUsers(currentUserID: number): Promise<
 		{
@@ -272,6 +275,10 @@ export class UsersService {
 					},
 				},
 			});
+
+			// create DM channel between users
+			this.ChatService.startDMWithUser(from, to);
+
 			return {
 				message: "Friend added successfully",
 			};
