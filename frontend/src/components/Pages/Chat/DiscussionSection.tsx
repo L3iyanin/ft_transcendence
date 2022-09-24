@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import {
 	ChannleTypesEnum,
 	ChatOptionsEnum,
+	MemberStatusEnum,
 } from "../../../utils/constants/enum";
 import { useEffect, useRef, useState } from "react";
 import useBotChannel from "../../../hooks/useBotChannel";
@@ -51,8 +52,6 @@ const DiscussionSection: React.FC = () => {
 
 	const searchInputRef = useRef<HTMLInputElement>(null);
 
-	console.log("channelsOfDms", channelsOfDms);
-	console.log("channelsOfGroups", channelsOfGroups);
 	const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const searchValue = e.target.value;
 		if (visibleChannels) {
@@ -77,7 +76,7 @@ const DiscussionSection: React.FC = () => {
 			setVisibleChannels(channelsOfGroups);
 		}
 		searchInputRef.current!.value = "";
-	}, [activeChatOption]);
+	}, [activeChatOption, channelsOfDms, channelsOfGroups]);
 
 	const onSelectDMsConversationHandler = () => {
 		setActiveChatOption(ChatOptionsEnum.DMS);
@@ -309,6 +308,124 @@ const DiscussionSection: React.FC = () => {
 		}
 	};
 
+	const [userStatus, setUserStatus] = useState<{
+		status: MemberStatusEnum;
+		untill: Date;
+		isBanned: boolean;
+		isMuted: boolean;
+	}>({
+		status: MemberStatusEnum.NONE,
+		untill: new Date(),
+		isBanned: false,
+		isMuted: false,
+	});
+
+	useEffect(() => {
+		let currentMember;
+
+		if (userData.user) {
+			currentMember = currentChannel.members.find((member) => {
+				return member.user.id === userData.user?.id;
+			});
+		}
+		
+		console.log("currentMember is gnerated...!!!!");
+
+		if (currentMember?.status === MemberStatusEnum.BANNED) {
+			setUserStatus({
+				status: MemberStatusEnum.BANNED,
+				untill: new Date(currentMember?.until!),
+				isBanned: true,
+				isMuted: false,
+			});
+		}
+		else if (currentMember?.status === MemberStatusEnum.MUTED) {
+			setUserStatus({
+				status: MemberStatusEnum.MUTED,
+				untill: new Date(currentMember?.until!),
+				isBanned: false,
+				isMuted: true,
+			});
+		}
+		else {
+			setUserStatus({
+				status: MemberStatusEnum.NONE,
+				untill: new Date(),
+				isBanned: false,
+				isMuted: false,
+			});
+		}
+
+	}, [currentChannel]);
+
+	useEffect(() => {
+		if (!clientSocket) return;
+		
+		console.log("clientSocket", clientSocket.id);
+
+		clientSocket.on("youbAreBlocked", (userBanned) => {
+			console.log(userBanned);
+			ErrorAlertWithMessage(userBanned.error);
+			setUserStatus({
+				status: MemberStatusEnum.BANNED,
+				untill: new Date(userBanned.until!),
+				isBanned: true,
+				isMuted: false,
+			});
+
+			setCurrentChannel((channelInfo) => {
+				const newChannel = {...channelInfo};
+				newChannel.members = newChannel.members.map((member) => {
+					if (member.user.id === userData.user?.id) {
+						return {
+							...member,
+							status: MemberStatusEnum.BANNED,
+							until: userBanned.until,
+						};
+					}
+					return member;
+				});
+				return newChannel;
+			});
+		});
+		
+		clientSocket.on("youAreMuted", (userMuted) => {
+			console.log(userMuted);
+			ErrorAlertWithMessage(userMuted.error);
+			setUserStatus({
+				status: MemberStatusEnum.MUTED,
+				untill: new Date(userMuted.until!),
+				isBanned: false,
+				isMuted: true,
+			});
+			setCurrentChannel((channelInfo) => {
+				const newChannel = {...channelInfo};
+				newChannel.members = newChannel.members.map((member) => {
+					if (member.user.id === userData.user?.id) {
+						return {
+							...member,
+							status: MemberStatusEnum.MUTED,
+							until: userMuted.until,
+						};
+					}
+					return member;
+				});
+				return newChannel;
+			});
+		});
+	}, [clientSocket]);
+
+
+	const onCompleteCountdownHandler = () => {
+		console.log("countdown completed");
+		setUserStatus({
+			status: MemberStatusEnum.NONE,
+			untill: new Date(),
+			isBanned: false,
+			isMuted: false,
+		});
+	};
+
 	return (
 		<div className="flex gap-4">
 			<CreateChannelPopup
@@ -362,6 +479,8 @@ const DiscussionSection: React.FC = () => {
 					joinChannelHandler={joinChannelHandler}
 					onSendMessageHandler={onSendMessageHandler}
 					currentChannel={currentChannel}
+					userStatus={userStatus}
+					onCompleteCountdownHandler={onCompleteCountdownHandler}
 				/>
 			</div>
 		</div>

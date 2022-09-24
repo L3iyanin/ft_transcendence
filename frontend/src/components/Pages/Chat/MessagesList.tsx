@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 import { MemberStatusEnum } from "../../../utils/constants/enum";
 import ButtonWithIcon from "../../UI/Buttons/ButtonWithIcon";
+import Counterdown from "../../UI/Countdown";
+import { ErrorAlertWithMessage } from "../../UI/Error";
 import Input from "../../UI/inputs/Input";
 import MessageCard from "./MessageCard";
 
@@ -15,6 +17,13 @@ const MessagesList: React.FC<{
 	isProtectedChannel?: boolean;
 	onSendMessageHandler: (message: string) => void;
 	currentChannel: IChatChannel;
+	onCompleteCountdownHandler: () => void;
+	userStatus: {
+		status: MemberStatusEnum;
+		untill: Date;
+		isBanned: boolean;
+		isMuted: boolean;
+	}
 }> = ({
 	messages,
 	disableSend,
@@ -23,6 +32,8 @@ const MessagesList: React.FC<{
 	isProtectedChannel,
 	onSendMessageHandler,
 	currentChannel,
+	userStatus,
+	onCompleteCountdownHandler,
 }) => {
 	const { t } = useTranslation();
 
@@ -54,20 +65,11 @@ const MessagesList: React.FC<{
 		setMessageContent("");
 	};
 
-	const getCurrentMember = () => {
-		if (userData.user) {
-			return currentChannel.members.find((member) => {
-				return member.user.id === userData.user?.id;
-			});
-		}
-	};
 
-	const currentMember = getCurrentMember();
+	const clientSocket: Socket = useSelector(
+		(state: any) => state.chat.clientSocket
+	);
 
-	console.log(currentMember);
-
-	const IamBanned = currentMember?.status === MemberStatusEnum.BANNED;
-	const IamMuted = currentMember?.status === MemberStatusEnum.MUTED;
 
 	return (
 		<div className="relative flex flex-col bg-dark-60 mt-5 rounded-2xl p-5 text-white h-[75vh] overflow-y-auto">
@@ -82,7 +84,7 @@ const MessagesList: React.FC<{
 				)}
 			</div>
 			{IamNotMember && <NoMemberInChannel />}
-			{!IamNotMember && !disableSend && !IamBanned && !IamMuted && (
+			{!IamNotMember && !disableSend && !userStatus?.isBanned && !userStatus?.isMuted && (
 				<SendMessageInputAndBtn
 					onTypeMessageHandler={onTypeMessageHandler}
 					sendMessageHandler={sendMessageHandler}
@@ -90,20 +92,19 @@ const MessagesList: React.FC<{
 				/>
 			)}
 
-			{ !IamNotMember && IamBanned && (
-				<div className="bg-red mt-auto py-2 rounded-lg flex flex-col items-center justify-center">
+			{!IamNotMember && userStatus?.isBanned && (
+				<div className="mt-auto py-2 rounded-lg flex justify-between items-center border px-5 bg-red">
 					<p className="text-center text-white">
 						{t("chatPage.youAreBanned")}
 					</p>
+					<Counterdown onComplete={onCompleteCountdownHandler} date={new Date(userStatus?.untill!)} />
 				</div>
 			)}
 
-
-			{ !IamNotMember && IamMuted && (
-				<div className="bg-yellow mt-auto py-2 rounded-lg flex flex-col items-center justify-center">
-					<p className="text-center text-black">
-						{t("chatPage.youAreMuted")}
-					</p>
+			{!IamNotMember && userStatus?.isMuted && (
+				<div className="mt-auto py-2 rounded-lg !text-black flex justify-between items-center border px-5 bg-yellow border-black">
+					<p className="text-center">{t("chatPage.youAreMuted")}</p>
+					<Counterdown onComplete={onCompleteCountdownHandler} date={new Date(userStatus?.untill!)} />
 				</div>
 			)}
 
