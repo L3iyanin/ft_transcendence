@@ -8,7 +8,7 @@ const Input:React.FC<{
 	value?: string;
 }> = ({ placeholder, type, className, onChange, value }) => {
 	return (
-		<input value={value} onChange={onChange} className={`bg-dark-blue rounded-lg py-4 pl-5 w-full text-grey-2 focus:outline-none ${className}`} type={type} placeholder={placeholder} />
+		<input value={value} onChange={onChange} className={`bg-dark-blue rounded-lg py-4 px-5 w-full text-grey-2 focus:outline-none ${className}`} type={type} placeholder={placeholder} />
 	);
 }
 
