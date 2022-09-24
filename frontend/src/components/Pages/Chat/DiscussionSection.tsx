@@ -9,7 +9,7 @@ import {
 	ChannleTypesEnum,
 	ChatOptionsEnum,
 } from "../../../utils/constants/enum";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useBotChannel from "../../../hooks/useBotChannel";
 import CreateChannelPopup from "./CreateChannelPopup";
 import {
@@ -49,6 +49,8 @@ const DiscussionSection: React.FC = () => {
 	const [currentChannel, setCurrentChannel] =
 		useState<IChatChannel>(botChannel);
 
+	const searchInputRef = useRef<HTMLInputElement>(null);
+
 	console.log("channelsOfDms", channelsOfDms);
 	console.log("channelsOfGroups", channelsOfGroups);
 	const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +76,7 @@ const DiscussionSection: React.FC = () => {
 		} else {
 			setVisibleChannels(channelsOfGroups);
 		}
+		searchInputRef.current!.value = "";
 	}, [activeChatOption]);
 
 	const onSelectDMsConversationHandler = () => {
@@ -317,6 +320,7 @@ const DiscussionSection: React.FC = () => {
 					type="text"
 					placeholder={t("search")}
 					onChange={searchHandler}
+					ref={searchInputRef}
 				/>
 				<ConversationsList
 					activeChatOption={activeChatOption}
