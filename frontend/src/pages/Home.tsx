@@ -12,9 +12,9 @@ import Leaderboard from "../components/Pages/Home/Leaderboard/Leaderboard";
 
 const Home: React.FC = () => {
 	return (
-		<>
+		<div className="container">
 			<NavBar />
-			<main className="container flex flex-col justify-between items-center gap-20">
+			<main className=" flex flex-col justify-between items-center gap-20">
 				<section className="w-full flex justify-between items-center gap-16">
 					<UserCard user={users[0]} />
 					<LiveMatches matches={matches} />
@@ -31,7 +31,7 @@ const Home: React.FC = () => {
 				</section>
 			</main>
 			<Footer />
-		</>
+		</div>
 	);
 };
 

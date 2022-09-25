@@ -24,9 +24,9 @@ const Router: React.FC = () => {
 							element={<ChannelSettings />}
 						/>
 						<Route path="/game" element={<Game />} />
+						<Route path="/home" element={<Home />} />
 					</Route>
 					<Route element={<NotRequireAuth />}>
-						<Route path="/home" element={<Home />} />
 						<Route path="/" element={<Landing />} />
 					</Route>
 					<Route path="*" element={<Navigate to="/" replace />} />
