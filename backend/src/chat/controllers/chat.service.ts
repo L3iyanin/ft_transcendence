@@ -120,7 +120,17 @@ export class ChatService {
 				},
 			});
 
-			if (channel.members.some((member) => member.userId === userId)) {
+			const member = channel.members.find(
+				(member) => member.user.id === userId
+			);
+			if (member) {
+				if (member.status === "BLOCKED") {
+					return {
+						messages: [],
+						members: channel.members,
+						message: "Messages fetched successfully",
+					};
+				}
 				return {
 					messages: channel.messages,
 					members: channel.members,
@@ -292,7 +302,7 @@ export class ChatService {
 				include: {
 					members: {
 						where: {
-							userId,
+							userId: userId,
 						},
 					},
 				},

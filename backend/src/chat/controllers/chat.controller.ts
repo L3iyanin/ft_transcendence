@@ -60,6 +60,7 @@ export class ChatController {
 		@Body() preferences: { password?: string }
 	) {
 		const { password } = preferences;
+		console.log("user id", req.user.id, "channel id", channelId, "password", password);
 		return this.chatService.joinGroupChannel(req.user.id, channelId, password);
 	}
 
