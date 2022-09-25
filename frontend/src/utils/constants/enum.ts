@@ -5,9 +5,9 @@ export const enum MemberStatusEnum {
 }
 
 export const enum RolesEnum {
-	OWNER,
-	ADMIN,
-	MEMBER,
+	OWNER = "OWNER",
+	ADMIN = "ADMIN",
+	MEMBER = "MEMBER",
 }
 
 export const enum ChannleTypesEnum {

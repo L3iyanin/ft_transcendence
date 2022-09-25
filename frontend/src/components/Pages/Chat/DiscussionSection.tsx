@@ -211,6 +211,7 @@ const DiscussionSection: React.FC = () => {
 		if (currentChannel && currentChannel.id) {
 			leaveChannel(currentChannel.id.toString())
 				.then((res) => {
+					console.log(res);
 					SuccesAlert(res.message);
 					onSelectConversationHandler(currentChannel);
 				})
