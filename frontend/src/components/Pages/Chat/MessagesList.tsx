@@ -70,7 +70,6 @@ const MessagesList: React.FC<{
 		(state: any) => state.chat.clientSocket
 	);
 
-
 	return (
 		<div className="relative flex flex-col bg-dark-60 mt-5 rounded-2xl p-5 text-white h-[75vh] overflow-y-auto">
 			<div className="overflow-auto">
@@ -83,6 +82,7 @@ const MessagesList: React.FC<{
 					<div ref={messageListRef} />
 				)}
 			</div>
+
 			{IamNotMember && <NoMemberInChannel />}
 			{!IamNotMember && !disableSend && !userStatus?.isBanned && !userStatus?.isMuted && (
 				<SendMessageInputAndBtn

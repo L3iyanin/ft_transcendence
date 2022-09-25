@@ -14,9 +14,6 @@ export class AuthController {
 	async Auth42(@Req() req: Request, @Res() res: Response) {
 		const code: any = req.query["code"];
 		const userData: AuthUserData = await this.authService.getUserData(code);
-		console.log("====================================");
-		console.log(userData);
-		console.log("====================================");
 		const avatarImage = this.authService.getImageProfileUrl(userData.username);
 		const user = await this.authService.saveUserInDatabase(
 			userData.username,
@@ -27,7 +24,7 @@ export class AuthController {
 		res.cookie("jwt", token, { httpOnly: true });
 		return res.send({
 			status: 200,
-			data: userData,
+			data: user,
 		});
 	}
 }

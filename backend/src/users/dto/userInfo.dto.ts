@@ -23,4 +23,7 @@ export class UserInfo {
 
 	@ApiProperty()
 	loses: number;
+
+	@ApiProperty()
+	userStatus: "NONE" |  "BLOCKED" | "FRIEND"
 }

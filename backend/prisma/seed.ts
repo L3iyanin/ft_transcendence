@@ -3,6 +3,7 @@
 import { PrismaClient } from "@prisma/client";
 
 import { faker } from '@faker-js/faker';
+import { CreateChannelDto } from "src/chat/dto/chat.dto";
 
 
 // initialize Prisma Client
@@ -11,33 +12,40 @@ const prisma = new PrismaClient();
 async function addAchivements() {
 	const achivement0 = await prisma.achievement.create({
 		data: {
-			name: "achivement0",
-			description: "achivement0 desc",
-			imgUrl: "/home/image0.jpg",
+			name: "Win first played Match",
+			description: "Mera Mera No Mi",
+			imgUrl: "http://localhost:8080/achivements/achivement1.png",
 		},
 	});
 	const achivement1 = await prisma.achievement.create({
 		data: {
-			name: "achivement1",
-			description: "achivement1 desc",
-			imgUrl: "/home/image1.jpg",
+			name: "Win 2 Match in row",
+			description: "Ope Ope No Mi",
+			imgUrl: "http://localhost:8080/achivements/achivement2.png",
 		},
 	});
 	const achivement2 = await prisma.achievement.create({
 		data: {
-			name: "achivement2",
-			description: "achivement2 desc",
-			imgUrl: "/home/image2.jpg",
+			name: "you Lose versus khalid ",
+			description: "Poneglyph",
+			imgUrl: "http://localhost:8080/achivements/achivement3.png",
 		},
 	});
 	const achivement3 = await prisma.achievement.create({
 		data: {
-			name: "achivement3",
-			description: "achivement3 desc",
-			imgUrl: "/home/image3.jpg",
+			name: "Win with clean sheet",
+			description: "Ito Ito No Mi",
+			imgUrl: "http://localhost:8080/achivements/achivement4.png",
 		},
 	});
-	console.table({ achivement0, achivement1 , achivement2, achivement3});
+	const achivement4 = await prisma.achievement.create({
+		data: {
+			name: "Win 5 Match in row",
+			description: "King Of Pirates",
+			imgUrl: "http://localhost:8080/achivements/achivement5.png",
+		},
+	});
+	console.table({ achivement0, achivement1 , achivement2, achivement3, achivement4});
 }
 
 async function addUsers(howManyUsers : number = 10) {
@@ -94,11 +102,87 @@ async function addAFriendsToUser(userId : number){
 	}
 }
 
+async function CreateChannelDm(user1 : number, user2 : number){
+	const channelName = user1.toString() + '_' +  user2.toString()
+	const newChannel = await prisma.channel.create({
+		data: {
+			name: channelName,
+			imgUrl: `https://myanimelist.tech/api/avatar?name=${channelName}&animeName=One_Piece`, // @ To be generated
+			members: {
+				create: [
+					{
+						user: {
+							connect: {
+								id: user1,
+							},
+						},
+						role: "MEMBER",
+						status: "NONE",
+					},
+					{
+						user: {
+							connect: {
+								id: user2,
+							},
+						},
+						role: "MEMBER",
+						status: "NONE",
+					},
+				],
+			},
+			type: "DM",
+		},
+	});
+}
+
+async function CreateChannelGroup(user1 : number, user2 : number, user3 : number){
+	const channelName = "l3iyanin"
+	const newChannel = await prisma.channel.create({
+		data: {
+			name: channelName,
+			imgUrl: `https://myanimelist.tech/api/avatar?name=${channelName}&animeName=One_Piece`, // @ To be generated
+			members: {
+				create: [
+					{
+						user: {
+							connect: {
+								id: user1,
+							},
+						},
+						role: "ADMIN",
+						status: "NONE",
+					},
+					{
+						user: {
+							connect: {
+								id: user2,
+							},
+						},
+						role: "MEMBER",
+						status: "NONE",
+					},
+					{
+						user: {
+							connect: {
+								id: user3,
+							},
+						},
+						role: "MEMBER",
+						status: "NONE",
+					},
+				],
+			},
+			type: "PUBLIC",
+		},
+	});
+}
 async function main() {
-	// await addAchivements();
-	await addUsers();
+	await addAchivements();
+	// await addUsers();
 	// await addAchivementsToUser(2)
 	// await addAFriendsToUser(2)
+	// await CreateChannelDm(5, 6)
+	// await CreateChannelGroup(5, 6, 7)
 }
 main()
 	.catch((e) => {

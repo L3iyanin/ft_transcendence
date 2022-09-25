@@ -1,4 +1,4 @@
-
+import React from "react";
 
 const Input:React.FC<{
 	type: string;
@@ -10,6 +10,6 @@ const Input:React.FC<{
 	return (
 		<input value={value} onChange={onChange} className={`bg-dark-blue rounded-lg py-4 px-5 w-full text-grey-2 focus:outline-none ${className}`} type={type} placeholder={placeholder} />
 	);
-}
+});
 
 export default Input;
