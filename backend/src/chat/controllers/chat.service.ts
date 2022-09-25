@@ -116,13 +116,11 @@ export class ChatService {
 						include: {
 							user: true,
 						},
-					}
+					},
 				},
 			});
 
-			const member = channel.members.find(
-				(member) => member.user.id === userId
-			);
+			const member = channel.members.find((member) => member.user.id === userId);
 			if (member) {
 				if (member.status === "BLOCKED") {
 					return {
@@ -299,23 +297,9 @@ export class ChatService {
 				where: {
 					id: channelId,
 				},
-				include: {
-					members: {
-						where: {
-							userId: userId,
-						},
-					},
-				},
 			});
 			if (!channel) {
 				throw new HttpException("Channel not found", HttpStatus.NOT_FOUND);
-			}
-
-			if (channel.members.length > 0) {
-				throw new HttpException(
-					"You are already a member of this channel",
-					HttpStatus.BAD_REQUEST
-				);
 			}
 
 			if (channel.type === "PROTECTED") {
@@ -333,14 +317,25 @@ export class ChatService {
 			if (channel.type === "PRIVATE") {
 				throw new HttpException("Channel is private", HttpStatus.UNAUTHORIZED);
 			}
-			const user = await this.prisma.user.findUnique({
+
+			// before joining channel, check if member already joined channels again (in case of multiple requests)
+			const members = await this.prisma.member.findMany({
 				where: {
-					id: userId,
+					userId: userId,
 				},
 			});
-			if (!user) {
-				throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+
+			const isMemberOfChannel = members.find((member) => {
+				return member.channelId === channelId;
+			});
+
+			if (isMemberOfChannel) {
+				throw new HttpException(
+					"You are already a member of this channel",
+					HttpStatus.BAD_REQUEST
+				);
 			}
+
 			const newMember = await this.prisma.member.create({
 				data: {
 					userId,
