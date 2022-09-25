@@ -49,6 +49,7 @@ model Channel {
     id       Int         @id @default(autoincrement())
     name     String      @unique // in case of dm, it will be the name of the other user, in case of group, it will be the name of the group
     imgUrl   String? // same as above
+    // ondelete cascade
     members  Member[]
     messages Message[]
     type     ChannelType
@@ -68,12 +69,13 @@ model Member {
     status    MemberStatus
     until     DateTime?
     role      Roles
-    Channel   Channel      @relation(fields: [channelId], references: [id])
+    Channel   Channel      @relation(fields: [channelId], references: [id], onDelete: Cascade)
     channelId Int
     userId    Int
     messages  Message[]
-	// userId and channelId are unique together
-	@@unique([userId, channelId])
+
+    // userId and channelId are unique together
+    @@unique([userId, channelId])
 }
 
 enum MemberStatus {
@@ -91,8 +93,8 @@ enum Roles {
 model Message {
     id        Int      @id @default(autoincrement())
     content   String
-    from      Member   @relation(fields: [memberId], references: [id])
-    channel   Channel  @relation(fields: [channelId], references: [id])
+    from      Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+    channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
     channelId Int
     memberId  Int
     createdAt DateTime @default(now())

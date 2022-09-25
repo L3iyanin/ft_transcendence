@@ -35,17 +35,11 @@ export class ChatGateway {
 
 	@SubscribeMessage("sendMessage")
 	async handleMessage(client: Socket, payload: Message) {
-		// console.log("message received", payload);
 		const messageData = await this.chatService.handleMessage(client, payload);
-		// console.log("channelName : " + messageData.channelName)
-		console.log("--------------------------------------------");
-		console.log(messageData);
-		console.log("--------------------------------------------");
 		if (messageData.error) {
 			if (messageData.status == "BLOCKED") {
 				client.emit("youbAreBlocked", messageData);
 			} else {
-				console.log(client.id);
 				client.emit("youAreMuted", messageData);
 			}
 		} else client.to(messageData.channelName).emit("receivedMessage", messageData.response);

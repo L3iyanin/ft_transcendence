@@ -145,7 +145,6 @@ export class ChatService {
 				},
 			});
 
-			console.log("+++++++++++++++++++++++++++++++");
 		} catch (err) {
 			throw new HttpException(err.response, err.status);
 		}
