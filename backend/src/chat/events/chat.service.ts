@@ -4,7 +4,7 @@ import { Socket } from "socket.io";
 import { Message } from "../dto/message.dto";
 import { User } from "../dto/user.dto";
 import { UserWithSocket } from "../dto/userWithSocket.dto";
-import { generateChannelName } from "../helpers";
+import { generateChannelName } from "../helpers/helpers";
 
 @Injectable()
 export class ChatService {

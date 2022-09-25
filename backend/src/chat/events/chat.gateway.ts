@@ -9,7 +9,7 @@ import { Server, Socket } from "socket.io";
 import { ChatService } from "./chat.service";
 import { JsonWebTokenError } from "jsonwebtoken";
 import { User } from "../dto/user.dto";
-import { generateChannelName } from "../helpers";
+import { generateChannelName } from "../helpers/helpers";
 
 @WebSocketGateway({
 	cors: {

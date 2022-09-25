@@ -6,7 +6,7 @@ import { userInLeaderboard } from "./dto/userInLeaderboard";
 import { UserInfo } from "./dto/userInfo.dto";
 import { extname } from "path";
 import { PostResponce } from "./dto/postResponce.dto";
-import { generateChannelName } from "src/chat/helpers";
+import { generateChannelName } from "src/chat/helpers/helpers";
 import { ChatService } from "src/chat/controllers/chat.service";
 
 const prisma = new PrismaClient();
