@@ -36,7 +36,7 @@ const MessageCard: React.FC<{
 							<div className="bg-red py-[2px] px-3 rounded-2xl flex items-center gap-1">
 								{" "}
 								<ShieldIcon />{" "}
-								<span className="text-xs">{t("admin")}</span>
+								<span className="text-xs">{t("roles.admin")}</span>
 							</div>
 						)}
 					{message.from.role &&
@@ -44,7 +44,7 @@ const MessageCard: React.FC<{
 							<div className="bg-green py-[2px] px-3 rounded-2xl flex items-center gap-1 ">
 								{" "}
 								<OwnerIcon />{" "}
-								<span className="text-xs">{t("owner")}</span>
+								<span className="text-xs">{t("roles.owner")}</span>
 							</div>
 						)}
 				</div>

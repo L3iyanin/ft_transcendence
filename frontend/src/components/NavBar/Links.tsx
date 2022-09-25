@@ -1,7 +1,7 @@
 import Option from './Option'
 import { ReactComponent as Avatar } from "../../assets/icons/TestAvatar.svg";
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../reducers/UserSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,6 +19,8 @@ const Links = () => {
 		navigate('/');
 	};
 
+	const userData = useSelector((state: any) => state.user);
+
 	return (
 		<div className="container h-16 w-auto mx-0 flex justify-center items-center gap-7 grow-1">
 			<nav className="container h-12 flex justify-end items-center gap-5">
@@ -32,7 +34,8 @@ const Links = () => {
 
 			</nav>
 			<div className="container flex items-center grow-0">
-				<Avatar className="h-8"/>
+				{/* <Avatar className="h-8"/> */}
+				<img src={userData.user.imgUrl} className="h-8 w-8 rounded-full" alt="" />
 			</div>
 		</div>
 	);
