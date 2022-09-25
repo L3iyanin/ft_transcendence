@@ -25,19 +25,19 @@ const useBotChannel = (): IChatChannel => {
 		{
 			id: 0,
 			content:  t("chatPage.bot.botMessages.0"),
-			sender: members[0],
+			from: members[0],
 			date: new Date(),
 		},
 		{
 			id: 1,
 			content: t("chatPage.bot.botMessages.1"),
-			sender: members[0],
+			from: members[0],
 			date: new Date(),
 		},
 		{
 			id: 2,
 			content: t("chatPage.bot.botMessages.2"),
-			sender: members[0],
+			from: members[0],
 			date: new Date(),
 		}
 	];

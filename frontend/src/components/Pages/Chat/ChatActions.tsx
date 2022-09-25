@@ -5,13 +5,41 @@ import { ReactComponent as PlayIcon } from "../../../assets/icons/play.svg";
 import { ReactComponent as AddIcon } from "../../../assets/icons/add.svg";
 import { useTranslation } from "react-i18next";
 import { ChannleTypesEnum } from "../../../utils/constants/enum";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { IamAdminOrOwner } from "../../../utils/helper/chat";
+import { ReactComponent as LeaveIcon } from "../../../assets/icons/leave.svg";
 
 const ChatActions: React.FC<{
 	currentChannel: IChatChannel;
 	username?: string;
+	userId?: number;
 	onOpenCreateChannelHandler: () => void;
-}> = ({ currentChannel, username, onOpenCreateChannelHandler }) => {
+	IamNotMember?: boolean;
+	leaveChannelHandler: () => void;
+}> = ({
+	currentChannel,
+	username,
+	userId,
+	onOpenCreateChannelHandler,
+	IamNotMember,
+	leaveChannelHandler,
+}) => {
 	const { t } = useTranslation();
+
+	const navigate = useNavigate();
+
+	const navigateToChannelSettingsHandler = () => {
+		navigate(`/channel/${currentChannel.id}/settings`);
+	};
+
+	const LocalUserData = useSelector((state: any) => state.user.user);
+
+	const seeProfile = () => {
+		if (userId) {
+			navigate(`/profile/${userId}`);
+		}
+	}
 
 	return (
 		<div className="flex justify-between">
@@ -21,14 +49,18 @@ const ChatActions: React.FC<{
 					src={currentChannel.imgUrl}
 					alt={currentChannel.name}
 				/>
-				
+
 				{currentChannel.status === ChannleTypesEnum.DM && (
-					<span className="text-grey-2 font-bold">@{username ? username : currentChannel.name }</span>
+					<Link to={`/profile/${userId}`}>
+						<span className="text-grey-2 font-bold">
+							@{username ? username : currentChannel.name}
+						</span>
+					 </Link>
 				)}
 
 				{currentChannel.status !== ChannleTypesEnum.DM && (
 					<span className="text-grey-2 font-bold">
-						@{currentChannel.name}
+						{currentChannel.name}
 					</span>
 				)}
 			</div>
@@ -39,6 +71,7 @@ const ChatActions: React.FC<{
 							className="bg-yellow"
 							icon={<ProfileIcon className=" stroke-dark-60" />}
 							label={t("chatPage.seeProfile")}
+							onClick={seeProfile}
 						/>
 						<ButtonWithIcon
 							className="bg-red text-white"
@@ -47,21 +80,48 @@ const ChatActions: React.FC<{
 						/>
 					</>
 				)}
-				{currentChannel.status !== ChannleTypesEnum.DM_BOT && currentChannel.status !== ChannleTypesEnum.CHANNEL_BOT && currentChannel.status !== ChannleTypesEnum.DM && (
-					<ButtonWithIcon
-						className="bg-yellow"
-						icon={<CogIcon className=" " />}
-						label={t("chatPage.channelSettings")}
-					/>
-				)}
-				{currentChannel.status !== ChannleTypesEnum.DM && currentChannel.status !== ChannleTypesEnum.DM_BOT  &&
-					<ButtonWithIcon
-						className="bg-red text-white"
-						onClick={onOpenCreateChannelHandler}
-						icon={<AddIcon />}
-						label={t("chatPage.createChannel")}
-					/>
-				}
+
+				{!IamNotMember &&
+					IamAdminOrOwner(
+						currentChannel.members,
+						LocalUserData.id
+					) === true &&
+					currentChannel.status !== ChannleTypesEnum.DM_BOT &&
+					currentChannel.status !== ChannleTypesEnum.CHANNEL_BOT &&
+					currentChannel.status !== ChannleTypesEnum.DM && (
+						<ButtonWithIcon
+							className="bg-yellow"
+							icon={<CogIcon className=" " />}
+							onClick={navigateToChannelSettingsHandler}
+							label={t("chatPage.channelSettings")}
+						/>
+					)}
+
+				{currentChannel.status !== ChannleTypesEnum.DM &&
+					currentChannel.status !== ChannleTypesEnum.DM_BOT && (
+						<ButtonWithIcon
+							className="bg-green text-white"
+							onClick={onOpenCreateChannelHandler}
+							icon={<AddIcon />}
+							label={t("chatPage.createChannel")}
+						/>
+					)}
+
+				{!IamNotMember &&
+					!IamAdminOrOwner(
+						currentChannel.members,
+						LocalUserData.id
+					) === true &&
+					currentChannel.status !== ChannleTypesEnum.DM_BOT &&
+					currentChannel.status !== ChannleTypesEnum.CHANNEL_BOT &&
+					currentChannel.status !== ChannleTypesEnum.DM && (
+						<ButtonWithIcon
+							className="bg-red text-white"
+							icon={<LeaveIcon className="w-5 h-5" />}
+							onClick={leaveChannelHandler}
+							label={t("channelSettings.leaveChannel")}
+						/>
+					)}
 			</div>
 		</div>
 	);
