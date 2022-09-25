@@ -8,9 +8,9 @@ const How2FA = () => {
 	const { t } = useTranslation();
 
 	const style =
-		"container m-2 w-72 h-80 px-5 py-3 border rounded-lg flex flex-col";
+		"container m-2 w-72 h-80 px-5 py-3 border rounded-2xl flex flex-col";
 	return (
-		<section className="container min-w-[350px] p-8 rounded-lg flex flex-col gap-10 bg-dark-60 bg-opacity-60 text-white text-base">
+		<section className="container min-w-[350px] p-8 rounded-2xl flex flex-col gap-10 bg-dark-60 bg-opacity-60 text-white text-base">
 			<h2 className="text-xl font-bold">
 				{t("settingsPage.HowToEnable2FA")}
 			</h2>

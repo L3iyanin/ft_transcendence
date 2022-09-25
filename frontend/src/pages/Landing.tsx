@@ -22,14 +22,13 @@ const Landing = () => {
 			auth42(code)
 				.then((res) => {
 					// console.log(res.data);
-					console.log(res.data);
 					dispatch(login(res.data));
 					toast.success(t("signInSuccess"), {
 						position: toast.POSITION.TOP_CENTER,
 					});
 				})
 				.catch((err) => {
-					console.log(err);
+					console.error(err);
 					toast.error(err.response.data.message, {
 						position: toast.POSITION.TOP_CENTER,
 					});

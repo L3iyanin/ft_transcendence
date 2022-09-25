@@ -1,3 +1,4 @@
+import { UserStatusEnum } from "../constants/enum";
 
 export const users: IUser[] = [
 	{
@@ -8,6 +9,7 @@ export const users: IUser[] = [
 		wins: 15,
 		loses: 4,
 		achievements: [],
+		userStatus: UserStatusEnum.NONE,
 	},
 	{
 		id: 2,

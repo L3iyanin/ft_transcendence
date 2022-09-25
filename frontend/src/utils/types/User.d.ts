@@ -12,18 +12,20 @@ interface IUser {
     username: string,
     fullName: string,
     imgUrl: string,
+	numberOfAchievements?: number,
     achievements?: IAchievement[]
     wins?: number,
     loses?: number,
     login?: string,
     twoFactorAuth?: boolean,
+	numberOfFriends?: number,
     friends?: IUser[],
     friendsRelation?: IUser[],
-    friendRequests?: IUser[],
-    friendRequestsRelation?: IUser[],
+	isFriend?: boolean,
     createdChannles?: IChatChannel[],
     members?: IMember[],
     messages?: Message[],
+	userStatus?: UserStatusEnum,
 }
 
 interface IUserState {
@@ -37,12 +39,16 @@ interface ISettingsState {
 }
 
 interface UserInterface {
+	id: number;
 	username: string,
 	fullName: string,
 	expiresIn?: string,
 }
 
 interface IOnlineUser {
-	socketId: string;
-	user: UserInterface;
+	user: {
+		username: string;
+		fullName: string;
+		id: number;
+	}
 }

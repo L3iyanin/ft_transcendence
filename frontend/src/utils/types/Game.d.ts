@@ -3,11 +3,12 @@ interface IGamePlayer {
 	id: string;
 	fullName: string;
 	username: string;
-	score: number;
+	score?: number;
 	imageUrl: string;
 	wins: number;
 	losses: number;
 	achievements: number;
+	
 }
 
 interface IGameSettings {
@@ -30,8 +31,8 @@ interface IGameWatcher {
 
 
 interface IGameMatch {
-	player1: IGamePlayer;
-	player2: IGamePlayer;
+	player1: IUser;
+	player2: IUser;
 	player1Score: number;
 	player2Score: number;
 	isMatching: boolean;
