@@ -72,6 +72,8 @@ model Member {
     channelId Int
     userId    Int
     messages  Message[]
+	// userId and channelId are unique together
+	@@unique([userId, channelId])
 }
 
 enum MemberStatus {
