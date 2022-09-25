@@ -112,17 +112,14 @@ export class ChatService {
 							},
 						},
 					},
-					members: {
-						select: {
-							userId: true,
-						},
-					},
+					members: true,
 				},
 			});
 
 			if (channel.members.some((member) => member.userId === userId)) {
 				return {
 					messages: channel.messages,
+					members: channel.members,
 					message: "Messages fetched successfully",
 				};
 			} else {
