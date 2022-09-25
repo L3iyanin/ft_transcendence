@@ -112,7 +112,11 @@ export class ChatService {
 							},
 						},
 					},
-					members: true,
+					members: {
+						include: {
+							user: true,
+						},
+					}
 				},
 			});
 
