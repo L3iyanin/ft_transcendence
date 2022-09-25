@@ -159,6 +159,7 @@ export class ChatService {
 					error: `You can't send the message because you still ${status}`,
 					until: until,
 					status: status,
+					channelId: payload.channelId,
 				};
 				return response;
 			}
