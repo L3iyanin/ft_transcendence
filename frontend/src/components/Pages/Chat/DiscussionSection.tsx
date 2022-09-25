@@ -31,6 +31,7 @@ const DiscussionSection: React.FC = () => {
 	const [channelsOfGroups, setChannelsOfGroups] = useState<IChatChannel[]>(
 		[]
 	);
+	const [refreshGetMessages, setRefreshGetMessages] = useState(false);
 	const [visibleChannels, setVisibleChannels] = useState<IChatChannel[]>([]);
 
 	const clientSocket: Socket = useSelector(
@@ -96,15 +97,17 @@ const DiscussionSection: React.FC = () => {
 	const onSelectConversationHandler = (channel: IChatChannel) => {
 		getChannelMessages(channel.id)
 			.then((res) => {
+				// console.log(res);
 				setCurrentChannel((_) => {
 					const newChannel = {
 						...channel,
 						messages: res.messages,
+						members: res.members,
 					};
 					return newChannel;
 				});
 
-				onRefreshHandler();
+				// onRefreshHandler();
 
 				// remove the unread messages count
 				setChannelsOfDms((channels) => {
@@ -121,7 +124,7 @@ const DiscussionSection: React.FC = () => {
 				});
 			})
 			.catch((err) => {
-				console.log(err.response.status);
+				console.error(err.response.status);
 				if (err.response.status === 401) {
 					ErrorAlertWithMessage(t("chatPage.notMemberOfChannel"));
 
@@ -180,18 +183,20 @@ const DiscussionSection: React.FC = () => {
 	}, [refresh]);
 
 	const joinChannelHandler = (password?: string) => {
+		// console.log("joinChannelHandler");
 		joinChannel(currentChannel.id, password)
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				return getChannelMessages(currentChannel.id);
 			})
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				setCurrentChannel((_) => {
 					const newChannel = {
 						...currentChannel,
 						IamNotMember: false,
 						messages: res.messages,
+						members: res.members,
 					};
 					return newChannel;
 				});
@@ -210,7 +215,7 @@ const DiscussionSection: React.FC = () => {
 					onSelectConversationHandler(currentChannel);
 				})
 				.catch((err) => {
-					console.log(err);
+					console.error(err);
 					ErrorAlert(err);
 				});
 		}
@@ -328,8 +333,6 @@ const DiscussionSection: React.FC = () => {
 				return member.user.id === userData.user?.id;
 			});
 		}
-		
-		console.log("currentMember is gnerated...!!!!");
 
 		if (currentMember?.status === MemberStatusEnum.BANNED) {
 			setUserStatus({
@@ -358,13 +361,27 @@ const DiscussionSection: React.FC = () => {
 
 	}, [currentChannel]);
 
+	const getNewChannelMessages = (channelId: string) => {
+		getChannelMessages(+channelId)
+		.then((res) => {
+			// console.log(res);
+			setCurrentChannel((prevCurrChannel) => {
+				const newChannel = {
+					...prevCurrChannel,
+					messages: res.messages,
+					members: res.members,
+					// ...res
+				};
+				return newChannel;
+			});
+		})
+	}
+
 	useEffect(() => {
 		if (!clientSocket) return;
-		
-		console.log("clientSocket", clientSocket.id);
 
 		clientSocket.on("youbAreBlocked", (userBanned) => {
-			console.log(userBanned);
+			// console.log(userBanned);
 			ErrorAlertWithMessage(userBanned.error);
 			setUserStatus({
 				status: MemberStatusEnum.BANNED,
@@ -373,24 +390,11 @@ const DiscussionSection: React.FC = () => {
 				isMuted: false,
 			});
 
-			setCurrentChannel((channelInfo) => {
-				const newChannel = {...channelInfo};
-				newChannel.members = newChannel.members.map((member) => {
-					if (member.user.id === userData.user?.id) {
-						return {
-							...member,
-							status: MemberStatusEnum.BANNED,
-							until: userBanned.until,
-						};
-					}
-					return member;
-				});
-				return newChannel;
-			});
+			getNewChannelMessages(userBanned.channelId);
 		});
 		
 		clientSocket.on("youAreMuted", (userMuted) => {
-			console.log(userMuted);
+			// console.log(userMuted);
 			ErrorAlertWithMessage(userMuted.error);
 			setUserStatus({
 				status: MemberStatusEnum.MUTED,
@@ -398,32 +402,21 @@ const DiscussionSection: React.FC = () => {
 				isBanned: false,
 				isMuted: true,
 			});
-			setCurrentChannel((channelInfo) => {
-				const newChannel = {...channelInfo};
-				newChannel.members = newChannel.members.map((member) => {
-					if (member.user.id === userData.user?.id) {
-						return {
-							...member,
-							status: MemberStatusEnum.MUTED,
-							until: userMuted.until,
-						};
-					}
-					return member;
-				});
-				return newChannel;
-			});
+
+			getNewChannelMessages(userMuted.channelId);
 		});
 	}, [clientSocket]);
 
 
 	const onCompleteCountdownHandler = () => {
-		console.log("countdown completed");
+		// console.log("countdown completed");
 		setUserStatus({
 			status: MemberStatusEnum.NONE,
 			untill: new Date(),
 			isBanned: false,
 			isMuted: false,
 		});
+		getNewChannelMessages(currentChannel.id.toString());
 	};
 
 	return (

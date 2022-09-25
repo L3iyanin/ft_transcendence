@@ -28,16 +28,18 @@ const MembersList: React.FC<{
 			</div>
 		);
 	}
+	
+	// console.log(channelInfo);
 
 	const makeAdminHandler = (userId: string) => {
 		makeMemberAdmin(channelInfo.id.toString(), userId)
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				SuccesAlert(res.message);
 				refreshHandler();
 			})
 			.catch((err) => {
-				console.log(err);
+				console.error(err);
 				ErrorAlert(err);
 			});
 	};
@@ -45,12 +47,12 @@ const MembersList: React.FC<{
 	const kickOutHandler = (userId: string) => {
 		kickOutMember(channelInfo.id.toString(), userId)
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				SuccesAlert(res.message);
 				refreshHandler();
 			})
 			.catch((err) => {
-				console.log(err);
+				console.error(err);
 				ErrorAlert(err);
 			});
 	};
@@ -58,12 +60,12 @@ const MembersList: React.FC<{
 	const makeMemberHandler = (userId: string) => {
 		makeAdminMember(channelInfo.id.toString(), userId)
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				SuccesAlert(res.message);
 				refreshHandler();
 			})
 			.catch((err) => {
-				console.log(err);
+				console.error(err);
 				ErrorAlert(err);
 			});
 	};
@@ -71,12 +73,12 @@ const MembersList: React.FC<{
 	const banMemberHandler = (userId: string, duration: number) => {
 		banMember(channelInfo.id.toString(), userId, duration)
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				SuccesAlert(res.message);
 				refreshHandler();
 			})
 			.catch((err) => {
-				console.log(err);
+				console.error(err);
 				ErrorAlert(err);
 			});
 	};
@@ -84,12 +86,12 @@ const MembersList: React.FC<{
 	const unBanMemberHandler = (userId: string) => {
 		unbanMember(channelInfo.id.toString(), userId)
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				SuccesAlert(res.message);
 				refreshHandler();
 			})
 			.catch((err) => {
-				console.log(err);
+				console.error(err);
 				ErrorAlert(err);
 			});
 	};
@@ -97,12 +99,12 @@ const MembersList: React.FC<{
 	const muteMemberHandler = (userId: string, duration: number) => {
 		muteMember(channelInfo.id.toString(), userId, duration)
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				SuccesAlert(res.message);
 				refreshHandler();
 			})
 			.catch((err) => {
-				console.log(err);
+				console.error(err);
 				ErrorAlert(err);
 			});
 	};
@@ -110,12 +112,12 @@ const MembersList: React.FC<{
 	const unMuteMemberHandler = (userId: string) => {
 		unmuteMember(channelInfo.id.toString(), userId)
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				SuccesAlert(res.message);
 				refreshHandler();
 			})
 			.catch((err) => {
-				console.log(err);
+				console.error(err);
 				ErrorAlert(err);
 			});
 	};

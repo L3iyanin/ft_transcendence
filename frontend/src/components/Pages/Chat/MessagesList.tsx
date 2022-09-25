@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
-import { MemberStatusEnum } from "../../../utils/constants/enum";
+import { ChannleTypesEnum, MemberStatusEnum } from "../../../utils/constants/enum";
 import ButtonWithIcon from "../../UI/Buttons/ButtonWithIcon";
 import Counterdown from "../../UI/Countdown";
 import { ErrorAlertWithMessage } from "../../UI/Error";
@@ -13,7 +13,7 @@ const MessagesList: React.FC<{
 	messages: IMessage[];
 	disableSend?: boolean;
 	IamNotMember?: boolean;
-	joinChannelHandler?: () => void;
+	joinChannelHandler?: (password:string) => void;
 	isProtectedChannel?: boolean;
 	onSendMessageHandler: (message: string) => void;
 	currentChannel: IChatChannel;
@@ -97,7 +97,7 @@ const MessagesList: React.FC<{
 					<p className="text-center text-white">
 						{t("chatPage.youAreBanned")}
 					</p>
-					<Counterdown onComplete={onCompleteCountdownHandler} date={new Date(userStatus?.untill!)} />
+					{currentChannel.status !== "DM" && <Counterdown onComplete={onCompleteCountdownHandler} date={new Date(userStatus?.untill!)} /> }
 				</div>
 			)}
 
@@ -170,7 +170,7 @@ const SendMessageInputAndBtn: React.FC<{
 				icon={
 					<img src="/imgs/icons/muchi-muchi.png" alt="muchi muchi" />
 				}
-				onClick={sendMessageHandler}
+				// onClick={sendMessageHandler}
 				label={t("send")}
 				className="bg-white text-dark-60 !rounded-lg"
 			/>
@@ -213,7 +213,7 @@ const JoinChannelInputs: React.FC<{
 					<img src="/imgs/icons/muchi-muchi.png" alt="muchi muchi" />
 				}
 				label={t("chatPage.areYouIn")}
-				onClick={joinChannelHandler?.bind(null, password)}
+				// onClick={joinChannelHandler?.bind(null, password)}
 				className="bg-white text-dark-60 justify-center w-full "
 			/>
 		</form>

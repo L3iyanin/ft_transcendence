@@ -22,6 +22,8 @@ export const getChannelMessages = (channelId: number) => {
 
 export const joinChannel = (channelId: number, password?: string) => {
 	return axios.post(`/chat/join-channel/${channelId}`, { password })
-			.then(res => res.data)
+			.then(res => {
+				return res.data
+			})
 			// .catch(err => console.error(`err`, err))
 }

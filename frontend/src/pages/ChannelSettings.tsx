@@ -94,6 +94,10 @@ const ChannelSettings: React.FC = () => {
 		}
 	}
 
+	if (channelInfo === null) {
+		return <div className="text-center text-white mt-5">Loading...</div>;
+	}
+
 	return (
 		<div className="container">
 			<NavBar />

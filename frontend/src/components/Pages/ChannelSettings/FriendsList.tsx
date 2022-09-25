@@ -31,7 +31,7 @@ const FriendsList: React.FC<{
 	const addFriendToChannelHandler = (friendId: string) => {
 		addFriendToChannel(channelInfo.id.toString(), friendId)
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				SuccesAlert(res.message);
 				refreshHandler();
 				// setFriends((prevFriends) => {
@@ -42,7 +42,7 @@ const FriendsList: React.FC<{
 				// });
 			})
 			.catch((err) => {
-				console.log(err);
+				console.error(err);
 				ErrorAlert(err);
 			});
 	};
