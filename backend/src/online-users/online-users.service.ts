@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import { UserWithSocket, User } from "./dto/online-users.dto";
+import { UserSocket, User } from "./dto/online-users.dto";
 import { Socket } from "socket.io";
 
 @Injectable()
 export class OnlineUsersService {
-	onlineUsers: UserWithSocket[];
+	onlineUsers: UserSocket[];
 
 	constructor() {
 		this.onlineUsers = [];
@@ -16,6 +16,7 @@ export class OnlineUsersService {
 			this.onlineUsers.push({
 				user: newUser,
 				socket: client,
+				socketInGame: false,
 			});
 		}
 		const users = [];
@@ -57,6 +58,11 @@ export class OnlineUsersService {
 			if (user.user.id == receiverId) sockets.push(user.socket);
 		});
 		return sockets;
+	}
+
+	setSocketInGame(clientId: string) {
+		const user = this.onlineUsers.find((user) => user.socket.id == clientId);
+		user.socketInGame = true;
 	}
 
 }

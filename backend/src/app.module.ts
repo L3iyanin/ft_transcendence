@@ -31,7 +31,7 @@ import { OnlineUsersModule } from './online-users/online-users.module';
 		ServeStaticModule.forRoot({
 			rootPath : join(__dirname, "..", "../public")
 		}),
-		GameModule,
+		// GameModule,
 		OnlineUsersModule,
 	],
 })

@@ -7,7 +7,8 @@ export class User {
 	id: number;
 }
 
-export class UserWithSocket {
+export class UserSocket {
 	socket: Socket;
 	user: User;
+	socketInGame: boolean;
 }

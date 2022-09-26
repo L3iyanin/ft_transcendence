@@ -7,7 +7,7 @@ import { generateChannelName } from "../helpers/helpers";
 
 @Injectable()
 export class ChatService {
-	// onlineUsers: UserWithSocket[];
+	// onlineUsers: UserSocket[];
 	prisma: PrismaClient;
 
 	constructor(private readonly onlineUsersService: OnlineUsersService) {
