@@ -24,3 +24,11 @@ export class ResponseDto {
 	check: "MATCHING" | "ALREADY_IN_MATCH" | "START_MATCH";
 	data?: StartedMatchResponseDto;
 }
+
+export class LiveMatchDto {
+	id: number;
+	player1Id: number;
+	player2Id: number;
+	scoreToWin: number;
+	interval: NodeJS.Timer;
+}
