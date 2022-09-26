@@ -30,12 +30,13 @@ model Match {
     isMatching   Boolean
     live         Boolean
     player1Id    Int
-    player2Id    Int
+    player2Id    Int?
     player1Score Int      @default(0)
     player2Score Int      @default(0)
     date         DateTime @default(now())
     scoreToWin   Int // can be 3 or 7
 }
+
 
 model Achievement {
     id          Int    @id @default(autoincrement())

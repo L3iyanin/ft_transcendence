@@ -1,12 +1,12 @@
 import { BALL_SIZE, INITIAL_VELOCITY, PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_X_MARGIN, PADDLE_Y_MARGIN, PLAYER_FIRST_POSITION, PLAYER_ONE, PLAYER_TWO, PLAYGROUND_BORDERSIZE, PLAY_GROUND_HEIGHT, PLAY_GROUND_WIDTH } from "../constants/game.constants";
-import { Ball } from "../dto/game.dto";
+import { BallDto } from "../dto/game.dto";
 
 class GameLogic {
 
 	player1y: number;
 	player2y: number;
 
-	ball: Ball;
+	ball: BallDto;
 
 	player1Score: number;
 	player2Score: number;
