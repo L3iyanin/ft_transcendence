@@ -5,7 +5,7 @@ import { OnlineUsersGateway } from "./online-users.gateway";
 import { OnlineUsersService } from "./online-users.service";
 
 @Module({
-	imports: [GameModule],
+	imports: [],
 	providers: [OnlineUsersService, GameEventsService, OnlineUsersGateway],
 	exports: [OnlineUsersService],
 })
