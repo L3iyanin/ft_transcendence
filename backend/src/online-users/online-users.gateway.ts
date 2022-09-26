@@ -28,7 +28,7 @@ export class OnlineUsersGateway implements OnGatewayDisconnect {
 		const userId: number | null = this.onlineUsersService.getUserIdbyClientId(client.id);
 		const users = this.onlineUsersService.removeDisconnectedSocket(client);
 		this.server.emit("connectUserResponse", users);
-		// this.gameEventsService.handleDisconnectFromGame(userId, client);
+		this.gameEventsService.handleDisconnectFromGame(userId, client);
 	}
 
 	@SubscribeMessage("connectUser")

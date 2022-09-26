@@ -119,6 +119,9 @@ export class GameEventsService {
 	// ? called by the disconnect event in OnlineUsersGateway
 	async handleDisconnectFromGame(userId: number, client: Socket) {
 		// if match.isMatching == true, and player1Id == userId, delete match
+		if (!userId) {
+			return;
+		}
 		let match = await this.prisma.match.findFirst({
 			where: {
 				AND: [
@@ -168,7 +171,6 @@ export class GameEventsService {
 					id: match.id,
 				},
 			});
-
 		}
 	}
 
