@@ -17,7 +17,7 @@ model User {
     login           String        @unique
     imgUrl          String
     wins            Int           @default(0)
-    loses           Int           @default(0)
+    losses           Int           @default(0)
     twoFactorAuth   Boolean       @default(false)
     friends         User[]        @relation("friends")
     friendsRelation User[]        @relation("friends")

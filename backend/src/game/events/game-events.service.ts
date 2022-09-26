@@ -1,12 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { Match, PrismaClient } from "@prisma/client";
 import { OnlineUsersService } from "src/online-users/online-users.service";
-import { ResponseDto } from "../dto/game.dto";
-import { Socket } from "socket.io";
+import { LiveMatchDto, ResponseDto } from "../dto/game.dto";
+import { Server, Socket } from "socket.io";
+import { FPS } from "../constants/game.constants";
+import GameLogic from "../gameLogic/gameLogic";
+import { generateMatchName } from "../helpers/helpers";
 
 @Injectable()
 export class GameEventsService {
 	prisma: PrismaClient;
+	liveMatches: LiveMatchDto[] = [];
 
 	constructor(private readonly onlineUsersService: OnlineUsersService) {
 		this.prisma = new PrismaClient();
@@ -83,7 +87,7 @@ export class GameEventsService {
 						fullName: true,
 						imgUrl: true,
 						wins: true,
-						loses: true,
+						losses: true,
 						achievements: {
 							select: {
 								id: true,
@@ -91,7 +95,7 @@ export class GameEventsService {
 						},
 						twoFactorAuth: true,
 						login: true,
-					}
+					},
 				});
 
 				const player1 = users.find((user) => user.id == match.player1Id);
@@ -210,7 +214,7 @@ export class GameEventsService {
 		return user.username;
 	}
 
-	async readyToPlay(userId: number, matchId: number) {
+	async readyToPlay(userId: number, matchId: number, server: Server) {
 		// check if user is in match and if he is player1 or player2
 		// set him as ready
 		// if both players are ready, start game loop
@@ -234,8 +238,7 @@ export class GameEventsService {
 					player1Ready: true,
 				},
 			});
-		}
-		else if (match.player2Id == userId) {
+		} else if (match.player2Id == userId) {
 			match = await this.prisma.match.update({
 				where: {
 					id: match.id,
@@ -248,16 +251,100 @@ export class GameEventsService {
 
 		if (match.player1Ready && match.player2Ready) {
 			// start game loop
-			this.startGameLoop(match);
+			this.startGameLoop(match, server);
 			return "game started";
 		}
 
 		return "waiting for other player";
-
 	}
 
-	async startGameLoop(match: Match) {
+	async gameTurn(gameInstance: GameLogic, match: Match, server: Server) {
+		console.log("game turn------------------");
+		gameInstance.updateBallPosition();
+		const gameState = gameInstance.getGameState();
+		const matchName = generateMatchName(match.id);
+		let winnerId: number | null = null;
+
+		console.log("gameState", gameState);
+		console.log("------------------");
+		if (gameState.player1Score >= match.scoreToWin) {
+			winnerId = match.player1Id;
+		} else if (gameState.player2Score >= match.scoreToWin) {
+			winnerId = match.player2Id;
+		}
+
+		if (!winnerId) {
+			server.to(matchName).emit("gameState", gameState);
+		} else {
+			// end game
+			const endMatch = await this.prisma.match.update({
+				where: {
+					id: match.id,
+				},
+				data: {
+					live: false,
+					player1Score: gameState.player1Score,
+					player2Score: gameState.player2Score,
+				},
+			});
+
+			server.to(matchName).emit("gameOver", {
+				player1Score: endMatch.player1Score,
+				player2Score: endMatch.player2Score,
+			});
+
+			const loserId = winnerId == match.player1Id ? match.player2Id : match.player1Id;
+
+			// update user stats
+			await this.prisma.user.update({
+				where: {
+					id: winnerId,
+				},
+				data: {
+					wins: {
+						increment: 1,
+					},
+				},
+			});
+
+			await this.prisma.user.update({
+				where: {
+					id: loserId,
+				},
+				data: {
+					losses: {
+						increment: 1,
+					},
+				},
+			});
+		}
+	}
+
+	async startGameLoop(match: Match, server: Server) {
 		console.log("starting game loop " + match.id);
+		const gameInstance = new GameLogic();
+		const interval = setInterval(async () => {
+			await this.gameTurn(gameInstance, match, server);
+		}, 1000 / FPS);
+		// store interval somewhere
+		this.addLiveMatch(match, interval);
 	}
 
+	addLiveMatch(match: Match, interval: NodeJS.Timer) {
+		this.liveMatches.push({
+			id: match.id,
+			player1Id: match.player1Id,
+			player2Id: match.player2Id,
+			scoreToWin: match.scoreToWin,
+			interval,
+		});
+	}
+
+	removeLiveMatch(matchId: number) {
+		this.liveMatches = this.liveMatches.filter((match) => match.id != matchId);
+	}
+
+	getLiveMatch(matchId: number) {
+		return this.liveMatches.find((match) => match.id == matchId);
+	}
 }
