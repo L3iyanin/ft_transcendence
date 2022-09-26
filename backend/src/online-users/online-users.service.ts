@@ -28,13 +28,15 @@ export class OnlineUsersService {
 		return users;
 	}
 
+	// * Helper function ****************************************
 
-    // * Helper function ****************************************
-
-	getUserIdbyClientId(clientId: string) : number | null {
+	getUserIdbyClientId(clientId: string): number | null {
 		if (this.onlineUsers.length > 0) {
-			const userId = this.onlineUsers.find((user) => user.socket.id == clientId).user.id;
-			return userId;
+			const user = this.onlineUsers.find((user) => {
+				if (!user) return false;
+				return user.socket.id == clientId;
+			});
+			if (user) return user.user.id;
 		}
 		return null;
 	}
@@ -49,7 +51,6 @@ export class OnlineUsersService {
 		});
 		return users;
 	}
-
 
 	checkIfReceiverIsOnline(receiverId: number): boolean {
 		return this.onlineUsers.some((user) => user.user.id == receiverId);
@@ -67,5 +68,4 @@ export class OnlineUsersService {
 		const user = this.onlineUsers.find((user) => user.socket.id == clientId);
 		user.socketInGame = true;
 	}
-
 }
