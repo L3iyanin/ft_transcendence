@@ -15,7 +15,7 @@ interface IUser {
 	numberOfAchievements?: number,
     achievements?: IAchievement[]
     wins?: number,
-    loses?: number,
+    losses?: number,
     login?: string,
     twoFactorAuth?: boolean,
 	numberOfFriends?: number,

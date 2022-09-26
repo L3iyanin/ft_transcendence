@@ -77,7 +77,7 @@ const UserSettingsCard: React.FC<{
 					numberOfAchievements: userData.numberOfAchievements,
 					numberOfFriends: userData.numberOfFriends,
 					wins: userData.wins,
-					loses: userData.loses,
+					losses: userData.losses,
 				}));
 			})
 			.catch((err) => {

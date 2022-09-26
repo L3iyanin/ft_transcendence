@@ -6,7 +6,7 @@ export const players: IUser[] = [
 		imgUrl:
 			"https://myanimelist.tech/api/avatar?name=01&animeName=Hunter_x_Hunter",
 		wins: 20,
-		loses: 3,
+		losses: 3,
 		numberOfAchievements: 7,
 	},
 	{
@@ -16,7 +16,7 @@ export const players: IUser[] = [
 		imgUrl:
 			"https://myanimelist.tech/api/avatar?name=018&animeName=Hunter_x_Hunter",
 		wins: 10,
-		loses: 2,
+		losses: 2,
 		numberOfAchievements: 5,
 	},
 	{
@@ -26,7 +26,7 @@ export const players: IUser[] = [
 		imgUrl:
 			"https://myanimelist.tech/api/avatar?name=twelve&animeName=Inazuma_Eleven",
 		wins: 15,
-		loses: 4,
+		losses: 4,
 		numberOfAchievements: 6,
 	},
 	{
@@ -36,7 +36,7 @@ export const players: IUser[] = [
 		imgUrl:
 			"https://myanimelist.tech/api/avatar?name=kirwako&animeName=Inazuma_Eleven",
 		wins: 15,
-		loses: 4,
+		losses: 4,
 		numberOfAchievements: 3,
 	},
 	{
@@ -46,7 +46,7 @@ export const players: IUser[] = [
 		imgUrl:
 			"https://myanimelist.tech/api/avatar?name=your-c854766332147ustom-seed&animeName=One_Piece",
 		wins: 6,
-		loses: 1,
+		losses: 1,
 		numberOfAchievements: 2,
 	},
 	{
@@ -56,7 +56,7 @@ export const players: IUser[] = [
 		imgUrl:
 			"https://myanimelist.tech/api/avatar?name=yhhjk,mgfd&animeName=One_Piece",
 		wins: 13,
-		loses: 5,
+		losses: 5,
 		numberOfAchievements: 4,
 	},
 	{
@@ -66,7 +66,7 @@ export const players: IUser[] = [
 		imgUrl:
 			"https://myanimelist.tech/api/avatar?name=ll,jjmbgfv&animeName=One_Piece",
 		wins: 9,
-		loses: 20,
+		losses: 20,
 		numberOfAchievements: 4,
 	}
 ]
