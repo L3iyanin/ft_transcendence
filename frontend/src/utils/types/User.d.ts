@@ -32,6 +32,8 @@ interface IUserState {
 	user: UserInterface | null;
 	isLoggedIn: boolean;
 	isLoading: boolean;
+	isMatching: boolean;
+	whenMatching?: string;
 }
 
 interface ISettingsState {
