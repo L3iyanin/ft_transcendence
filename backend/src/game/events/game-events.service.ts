@@ -1,13 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
-import { ChatService as ChatEventsService } from "src/chat/events/chat.service";
+import { OnlineUsersService } from "src/online-users/online-users.service";
 import { ResponseDto } from "../dto/game.dto";
 
 @Injectable()
 export class GameEventsService {
 	prisma: PrismaClient;
 
-	constructor(private readonly chatEventsService: ChatEventsService) {
+	constructor(private readonly onlineUsersService: OnlineUsersService) {
 		this.prisma = new PrismaClient();
 	}
 
@@ -88,8 +88,8 @@ export class GameEventsService {
 
 
 	getPlayersSockets(player1Id: number, player2Id: number) {
-		const player1Sockets = this.chatEventsService.getReceiversSocket(player1Id);
-		const player2Sockets = this.chatEventsService.getReceiversSocket(player2Id);
+		const player1Sockets = this.onlineUsersService.getUserSockets(player1Id);
+		const player2Sockets = this.onlineUsersService.getUserSockets(player2Id);
 		return {
 			player1Sockets,
 			player2Sockets,

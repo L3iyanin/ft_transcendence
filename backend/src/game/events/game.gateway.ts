@@ -1,6 +1,6 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { JoinMatchDto } from "../dto/game.dto";
-import { GameEventsService } from "./gameEvents.service";
+import { GameEventsService } from "./game-events.service";
 import { Server, Socket } from "socket.io";
 import { generateMatchName } from "../helpers/helpers";
 
