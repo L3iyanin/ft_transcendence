@@ -13,16 +13,16 @@ import {
 
 const useBallMove = () => {
 
-	// const [ballPosition, setBallPosition] = useState<{ x: number; y: number; }>({ x: 0, y: 0 });
+	const [ballPosition, setBallPosition] = useState<{ x: number; y: number; }>({ x: 0, y: 0 });
 
 	const updateBall = (ballX: number, ballY: number) => {
 		window.ballYPosition = ballY;
 		window.ballXPosition = ballX;
-		// setBallPosition({ x: ballX, y: ballY });
+		setBallPosition({ x: ballX, y: ballY });
 	}
 
 	return {
-		// ballPosition,
+		ballPosition,
 		updateBall,
 	};
 };

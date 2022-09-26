@@ -12,8 +12,6 @@ const Game: React.FC = () => {
 
 	const matchData: IMatchState = useSelector((state: any) => state.match);
 
-	
-
 	return (
 		<>
 			<div className="container">

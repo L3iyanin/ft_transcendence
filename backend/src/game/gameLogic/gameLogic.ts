@@ -100,7 +100,8 @@ class GameLogic {
 	}
 
 	updateBallPosition() {
-		const distance = this.ball.velocity;
+		// const distance = this.ball.velocity;
+		const distance = 20;
 
 		let newDirectionX = this.ball.directionX;
 		let newDirectionY = this.ball.directionY;
@@ -141,11 +142,13 @@ class GameLogic {
 		) {
 			this.resetGame();
 			this.player1Score += 1;
+			return ;
 		}
 
 		if (newX + BALL_SIZE / 2 >= PLAY_GROUND_WIDTH - PADDLE_WIDTH) {
 			this.resetGame();
 			this.player2Score += 1;
+			return ;
 		}
 
 		this.ball.x = newX;

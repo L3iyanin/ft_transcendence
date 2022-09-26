@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { PLAYER_ONE, PLAYGROUND_BORDERSIZE } from "../utils/constants/Game";
 
 const usePlayerMove = (initialY: number, playerIndex: number) => {
 	const [playerY, setPlayerY] = useState<number>(initialY);
+
+	const LocalUserData = useSelector((state: any) => state.user.user);
+
+	const clientSocket  = useSelector((state: any) => state.chat.clientSocket);
+
+	const matchData: IMatchState = useSelector((state: any) => state.match);
 
 	useEffect(() => {
 		if (playerIndex === PLAYER_ONE) {
@@ -16,6 +23,12 @@ const usePlayerMove = (initialY: number, playerIndex: number) => {
 		const mouseY = (e.clientY - e.target.getBoundingClientRect().top);
 
 		setPlayerY(mouseY);
+
+		clientSocket.emit("updatePlayerY", {
+			matchId: matchData.match?.matchId,
+			userId: LocalUserData.id,
+			newY: mouseY,
+		})
 
 	};
 

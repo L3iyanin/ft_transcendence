@@ -53,6 +53,15 @@ const PlayGround: React.FC<{
 				matchId: matchSettings.matchId,
 			});
 
+			clientSocket.on("gameState", (gameState: IGameState) => {
+				console.log(gameState);
+				updateBall(gameState.ballX, gameState.ballY);
+				setPlayersScore({
+					player1Score: gameState.player1Score,
+					player2Score: gameState.player2Score,
+				})
+			})
+
 		}
 
 	}, [clientSocket, LocalUserData, matchSettings]);
@@ -86,7 +95,7 @@ const PlayGround: React.FC<{
 		});
 	};
 
-	const { updateBall } = useBallMove();
+	const { ballPosition, updateBall } = useBallMove();
 
 	const ref = useRef(null);
 
@@ -220,8 +229,10 @@ const PlayGround: React.FC<{
 				/>
 			</div>
 			<Ball
-				top={window.ballYPosition}
-				left={window.ballXPosition}
+				// top={window.ballYPosition}
+				// left={window.ballXPosition}
+				top={ballPosition.y}
+				left={ballPosition.x}
 			/>
 			<div className="relative w-full h-full rounded-2xl" onMouseMove={movePlayer} />
 			<div ref={ref} />
