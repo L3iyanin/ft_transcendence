@@ -43,12 +43,18 @@ class GameLogic {
 		const topCornerY = playerYposition - PADDLE_HEIGHT / 2;
 		const bottomCornerY = playerYposition + PADDLE_HEIGHT / 2;
 
+		const isInPaddleMiddle = playerNumber === PLAYER_ONE ? ballXposition - BALL_SIZE / 2 <= cornerX - PADDLE_WIDTH / 2 : ballXposition + BALL_SIZE / 2 >= cornerX + PADDLE_WIDTH / 2;
+
 		if (distX + (topCornerY - ballYposition) * (topCornerY - ballYposition) <= radius * radius)
 		{
+			if (isInPaddleMiddle)
+				return false;
 			return true;
 		}
 		else if (distX + (bottomCornerY - ballYposition) * (bottomCornerY - ballYposition) <= radius * radius)
 		{
+			if (isInPaddleMiddle)
+				return false;
 			return true;
 		}
 		else
