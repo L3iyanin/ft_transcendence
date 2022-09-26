@@ -77,9 +77,25 @@ export class GameEventsService {
 							},
 						],
 					},
+					select: {
+						id: true,
+						username: true,
+						fullName: true,
+						imgUrl: true,
+						wins: true,
+						loses: true,
+						achievements: {
+							select: {
+								id: true,
+							},
+						},
+						twoFactorAuth: true,
+						login: true,
+					}
 				});
 
 				const player1 = users.find((user) => user.id == match.player1Id);
+
 				const player2 = users.find((user) => user.id == match.player2Id);
 
 				this.onlineUsersService.setSocketInGame(clientId); // setting socket of player2 in game
