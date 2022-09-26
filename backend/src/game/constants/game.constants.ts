@@ -34,3 +34,5 @@ export enum CollisionTypeEnum {
 	RIGHT_PADDLE = "RIGHT_PADDLE",
 	NONE = "NONE",
 }
+
+export const FPS = 30;

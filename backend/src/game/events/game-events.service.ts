@@ -3,6 +3,8 @@ import { Match, PrismaClient } from "@prisma/client";
 import { OnlineUsersService } from "src/online-users/online-users.service";
 import { ResponseDto } from "../dto/game.dto";
 import { Socket } from "socket.io";
+import { FPS } from "../constants/game.constants";
+import GameLogic from "../gameLogic/gameLogic";
 
 @Injectable()
 export class GameEventsService {
@@ -218,8 +220,7 @@ export class GameEventsService {
 					player1Ready: true,
 				},
 			});
-		}
-		else if (match.player2Id == userId) {
+		} else if (match.player2Id == userId) {
 			match = await this.prisma.match.update({
 				where: {
 					id: match.id,
@@ -237,11 +238,18 @@ export class GameEventsService {
 		}
 
 		return "waiting for other player";
+	}
 
+	async gameTurn(gameInstance: GameLogic) {
+		const gameState = gameInstance.getGameState();
 	}
 
 	async startGameLoop(match: Match) {
 		console.log("starting game loop " + match.id);
+		const gameInstance = new GameLogic()
+		const interval = setInterval(async () => {
+			await this.gameTurn(gameInstance);
+		}, 1000 / FPS);
+		// store interval somewhere
 	}
-
 }

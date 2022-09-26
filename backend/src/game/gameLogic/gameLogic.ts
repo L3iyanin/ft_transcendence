@@ -151,7 +151,7 @@ class GameLogic {
 		this.updatePlayerY(newYPosition, PLAYER_TWO);
 	}
 
-	getGameStatus() {
+	getGameState() {
 		return {
 			player1y: this.player1y,
 			player2y: this.player2y,
