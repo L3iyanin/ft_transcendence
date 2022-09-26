@@ -53,3 +53,27 @@ export const matches:IGameMatch[] = [
 		type: GameType.Vip
 	},
 ]
+
+
+export const fakematch: IStartedMatch = {
+	matchId: 12,
+	player1: {
+		id: 1,
+		fullName: "Imran Baali",
+		username: "kirwa-ko",
+		imgUrl: "https://myanimelist.tech/api/avatar?name=kirwako&animeName=Inazuma_Eleven",
+		wins: 15,
+		loses: 4,
+		numberOfAchievements: 4,
+	},
+	player2: {
+		id: 2,
+		fullName: "Abdali Ait Hmid",
+		username: "twelve",
+		imgUrl: "https://myanimelist.tech/api/avatar?name=twelve&animeName=Inazuma_Eleven",
+		wins: 15,
+		loses: 4,
+		numberOfAchievements: 4,
+	},
+	scoreToWin: 3,
+}
