@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { CollisionTypeEnum } from "../utils/constants/enum";
 import {
+	BALL_SIZE,
 	INITIAL_BALL_X,
 	INITIAL_BALL_Y,
 	INITIAL_VELOCITY,
@@ -29,9 +31,13 @@ const useBallMove = (
 		directionY: 0.5,
 	});
 
+
 	const requestRef = useRef<null | number>(null);
 
 	const resetBall = () => {
+
+		window.prevCollistionType = CollisionTypeEnum.NONE;
+
 		let direction = { x: 0, y: 0 };
 
 		while (Math.abs(direction.x) <= 0.2 || Math.abs(direction.x) >= 0.9) {
@@ -74,27 +80,35 @@ const useBallMove = (
 
 		if (distX + (topCornerY - ballYposition) * (topCornerY - ballYposition) <= radius * radius)
 		{
+			console.log("top corner collision");
 			return true;
 		}
 		else if (distX + (bottomCornerY - ballYposition) * (bottomCornerY - ballYposition) <= radius * radius)
 		{
+			console.log("bottom corner collision");
 			return true;
 		}
 		else
 		{
 			const isInPaddleRange = ballYposition >= topCornerY && ballYposition <= bottomCornerY;
-			if (playerNumber === 1 && ballXposition - radius <= cornerX && isInPaddleRange)
+			if (playerNumber === 1 && ballXposition - radius <= cornerX && isInPaddleRange) {
+				console.log("left paddle collision");
 				return true;
+			}
 			else if (playerNumber === 2 && ballXposition + radius >= cornerX && isInPaddleRange)
+			{
+				console.log("right paddle collision");
 				return true;
+			}
 			else
 				return false;
 		}
 	};
 
+
 	const updateBall = (delta: number) => {
 		setBallPosition((prev) => {
-			const distance = prev.velocity * delta / 2;
+			const distance = 2;
 
 			let newDirectionX = prev.directionX;
 			let newDirectionY = prev.directionY;
@@ -108,7 +122,7 @@ const useBallMove = (
 				newY + window.ballSize / 2 >=
 				window.playgroundHeight - PLAYGROUND_BORDERSIZE
 			) {
-				console.log("collision with bottom");
+				// console.log("collision with bottom");
 				newDirectionY = newDirectionY * -1;
 				newY = window.ballYPoistion + newDirectionY * distance;
 			}
@@ -120,14 +134,33 @@ const useBallMove = (
 
 			if (isCollisionWithPlayer(newX, newY, window.player1Y, PLAYER_ONE)) {
 				// cancelAnimationFrame(requestRef.current!)
-				newDirectionX = newDirectionX * -1;
-				newX = window.ballXPoistion + newDirectionX * distance;
-			}
+				
+				console.log(window.prevCollistionType);
 
-			if (isCollisionWithPlayer(newX, newY, window.player2Y, PLAYER_TWO)) {
+				if (window.prevCollistionType !== CollisionTypeEnum.LEFT_PADDLE) {
+					window.prevCollistionType = CollisionTypeEnum.LEFT_PADDLE;
+					newDirectionX = newDirectionX * -1;
+					newX = window.ballXPoistion + newDirectionX * distance;
+				}
+
+			}
+			
+			else if (isCollisionWithPlayer(newX, newY, window.player2Y, PLAYER_TWO)) {
 				// cancelAnimationFrame(requestRef.current!)
-				newDirectionX = newDirectionX * -1;
-				newX = window.ballXPoistion + newDirectionX * distance;
+
+				console.log(window.prevCollistionType);
+				
+				if (window.prevCollistionType !== CollisionTypeEnum.RIGHT_PADDLE) {
+					window.prevCollistionType = CollisionTypeEnum.RIGHT_PADDLE;
+
+					newDirectionX = newDirectionX * -1;
+					newX = window.ballXPoistion + newDirectionX * distance;
+				}
+			}
+			else {
+				console.log("no collision");
+				console.log(window.prevCollistionType);
+				window.prevCollistionType = CollisionTypeEnum.NONE;
 			}
 
 			if (
@@ -166,14 +199,10 @@ const useBallMove = (
 
 	const updateBallOutside = () => {
 		setBallPosition((prev) => {
-			console.log(`prev.y: ${prev.y}`);
-			console.log(`window.ballXPositionRatio: ${window.ballXPositionRatio}`);
 			const newX = window.playgroundWidth * window.ballXPositionRatio;
 			const newY = window.playgroundHeight * window.ballYPositionRatio;
-			console.log(`newX: ${newX}`);
 			window.ballXPoistion = newX;
 			window.ballYPoistion = newY;
-			console.log(`window.ballXPoistion: ${window.ballXPoistion}`);
 			// window.ballYPoistion = newY;
 			
 			return {

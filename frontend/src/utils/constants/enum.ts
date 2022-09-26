@@ -40,3 +40,9 @@ export enum UserStatusEnum {
 	BLOCKED = "BLOCKED",
 	FRIEND = "FRIEND"
 }
+
+export enum CollisionTypeEnum {
+	LEFT_PADDLE = "LEFT_PADDLE",
+	RIGHT_PADDLE = "RIGHT_PADDLE",
+	NONE = "NONE",
+}

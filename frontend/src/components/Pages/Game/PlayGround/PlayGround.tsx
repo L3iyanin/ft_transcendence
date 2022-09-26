@@ -172,9 +172,9 @@ const PlayGround: React.FC<{
 			className={`relative w-full bg-red mt-5 bg-cover bg-center rounded-3xl border-4 border-red`}
 			style={{
 				backgroundImage: `url(${settings.backgroundUrl})`,
-				// height: `${PLAY_GROUND_HEIGHT}px`,
-				// width: `${PLAY_GROUND_WIDTH}px`,
-				aspectRatio: "16 / 9",
+				height: `${PLAY_GROUND_HEIGHT}px`,
+				width: `${PLAY_GROUND_WIDTH}px`,
+				// aspectRatio: "16 / 9",
 			}}
 			id="playground"
 			ref={playgroundRef}
