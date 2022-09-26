@@ -17,7 +17,6 @@ export class GameGateway {
 
 	@SubscribeMessage("joinGame")
 	async joinGame(client: Socket, payload: JoinMatchDto) {
-		console.log("joinGame", payload);
 		const response = await this.gameEventsService.joinGame(payload.userId, payload.scoreToWin, client.id);
 		if (response.check === "START_MATCH") {
 			const matchName = generateMatchName(response.data.matchId);

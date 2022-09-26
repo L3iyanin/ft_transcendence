@@ -163,6 +163,12 @@ export class GameEventsService {
 		if (match && match.live) {
 			// handle disconnect from live match
 			// end game and emit result to other player
+			await this.prisma.match.delete({
+				where: {
+					id: match.id,
+				},
+			});
+
 		}
 	}
 
