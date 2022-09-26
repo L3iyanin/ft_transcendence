@@ -95,7 +95,6 @@ const useBallMove = (
 	const updateBall = (delta: number) => {
 		setBallPosition((prev) => {
 			const distance = prev.velocity * delta / 2;
-			// const distance = 5;
 
 			let newDirectionX = prev.directionX;
 			let newDirectionY = prev.directionY;
