@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import userSlicereducer from "../reducers/UserSlice";
 import settingsSlicereducer from "../reducers/SettingsSlice";
 import chatSlicereducer from "../reducers/ChatSlice";
+import matchSlicereducer from "../reducers/MatchSlice";
 
 const store = configureStore({
 	reducer: {
 		user: userSlicereducer,
 		settings: settingsSlicereducer,
 		chat: chatSlicereducer,
+		match: matchSlicereducer,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({

@@ -12,41 +12,38 @@ const usePlayerMove = (initialY: number, playerIndex: number) => {
 		}
 	}, [playerY])
 
-	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-		const newY = (e.clientY - e.target.getBoundingClientRect().top);
-		
-		if (newY + (window.paddleHeight / 2) + PLAYGROUND_BORDERSIZE >= window.playgroundHeight) {
-			setPlayerY((window.playgroundHeight - PLAYGROUND_BORDERSIZE - window.paddleHeight / 2 - window.paddleYMargin));
-		}
-		else if (newY - window.paddleHeight / 2 <= 0) {
+	const movePlayerByMouse = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		const mouseY = (e.clientY - e.target.getBoundingClientRect().top);
 
-			setPlayerY((window.paddleHeight / 2 + window.paddleYMargin));
-		}
-		else {
-			setPlayerY(newY);
-		}
+		setPlayerY(mouseY);
+
 	};
 
-	const updatePlayerPosition = (playerIndex: number) => {
+	const updatePlayerY = (newY: number) => {
+		setPlayerY(newY);
+	}
 
-		if (playerIndex === PLAYER_ONE) {
-			setPlayerY(prevPlayerY => {
-				return window.playgroundHeight * window.player1YPositionRatio
-			})
-		}
-		else {
-			setPlayerY(prevPlayerY => {
-				return window.playgroundHeight * window.player2YPositionRatio
-			})
-		}
-	};
+	// const updatePlayerPosition = (playerIndex: number) => {
+
+	// 	if (playerIndex === PLAYER_ONE) {
+	// 		setPlayerY(prevPlayerY => {
+	// 			return window.playgroundHeight * window.player1YPositionRatio
+	// 		})
+	// 	}
+	// 	else {
+	// 		setPlayerY(prevPlayerY => {
+	// 			return window.playgroundHeight * window.player2YPositionRatio
+	// 		})
+	// 	}
+	// };
 
 	
 
 	return {
 		playerY,
-		movePlayer,
-		updatePlayerPosition
+		movePlayerByMouse,
+		updatePlayerY
+		// updatePlayerPosition
 	};
 }
 

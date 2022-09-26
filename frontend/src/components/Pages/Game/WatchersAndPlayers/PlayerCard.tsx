@@ -32,7 +32,7 @@ const PlayerCard: React.FC<{
 				<div className="flex items-center gap-2">
 					<AchivementIcon />
 					<span className="text-xs">
-						{player.achievements}/{MAX_ACHIVEMENTS} achivments
+						{player.achievements?.length}/{MAX_ACHIVEMENTS} achivments
 					</span>
 				</div>
 			</div>
