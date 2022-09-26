@@ -1,8 +1,21 @@
-import { BALL_SIZE, CollisionTypeEnum, INITIAL_VELOCITY, PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_X_MARGIN, PADDLE_Y_MARGIN, PLAYER_FIRST_POSITION, PLAYER_ONE, PLAYER_TWO, PLAYGROUND_BORDERSIZE, PLAY_GROUND_HEIGHT, PLAY_GROUND_WIDTH } from "../constants/game.constants";
+import {
+	BALL_SIZE,
+	CollisionTypeEnum,
+	INITIAL_VELOCITY,
+	PADDLE_HEIGHT,
+	PADDLE_WIDTH,
+	PADDLE_X_MARGIN,
+	PADDLE_Y_MARGIN,
+	PLAYER_FIRST_POSITION,
+	PLAYER_ONE,
+	PLAYER_TWO,
+	PLAYGROUND_BORDERSIZE,
+	PLAY_GROUND_HEIGHT,
+	PLAY_GROUND_WIDTH,
+} from "../constants/game.constants";
 import { BallDto } from "../dto/game.dto";
 
 class GameLogic {
-
 	player1y: number;
 	player2y: number;
 
@@ -31,41 +44,60 @@ class GameLogic {
 			direction = { x: Math.cos(heading), y: Math.sin(heading) };
 		}
 
-		this.ball.x = PLAY_GROUND_WIDTH / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + PADDLE_X_MARGIN / 2 - 2;
-		this.ball.y = PLAY_GROUND_WIDTH / 2 - BALL_SIZE / 2 + PLAYGROUND_BORDERSIZE + PADDLE_Y_MARGIN / 2 - 2;
-		this.ball.velocity = INITIAL_VELOCITY;
-		this.ball.directionX = direction.x;
-		this.ball.directionY = direction.y;
+		this.ball = {
+			x:
+				PLAY_GROUND_WIDTH / 2 -
+				BALL_SIZE / 2 +
+				PLAYGROUND_BORDERSIZE +
+				PADDLE_X_MARGIN / 2 -
+				2,
+			y:
+				PLAY_GROUND_WIDTH / 2 -
+				BALL_SIZE / 2 +
+				PLAYGROUND_BORDERSIZE +
+				PADDLE_Y_MARGIN / 2 -
+				2,
+			velocity: INITIAL_VELOCITY,
+			directionX: direction.x,
+			directionY: direction.y,
+		};
 	}
 
-	isCollisionWithPlayer (ballXposition: number, ballYposition: number, playerYposition: number, playerNumber: number): boolean {
-
-		const cornerX = playerNumber === PLAYER_ONE ? PADDLE_X_MARGIN + PADDLE_WIDTH - PLAYGROUND_BORDERSIZE / 2 : PLAY_GROUND_WIDTH - PADDLE_X_MARGIN - PADDLE_WIDTH  - PLAYGROUND_BORDERSIZE / 2;
+	isCollisionWithPlayer(
+		ballXposition: number,
+		ballYposition: number,
+		playerYposition: number,
+		playerNumber: number
+	): boolean {
+		const cornerX =
+			playerNumber === PLAYER_ONE
+				? PADDLE_X_MARGIN + PADDLE_WIDTH - PLAYGROUND_BORDERSIZE / 2
+				: PLAY_GROUND_WIDTH - PADDLE_X_MARGIN - PADDLE_WIDTH - PLAYGROUND_BORDERSIZE / 2;
 
 		const radius = BALL_SIZE / 2;
 		const distX = (cornerX - ballXposition) * (cornerX - ballXposition);
 		const topCornerY = playerYposition - PADDLE_HEIGHT / 2;
 		const bottomCornerY = playerYposition + PADDLE_HEIGHT / 2;
 
-		if (distX + (topCornerY - ballYposition) * (topCornerY - ballYposition) <= radius * radius)
-		{
+		if (
+			distX + (topCornerY - ballYposition) * (topCornerY - ballYposition) <=
+			radius * radius
+		) {
 			return true;
-		}
-		else if (distX + (bottomCornerY - ballYposition) * (bottomCornerY - ballYposition) <= radius * radius)
-		{
+		} else if (
+			distX + (bottomCornerY - ballYposition) * (bottomCornerY - ballYposition) <=
+			radius * radius
+		) {
 			return true;
-		}
-		else
-		{
+		} else {
 			const isInPaddleRange = ballYposition >= topCornerY && ballYposition <= bottomCornerY;
 			if (playerNumber === 1 && ballXposition - radius <= cornerX && isInPaddleRange)
 				return true;
 			else if (playerNumber === 2 && ballXposition + radius >= cornerX && isInPaddleRange)
 				return true;
-			else
-				return false;
+			else return false;
 		}
-	};
+	}
 
 	updateBallPosition() {
 		const distance = this.ball.velocity;
@@ -94,18 +126,19 @@ class GameLogic {
 				newDirectionX = newDirectionX * -1;
 				newX = this.ball.x + newDirectionX * distance;
 			}
-		}
-		else if (this.isCollisionWithPlayer(newX, newY, this.player2y, PLAYER_TWO)) {
+		} else if (this.isCollisionWithPlayer(newX, newY, this.player2y, PLAYER_TWO)) {
 			if (this.collistionType !== CollisionTypeEnum.RIGHT_PADDLE) {
 				newDirectionX = newDirectionX * -1;
 				newX = this.ball.x + newDirectionX * distance;
 			}
-		}
-		else {
+		} else {
 			this.collistionType = CollisionTypeEnum.NONE;
 		}
 
-		if (newX - BALL_SIZE / 2 <= PADDLE_X_MARGIN + PLAYGROUND_BORDERSIZE - PLAYGROUND_BORDERSIZE) {
+		if (
+			newX - BALL_SIZE / 2 <=
+			PADDLE_X_MARGIN + PLAYGROUND_BORDERSIZE - PLAYGROUND_BORDERSIZE
+		) {
 			this.resetGame();
 			this.player1Score += 1;
 		}
@@ -120,25 +153,22 @@ class GameLogic {
 
 		this.ball.directionX = newDirectionX;
 		this.ball.directionY = newDirectionY;
-
 	}
 
 	updatePlayerY(newYPosition, playerNumber) {
 		let newPlayerY: number = newYPosition;
-		if (newYPosition + (PADDLE_HEIGHT / 2) + PLAYGROUND_BORDERSIZE >= PLAY_GROUND_HEIGHT) {
-			newPlayerY = this.player1y = (PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN);
-		}
-		else if (newYPosition - PADDLE_HEIGHT / 2 <= 0) {
-			newPlayerY = (PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN);
-		}
-		else {
+		if (newYPosition + PADDLE_HEIGHT / 2 + PLAYGROUND_BORDERSIZE >= PLAY_GROUND_HEIGHT) {
+			newPlayerY = this.player1y =
+				PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN;
+		} else if (newYPosition - PADDLE_HEIGHT / 2 <= 0) {
+			newPlayerY = PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN;
+		} else {
 			newPlayerY = newYPosition;
 		}
 
 		if (playerNumber === PLAYER_ONE) {
 			this.player1y = newPlayerY;
-		}
-		else {
+		} else {
 			this.player2y = newPlayerY;
 		}
 	}
@@ -161,7 +191,6 @@ class GameLogic {
 			player2Score: this.player2Score,
 		};
 	}
-
 }
 
 export default GameLogic;
