@@ -225,7 +225,6 @@ const DiscussionSection: React.FC = () => {
 	useEffect(() => {
 		if (!clientSocket) return;
 		clientSocket.on("receivedMessage", (message: any) => {
-			console.log("receivedMessage => ", message.content);
 			setCurrentChannel((channelInfo) => {
 				if (message.isDm) {
 					setChannelsOfDms((channels) => {
@@ -267,8 +266,6 @@ const DiscussionSection: React.FC = () => {
 			userId: userData.user?.id,
 			content: messageContent,
 		});
-
-		console.log("seding => ", messageContent);
 
 		// add message to current channel
 		setCurrentChannel((channelInfo) => {
