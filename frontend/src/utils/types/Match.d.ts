@@ -20,3 +20,11 @@ interface IStartedMatch {
 	player2: IUser;
 	scoreToWin: number;
 }
+
+
+
+interface IMatchState {
+	isMatching: boolean;
+	whenMatching?: string;
+	match?: IStartedMatch;
+}

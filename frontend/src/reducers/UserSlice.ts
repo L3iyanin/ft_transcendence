@@ -14,8 +14,6 @@ const initialState: IUserState = {
 	user: null,
 	isLoggedIn: false,
 	isLoading: true,
-	isMatching: false,
-	// whenMatching: "2022-09-26T16:05:12.526Z",
 };
 
 export const userSlice = createSlice({
@@ -53,23 +51,9 @@ export const userSlice = createSlice({
 			}
 			state.isLoading = false;
 		},
-		setMatching: (state) => {
-			return  {
-				...state,
-				isMatching: true,
-				whenMatching: new Date().toISOString()
-			}
-		},
-		setUnmatched: (state) => {
-			return  {
-				...state,
-				isMatching: false,
-				whenMatching: undefined
-			}
-		}
 	},
 });
 
 export default userSlice.reducer;
 
-export const { login, logout, getUser, setMatching, setUnmatched } = userSlice.actions;
+export const { login, logout, getUser } = userSlice.actions;

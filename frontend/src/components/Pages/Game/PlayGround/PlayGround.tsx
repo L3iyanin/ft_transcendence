@@ -17,24 +17,19 @@ import {
 	PLAY_GROUND_WIDTH,
 } from "../../../../utils/constants/Game";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { fakematch } from "../../../../utils/data/Match";
 import { useSelector } from "react-redux";
 
-
 const PlayGround: React.FC<{
-	settings: IMatch;
-}> = ({ settings }) => {
+	matchSettings: IStartedMatch;
+	playgroundBg: string;
+}> = ({ matchSettings, playgroundBg }) => {
 
 	const [playerIndex, setPlayerIndex] = useState<number>(PLAYER_ONE);
 
 	const LocalUserData = useSelector((state: any) => state.user.user);
 
-	useEffect(() => {
-		if (fakematch.player1.id !== LocalUserData.id) {
-			setPlayerIndex(PLAYER_TWO);
-		}
-	}, []);
-	
+	const clientSocket  = useSelector((state: any) => state.chat.clientSocket);
+
 	const [playersScore, setPlayersScore] = useState<{
 		player1Score: number;
 		player2Score: number;
@@ -43,16 +38,34 @@ const PlayGround: React.FC<{
 		player2Score: 0,
 	});
 
+	useEffect(() => {
+		
+		if (LocalUserData && clientSocket) {
+			if (matchSettings.player1.id !== LocalUserData.id) {
+				setPlayerIndex(PLAYER_TWO);
+			}
+	
+			clientSocket.emit("readyToPlay", {
+				userId: LocalUserData.id,
+				matchId: matchSettings.matchId,
+			});
+
+		}
+
+	}, [clientSocket, LocalUserData]);
+
 	const {
 		playerY: player1Y,
-		movePlayer: movePlayer1,
-		updatePlayerPosition: updatePlayerPosition1,
+		movePlayerByMouse: movePlayer1ByMouse,
+		updatePlayerY: updatePlayer1Y,
+		// updatePlayerPosition: updatePlayerPosition1,
 	} = usePlayerMove(PLAYER_FIRST_POSITION, PLAYER_ONE);
 
 	const {
 		playerY: player2Y,
-		movePlayer: movePlayer2,
-		updatePlayerPosition: updatePlayerPosition2
+		movePlayerByMouse: movePlayer2ByMouse,
+		updatePlayerY: updatePlayer2Y,
+		// updatePlayerPosition: updatePlayerPosition2
 	} = usePlayerMove(PLAYER_FIRST_POSITION, PLAYER_TWO);
 
 	const setPlayersScoreHandler = (
@@ -76,10 +89,10 @@ const PlayGround: React.FC<{
 
 	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		if (playerIndex === PLAYER_ONE) {
-			movePlayer1(e);
+			movePlayer1ByMouse(e);
 		}
 		else {
-			movePlayer2(e);
+			movePlayer2ByMouse(e);
 		}
 	};
 
@@ -166,7 +179,7 @@ const PlayGround: React.FC<{
 		<div
 			className={`relative w-full bg-red mt-5 bg-cover bg-center rounded-3xl border-4 border-red`}
 			style={{
-				backgroundImage: `url(${settings.backgroundUrl})`,
+				backgroundImage: `url(${playgroundBg})`,
 				height: `${PLAY_GROUND_HEIGHT}px`,
 				width: `${PLAY_GROUND_WIDTH}px`,
 				// aspectRatio: "16 / 9",
@@ -190,11 +203,11 @@ const PlayGround: React.FC<{
 			>
 				<PlayerScore
 					score={playersScore.player1Score}
-					player={settings.player1}
+					player={matchSettings.player1}
 				/>
 				<PlayerScore
 					score={playersScore.player2Score}
-					player={settings.player2}
+					player={matchSettings.player2}
 					isReverse={true}
 				/>
 			</div>

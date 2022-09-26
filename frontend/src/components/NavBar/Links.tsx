@@ -2,9 +2,10 @@ import Option from './Option'
 import { ReactComponent as Avatar } from "../../assets/icons/TestAvatar.svg";
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, setMatching } from '../../reducers/UserSlice';
+import { logout } from '../../reducers/UserSlice';
 import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
+import { setMatching } from '../../reducers/MatchSlice';
 
 
 const Links = () => {
@@ -28,11 +29,7 @@ const Links = () => {
 
 	const playGame = () => {
 		dispatch(setMatching());
-		const scoreToWin = 3
-		console.log('=== playGame ===');
-		console.log(userData.user.id);
-		console.log(scoreToWin);
-		console.log('================');
+		const scoreToWin = 7;
 		clientSocket.emit('joinGame', {
 			userId: userData.user.id,
 			scoreToWin: scoreToWin,

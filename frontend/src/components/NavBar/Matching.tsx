@@ -10,7 +10,7 @@ const Matching: React.FC = () => {
 	
 	const [matchingTimer, setMatchingTimer] = useState<{ seconds: number; minutes: number;}>();
 
-	const LocalUserData: IUserState = useSelector((state: any) => state.user);
+	const LocalUserData: IMatchState = useSelector((state: any) => state.match);
 
 	let secondsDiff = 0;
 	let minutesDiff = 0;
