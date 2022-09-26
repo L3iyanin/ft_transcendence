@@ -35,5 +35,11 @@ export class GameGateway {
 		}
 	}
 
-
+	@SubscribeMessage("readyToPlay")
+	async readyToPlay(client: Socket, payload: { userId: number; matchId: number }) {
+		const matchName = generateMatchName(payload.matchId);
+		const message = await this.gameEventsService.readyToPlay(payload.userId, payload.matchId);
+		const username = await this.gameEventsService.getUsername(payload.userId) + " is ready to play";
+		this.server.to(matchName).emit("readyToPlay", { message, username });
+	}
 }

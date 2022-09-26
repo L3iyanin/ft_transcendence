@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaClient } from "@prisma/client";
+import { Match, PrismaClient } from "@prisma/client";
 import { OnlineUsersService } from "src/online-users/online-users.service";
 import { ResponseDto } from "../dto/game.dto";
 import { Socket } from "socket.io";
@@ -54,7 +54,6 @@ export class GameEventsService {
 			}
 			const matchingMatches = matches.filter((match) => match.isMatching);
 			let match = matchingMatches.length > 0 ? matchingMatches[0] : null;
-
 			if (match) {
 				match = await this.prisma.match.update({
 					where: {
@@ -184,6 +183,65 @@ export class GameEventsService {
 			player1Socket,
 			player2Socket,
 		};
+	}
+
+	async getUsername(userId: number) {
+		const user = await this.prisma.user.findUnique({
+			where: {
+				id: userId,
+			},
+		});
+		return user.username;
+	}
+
+	async readyToPlay(userId: number, matchId: number) {
+		// check if user is in match and if he is player1 or player2
+		// set him as ready
+		// if both players are ready, start game loop
+
+		let match = await this.prisma.match.findUnique({
+			where: {
+				id: matchId,
+			},
+		});
+
+		if (!match) {
+			return "match not found";
+		}
+
+		if (match.player1Id == userId) {
+			match = await this.prisma.match.update({
+				where: {
+					id: match.id,
+				},
+				data: {
+					player1Ready: true,
+				},
+			});
+		}
+		else if (match.player2Id == userId) {
+			match = await this.prisma.match.update({
+				where: {
+					id: match.id,
+				},
+				data: {
+					player2Ready: true,
+				},
+			});
+		}
+
+		if (match.player1Ready && match.player2Ready) {
+			// start game loop
+			this.startGameLoop(match);
+			return "game started";
+		}
+
+		return "waiting for other player";
+
+	}
+
+	async startGameLoop(match: Match) {
+		console.log("starting game loop " + match.id);
 	}
 
 }
