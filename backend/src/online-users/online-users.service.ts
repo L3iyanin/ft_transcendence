@@ -31,9 +31,12 @@ export class OnlineUsersService {
 
     // * Helper function ****************************************
 
-	getUserIdbyClientId(clientId: string) {
-		const userId = this.onlineUsers.find((user) => user.socket.id == clientId).user.id;
-		return userId;
+	getUserIdbyClientId(clientId: string) : number | null {
+		if (this.onlineUsers.length > 0) {
+			const userId = this.onlineUsers.find((user) => user.socket.id == clientId).user.id;
+			return userId;
+		}
+		return null;
 	}
 
 	removeDisconnectedSocket(clinet: Socket) {
