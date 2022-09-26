@@ -11,7 +11,7 @@ const Stat: React.FC < {stat : string, qty : number} > = (props) => {
 
 	let statIcon = <WinIcon />;
 
-	if (props.stat === t("loses"))
+	if (props.stat === t("losses"))
 		statIcon = <LoseIcon />;
 	else if (isOnline)
 		statIcon = <span className="w-3 h-3 rounded-full bg-green"></span>;

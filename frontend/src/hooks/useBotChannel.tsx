@@ -12,7 +12,7 @@ const useBotChannel = (): IChatChannel => {
 			username: t("chatPage.bot.name"),
 			imgUrl: `https://myanimelist.tech/api/avatar?name=${t("chatPage.bot.name")}&animeName=Inazuma_Eleven`,
 			wins: 15,
-			loses: 4,
+			losses: 4,
 			achievements: [],
 		};
 	

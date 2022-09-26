@@ -26,7 +26,7 @@ const PlayerCard: React.FC<{
 					</div>
 					<div className="flex items-center gap-2">
 						<LoseIcon />
-						<span className="text-xs">{player.loses} loses</span>
+						<span className="text-xs">{player.losses} losses</span>
 					</div>
 				</div>
 				<div className="flex items-center gap-2">
