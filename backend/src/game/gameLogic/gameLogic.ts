@@ -155,7 +155,8 @@ class GameLogic {
 		return {
 			player1y: this.player1y,
 			player2y: this.player2y,
-			ball: this.ball,
+			ballX: this.ball.x,
+			ballY: this.ball.y,
 			player1Score: this.player1Score,
 			player2Score: this.player2Score,
 		};
