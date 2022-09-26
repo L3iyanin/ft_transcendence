@@ -33,6 +33,8 @@ model Match {
     player2Id     Int?
     player1Score  Int      @default(0)
     player2Score  Int      @default(0)
+    player1Ready  Boolean  @default(false)
+    player2Ready  Boolean  @default(false)
     date          DateTime @default(now())
     scoreToWin    Int // can be 3 or 7
     matchByInvite Boolean  @default(false)

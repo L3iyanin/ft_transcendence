@@ -20,12 +20,12 @@ export class GameGateway {
 		const response = await this.gameEventsService.joinGame(payload.userId, payload.scoreToWin, client.id);
 		if (response.check === "START_MATCH") {
 			const matchName = generateMatchName(response.data.matchId);
-			const { player1Sockets, player2Sockets } = this.gameEventsService.getPlayersSockets(
+			const { player1Socket, player2Socket } = this.gameEventsService.getPlayersSockets(
 				response.data.player1.id,
 				response.data.player2.id
 			);
-			this.joinSocketsToMatchRoom(matchName, player1Sockets);
-			this.joinSocketsToMatchRoom(matchName, player2Sockets);
+			player1Socket.join(matchName);
+			player2Socket.join(matchName);
 			this.server.to(matchName).emit("joinGameResponse", response.data);
 		}
 		else if (response.check === "ALREADY_IN_MATCH") {
@@ -35,9 +35,5 @@ export class GameGateway {
 		}
 	}
 
-	joinSocketsToMatchRoom(matchName: string, sockets: Socket[]) {
-		sockets.forEach((socket) => {
-			socket.join(matchName);
-		});
-	}
+
 }

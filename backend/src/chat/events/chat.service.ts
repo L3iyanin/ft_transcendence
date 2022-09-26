@@ -7,32 +7,11 @@ import { generateChannelName } from "../helpers/helpers";
 
 @Injectable()
 export class ChatService {
-	// onlineUsers: UserSocket[];
 	prisma: PrismaClient;
 
 	constructor(private readonly onlineUsersService: OnlineUsersService) {
-		// this.onlineUsers = [];
 		this.prisma = new PrismaClient();
 	}
-
-	//? ========================================CONNECT USER EVENT========================================
-	// addConnectedUser(client: Socket, newUser: User) {
-	// 	const alreadyExist = this.onlineUsers.some((user) => user.socket.id == client.id); //! corretc this for one user in multiple tab
-	// 	if (!alreadyExist) {
-	// 		this.onlineUsers.push({
-	// 			user: newUser,
-	// 			socket: client,
-	// 		});
-	// 	}
-	// 	const users = [];
-	// 	this.onlineUsers.map((user) => {
-	// 		users.push({
-	// 			user: user.user,
-	// 		});
-	// 	});
-	// 	return users;
-	// }
-	//? __________________________________________________________________________________________________
 
 	//? ========================================MESSAGE EVENT=============================================
 	async handleMessage(client: Socket, payload: Message) {
@@ -204,22 +183,6 @@ export class ChatService {
 			throw new HttpException(err.response, err.status);
 		}
 	}
-
-	// checkIfReceiverIsOnline(receiverId: number): boolean {
-	// 	return this.onlineUsers.some((user) => user.user.id == receiverId);
-	// }
-
-	// // get user sockets by userId
-	// getUserSockets(receiverId: number): Socket[] {
-	// 	const sockets: Socket[] = [];
-	// 	this.onlineUsers.forEach((user) => {
-	// 		if (user.user.id == receiverId) sockets.push(user.socket);
-	// 	});
-	// 	return sockets;
-	// }
-
-
-	// get userId by a socket
 
 	async unmuteAndUnbanMembersAfterTime() {
 		try {

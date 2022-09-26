@@ -174,12 +174,16 @@ export class GameEventsService {
 		}
 	}
 
-	getPlayersSockets(player1Id: number, player2Id: number) {
-		const player1Sockets = this.onlineUsersService.getUserSockets(player1Id);
-		const player2Sockets = this.onlineUsersService.getUserSockets(player2Id);
+	getPlayersSockets(
+		player1Id: number,
+		player2Id: number
+	): { player1Socket: Socket | null; player2Socket: Socket | null } {
+		const player1Socket = this.onlineUsersService.getUserGameSocket(player1Id);
+		const player2Socket = this.onlineUsersService.getUserGameSocket(player2Id);
 		return {
-			player1Sockets,
-			player2Sockets,
+			player1Socket,
+			player2Socket,
 		};
 	}
+
 }

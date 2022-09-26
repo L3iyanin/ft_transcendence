@@ -64,6 +64,13 @@ export class OnlineUsersService {
 		return sockets;
 	}
 
+	getUserGameSocket(userId: number): Socket | null {
+		const userSockets: UserSocket[] = this.onlineUsers.filter((user) => user.user.id == userId);
+		const userGameSocket = userSockets.find((user) => user.socketInGame);
+		if (userGameSocket) return userGameSocket.socket;
+		return null;
+	}
+
 	setSocketInGame(clientId: string) {
 		const user = this.onlineUsers.find((user) => user.socket.id == clientId);
 		user.socketInGame = true;
