@@ -61,7 +61,7 @@ export class UsersService {
 					fullName: true,
 					imgUrl: true,
 					wins: true,
-					loses: true,
+					losses: true,
 					achievements: {
 						select: {
 							id: true,
@@ -108,7 +108,7 @@ export class UsersService {
 				fullName: user.fullName,
 				imgUrl: user.imgUrl,
 				wins: user.wins,
-				loses: user.loses,
+				losses: user.losses,
 				numberOfAchievements: user.achievements.length,
 				numberOfFriends: user.friends.length,
 				userStatus: status,
@@ -130,12 +130,12 @@ export class UsersService {
 					fullName: user.fullName,
 					imgUrl: user.imgUrl,
 					wins: user.wins,
-					loses: user.loses,
-					WinsMinusLoses: user.wins - user.loses,
+					losses: user.losses,
+					WinsMinuslosses: user.wins - user.losses,
 				};
 			});
 			let leaderboard: userInLeaderboard[] = transformedUsers.sort((user1, user2) => {
-				if (user1.WinsMinusLoses > user2.WinsMinusLoses) {
+				if (user1.WinsMinuslosses > user2.WinsMinuslosses) {
 					return -1;
 				}
 			});
@@ -214,7 +214,7 @@ export class UsersService {
 					fullName: friend.fullName,
 					username: friend.username,
 					imgUrl: friend.imgUrl,
-					loses: friend.loses,
+					losses: friend.losses,
 					wins: friend.wins,
 				});
 			});

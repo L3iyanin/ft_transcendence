@@ -17,5 +17,5 @@ export class Friend {
 	wins: number;
 
 	@ApiProperty()
-	loses: number;
+	losses: number;
 }

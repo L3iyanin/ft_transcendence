@@ -13,7 +13,7 @@ export class userInLeaderboard {
 	@ApiProperty()
 	wins: number;
 	@ApiProperty()
-	loses: number;
+	losses: number;
 	@ApiProperty()
-	WinsMinusLoses: number;
+	WinsMinuslosses: number;
 }
