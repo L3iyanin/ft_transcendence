@@ -5,6 +5,7 @@ import usePlayerMove from "../../../../hooks/usePlayerMove";
 import useBallMove from "../../../../hooks/useBallMove";
 import {
 	BALL_SIZE,
+	CLASSIC_GAME_BG,
 	PADDLE_HEIGHT,
 	PADDLE_WIDTH,
 	PADDLE_X_MARGIN,
@@ -15,14 +16,16 @@ import {
 	PLAYGROUND_BORDERSIZE,
 	PLAY_GROUND_HEIGHT,
 	PLAY_GROUND_WIDTH,
+	VIP_GAME_BG,
 } from "../../../../utils/constants/Game";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import LoadingSpinner from "../../../UI/Loading/LoadingSpinner";
+import { MatchTypeEnum } from "../../../../utils/constants/enum";
 
 const PlayGround: React.FC<{
-	matchSettings: IStartedMatch;
-	playgroundBg: string;
-}> = ({ matchSettings, playgroundBg }) => {
+	matchSettings?: IStartedMatch;
+}> = ({ matchSettings }) => {
 
 	const [playerIndex, setPlayerIndex] = useState<number>(PLAYER_ONE);
 
@@ -40,7 +43,7 @@ const PlayGround: React.FC<{
 
 	useEffect(() => {
 		
-		if (LocalUserData && clientSocket) {
+		if (LocalUserData && clientSocket && matchSettings) {
 			if (matchSettings.player1.id !== LocalUserData.id) {
 				setPlayerIndex(PLAYER_TWO);
 			}
@@ -52,7 +55,7 @@ const PlayGround: React.FC<{
 
 		}
 
-	}, [clientSocket, LocalUserData]);
+	}, [clientSocket, LocalUserData, matchSettings]);
 
 	const {
 		playerY: player1Y,
@@ -174,6 +177,11 @@ const PlayGround: React.FC<{
 		// 	}
 		// });
 	}, []);
+
+	if (!matchSettings)
+		return <LoadingSpinner />;
+
+	const playgroundBg = matchSettings.scoreToWin === MatchTypeEnum.Classic ?  CLASSIC_GAME_BG : VIP_GAME_BG;
 
 	return (
 		<div

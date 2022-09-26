@@ -9,17 +9,10 @@ import { useSelector } from "react-redux";
 import LoadingSpinner from "../components/UI/Loading/LoadingSpinner";
 
 const Game: React.FC = () => {
-	
+
 	const matchData: IMatchState = useSelector((state: any) => state.match);
 
-	if (!matchData.match) {
-		return (
-			<div className="container">
-				<NavBar />
-				<LoadingSpinner />
-			</div>
-		);
-	}
+	
 
 	return (
 		<>
@@ -27,17 +20,16 @@ const Game: React.FC = () => {
 				<NavBar />
 				<div className="mt-10" />
 				<TopSection
-					name={useGetGameName(matchData.match.scoreToWin).name}
-					goalsToWin={matchData.match.scoreToWin}
+					goalsToWin={matchData.match?.scoreToWin}
 				/>
-				<PlayGround matchSettings={matchData.match} playgroundBg={useGetGameName(matchData.match.scoreToWin).background} />
+				
+				<PlayGround matchSettings={matchData.match} />
 				<WatchersAndPlayers
-					player1={matchData.match.player1}
-					player2={matchData.match.player2}
+					matchSettings={matchData.match}
 					watchers={fakeMatchWatchers}
 				/>
 			</div>
-			<Footer />
+			{ matchData.match && <Footer /> }
 		</>
 	);
 };
