@@ -317,6 +317,12 @@ export class GameEventsService {
 					},
 				},
 			});
+			// clearinterval
+			const liveMatch = this.getLiveMatch(match.id);
+			if (liveMatch) {
+				clearInterval(liveMatch.interval);
+				this.removeLiveMatch(match.id);
+			}
 		}
 	}
 
