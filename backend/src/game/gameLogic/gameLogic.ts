@@ -110,7 +110,6 @@ class GameLogic {
 		// let newVelocity = prev.velocity + VELOCITY_INCREASE * delta;
 
 		if (newY + BALL_SIZE / 2 >= PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE) {
-			console.log("collision with bottom");
 			newDirectionY = newDirectionY * -1;
 			newY = this.ball.y + newDirectionY * distance;
 		}

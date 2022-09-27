@@ -14,7 +14,6 @@ export class GameController {
 	@ApiProperty()
 	@Get("live-matches")
 	getLiveMatches() {
-		console.log("getLiveMatches");
 		return this.gameService.getLiveMatches();
 	}
 
