@@ -25,7 +25,7 @@ const Links = () => {
 		<div className="container h-16 w-auto mx-0 flex justify-center items-center gap-7 grow-1">
 			<nav className="container h-12 flex justify-end items-center gap-5">
 
-				<Option url="/game">{t('home')}</Option>
+				<Option url="/home">{t('home')}</Option>
 				<Option url="/profile">{t('profile')}</Option>
 				<Option url="/settings">{t('settings')}</Option>
 				<Option url="/chat">{t('chat')}</Option>

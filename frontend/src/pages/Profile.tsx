@@ -1,14 +1,14 @@
-import { matches } from "../utils/data/Match";
-import { achievements } from "../utils/data/Achievements";
+import { useParams } from "react-router-dom";
+
+import { lastMatches } from "../utils/data/Match";
 
 import NavBar from "../components/NavBar/NavBar";
-import UserCard from "../components/pages/Profile/UserCard/UserCard";
-import LastMatches from "../components/pages/Profile/LastMatches/LastMatches";
-
-import FirendsList from "../components/pages/Profile/FriendsList/FriendsList";
-import AchievementsList from "../components/pages/Profile/AchievementsList/AchievementsList";
 import Footer from "../components/Footer/Footer";
-import { useParams } from "react-router-dom";
+import UserCard from "../components/UserCard/UserCard";
+import LastMatches from "../components/LastMatches/LastMatches";
+import FirendsList from "../components/Pages/Profile/FriendsList/FriendsList";
+import AchievementsList from "../components/Pages/Profile/AchievementsList/AchievementsList";
+
 
 const Profile = () => {
 
@@ -21,7 +21,7 @@ const Profile = () => {
 				<main className="flex flex-col justify-between items-center gap-y-16">
 					<section className="w-full flex justify-between items-center gap-14">
 						<UserCard userId={userId} />
-						<LastMatches matches={matches} />
+						<LastMatches matches={lastMatches} isInProfile={true}/>
 					</section>
 					<section className="gap-14 w-full flex justify-between items-center">
 						<FirendsList userId={userId} />

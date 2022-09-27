@@ -9,6 +9,22 @@
 	"team": "فريق",
 	"mainFeatures": "الخصائص الرئيسية",
 	"technologiesUsed": "التقنيات المستخدمة",
+	"wins" : "فوز",
+	"losses" : "خسارة",
+	"homePage" : {
+		"online": "متصل",
+		"offline": "غير متصل",
+		"friends" : "صديق",
+		"achievements" : "إنجاز",
+		"LiveMatches" : ":المباريات المباشرة",
+		"SeeMatchLive" : "مشاهدة المباراة مباشرة",
+		"MarinefordPong" : "بونغ مارينفورد",
+		"WanoPong" : "بونغ وانو",
+		"GoalsToWin" : "أهداف للفوز",
+		"Play" : "العب",
+		"LastMatches" : ":اخر المباريات",
+		"Leaderboard" : "المتصدرين"
+	},
 	"landingPage": {
 		"aboutParagrapOne": "Ft_transcendence هو المشروع الأخير في جوهر مدرسة 1337 (42Network).",
 		"aboutParagrapTwo": "إنها لعبة بونغ متعددة اللاعبين.",
