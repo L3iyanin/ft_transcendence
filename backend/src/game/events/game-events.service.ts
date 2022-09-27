@@ -7,10 +7,11 @@ import { FPS } from "../constants/game.constants";
 import GameLogic from "../gameLogic/gameLogic";
 import { generateMatchName, generateSpectatorsRoomName } from "../helpers/helpers";
 
+let liveMatches: LiveMatchDto[] = [];
+
 @Injectable()
 export class GameEventsService {
 	prisma: PrismaClient;
-	liveMatches: LiveMatchDto[] = [];
 
 	constructor(private readonly onlineUsersService: OnlineUsersService) {
 		this.prisma = new PrismaClient();
@@ -379,7 +380,6 @@ export class GameEventsService {
 	}
 
 	async startGameLoop(match: Match, server: Server) {
-		console.log("starting game loop " + match.id);
 		const gameInstance = new GameLogic();
 		const interval = setInterval(async () => {
 			await this.gameTurn(gameInstance, match, server);
@@ -390,7 +390,7 @@ export class GameEventsService {
 
 	addLiveMatch(match: Match, interval: NodeJS.Timer, gameInstance: GameLogic, server: Server) {
 		const spectators: SpectatorDto[] = [];
-		this.liveMatches.push({
+		liveMatches.push({
 			id: match.id,
 			player1Id: match.player1Id,
 			player2Id: match.player2Id,
@@ -403,11 +403,11 @@ export class GameEventsService {
 	}
 
 	removeLiveMatch(matchId: number) {
-		this.liveMatches = this.liveMatches.filter((match) => match.id != matchId);
+		liveMatches = liveMatches.filter((match) => match.id != matchId);
 	}
 
 	getLiveMatch(matchId: number) {
-		return this.liveMatches.find((match) => match.id == matchId);
+		return liveMatches.find((match) => match.id == matchId);
 	}
 
 	async updatePlayerY(matchId: number, userId: number, newY: number) {

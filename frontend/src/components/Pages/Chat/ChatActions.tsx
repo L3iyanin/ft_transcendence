@@ -126,5 +126,5 @@ const ChatActions: React.FC<{
 		</div>
 	);
 };
-
+ 
 export default ChatActions;
