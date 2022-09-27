@@ -59,7 +59,14 @@ const PlayGround: React.FC<{
 				setPlayersScore({
 					player1Score: gameState.player1Score,
 					player2Score: gameState.player2Score,
-				})
+				});
+
+				if (matchSettings.player1.id === LocalUserData.id) {
+					updatePlayer1Y(gameState.player1y);
+				}
+				else {
+					updatePlayer2Y(gameState.player2y);
+				}
 			})
 
 		}
@@ -80,20 +87,20 @@ const PlayGround: React.FC<{
 		// updatePlayerPosition: updatePlayerPosition2
 	} = usePlayerMove(PLAYER_FIRST_POSITION, PLAYER_TWO);
 
-	const setPlayersScoreHandler = (
-		playerIndex: number,
-		goalsOnPlayer: number
-	) => {
-		setPlayersScore((prevState) => {
-			const newPlayerScore = { ...prevState };
-			if (playerIndex === PLAYER_ONE) {
-				newPlayerScore.player1Score += goalsOnPlayer;
-			} else {
-				newPlayerScore.player2Score += goalsOnPlayer;
-			}
-			return newPlayerScore;
-		});
-	};
+	// const setPlayersScoreHandler = (
+	// 	playerIndex: number,
+	// 	goalsOnPlayer: number
+	// ) => {
+	// 	setPlayersScore((prevState) => {
+	// 		const newPlayerScore = { ...prevState };
+	// 		if (playerIndex === PLAYER_ONE) {
+	// 			newPlayerScore.player1Score += goalsOnPlayer;
+	// 		} else {
+	// 			newPlayerScore.player2Score += goalsOnPlayer;
+	// 		}
+	// 		return newPlayerScore;
+	// 	});
+	// };
 
 	const { ballPosition, updateBall } = useBallMove();
 

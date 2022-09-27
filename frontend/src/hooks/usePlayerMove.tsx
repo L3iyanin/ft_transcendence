@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { PLAYER_ONE, PLAYGROUND_BORDERSIZE } from "../utils/constants/Game";
+import { PADDLE_HEIGHT, PADDLE_Y_MARGIN, PLAYER_ONE, PLAYGROUND_BORDERSIZE, PLAY_GROUND_HEIGHT } from "../utils/constants/Game";
 
 const usePlayerMove = (initialY: number, playerIndex: number) => {
 	const [playerY, setPlayerY] = useState<number>(initialY);
@@ -20,14 +20,22 @@ const usePlayerMove = (initialY: number, playerIndex: number) => {
 	}, [playerY])
 
 	const movePlayerByMouse = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-		const mouseY = (e.clientY - e.target.getBoundingClientRect().top);
+		let newMouseY = (e.clientY - e.target.getBoundingClientRect().top);
 
-		setPlayerY(mouseY);
+		if (newMouseY + PADDLE_HEIGHT / 2 + PLAYGROUND_BORDERSIZE >= PLAY_GROUND_HEIGHT) {
+			newMouseY = PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN;
+		} else if (newMouseY - PADDLE_HEIGHT / 2 <= 0) {
+			newMouseY = PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN;
+		} else {
+			newMouseY = newMouseY;
+		}
+
+		setPlayerY(newMouseY);
 
 		clientSocket.emit("updatePlayerY", {
 			matchId: matchData.match?.matchId,
 			userId: LocalUserData.id,
-			newY: mouseY,
+			newY: newMouseY,
 		})
 
 	};
