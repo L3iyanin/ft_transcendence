@@ -19,7 +19,7 @@ const UserCard: React.FC<{ user: IUser }> = ({ user }) => {
 			SuccesAlert(`${t("friendAdded")}`);
 			setIsFriendAdded(true);
 		}).catch((err) => {
-			ErrorAlertWithMessage(err.response.data.message);
+			ErrorAlertWithMessage(err.message.data.message);
 		});
 	};
 

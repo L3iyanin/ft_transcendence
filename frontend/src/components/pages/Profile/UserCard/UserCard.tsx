@@ -98,7 +98,7 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 			}))
 		})
 		.catch((err) => {
-			ErrorAlertWithMessage(err.response.data.message);
+			ErrorAlertWithMessage(err.message.data.message);
 		});
 	}
 
@@ -113,7 +113,7 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 			}))
 		})
 		.catch((err) => {
-			ErrorAlertWithMessage(err.response.data.message);
+			ErrorAlertWithMessage(err.message.data.message);
 		});
 	}
 

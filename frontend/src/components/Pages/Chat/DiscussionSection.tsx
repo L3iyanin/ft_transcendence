@@ -124,8 +124,8 @@ const DiscussionSection: React.FC = () => {
 				});
 			})
 			.catch((err) => {
-				console.error(err.response.status);
-				if (err.response.status === 401) {
+				console.error(err.message.status);
+				if (err.message.status === 401) {
 					ErrorAlertWithMessage(t("chatPage.notMemberOfChannel"));
 
 					setCurrentChannel((_) => {

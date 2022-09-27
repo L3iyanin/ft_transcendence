@@ -20,7 +20,7 @@ const UsersList: React.FC = () => {
 				setUsersList(users)
 			})
 			.catch((err) => {
-				ErrorAlertWithMessage(err.response.data.message);
+				ErrorAlertWithMessage(err.message.data.message);
 			});
 	}, []);
 

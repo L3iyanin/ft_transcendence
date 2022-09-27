@@ -11,6 +11,7 @@ import {
 	Post,
 	Put,
 	Req,
+	Res,
 	UploadedFile,
 	UseGuards,
 	UseInterceptors,
@@ -29,6 +30,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { Form } from "./dto/updateProfile.dto";
 import { diskStorage } from "multer";
 import { PostResponce } from "./dto/postResponce.dto";
+import { Response } from "express";
 
 @UseGuards(UserGuard)
 @ApiTags("users")
@@ -134,15 +136,22 @@ export class UsersController {
 	@Post("/update-profile-info")
 	async updateProfileInfo(@Req() req, @Body() form: Form): Promise<PostResponce> {
 		const currentUserID: number = req.user.id;
-		if (form.name && !form.twoFF)
 			return await this.userService.updateUserName(form.name, currentUserID);
-		if (form.twoFF && !form.name) return await this.userService.update2ff(currentUserID);
-		if (form.name && form.twoFF) {
-			await this.userService.update2ff(currentUserID);
-			await this.userService.updateUserName(form.name, currentUserID);
-			return {
-				message: "Profile has be updated",
-			};
-		}
+	}
+
+	@Post("generate2FA")
+	async genrate2Fa(@Req() req, @Res() res) {
+		const currentUserID: number = req.user.id;
+		const data = await this.userService.generateTwoFactorAuthenticationSecret(currentUserID);
+		await this.userService.updateUser2ff(currentUserID, data.secret)
+		const qrCode = await this.userService.pipeQrCodeStream(res, data.otpauthUrl)
+		return qrCode
+	}
+
+	@Post("disable2FA")
+	async disable2Fa(@Req() req) {
+		const currentUserID: number = req.user.id;
+		return await this.userService.disable2Fa(currentUserID)
 	}
 }
+

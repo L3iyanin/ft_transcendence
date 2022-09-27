@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@nestjs/class-validator": "^0.13.1",
-    "@nestjs/common": "^9.0.0",
+    "@nestjs/common": "^9.1.2",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^9.0.0",
@@ -43,11 +43,17 @@
     "date-fns": "^2.29.3",
     "joi-to-typescript": "^4.0.5",
     "jsonwebtoken": "^8.5.1",
+    "nest": "^0.1.6",
     "nestjs-i18n": "^9.1.10",
+    "node-pre-gyp": "^0.17.0",
+    "otplib": "^12.0.1",
     "passport-jwt": "^4.0.0",
+    "qrcode": "^1.5.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "sib-api-v3-sdk": "^8.4.2",
+    "sib-api-v3-typescript": "^2.2.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.5.0",

@@ -32,7 +32,7 @@ const Landing = () => {
 				})
 				.catch((err) => {
 					console.error(err);
-					toast.error(err.response.data.message, {
+					toast.error(err.message.data.message, {
 						position: toast.POSITION.TOP_CENTER,
 					});
 				});

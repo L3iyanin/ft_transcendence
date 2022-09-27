@@ -21,6 +21,6 @@ export class StartedMatchResponseDto {
 }
 
 export class ResponseDto {
-	check: boolean;
+	check: "MATCHING" | "ALREADY_IN_MATCH" | "START_MATCH";
 	data?: StartedMatchResponseDto;
 }

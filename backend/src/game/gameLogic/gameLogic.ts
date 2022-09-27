@@ -1,4 +1,4 @@
-import { BALL_SIZE, INITIAL_VELOCITY, PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_X_MARGIN, PADDLE_Y_MARGIN, PLAYER_FIRST_POSITION, PLAYER_ONE, PLAYER_TWO, PLAYGROUND_BORDERSIZE, PLAY_GROUND_HEIGHT, PLAY_GROUND_WIDTH } from "../constants/game.constants";
+import { BALL_SIZE, CollisionTypeEnum, INITIAL_VELOCITY, PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_X_MARGIN, PADDLE_Y_MARGIN, PLAYER_FIRST_POSITION, PLAYER_ONE, PLAYER_TWO, PLAYGROUND_BORDERSIZE, PLAY_GROUND_HEIGHT, PLAY_GROUND_WIDTH } from "../constants/game.constants";
 import { BallDto } from "../dto/game.dto";
 
 class GameLogic {
@@ -11,6 +11,8 @@ class GameLogic {
 	player1Score: number;
 	player2Score: number;
 
+	collistionType: CollisionTypeEnum;
+
 	constructor() {
 		this.resetGame();
 		this.player1Score = 0;
@@ -21,6 +23,8 @@ class GameLogic {
 		this.player1y = PLAYER_FIRST_POSITION;
 		this.player2y = PLAYER_FIRST_POSITION;
 		let direction = { x: 0, y: 0 };
+
+		this.collistionType = CollisionTypeEnum.NONE;
 
 		while (Math.abs(direction.x) <= 0.2 || Math.abs(direction.x) >= 0.9) {
 			const heading = randomNumberBetween(0, 2 * Math.PI);
@@ -86,15 +90,19 @@ class GameLogic {
 		}
 
 		if (this.isCollisionWithPlayer(newX, newY, this.player1y, PLAYER_ONE)) {
-			// cancelAnimationFrame(requestRef.current!)
-			newDirectionX = newDirectionX * -1;
-			newX = this.ball.x + newDirectionX * distance;
+			if (this.collistionType !== CollisionTypeEnum.LEFT_PADDLE) {
+				newDirectionX = newDirectionX * -1;
+				newX = this.ball.x + newDirectionX * distance;
+			}
 		}
-
-		if (this.isCollisionWithPlayer(newX, newY, this.player2y, PLAYER_TWO)) {
-			// cancelAnimationFrame(requestRef.current!)
-			newDirectionX = newDirectionX * -1;
-			newX = this.ball.x + newDirectionX * distance;
+		else if (this.isCollisionWithPlayer(newX, newY, this.player2y, PLAYER_TWO)) {
+			if (this.collistionType !== CollisionTypeEnum.RIGHT_PADDLE) {
+				newDirectionX = newDirectionX * -1;
+				newX = this.ball.x + newDirectionX * distance;
+			}
+		}
+		else {
+			this.collistionType = CollisionTypeEnum.NONE;
 		}
 
 		if (newX - BALL_SIZE / 2 <= PADDLE_X_MARGIN + PLAYGROUND_BORDERSIZE - PLAYGROUND_BORDERSIZE) {
@@ -147,7 +155,8 @@ class GameLogic {
 		return {
 			player1y: this.player1y,
 			player2y: this.player2y,
-			ball: this.ball,
+			ballX: this.ball.x,
+			ballY: this.ball.y,
 			player1Score: this.player1Score,
 			player2Score: this.player2Score,
 		};

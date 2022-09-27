@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { OnlineUsersService } from "src/online-users/online-users.service";
 import { ResponseDto } from "../dto/game.dto";
+import { Socket } from "socket.io";
 
 @Injectable()
 export class GameEventsService {
@@ -11,24 +12,48 @@ export class GameEventsService {
 		this.prisma = new PrismaClient();
 	}
 
-	async joinGame(userId: number, scoreToWin: 3 | 7): Promise<ResponseDto> {
+	async joinGame(userId: number, scoreToWin: 3 | 7, clientId: string): Promise<ResponseDto> {
 		try {
 			if (scoreToWin != 3 && scoreToWin != 7) {
 				scoreToWin = 3;
 			}
 
-			let match = await this.prisma.match.findFirst({
+			let matches = await this.prisma.match.findMany({
 				where: {
 					AND: [
 						{
 							scoreToWin: scoreToWin,
 						},
 						{
-							isMatching: true,
+							OR: [
+								{
+									isMatching: true,
+								},
+								{
+									live: true,
+								},
+							],
+						},
+						{
+							matchByInvite: false,
 						},
 					],
 				},
 			});
+
+			if (matches.length > 0) {
+				if (
+					matches.some((match) => {
+						return match.player1Id == userId || match.player2Id == userId;
+					})
+				) {
+					return {
+						check: "ALREADY_IN_MATCH",
+					};
+				}
+			}
+			const matchingMatches = matches.filter((match) => match.isMatching);
+			let match = matchingMatches.length > 0 ? matchingMatches[0] : null;
 
 			if (match) {
 				match = await this.prisma.match.update({
@@ -57,9 +82,12 @@ export class GameEventsService {
 
 				const player1 = users.find((user) => user.id == match.player1Id);
 				const player2 = users.find((user) => user.id == match.player2Id);
+
+				this.onlineUsersService.setSocketInGame(clientId); // setting socket of player2 in game
+
 				// start game
 				return {
-					check: true,
+					check: "START_MATCH",
 					data: {
 						matchId: match.id,
 						player1,
@@ -67,7 +95,7 @@ export class GameEventsService {
 						scoreToWin: match.scoreToWin,
 					},
 				};
-			} else {
+			} else if (!match) {
 				await this.prisma.match.create({
 					data: {
 						scoreToWin: scoreToWin,
@@ -76,9 +104,11 @@ export class GameEventsService {
 						live: false,
 					},
 				});
-				// matching
+
+				this.onlineUsersService.setSocketInGame(clientId); // setting socket of player1 in game
+
 				return {
-					check: false,
+					check: "MATCHING",
 				};
 			}
 		} catch (error) {
@@ -86,6 +116,55 @@ export class GameEventsService {
 		}
 	}
 
+	// ? called by the disconnect event in OnlineUsersGateway
+	async handleDisconnectFromGame(userId: number, client: Socket) {
+		// if match.isMatching == true, and player1Id == userId, delete match
+		let match = await this.prisma.match.findFirst({
+			where: {
+				AND: [
+					{
+						player1Id: userId,
+					},
+					{
+						isMatching: true,
+					},
+				],
+			},
+		});
+
+		if (match && match.isMatching && !match.live) {
+			await this.prisma.match.delete({
+				where: {
+					id: match.id,
+				},
+			});
+		}
+
+		match = await this.prisma.match.findFirst({
+			where: {
+				AND: [
+					{
+						OR: [
+							{
+								player1Id: userId,
+							},
+							{
+								player2Id: userId,
+							},
+						],
+					},
+					{
+						live: true,
+					},
+				],
+			},
+		});
+
+		if (match && match.live) {
+			// handle disconnect from live match
+			// end game and emit result to other player
+		}
+	}
 
 	getPlayersSockets(player1Id: number, player2Id: number) {
 		const player1Sockets = this.onlineUsersService.getUserSockets(player1Id);

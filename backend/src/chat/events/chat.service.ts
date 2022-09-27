@@ -7,7 +7,7 @@ import { generateChannelName } from "../helpers/helpers";
 
 @Injectable()
 export class ChatService {
-	// onlineUsers: UserWithSocket[];
+	// onlineUsers: UserSocket[];
 	prisma: PrismaClient;
 
 	constructor(private readonly onlineUsersService: OnlineUsersService) {
@@ -89,7 +89,7 @@ export class ChatService {
 				channelName: channelName,
 			};
 		} catch (err) {
-			throw new HttpException(err.response, err.status);
+			throw new HttpException(err.message, err.status);
 		}
 	}
 
@@ -145,7 +145,7 @@ export class ChatService {
 			});
 
 		} catch (err) {
-			throw new HttpException(err.response, err.status);
+			throw new HttpException(err.message, err.status);
 		}
 	}
 
@@ -201,7 +201,7 @@ export class ChatService {
 			}
 			return response;
 		} catch (err) {
-			throw new HttpException(err.response, err.status);
+			throw new HttpException(err.message, err.status);
 		}
 	}
 
@@ -235,7 +235,7 @@ export class ChatService {
 				},
 			});
 		} catch (err) {
-			throw new HttpException(err.response, err.status);
+			throw new HttpException(err.message, err.status);
 		}
 	}
 
@@ -252,7 +252,7 @@ export class ChatService {
 			// const members = chat.members.filter((member) => member.status != "BLOCKED");
 			return chat.members;
 		} catch (err) {
-			throw new HttpException(err.response, err.status);
+			throw new HttpException(err.message, err.status);
 		}
 	}
 

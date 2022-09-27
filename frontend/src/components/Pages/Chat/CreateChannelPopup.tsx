@@ -54,7 +54,7 @@ const CreateChannelPopup: React.FC<{
 			})
 			.catch((err) => {
 				console.error(err);
-				ErrorAlertWithMessage(err.response.data.message);
+				ErrorAlertWithMessage(err.message.data.message);
 			});
 	};
 
