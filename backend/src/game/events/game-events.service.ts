@@ -445,10 +445,28 @@ export class GameEventsService {
 			}
 
 			const spectatorsPopulated = await this.populateSpectators(liveMatch.spectators);
+			const player1 = await this.prisma.user.findUnique({
+				where: {
+					id: liveMatch.player1Id,
+				},
+			});
+			const player2 = await this.prisma.user.findUnique({
+				where: {
+					id: liveMatch.player2Id,
+				},
+			});
+			const scoreToWin = liveMatch.scoreToWin;
+			const matchSettings = {
+				matchId,
+				player1,
+				player2,
+				scoreToWin,
+			};
 			return {
 				status: "SUCCESS",
 				message: "You are now a spectator",
 				spectators: spectatorsPopulated,
+				matchSettings,
 			};
 		}
 		return {
