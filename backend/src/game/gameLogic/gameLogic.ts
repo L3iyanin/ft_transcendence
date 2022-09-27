@@ -160,9 +160,9 @@ class GameLogic {
 
 	updatePlayerY(newYPosition, playerNumber) {
 		let newPlayerY: number = newYPosition;
+
 		if (newYPosition + PADDLE_HEIGHT / 2 + PLAYGROUND_BORDERSIZE >= PLAY_GROUND_HEIGHT) {
-			newPlayerY = this.player1y =
-				PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN;
+			newPlayerY = PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN;
 		} else if (newYPosition - PADDLE_HEIGHT / 2 <= 0) {
 			newPlayerY = PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN;
 		} else {
