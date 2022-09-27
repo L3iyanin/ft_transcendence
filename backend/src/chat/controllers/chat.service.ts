@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
-import { generateChannelName } from "../helpers";
+import { generateChannelName } from "../helpers/helpers";
 import { add } from "date-fns";
 import { CreateChannelDto } from "../dto/chat.dto";
 import * as bcrypt from "bcrypt";

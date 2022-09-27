@@ -18,8 +18,8 @@ export declare global {
 		ballSize: number;
 		player1YPositionRatio: number;
 		player2YPositionRatio: number;
-		ballXPoistion: number;
-		ballYPoistion: number;
+		ballXPosition: number;
+		ballYPosition: number;
 		ballXPositionRatio: number;
 		ballYPositionRatio: number;
 	}

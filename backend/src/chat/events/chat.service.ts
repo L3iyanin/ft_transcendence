@@ -1,39 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { Member, PrismaClient } from "@prisma/client";
 import { Socket } from "socket.io";
-import { Message } from "../dto/message.dto";
-import { User } from "../dto/user.dto";
-import { UserWithSocket } from "../dto/userWithSocket.dto";
-import { generateChannelName } from "../helpers";
+import { OnlineUsersService } from "src/online-users/online-users.service";
+import { Message } from "../dto/chat.dto";
+import { generateChannelName } from "../helpers/helpers";
 
 @Injectable()
 export class ChatService {
-	onlineUsers: UserWithSocket[];
 	prisma: PrismaClient;
 
-	constructor() {
-		this.onlineUsers = [];
+	constructor(private readonly onlineUsersService: OnlineUsersService) {
 		this.prisma = new PrismaClient();
 	}
-
-	//? ========================================CONNECT USER EVENT========================================
-	addConnectedUser(client: Socket, newUser: User) {
-		const alreadyExist = this.onlineUsers.some((user) => user.socket.id == client.id); //! corretc this for one user in multiple tab
-		if (!alreadyExist) {
-			this.onlineUsers.push({
-				user: newUser,
-				socket: client,
-			});
-		}
-		const users = [];
-		this.onlineUsers.map((user) => {
-			users.push({
-				user: user.user,
-			});
-		});
-		return users;
-	}
-	//? __________________________________________________________________________________________________
 
 	//? ========================================MESSAGE EVENT=============================================
 	async handleMessage(client: Socket, payload: Message) {
@@ -46,9 +24,9 @@ export class ChatService {
 				const isBlock: boolean = await this.ChatIsBlocked(payload);
 				if (isBlock) return;
 				channelName = generateChannelName(payload.userId, payload.receiverId);
-				const receiverIsOnline = this.checkIfReceiverIsOnline(payload.receiverId);
+				const receiverIsOnline = this.onlineUsersService.checkIfReceiverIsOnline(payload.receiverId);
 				if (receiverIsOnline) {
-					const receiverSocket: Socket[] = this.getReceiversSocket(payload.receiverId);
+					const receiverSocket: Socket[] = this.onlineUsersService.getUserSockets(payload.receiverId);
 					receiverSocket.forEach((receiver) => receiver.join(channelName));
 				}
 				client.join(channelName);
@@ -74,8 +52,8 @@ export class ChatService {
 				channelName = payload.channelName;
 				const members = await this.getChannelMembers(payload.channelId);
 				members.forEach((member) => {
-					if (this.checkIfReceiverIsOnline(member.userId)) {
-						const memberSockets: Socket[] = this.getReceiversSocket(member.userId);
+					if (this.onlineUsersService.checkIfReceiverIsOnline(member.userId)) {
+						const memberSockets: Socket[] = this.onlineUsersService.getUserSockets(member.userId);
 						if (member.status != "BLOCKED")
 							memberSockets.forEach((socket) => socket.join(payload.channelName));
 						else
@@ -204,18 +182,6 @@ export class ChatService {
 		} catch (err) {
 			throw new HttpException(err.response, err.status);
 		}
-	}
-
-	checkIfReceiverIsOnline(receiverId: number): boolean {
-		return this.onlineUsers.some((user) => user.user.id == receiverId);
-	}
-
-	getReceiversSocket(receiverId: number): Socket[] {
-		const sockets: Socket[] = [];
-		this.onlineUsers.forEach((user) => {
-			if (user.user.id == receiverId) sockets.push(user.socket);
-		});
-		return sockets;
 	}
 
 	async unmuteAndUnbanMembersAfterTime() {

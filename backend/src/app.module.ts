@@ -8,6 +8,8 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 // import { ChatGateway } from './chat/chat.gateway';
 import { ChatModule } from './chat/chat.module';
+import { GameModule } from './game/game.module';
+import { OnlineUsersModule } from './online-users/online-users.module';
 
 @Module({
 	imports: [
@@ -29,7 +31,8 @@ import { ChatModule } from './chat/chat.module';
 		ServeStaticModule.forRoot({
 			rootPath : join(__dirname, "..", "../public")
 		}),
+		GameModule,
+		OnlineUsersModule,
 	],
-	// providers: [ChatGateway],
 })
 export class AppModule {}

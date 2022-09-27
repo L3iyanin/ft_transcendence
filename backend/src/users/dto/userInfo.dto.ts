@@ -22,7 +22,7 @@ export class UserInfo {
 	wins: number;
 
 	@ApiProperty()
-	loses: number;
+	losses: number;
 
 	@ApiProperty()
 	userStatus: "NONE" |  "BLOCKED" | "FRIEND"

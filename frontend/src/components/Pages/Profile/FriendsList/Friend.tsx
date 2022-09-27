@@ -29,7 +29,7 @@ const Friend :React.FC < {user : IUser} > = ({ user }) => {
 			</div>
 			<div className=" flex justify-between items-center gap-7">
 				<Stat stat={t("wins")} qty={user.wins!} />
-				<Stat stat={t("loses")} qty={user.loses!} />
+				<Stat stat={t("losses")} qty={user.losses!} />
 			</div>
 		</article>
 	);

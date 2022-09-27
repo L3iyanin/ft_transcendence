@@ -52,3 +52,12 @@ interface IAchievement {
     description : string;
     imgUrl : string;
 }
+
+interface IGameState {
+	player1y: number,
+	player2y: number,
+	ballX: number,
+	ballY: number,
+	player1Score: number,
+	player2Score: number,
+}

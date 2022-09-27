@@ -4,6 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../reducers/UserSlice';
 import { useNavigate } from 'react-router-dom';
+import { Socket } from 'socket.io-client';
+import { setMatching } from '../../reducers/MatchSlice';
+import { toast } from 'react-toastify';
 
 
 const Links = () => {
@@ -14,12 +17,29 @@ const Links = () => {
 
 	const navigate = useNavigate();
 
+	const clientSocket: Socket = useSelector(
+		(state: any) => state.chat.clientSocket
+	);
+
+	const userData = useSelector((state: any) => state.user);
+
 	const onLogout = () => {
 		dispatch(logout());
 		navigate('/');
 	};
 
-	const userData = useSelector((state: any) => state.user);
+	const playGame = () => {
+		dispatch(setMatching());
+		const scoreToWin = 7;
+		toast.info(t("gamePage.dontCloseWindow"), {
+			position: toast.POSITION.TOP_CENTER,
+		});
+		clientSocket.emit('joinGame', {
+			userId: userData.user.id,
+			scoreToWin: scoreToWin,
+		});
+	};
+
 
 	return (
 		<div className="container h-16 w-auto mx-0 flex justify-center items-center gap-7 grow-1">

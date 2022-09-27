@@ -12,7 +12,7 @@
 	"search": "Search",
 	"password": "Password",
 	"wins": "wins",
-	"loses": "loses",
+	"losses": "losses",
 	"friends": "friends",
 	"online": "online",
 	"lastMatches": "Last Matches:",
@@ -25,6 +25,8 @@
 	"youHaveNoFriends": "You have no friends",
 	"alreadyFriends": "Already Friends",
 	"friendAdded": "Friend Added Seccessfully",
+	"matching": "Matching",
+	"playersReadyToPlay": "Players Ready To Play",
 	"landingPage": {
 		"aboutParagrapOne": "Ft_transcendence is the last project in the commen core of 1337 School (42Network).",
 		"aboutParagrapTwo": "It's a Pong Multiplayer Game.",
@@ -55,7 +57,10 @@
 	},
 	"gamePage": {
 		"goalsToWin": "Goals to win",
-		"watchTheMatch": "Watching The Match"
+		"watchTheMatch": "Watching The Match",
+		"theWinner": "The Winner",
+		"dontCloseWindow": "Please don't close the window or you will lose the matching and match",
+		"quit_helper": "Are you sure you want to quit the match?"
 	},
 	"chatPage": {
 		"dms": "DMs",

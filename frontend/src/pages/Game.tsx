@@ -5,25 +5,29 @@ import WatchersAndPlayers from "../components/Pages/Game/WatchersAndPlayers/Watc
 import Footer from "../components/Footer/Footer";
 import NavBar from "../components/NavBar/NavBar";
 import useGetGameName from "../hooks/useGetGame";
+import { useSelector } from "react-redux";
+import LoadingSpinner from "../components/UI/Loading/LoadingSpinner";
 
 const Game: React.FC = () => {
+
+	const matchData: IMatchState = useSelector((state: any) => state.match);
+
 	return (
 		<>
 			<div className="container">
 				<NavBar />
 				<div className="mt-10" />
 				<TopSection
-					name={useGetGameName(fakeGameSettings.scoreToWin).name}
-					goalsToWin={fakeGameSettings.scoreToWin}
+					goalsToWin={matchData.match?.scoreToWin}
 				/>
-				<PlayGround settings={fakeGameSettings} />
+				
+				<PlayGround matchSettings={matchData.match} />
 				<WatchersAndPlayers
-					player1={fakeGameSettings.player1}
-					player2={fakeGameSettings.player2}
+					matchSettings={matchData.match}
 					watchers={fakeMatchWatchers}
 				/>
 			</div>
-			<Footer />
+			{ matchData.match && <Footer /> }
 		</>
 	);
 };

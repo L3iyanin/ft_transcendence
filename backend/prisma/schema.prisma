@@ -17,7 +17,7 @@ model User {
     login           String        @unique
     imgUrl          String
     wins            Int           @default(0)
-    loses           Int           @default(0)
+    losses          Int           @default(0)
     twoFactorAuth   Boolean       @default(false)
     friends         User[]        @relation("friends")
     friendsRelation User[]        @relation("friends")
@@ -26,15 +26,18 @@ model User {
 }
 
 model Match {
-    id           Int      @id @default(autoincrement())
-    isMatching   Boolean
-    live         Boolean
-    player1Id    Int
-    player2Id    Int
-    player1Score Int      @default(0)
-    player2Score Int      @default(0)
-    date         DateTime @default(now())
-    scoreToWin   Int // can be 3 or 7
+    id            Int      @id @default(autoincrement())
+    isMatching    Boolean
+    live          Boolean
+    player1Id     Int
+    player2Id     Int?
+    player1Score  Int      @default(0)
+    player2Score  Int      @default(0)
+    player1Ready  Boolean  @default(false)
+    player2Ready  Boolean  @default(false)
+    date          DateTime @default(now())
+    scoreToWin    Int // can be 3 or 7
+    matchByInvite Boolean  @default(false)
 }
 
 model Achievement {

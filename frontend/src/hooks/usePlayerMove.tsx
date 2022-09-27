@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
-import { PLAYER_ONE, PLAYGROUND_BORDERSIZE } from "../utils/constants/Game";
+import { useSelector } from "react-redux";
+import { PADDLE_HEIGHT, PADDLE_Y_MARGIN, PLAYER_ONE, PLAYGROUND_BORDERSIZE, PLAY_GROUND_HEIGHT } from "../utils/constants/Game";
 
 const usePlayerMove = (initialY: number, playerIndex: number) => {
 	const [playerY, setPlayerY] = useState<number>(initialY);
+
+	const LocalUserData = useSelector((state: any) => state.user.user);
+
+	const clientSocket  = useSelector((state: any) => state.chat.clientSocket);
+
+	const matchData: IMatchState = useSelector((state: any) => state.match);
 
 	useEffect(() => {
 		if (playerIndex === PLAYER_ONE) {
@@ -12,22 +19,43 @@ const usePlayerMove = (initialY: number, playerIndex: number) => {
 		}
 	}, [playerY])
 
-	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-		const newY = (e.clientY - e.target.getBoundingClientRect().top);
-		
-		if (newY + (window.paddleHeight / 2) + PLAYGROUND_BORDERSIZE >= window.playgroundHeight) {
-			setPlayerY((window.playgroundHeight - PLAYGROUND_BORDERSIZE - window.paddleHeight / 2 - window.paddleYMargin));
-		}
-		else if (newY - window.paddleHeight / 2 <= 0) {
+	const movePlayerByMouse = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		let newMouseY = (e.clientY - e.target.getBoundingClientRect().top);
 
-			setPlayerY((window.paddleHeight / 2 + window.paddleYMargin));
+		if (newMouseY + window.paddleHeight / 2 + PLAYGROUND_BORDERSIZE >= window.playgroundHeight) {
+			newMouseY = window.playgroundHeight - PLAYGROUND_BORDERSIZE - window.paddleHeight / 2 - window.paddleYMargin;
+		} else if (newMouseY - window.paddleHeight / 2 <= 0) {
+			newMouseY = window.paddleHeight / 2 + window.paddleYMargin;
+		} else {
+			newMouseY = newMouseY;
 		}
-		else {
-			setPlayerY(newY);
-		}
+
+		
+		
+		clientSocket.emit("updatePlayerY", {
+			matchId: matchData.match?.matchId,
+			userId: LocalUserData.id,
+			newY: newMouseY * PLAY_GROUND_HEIGHT / window.playgroundHeight,
+		})
+		
+		// if (playerIndex === PLAYER_ONE) {
+		// 	window.player1YPositionRatio = newMouseY / window.playgroundHeight;
+		// 	newMouseY = window.playgroundHeight * window.player1YPositionRatio
+		// }
+		// else {
+		// 	window.player2YPositionRatio = newMouseY / window.playgroundHeight;
+		// 	newMouseY = window.playgroundHeight * window.player2YPositionRatio
+		// }
+
+		setPlayerY(newMouseY);
+
 	};
 
-	const updatePlayerPosition = (playerIndex: number) => {
+	const updatePlayerY = (newY: number) => {
+		setPlayerY(newY);
+	}
+
+	const updatePlayerPositionOutside = (playerIndex: number) => {
 
 		if (playerIndex === PLAYER_ONE) {
 			setPlayerY(prevPlayerY => {
@@ -40,13 +68,13 @@ const usePlayerMove = (initialY: number, playerIndex: number) => {
 			})
 		}
 	};
-
 	
 
 	return {
 		playerY,
-		movePlayer,
-		updatePlayerPosition
+		movePlayerByMouse,
+		updatePlayerY,
+		updatePlayerPositionOutside,
 	};
 }
 

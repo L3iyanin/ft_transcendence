@@ -2,14 +2,19 @@ import Links from "./Links";
 import { Link } from "react-router-dom";
 
 import { ReactComponent as Logo } from "../../assets/icons/HomeLogo.svg";
+import { useTranslation } from "react-i18next";
+import moment from "moment";
+import Matching from "./Matching";
 
 const NavBar = () => {
+
 	return (
 		<header className="container mx-auto my-10 flex justify-between">
-			<div className="container h-16 mx-0 w-auto max-w-xs flex justify-start items-center gap-3">
+			<div className=" mx-0 w-auto flex justify-start items-center">
 				<Link to="/">
 					<Logo />
 				</Link>
+				<Matching />
 			</div>
 			<Links />
 		</header>

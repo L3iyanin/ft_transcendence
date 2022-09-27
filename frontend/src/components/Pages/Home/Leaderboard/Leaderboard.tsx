@@ -10,7 +10,7 @@ const Leaderboard: React.FC<{ players: IUser[] }> = ({ players }) => {
 		else if (player1.wins < player2.wins)
 		return 1;
 		else
-			return player1.loses < player2.loses ? -1 : 1;
+			return player1.losses < player2.losses ? -1 : 1;
 	});
 
 	return (

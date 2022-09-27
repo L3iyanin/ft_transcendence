@@ -11,3 +11,24 @@ interface IMatch {
     scoreToWin: number,
 	backgroundUrl: string,
 }
+
+
+
+interface IStartedMatch {
+	matchId: number;
+	player1: IUser;
+	player2: IUser;
+	scoreToWin: number;
+}
+
+interface IMatchState {
+	isMatching: boolean;
+	whenMatching?: string;
+	match?: IStartedMatch;
+}
+
+interface IGameOver {
+	player1Score: number,
+	player2Score: number,
+	isDisconnected: boolean,
+}

@@ -1,15 +1,11 @@
 import {
-	OnGatewayConnection,
 	SubscribeMessage,
 	WebSocketGateway,
 	WebSocketServer,
 } from "@nestjs/websockets";
-import { Message } from "../dto/message.dto";
 import { Server, Socket } from "socket.io";
+import { Message } from "../dto/chat.dto";
 import { ChatService } from "./chat.service";
-import { JsonWebTokenError } from "jsonwebtoken";
-import { User } from "../dto/user.dto";
-import { generateChannelName } from "../helpers";
 
 @WebSocketGateway({
 	cors: {
@@ -22,11 +18,11 @@ export class ChatGateway {
 	@WebSocketServer()
 	server: Server;
 
-	@SubscribeMessage("connectUser")
-	addConnectedUser(client: Socket, newUser: User) {
-		const users = this.chatService.addConnectedUser(client, newUser);
-		this.server.emit("connectUserResponse", users);
-	}
+	// @SubscribeMessage("connectUser")
+	// addConnectedUser(client: Socket, newUser: User) {
+	// 	const users = this.chatService.addConnectedUser(client, newUser);
+	// 	this.server.emit("connectUserResponse", users);
+	// }
 
 	@SubscribeMessage("disconnectUser")
 	removeConnectedUser(client: Socket, userId: number) {

@@ -8,7 +8,7 @@ export const users: IUser[] = [
 		username: "kirwa-ko",
 		imgUrl: "https://myanimelist.tech/api/avatar?name=kirwako&animeName=Inazuma_Eleven",
 		wins: 15,
-		loses: 4,
+		losses: 4,
 		achievements: [],
 		userStatus: UserStatusEnum.NONE,
 	},
@@ -18,7 +18,7 @@ export const users: IUser[] = [
 		username: "twelve",
 		imgUrl: "https://myanimelist.tech/api/avatar?name=twelve&animeName=Inazuma_Eleven",
 		wins: 15,
-		loses: 4,
+		losses: 4,
 		achievements: [],
 	},
 	{
@@ -27,7 +27,7 @@ export const users: IUser[] = [
 		username: "seven",
 		imgUrl: "https://myanimelist.tech/api/avatar?name=seven&animeName=Inazuma_Eleven",
 		wins: 15,
-		loses: 4,
+		losses: 4,
 	},
 	{
 		id: 4,
@@ -35,7 +35,7 @@ export const users: IUser[] = [
 		username: "procrastinator",
 		imgUrl: "https://myanimelist.tech/api/avatar?name=procrastinator&animeName=Inazuma_Eleven",
 		wins: 15,
-		loses: 2,
+		losses: 2,
 	},
 	{
 		id: 5,
@@ -43,6 +43,6 @@ export const users: IUser[] = [
 		username: "raki",
 		imgUrl: "https://myanimelist.tech/api/avatar?name=raki&animeName=Inazuma_Eleven",
 		wins: 15,
-		loses: 4,
+		losses: 4,
 	},
 ];

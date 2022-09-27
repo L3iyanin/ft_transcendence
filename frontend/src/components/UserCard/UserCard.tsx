@@ -51,7 +51,7 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 					numberOfAchievements: userData.numberOfAchievements,
 					numberOfFriends: userData.numberOfFriends,
 					wins: userData.wins,
-					loses: userData.loses,
+					losses: userData.losses,
 					userStatus: userData.userStatus,
 				}))
 			})
@@ -137,11 +137,11 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 				<p className="m-0 text-beige">{user.username}</p>
 				<div className="flex gap-4">
 					<Stat stat={t("online")} qty={user.wins!} />
-					<Stat stat={t("friends")} qty={user.loses!} />
+					<Stat stat={t("friends")} qty={user.numberOfFriends!} />
 				</div>
 				<div className="flex gap-4">
 					<Stat stat={t("wins")} qty={user.wins!} />
-					<Stat stat={t("loses")} qty={user.loses!} />
+					<Stat stat={t("losses")} qty={user.losses!} />
 				</div>
 				<div className="flex items-center gap-2">
 					<AchivementIcon />
