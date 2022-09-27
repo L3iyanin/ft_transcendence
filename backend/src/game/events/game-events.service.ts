@@ -324,7 +324,6 @@ export class GameEventsService {
 			winnerId = match.player2Id;
 		}
 
-
 		server.to(matchName).emit("gameState", gameState);
 		server.to(spectatorRoomName).emit("gameStateSpectators", gameState);
 		if (winnerId) {
@@ -434,7 +433,7 @@ export class GameEventsService {
 				return {
 					status: "ERROR",
 					message: "You are already a player in this match",
-				}
+				};
 			}
 		}
 		if (liveMatch) {
@@ -444,14 +443,28 @@ export class GameEventsService {
 					userId,
 				});
 			}
+
+			const spectatorsPopulated = await this.populateSpectators(liveMatch.spectators);
 			return {
 				status: "SUCCESS",
 				message: "You are now a spectator",
-			}
+				spectators: spectatorsPopulated,
+			};
 		}
 		return {
 			status: "ERROR",
 			message: "Match not found",
-		}
+		};
+	}
+
+	async populateSpectators(spectators: SpectatorDto[]) {
+		const users = await this.prisma.user.findMany({
+			where: {
+				id: {
+					in: spectators.map((spectator) => spectator.userId),
+				},
+			},
+		});
+		return users;
 	}
 }
