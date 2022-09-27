@@ -6,6 +6,7 @@ import { logout } from '../../reducers/UserSlice';
 import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import { setMatching } from '../../reducers/MatchSlice';
+import { toast } from 'react-toastify';
 
 
 const Links = () => {
@@ -30,6 +31,9 @@ const Links = () => {
 	const playGame = () => {
 		dispatch(setMatching());
 		const scoreToWin = 3;
+		toast.info(t("gamePage.dontCloseWindow"), {
+			position: toast.POSITION.TOP_CENTER,
+		});
 		clientSocket.emit('joinGame', {
 			userId: userData.user.id,
 			scoreToWin: scoreToWin,

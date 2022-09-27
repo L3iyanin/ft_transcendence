@@ -24,11 +24,15 @@ import LoadingSpinner from "../../../UI/Loading/LoadingSpinner";
 import { MatchTypeEnum } from "../../../../utils/constants/enum";
 import { fakematch } from "../../../../utils/data/Match";
 import WinnerOverlay from "./WinnerOverlay";
+import usePrompt from "../../../../hooks/usePropmpt";
+import { useTranslation } from "react-i18next";
+
 
 const PlayGround: React.FC<{
 	matchSettings?: IStartedMatch;
 }> = ({ matchSettings }) => {
 
+	const [matchPlayed, setMatchPlayed] = useState(false);
 
 	const [playerIndex, setPlayerIndex] = useState<number>(PLAYER_ONE);
 
@@ -46,6 +50,10 @@ const PlayGround: React.FC<{
 		player2Score: 0,
 	});
 
+	const { t } = useTranslation();
+
+	usePrompt(t("gamePage.quit_helper"), matchPlayed);
+
 	useEffect(() => {
 		
 		if (LocalUserData && clientSocket && matchSettings) {
@@ -60,6 +68,7 @@ const PlayGround: React.FC<{
 
 			clientSocket.on("gameState", (gameState: IGameState) => {
 				// console.log(gameState);
+				setMatchPlayed(true);
 				updateBall(gameState.ballX, gameState.ballY);
 				setPlayersScore({
 					player1Score: gameState.player1Score,
@@ -82,6 +91,7 @@ const PlayGround: React.FC<{
 				else {
 					setWinner(PLAYER_TWO);
 				}
+				setMatchPlayed(false);
 			});
 
 		}

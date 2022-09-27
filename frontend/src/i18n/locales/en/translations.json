@@ -42,7 +42,9 @@
 	"gamePage": {
 		"goalsToWin": "Goals to win",
 		"watchTheMatch": "Watching The Match",
-		"theWinner": "The Winner"
+		"theWinner": "The Winner",
+		"dontCloseWindow": "Please don't close the window or you will lose the matching and match",
+		"quit_helper": "Are you sure you want to quit the match?"
 	},
 	"chatPage": {
 		"dms": "DMs",
