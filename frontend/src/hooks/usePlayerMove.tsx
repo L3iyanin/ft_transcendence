@@ -22,21 +22,32 @@ const usePlayerMove = (initialY: number, playerIndex: number) => {
 	const movePlayerByMouse = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		let newMouseY = (e.clientY - e.target.getBoundingClientRect().top);
 
-		if (newMouseY + PADDLE_HEIGHT / 2 + PLAYGROUND_BORDERSIZE >= PLAY_GROUND_HEIGHT) {
-			newMouseY = PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE - PADDLE_HEIGHT / 2 - PADDLE_Y_MARGIN;
-		} else if (newMouseY - PADDLE_HEIGHT / 2 <= 0) {
-			newMouseY = PADDLE_HEIGHT / 2 + PADDLE_Y_MARGIN;
+		if (newMouseY + window.paddleHeight / 2 + PLAYGROUND_BORDERSIZE >= window.playgroundHeight) {
+			newMouseY = window.playgroundHeight - PLAYGROUND_BORDERSIZE - window.paddleHeight / 2 - window.paddleYMargin;
+		} else if (newMouseY - window.paddleHeight / 2 <= 0) {
+			newMouseY = window.paddleHeight / 2 + window.paddleYMargin;
 		} else {
 			newMouseY = newMouseY;
 		}
 
-		setPlayerY(newMouseY);
-
+		
+		
 		clientSocket.emit("updatePlayerY", {
 			matchId: matchData.match?.matchId,
 			userId: LocalUserData.id,
-			newY: newMouseY,
+			newY: newMouseY * PLAY_GROUND_HEIGHT / window.playgroundHeight,
 		})
+		
+		// if (playerIndex === PLAYER_ONE) {
+		// 	window.player1YPositionRatio = newMouseY / window.playgroundHeight;
+		// 	newMouseY = window.playgroundHeight * window.player1YPositionRatio
+		// }
+		// else {
+		// 	window.player2YPositionRatio = newMouseY / window.playgroundHeight;
+		// 	newMouseY = window.playgroundHeight * window.player2YPositionRatio
+		// }
+
+		setPlayerY(newMouseY);
 
 	};
 
@@ -44,27 +55,26 @@ const usePlayerMove = (initialY: number, playerIndex: number) => {
 		setPlayerY(newY);
 	}
 
-	// const updatePlayerPosition = (playerIndex: number) => {
+	const updatePlayerPositionOutside = (playerIndex: number) => {
 
-	// 	if (playerIndex === PLAYER_ONE) {
-	// 		setPlayerY(prevPlayerY => {
-	// 			return window.playgroundHeight * window.player1YPositionRatio
-	// 		})
-	// 	}
-	// 	else {
-	// 		setPlayerY(prevPlayerY => {
-	// 			return window.playgroundHeight * window.player2YPositionRatio
-	// 		})
-	// 	}
-	// };
-
+		if (playerIndex === PLAYER_ONE) {
+			setPlayerY(prevPlayerY => {
+				return window.playgroundHeight * window.player1YPositionRatio
+			})
+		}
+		else {
+			setPlayerY(prevPlayerY => {
+				return window.playgroundHeight * window.player2YPositionRatio
+			})
+		}
+	};
 	
 
 	return {
 		playerY,
 		movePlayerByMouse,
-		updatePlayerY
-		// updatePlayerPosition
+		updatePlayerY,
+		updatePlayerPositionOutside,
 	};
 }
 

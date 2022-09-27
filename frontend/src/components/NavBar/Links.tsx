@@ -30,7 +30,7 @@ const Links = () => {
 
 	const playGame = () => {
 		dispatch(setMatching());
-		const scoreToWin = 3;
+		const scoreToWin = 7;
 		toast.info(t("gamePage.dontCloseWindow"), {
 			position: toast.POSITION.TOP_CENTER,
 		});

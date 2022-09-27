@@ -11,7 +11,7 @@ const WinnerOverlay:React.FC<{
 	const { t } = useTranslation();
 
 	return (
-		<div className="w-1/2 h-full flex gap-2 flex-col items-center justify-center bg-dark-60 rounded-2xl capitalize"
+		<div className="w-1/2 absolute h-full flex gap-2 flex-col items-center justify-center bg-dark-60 rounded-2xl capitalize"
 			style={{
 				marginLeft: winner === PLAYER_ONE ? "0" : "50%",
 			}}

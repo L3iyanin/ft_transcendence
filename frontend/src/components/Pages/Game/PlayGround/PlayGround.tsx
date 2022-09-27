@@ -27,18 +27,16 @@ import WinnerOverlay from "./WinnerOverlay";
 import usePrompt from "../../../../hooks/usePropmpt";
 import { useTranslation } from "react-i18next";
 
-
 const PlayGround: React.FC<{
 	matchSettings?: IStartedMatch;
 }> = ({ matchSettings }) => {
-
 	const [matchPlayed, setMatchPlayed] = useState(false);
 
 	const [playerIndex, setPlayerIndex] = useState<number>(PLAYER_ONE);
 
 	const LocalUserData = useSelector((state: any) => state.user.user);
 
-	const clientSocket  = useSelector((state: any) => state.chat.clientSocket);
+	const clientSocket = useSelector((state: any) => state.chat.clientSocket);
 
 	const [winner, setWinner] = useState<number | null>(null);
 
@@ -52,15 +50,14 @@ const PlayGround: React.FC<{
 
 	const { t } = useTranslation();
 
-	usePrompt(t("gamePage.quit_helper"), matchPlayed);
+	// usePrompt(t("gamePage.quit_helper"), matchPlayed);
 
 	useEffect(() => {
-		
 		if (LocalUserData && clientSocket && matchSettings) {
 			if (matchSettings.player1.id !== LocalUserData.id) {
 				setPlayerIndex(PLAYER_TWO);
 			}
-	
+
 			clientSocket.emit("readyToPlay", {
 				userId: LocalUserData.id,
 				matchId: matchSettings.matchId,
@@ -69,73 +66,75 @@ const PlayGround: React.FC<{
 			clientSocket.on("gameState", (gameState: IGameState) => {
 				// console.log(gameState);
 				setMatchPlayed(true);
+
 				updateBall(gameState.ballX, gameState.ballY);
+
+				window.ballXPosition = (gameState.ballX / PLAY_GROUND_WIDTH) * window.playgroundWidth;
+				window.ballYPosition = (gameState.ballY / PLAY_GROUND_HEIGHT) * window.playgroundHeight;
+
+				window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
+				window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
+
+				window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
+				window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
+
+				window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
+				window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
+
+				window.ballSize = BALL_SIZE * window.widthRatio;
+
+				window.player1YPositionRatio = window.player1Y / window.playgroundHeight;
+				window.player2YPositionRatio = window.player2Y / window.playgroundHeight;
+
+				// updatePlayerPosition1Outside(PLAYER_ONE);
+				// updatePlayerPosition2Outside(PLAYER_TWO);
+
 				setPlayersScore({
 					player1Score: gameState.player1Score,
 					player2Score: gameState.player2Score,
 				});
 
 				if (matchSettings.player1.id !== LocalUserData.id) {
-					updatePlayer1Y(gameState.player1y);
+					updatePlayer1Y(gameState.player1y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+				} else {
+					updatePlayer2Y(gameState.player2y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
 				}
-				else {
-					updatePlayer2Y(gameState.player2y);
-				}
-			})
+			});
 
 			clientSocket.on("gameOver", (data: IGameOver) => {
 				// console.log(data);
 				if (data.player1Score > data.player2Score) {
 					setWinner(PLAYER_ONE);
-				}
-				else {
+				} else {
 					setWinner(PLAYER_TWO);
 				}
 				setMatchPlayed(false);
 			});
-
 		}
-
 	}, [clientSocket, LocalUserData, matchSettings]);
 
 	const {
 		playerY: player1Y,
 		movePlayerByMouse: movePlayer1ByMouse,
 		updatePlayerY: updatePlayer1Y,
-		// updatePlayerPosition: updatePlayerPosition1,
+		updatePlayerPositionOutside: updatePlayerPosition1Outside,
 	} = usePlayerMove(PLAYER_FIRST_POSITION, PLAYER_ONE);
 
 	const {
 		playerY: player2Y,
 		movePlayerByMouse: movePlayer2ByMouse,
 		updatePlayerY: updatePlayer2Y,
-		// updatePlayerPosition: updatePlayerPosition2
+		updatePlayerPositionOutside: updatePlayerPosition2Outside,
 	} = usePlayerMove(PLAYER_FIRST_POSITION, PLAYER_TWO);
 
-	// const setPlayersScoreHandler = (
-	// 	playerIndex: number,
-	// 	goalsOnPlayer: number
-	// ) => {
-	// 	setPlayersScore((prevState) => {
-	// 		const newPlayerScore = { ...prevState };
-	// 		if (playerIndex === PLAYER_ONE) {
-	// 			newPlayerScore.player1Score += goalsOnPlayer;
-	// 		} else {
-	// 			newPlayerScore.player2Score += goalsOnPlayer;
-	// 		}
-	// 		return newPlayerScore;
-	// 	});
-	// };
-
-	const { ballPosition, updateBall } = useBallMove();
+	const { ballPosition, updateBall, updateBallOutside } = useBallMove();
 
 	const ref = useRef(null);
 
 	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		if (playerIndex === PLAYER_ONE) {
 			movePlayer1ByMouse(e);
-		}
-		else {
+		} else {
 			movePlayer2ByMouse(e);
 		}
 	};
@@ -143,114 +142,136 @@ const PlayGround: React.FC<{
 	const playgroundRef = useRef<HTMLDivElement>(null);
 
 	useLayoutEffect(() => {
-		// if (playgroundRef.current) {
-		// 	window.playgroundWidth = playgroundRef.current.offsetWidth;
-		// 	window.playgroundHeight = playgroundRef.current.offsetHeight;
+		if (playgroundRef.current) {
+			window.playgroundWidth = playgroundRef.current.offsetWidth;
+			window.playgroundHeight = playgroundRef.current.offsetHeight;
 
-		// 	window.widthRatio = playgroundRef.current.offsetWidth / PLAY_GROUND_WIDTH;
-		// 	window.heightRatio = playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
-			
-		// 	window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
-		// 	window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
+			window.widthRatio =
+				playgroundRef.current.offsetWidth / PLAY_GROUND_WIDTH;
+			window.heightRatio =
+				playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
 
-		// 	window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
-		// 	window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
+			// window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
+			// window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
 
-		// 	window.ballSize = BALL_SIZE * window.widthRatio;
+			// window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
+			// window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
 
-		// 	window.ballXPosition = window.playgroundWidth / 2 -
-		// 			window.ballSize / 2 +
-		// 			PLAYGROUND_BORDERSIZE +
-		// 			window.paddleXMargin / 2 - 2;
+			// window.ballSize = BALL_SIZE * window.widthRatio;
 
-		// 	window.ballYPosition = window.playgroundHeight / 2 -
-		// 			window.ballSize / 2 +
-		// 			PLAYGROUND_BORDERSIZE +
-		// 			window.paddleYMargin / 2 - 2;
+			// window.ballXPosition = window.playgroundWidth / 2 -
+			// 		window.ballSize / 2 +
+			// 		PLAYGROUND_BORDERSIZE +
+			// 		window.paddleXMargin / 2 - 2;
 
-		// 	window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
-		// 	window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
+			// window.ballYPosition = window.playgroundHeight / 2 -
+			// 		window.ballSize / 2 +
+			// 		PLAYGROUND_BORDERSIZE +
+			// 		window.paddleYMargin / 2 - 2;
 
-		// 	updatePlayerPosition1(PLAYER_ONE);
-		// 	updatePlayerPosition2(PLAYER_TWO);
-		// }
-	}, []);
+			// console.log("=========== old X and Y ===========");
+			// console.log(`window.ballXPosition: ${window.ballXPosition}`);
+			// console.log(`window.ballYPosition: ${window.ballYPosition}`);
+			// console.log("===================================");
+
+			// window.ballYPosition = (window.ballYPosition / PLAY_GROUND_HEIGHT) * window.playgroundHeight;
+			// window.ballXPosition = (window.ballXPosition / PLAY_GROUND_WIDTH) * window.playgroundWidth;
+
+			// window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
+			// window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
+
+			// console.log("=========== new X and Y ===========");
+			// console.log(`window.ballXPosition: ${window.ballXPosition}`);
+			// console.log(`window.ballYPosition: ${window.ballYPosition}`);
+			// console.log("===================================");
+
+			updatePlayerPosition1Outside(PLAYER_ONE);
+			updatePlayerPosition2Outside(PLAYER_TWO);
+		}
+	}, [playgroundRef.current]);
 
 	useEffect(() => {
-		// addEventListener("resize", () => {
-		// 	if (playgroundRef.current) {
-		// 		window.widthRatio = playgroundRef.current.offsetWidth / PLAY_GROUND_WIDTH;
-		// 		window.heightRatio = playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
+		addEventListener("resize", () => {
+			if (playgroundRef.current) {
+				window.playgroundWidth = playgroundRef.current.offsetWidth;
+				window.playgroundHeight = playgroundRef.current.offsetHeight;
 
-		// 		if (isNaN(window.player1Y)) {
-		// 			window.player1Y = PLAYER_FIRST_POSITION;
-		// 		}
-
-		// 		if (isNaN(window.player2Y)) {
-		// 			window.player2Y = PLAYER_FIRST_POSITION;
-		// 		}
-
-		// 		window.player1YPositionRatio = window.player1Y / window.playgroundHeight;
-		// 		window.player2YPositionRatio = window.player2Y / window.playgroundHeight;
+				window.widthRatio = playgroundRef.current.offsetWidth / PLAY_GROUND_WIDTH;
+				window.heightRatio = playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
 				
-
-		// 		window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
-		// 		window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
-
-		// 		window.playgroundWidth = playgroundRef.current.offsetWidth;
-		// 		window.playgroundHeight = playgroundRef.current.offsetHeight;
-				
-		// 		window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
-		// 		window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
-				
-				
-		// 		window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
-		// 		window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
-				
-		// 		window.ballSize = BALL_SIZE * window.widthRatio;
-				
-		// 		updateBallOutside();
-
-		// 		updatePlayerPosition1(PLAYER_ONE);
-		// 		updatePlayerPosition2(PLAYER_TWO);
-				
-				
-		// 	}
-		// });
+				// window.widthRatio = playgroundRef.current.offsetWidth / PLAY_GROUND_WIDTH;
+				// window.heightRatio = playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
+				// if (isNaN(window.player1Y)) {
+				// 	window.player1Y = PLAYER_FIRST_POSITION;
+				// }
+				// if (isNaN(window.player2Y)) {
+				// 	window.player2Y = PLAYER_FIRST_POSITION;
+				// }
+				// window.player1YPositionRatio = window.player1Y / window.playgroundHeight;
+				// window.player2YPositionRatio = window.player2Y / window.playgroundHeight;
+				// window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
+				// window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
+				// window.playgroundWidth = playgroundRef.current.offsetWidth;
+				// window.playgroundHeight = playgroundRef.current.offsetHeight;
+				// window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
+				// window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
+				// window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
+				// window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
+				// window.ballSize = BALL_SIZE * window.widthRatio;
+				// updateBallOutside();
+				// updatePlayerPosition1Outside(PLAYER_ONE);
+				// updatePlayerPosition2Outside(PLAYER_TWO);
+			}
+		});
 	}, []);
 
-	if (!matchSettings)
-		return <LoadingSpinner />;
+	if (!matchSettings) {
+		return (
+			<div
+				className={`relative w-full mt-5 bg-cover bg-center rounded-3xl border-4 border-transparent`}
+				style={{
+					aspectRatio: "16 / 9",
+				}}
+				id="playground"
+				ref={playgroundRef}
+			>
+				<LoadingSpinner />
+			</div>
+		);
+	}
 
-	const playgroundBg = matchSettings.scoreToWin === MatchTypeEnum.Classic ?  CLASSIC_GAME_BG : VIP_GAME_BG;
+	const playgroundBg =
+		matchSettings.scoreToWin === MatchTypeEnum.Classic
+			? CLASSIC_GAME_BG
+			: VIP_GAME_BG;
+
+	// const playgroundBg = CLASSIC_GAME_BG;
 
 	return (
 		<div
 			className={`relative w-full bg-red mt-5 bg-cover bg-center rounded-3xl border-4 border-red`}
 			style={{
 				backgroundImage: `url(${playgroundBg})`,
-				height: `${PLAY_GROUND_HEIGHT}px`,
-				width: `${PLAY_GROUND_WIDTH}px`,
-				// aspectRatio: "16 / 9",
+				// height: `${PLAY_GROUND_HEIGHT}px`,
+				// width: `${PLAY_GROUND_WIDTH}px`,
+				aspectRatio: "16 / 9",
 			}}
 			id="playground"
 			ref={playgroundRef}
 		>
-			{ winner && <WinnerOverlay winner={winner} player1={matchSettings.player1} player2={matchSettings.player2} />}
-			<PlayerPaddle
-				isOnLeft={true}
-				top={`${player1Y}px`}
-			/>
-			<PlayerPaddle
-				isOnLeft={false}
-				top={`${player2Y}px`}
-			/>
-			<div
-				className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-full border-r-2 border-dashed border-beige"
-			/>
-			<div
-				className="absolute text-white top-4 left-1/2 transform -translate-x-1/2 gap-x-16 flex"
-			>
+			{winner && (
+				<WinnerOverlay
+					winner={winner}
+					player1={matchSettings.player1}
+					player2={matchSettings.player2}
+				/>
+			)}
+			{/* <PlayerPaddle isOnLeft={true} top={`${player1Y}px`} />
+			<PlayerPaddle isOnLeft={false} top={`${player2Y}px`} /> */}
+			<PlayerPaddle isOnLeft={true} top={`${window.player1Y}px`} />
+			<PlayerPaddle isOnLeft={false} top={`${window.player2Y}px`} />
+			<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-full border-r-2 border-dashed border-beige" />
+			<div className="absolute text-white top-4 left-1/2 transform -translate-x-1/2 gap-x-16 flex">
 				<PlayerScore
 					score={playersScore.player1Score}
 					player={matchSettings.player1}
@@ -262,12 +283,15 @@ const PlayGround: React.FC<{
 				/>
 			</div>
 			<Ball
-				// top={window.ballYPosition}
-				// left={window.ballXPosition}
-				top={ballPosition.y}
-				left={ballPosition.x}
+				top={window.ballYPosition}
+				left={window.ballXPosition}
+				// top={ballPosition.y}
+				// left={ballPosition.x}
 			/>
-			<div className="relative w-full h-full rounded-2xl" onMouseMove={movePlayer} />
+			<div
+				className="relative w-full h-full rounded-2xl"
+				onMouseMove={movePlayer}
+			/>
 			<div ref={ref} />
 		</div>
 	);
