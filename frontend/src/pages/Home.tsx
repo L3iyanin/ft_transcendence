@@ -1,23 +1,25 @@
 import Footer from "../components/Footer/Footer";
 import NavBar from "../components/NavBar/NavBar";
 import LiveMatches from "../components/Pages/Home/LiveMatches/LiveMatches";
-import UserCard from "../components/Pages/Home/UserCard/UserCard";
+
 
 import { users } from "../utils/data/Users";
-import { matches } from "../utils/data/Match";
+import { liveMatches } from "../utils/data/Match";
+import { lastMatches } from "../utils/data/Match";
 import GameMode from "../components/Pages/Home/GameMode/GameMode";
 import { MatchTypeEnum } from "../utils/constants/enum";
-import LastMatches from "../components/Pages/Home/LastMatches/LastMatches";
+import LastMatches from "../components/LastMatches/LastMatches";
 import Leaderboard from "../components/Pages/Home/Leaderboard/Leaderboard";
+import UserCard from "../components/UserCard/UserCard";
 
 const Home: React.FC = () => {
 	return (
 		<div className="container">
 			<NavBar />
-			<main className=" flex flex-col justify-between items-center gap-20">
+			<main className="flex flex-col justify-between items-center gap-20">
 				<section className="w-full flex justify-between items-center gap-16">
-					<UserCard user={users[0]} />
-					<LiveMatches matches={matches} />
+					<UserCard />
+					<LiveMatches matches={liveMatches} />
 				</section>
 				<section className="w-full flex flex-col justify-between items-center gap-10">
 					<section className="w-full px-8 flex justify-between items-center gap-4">
@@ -25,7 +27,7 @@ const Home: React.FC = () => {
 						<GameMode mode={MatchTypeEnum.Vip} />
 					</section>
 					<section className="w-full flex justify-between items-center gap-10">
-						<LastMatches matches={matches} />
+						<LastMatches matches={lastMatches} isInProfile={false}/>
 						<Leaderboard players={users} />
 					</section>
 				</section>

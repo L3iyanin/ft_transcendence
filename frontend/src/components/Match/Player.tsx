@@ -1,8 +1,9 @@
 
-const Player : React.FC <{username : string, avatar : string, className : string }> = ({ username, avatar, className }) => {
+
+const Player : React.FC <{username : string, avatar : string, isLeft : boolean }> = ({ username, avatar, isLeft }) => {
 	return (
 		<div
-			className={`w-40 flex justify-start items-center gap-5 grow ${className}`
+			className={`w-40 flex justify-start items-center gap-5 grow ${!isLeft && "flex-row-reverse"}`
 			}
 		>
 			<img

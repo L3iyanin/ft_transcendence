@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ReactComponent as Live } from "../../../../assets/icons/Live.svg"
+import { ReactComponent as Live } from "../../assets/icons/Live.svg"
 
 const SeeLive = () => {
 	const { t } = useTranslation();
