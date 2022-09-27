@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { Match, PrismaClient } from "@prisma/client";
 import { OnlineUsersService } from "src/online-users/online-users.service";
-import { LiveMatchDto, ResponseDto } from "../dto/game.dto";
+import { LiveMatchDto, ResponseDto, SpectatorDto } from "../dto/game-events.dto";
 import { Server, Socket } from "socket.io";
 import { FPS } from "../constants/game.constants";
 import GameLogic from "../gameLogic/gameLogic";
-import { generateMatchName } from "../helpers/helpers";
+import { generateMatchName, generateSpectatorsRoomName } from "../helpers/helpers";
 
 @Injectable()
 export class GameEventsService {
@@ -184,12 +184,15 @@ export class GameEventsService {
 		});
 
 		if (match && match.live) {
+<<<<<<< HEAD
 			// await this.prisma.match.delete({
 			// 	where: {
 			// 		id: match.id,
 			// 	},
 			// });
 			// return;
+=======
+>>>>>>> 90c4983afa9bd4c4f92134780244ab766ffa45fe
 			const liveMatch = this.getLiveMatch(match.id);
 			if (!liveMatch) {
 				return;
@@ -322,6 +325,7 @@ export class GameEventsService {
 		gameInstance.updateBallPosition();
 		const gameState = gameInstance.getGameState();
 		const matchName = generateMatchName(match.id);
+		const spectatorRoomName = generateSpectatorsRoomName(match.id);
 		let winnerId: number | null = null;
 
 		console.log("gameState", gameState);
@@ -332,11 +336,10 @@ export class GameEventsService {
 			winnerId = match.player2Id;
 		}
 
-		if (!winnerId) {
-			server.to(matchName).emit("gameState", gameState);
-		} else {
+
+		server.to(matchName).to(spectatorRoomName).emit("gameState", gameState);
+		if (winnerId) {
 			// end game
-			server.to(matchName).emit("gameState", gameState); // last goal
 			const endMatch = await this.prisma.match.update({
 				where: {
 					id: match.id,
@@ -348,7 +351,7 @@ export class GameEventsService {
 				},
 			});
 
-			server.to(matchName).emit("gameOver", {
+			server.to(matchName).to(spectatorRoomName).emit("gameOver", {
 				player1Score: endMatch.player1Score,
 				player2Score: endMatch.player2Score,
 				isDisconnected: false,
@@ -394,11 +397,15 @@ export class GameEventsService {
 			await this.gameTurn(gameInstance, match, server);
 		}, 1000 / FPS);
 		// store interval somewhere
+<<<<<<< HEAD
 		// this.gameTurn(gameInstance, match, server)
+=======
+>>>>>>> 90c4983afa9bd4c4f92134780244ab766ffa45fe
 		this.addLiveMatch(match, interval, gameInstance, server);
 	}
 
 	addLiveMatch(match: Match, interval: NodeJS.Timer, gameInstance: GameLogic, server: Server) {
+		const spectators: SpectatorDto[] = [];
 		this.liveMatches.push({
 			id: match.id,
 			player1Id: match.player1Id,
@@ -407,6 +414,7 @@ export class GameEventsService {
 			interval,
 			gameInstance,
 			server,
+			spectators,
 		});
 	}
 
@@ -426,6 +434,39 @@ export class GameEventsService {
 			} else if (liveMatch.player2Id == userId) {
 				liveMatch.gameInstance.updatePlayerY(newY, 2);
 			}
+		}
+	}
+
+	async addSpectatorToLiveMatch(clientId: string, matchId: number, userId: number) {
+		const liveMatch = this.getLiveMatch(matchId);
+		const match = await this.prisma.match.findUnique({
+			where: {
+				id: matchId,
+			},
+		});
+		if (match) {
+			if (match.player1Id == userId || match.player2Id == userId) {
+				return {
+					status: "ERROR",
+					message: "You are already a player in this match",
+				}
+			}
+		}
+		if (liveMatch) {
+			const spectator = liveMatch.spectators.find((spectator) => spectator.userId == userId);
+			if (!spectator) {
+				liveMatch.spectators.push({
+					userId,
+				});
+			}
+			return {
+				status: "SUCCESS",
+				message: "You are now a spectator",
+			}
+		}
+		return {
+			status: "ERROR",
+			message: "Match not found",
 		}
 	}
 }

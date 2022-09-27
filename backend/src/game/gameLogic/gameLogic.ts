@@ -13,7 +13,7 @@ import {
 	PLAY_GROUND_HEIGHT,
 	PLAY_GROUND_WIDTH,
 } from "../constants/game.constants";
-import { BallDto } from "../dto/game.dto";
+import { BallDto } from "../dto/game-events.dto";
 
 class GameLogic {
 	player1y: number;
