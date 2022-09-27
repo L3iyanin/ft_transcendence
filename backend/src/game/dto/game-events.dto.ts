@@ -28,6 +28,10 @@ export class ResponseDto {
 	data?: StartedMatchResponseDto;
 }
 
+export class SpectatorDto {
+	userId: number;
+}
+
 export class LiveMatchDto {
 	id: number;
 	server: Server;
@@ -36,4 +40,5 @@ export class LiveMatchDto {
 	player2Id: number;
 	scoreToWin: number;
 	interval: NodeJS.Timer;
+	spectators: SpectatorDto[];
 }

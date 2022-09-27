@@ -2,7 +2,7 @@ import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/web
 import { JoinMatchDto } from "../dto/game-events.dto";
 import { GameEventsService } from "./game-events.service";
 import { Server, Socket } from "socket.io";
-import { generateMatchName } from "../helpers/helpers";
+import { generateMatchName, generateSpectatorsRoomName } from "../helpers/helpers";
 
 @WebSocketGateway({
 	cors: {
@@ -57,5 +57,20 @@ export class GameGateway {
 		payload: { matchId: number; userId: number; newY: number }
 	) {
 		await this.gameEventsService.updatePlayerY(payload.matchId, payload.userId, payload.newY);
+	}
+
+
+	// watch Live matche:
+	@SubscribeMessage("watchLiveMatch")
+	async watchLiveMatch(client: Socket, payload: { matchId: number , userId: number}) {
+		// check if client socket is already in live or matching match, if yes, emit error
+		const response = await this.gameEventsService.addSpectatorToLiveMatch(client.id, payload.matchId, payload.userId);
+		if (response.status === "SUCCESS") {
+			const spectatorRoomName = generateSpectatorsRoomName(payload.matchId);
+			client.join(spectatorRoomName);
+			client.emit("watchLiveMatchResponse", { message: response.message });
+		} else {
+			client.emit("watchLiveMatchResponse", { message: response.message });
+		}
 	}
 }
