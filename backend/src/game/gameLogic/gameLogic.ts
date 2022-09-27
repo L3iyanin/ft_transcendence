@@ -46,14 +46,12 @@ class GameLogic {
 
 		this.ball = {
 			x:
-				PLAY_GROUND_WIDTH / 2 -
-				BALL_SIZE / 2 +
+				PLAY_GROUND_WIDTH / 2 +
 				PLAYGROUND_BORDERSIZE +
 				PADDLE_X_MARGIN / 2 -
 				2,
 			y:
-				PLAY_GROUND_WIDTH / 2 -
-				BALL_SIZE / 2 +
+				PLAY_GROUND_HEIGHT / 2 +
 				PLAYGROUND_BORDERSIZE +
 				PADDLE_Y_MARGIN / 2 -
 				2,
@@ -101,7 +99,7 @@ class GameLogic {
 
 	updateBallPosition() {
 		// const distance = this.ball.velocity;
-		const distance = 20;
+		const distance = 2;
 
 		let newDirectionX = this.ball.directionX;
 		let newDirectionY = this.ball.directionY;

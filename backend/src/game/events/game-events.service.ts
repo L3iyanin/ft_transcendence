@@ -184,6 +184,12 @@ export class GameEventsService {
 		});
 
 		if (match && match.live) {
+			// await this.prisma.match.delete({
+			// 	where: {
+			// 		id: match.id,
+			// 	},
+			// });
+			// return;
 			const liveMatch = this.getLiveMatch(match.id);
 			if (!liveMatch) {
 				return;
@@ -384,12 +390,12 @@ export class GameEventsService {
 	async startGameLoop(match: Match, server: Server) {
 		console.log("starting game loop " + match.id);
 		const gameInstance = new GameLogic();
-		await this.gameTurn(gameInstance, match, server)
-		// const interval = setInterval(async () => {
-		// 	await this.gameTurn(gameInstance, match, server);
-		// }, 1000 / FPS);
+		const interval = setInterval(async () => {
+			await this.gameTurn(gameInstance, match, server);
+		}, 1000 / FPS);
 		// store interval somewhere
-		// this.addLiveMatch(match, interval, gameInstance, server);
+		// this.gameTurn(gameInstance, match, server)
+		this.addLiveMatch(match, interval, gameInstance, server);
 	}
 
 	addLiveMatch(match: Match, interval: NodeJS.Timer, gameInstance: GameLogic, server: Server) {
