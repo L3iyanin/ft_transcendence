@@ -22,16 +22,21 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import LoadingSpinner from "../../../UI/Loading/LoadingSpinner";
 import { MatchTypeEnum } from "../../../../utils/constants/enum";
+import { fakematch } from "../../../../utils/data/Match";
+import WinnerOverlay from "./WinnerOverlay";
 
 const PlayGround: React.FC<{
 	matchSettings?: IStartedMatch;
 }> = ({ matchSettings }) => {
+
 
 	const [playerIndex, setPlayerIndex] = useState<number>(PLAYER_ONE);
 
 	const LocalUserData = useSelector((state: any) => state.user.user);
 
 	const clientSocket  = useSelector((state: any) => state.chat.clientSocket);
+
+	const [winner, setWinner] = useState<number | null>(null);
 
 	const [playersScore, setPlayersScore] = useState<{
 		player1Score: number;
@@ -54,7 +59,7 @@ const PlayGround: React.FC<{
 			});
 
 			clientSocket.on("gameState", (gameState: IGameState) => {
-				console.log(gameState);
+				// console.log(gameState);
 				updateBall(gameState.ballX, gameState.ballY);
 				setPlayersScore({
 					player1Score: gameState.player1Score,
@@ -69,7 +74,15 @@ const PlayGround: React.FC<{
 				}
 			})
 
-			// clientSocket.on("")
+			clientSocket.on("gameOver", (data: IGameOver) => {
+				// console.log(data);
+				if (data.player1Score > data.player2Score) {
+					setWinner(PLAYER_ONE);
+				}
+				else {
+					setWinner(PLAYER_TWO);
+				}
+			});
 
 		}
 
@@ -213,6 +226,7 @@ const PlayGround: React.FC<{
 			id="playground"
 			ref={playgroundRef}
 		>
+			{ winner && <WinnerOverlay winner={winner} player1={matchSettings.player1} player2={matchSettings.player2} />}
 			<PlayerPaddle
 				isOnLeft={true}
 				top={`${player1Y}px`}

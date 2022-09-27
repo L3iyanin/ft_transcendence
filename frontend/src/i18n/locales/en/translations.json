@@ -41,7 +41,8 @@
 	},
 	"gamePage": {
 		"goalsToWin": "Goals to win",
-		"watchTheMatch": "Watching The Match"
+		"watchTheMatch": "Watching The Match",
+		"theWinner": "The Winner"
 	},
 	"chatPage": {
 		"dms": "DMs",

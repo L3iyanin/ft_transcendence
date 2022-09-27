@@ -21,10 +21,14 @@ interface IStartedMatch {
 	scoreToWin: number;
 }
 
-
-
 interface IMatchState {
 	isMatching: boolean;
 	whenMatching?: string;
 	match?: IStartedMatch;
+}
+
+interface IGameOver {
+	player1Score: number,
+	player2Score: number,
+	isDisconnected: boolean,
 }
