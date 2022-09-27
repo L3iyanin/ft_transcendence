@@ -325,7 +325,8 @@ export class GameEventsService {
 		}
 
 
-		server.to(matchName).to(spectatorRoomName).emit("gameState", gameState);
+		server.to(matchName).emit("gameState", gameState);
+		server.to(spectatorRoomName).emit("gameStateSpectators", gameState);
 		if (winnerId) {
 			// end game
 			const endMatch = await this.prisma.match.update({
