@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Match, PrismaClient } from "@prisma/client";
 import { OnlineUsersService } from "src/online-users/online-users.service";
-import { LiveMatchDto, ResponseDto } from "../dto/game.dto";
+import { LiveMatchDto, ResponseDto } from "../dto/game-events.dto";
 import { Server, Socket } from "socket.io";
 import { FPS } from "../constants/game.constants";
 import GameLogic from "../gameLogic/gameLogic";
@@ -184,12 +184,6 @@ export class GameEventsService {
 		});
 
 		if (match && match.live) {
-			await this.prisma.match.delete({
-				where: {
-					id: match.id,
-				},
-			});
-			return;
 			const liveMatch = this.getLiveMatch(match.id);
 			if (!liveMatch) {
 				return;
@@ -391,10 +385,9 @@ export class GameEventsService {
 		console.log("starting game loop " + match.id);
 		const gameInstance = new GameLogic();
 		const interval = setInterval(async () => {
-			// await this.gameTurn(gameInstance, match, server);
+			await this.gameTurn(gameInstance, match, server);
 		}, 1000 / FPS);
 		// store interval somewhere
-		this.gameTurn(gameInstance, match, server)
 		this.addLiveMatch(match, interval, gameInstance, server);
 	}
 
