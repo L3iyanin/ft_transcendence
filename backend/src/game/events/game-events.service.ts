@@ -312,15 +312,12 @@ export class GameEventsService {
 	}
 
 	async gameTurn(gameInstance: GameLogic, match: Match, server: Server) {
-		console.log("game turn------------------");
 		gameInstance.updateBallPosition();
 		const gameState = gameInstance.getGameState();
 		const matchName = generateMatchName(match.id);
 		const spectatorRoomName = generateSpectatorsRoomName(match.id);
 		let winnerId: number | null = null;
 
-		console.log("gameState", gameState);
-		console.log("------------------");
 		if (gameState.player1Score >= match.scoreToWin) {
 			winnerId = match.player1Id;
 		} else if (gameState.player2Score >= match.scoreToWin) {
