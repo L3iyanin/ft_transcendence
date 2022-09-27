@@ -44,13 +44,13 @@ const WatcherCard: React.FC<{ watcher: IUser }> = ({ watcher }) => {
 				</div>
 				<div className="flex flex-col justify-between">
 					<IconWithLabel
-						linkToGo={`/chat/${watcher.username}`}
+						linkToGo={`/chat`}
 						icon={<ChatIcon />}
 						label={t("chat")}
 						labelStyle="text-red"
 					/>
 					<IconWithLabel
-						linkToGo={`/profile/${watcher.username}`}
+						linkToGo={`/profile/${watcher.id}`}
 						icon={<ProfileIcon className="w-4 h-4" />}
 						label={t("profile")}
 						labelStyle="text-yellow"

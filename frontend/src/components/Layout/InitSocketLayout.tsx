@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Socket } from "socket.io-client";
 import { setOnlineUsers, setSocket } from "../../reducers/ChatSlice";
-import { setMatching, setStartedMatch } from "../../reducers/MatchSlice";
+import { setMatching, setSeeingLiveMatch, setSpectatorsInLiveMatch, setStartedMatch } from "../../reducers/MatchSlice";
 import { ResponseStatusEnum } from "../../utils/constants/enum";
 import { ErrorAlertWithMessage } from "../UI/Error";
 
@@ -60,8 +60,13 @@ const InitSocketLayout: React.FC<{
 				return;
 			}
 			// add spectator to list of them
-			dispatch(setStartedMatch(data.matchSettings));
+			dispatch(setSeeingLiveMatch(data));
 			navigate(`/game`);
+		});
+
+		clientSocket.on("spectatorJoined", (data: IUser[]) => {
+			console.log(data);
+			dispatch(setSpectatorsInLiveMatch(data));
 		});
 
 		clientSocket.on("alreadyInMatch", () => {

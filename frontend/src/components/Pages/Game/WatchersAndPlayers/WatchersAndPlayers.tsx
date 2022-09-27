@@ -4,13 +4,14 @@ import { useTranslation } from "react-i18next";
 
 const WatchersAndPlayers: React.FC<{
 	matchSettings?: IStartedMatch;
-	watchers: IUser[];
+	watchers?: IUser[];
 }> = ({ matchSettings, watchers }) => {
 
 	const { t } = useTranslation();
 
-	if (!matchSettings)
+	if (!matchSettings || !watchers) {
 		return null;
+	}
 
 	return (
 		<div className="mt-20 text-white flex justify-between gap-16">

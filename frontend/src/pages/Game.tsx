@@ -24,7 +24,7 @@ const Game: React.FC = () => {
 				<PlayGround matchSettings={matchData.match} />
 				<WatchersAndPlayers
 					matchSettings={matchData.match}
-					watchers={fakeMatchWatchers}
+					watchers={matchData.spectators}
 				/>
 			</div>
 			{ matchData.match && <Footer /> }

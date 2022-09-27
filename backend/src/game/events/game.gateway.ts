@@ -67,8 +67,10 @@ export class GameGateway {
 		const response = await this.gameEventsService.addSpectatorToLiveMatch(client.id, payload.matchId, payload.userId);
 		if (response.status === "SUCCESS") {
 			const spectatorRoomName = generateSpectatorsRoomName(payload.matchId);
+			const matchName = generateMatchName(payload.matchId);
 			client.join(spectatorRoomName);
 			client.emit("watchLiveMatchResponse", response);
+			this.server.to(matchName).to(spectatorRoomName).emit("spectatorJoined", response.spectators);
 		} else {
 			client.emit("watchLiveMatchResponse", response);
 		}

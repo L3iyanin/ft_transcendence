@@ -25,6 +25,7 @@ interface IMatchState {
 	isMatching: boolean;
 	whenMatching?: string;
 	match?: IStartedMatch;
+	spectators?: IUser[];
 }
 
 interface IGameOver {
@@ -37,4 +38,5 @@ interface IWatchMatchRes {
 	status: ResponseStatusEnum,
 	message: string,
 	matchSettings: IStartedMatch,
+	spectators: IUser[],
 }
