@@ -5,6 +5,7 @@ import NavBar from "../components/NavBar/NavBar";
 import Profile from "../pages/Profile";
 import Settings from "../pages/Settings";
 import Chat from "../pages/Chat";
+import Home from "../pages/Home";
 import ChannelSettings from "../pages/ChannelSettings";
 import RequireAuth from "./RequireAuth";
 import NotRequireAuth from "./NotRequireAuth";
@@ -25,7 +26,11 @@ const Router: React.FC = () => {
 							element={<ChannelSettings />}
 						/>
 						<Route path="/game" element={<Game />} />
+
 						<Route path="/search" element={<Search />} />
+
+						<Route path="/home" element={<Home />} />
+
 					</Route>
 					<Route element={<NotRequireAuth />}>
 						<Route path="/" element={<Landing />} />

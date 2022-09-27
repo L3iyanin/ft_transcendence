@@ -1,3 +1,4 @@
+
 import { UserStatusEnum } from "../constants/enum";
 
 export const users: IUser[] = [
@@ -24,21 +25,24 @@ export const users: IUser[] = [
 		id: 3,
 		fullName: "Khalid Belyazid",
 		username: "seven",
-		imgUrl:
-			"https://myanimelist.tech/api/avatar?name=seven&animeName=Inazuma_Eleven",
+		imgUrl: "https://myanimelist.tech/api/avatar?name=seven&animeName=Inazuma_Eleven",
+		wins: 15,
+		losses: 4,
 	},
 	{
 		id: 4,
 		fullName: "Youness Aroubi",
 		username: "procrastinator",
-		imgUrl:
-			"https://myanimelist.tech/api/avatar?name=procrastinator&animeName=Inazuma_Eleven",
+		imgUrl: "https://myanimelist.tech/api/avatar?name=procrastinator&animeName=Inazuma_Eleven",
+		wins: 15,
+		losses: 2,
 	},
 	{
 		id: 5,
 		fullName: "Youssef Raki",
 		username: "raki",
-		imgUrl:
-			"https://myanimelist.tech/api/avatar?name=raki&animeName=Inazuma_Eleven",
+		imgUrl: "https://myanimelist.tech/api/avatar?name=raki&animeName=Inazuma_Eleven",
+		wins: 15,
+		losses: 4,
 	},
 ];

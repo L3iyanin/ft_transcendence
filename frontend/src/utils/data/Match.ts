@@ -1,56 +1,132 @@
 import { MatchTypeEnum as GameType } from "../constants/enum";
-import {players } from "../data/Players"
 
-export const matches:IGameMatch[] = [
+import { users } from "../data/Users"
+
+export const lastMatches:IMatch[] = [
 	{
-		player1: players[0],
-		player2: players[1],
+		id: 0,
+		isMatching: false,
+		live: false,
+		player1: users[0],
+		player2: users[1],
 		player1Score: 2,
 		player2Score: 1,
-		isMatching: false,
-		isLive: true,
 		date: new Date("2022-05-12T23:50:21.817Z"),
-		type: GameType.Classic
+		scoreToWin: 3,
+		backgroundUrl: "",
 	},
 	{
-		player1: players[2],
-		player2: players[3],
+		id: 1,
+		isMatching: false,
+		live: false,
+		player1: users[2],
+		player2: users[3],
 		player1Score: 4,
 		player2Score: 2,
-		isMatching: false,
-		isLive: true,
 		date: new Date("2022-12-12T23:50:21.817Z"),
-		type: GameType.Vip
+		scoreToWin: 3,
+		backgroundUrl: ""
 	},
 	{
-		player1: players[1],
-		player2: players[2],
+		id: 2,
+		isMatching: false,
+		live: false,
+		player1: users[1],
+		player2: users[2],
 		player1Score: 2,
 		player2Score: 1,
-		isMatching: false,
-		isLive: true,
 		date: new Date("2022-05-12T23:50:21.817Z"),
-		type: GameType.Classic
+		scoreToWin: 3,
+		backgroundUrl: ""
 	},
 	{
-		player1: players[0],
-		player2: players[3],
+		id: 3,
+		isMatching: false,
+		live: false,
+		player1: users[0],
+		player2: users[3],
 		player1Score: 4,
 		player2Score: 2,
-		isMatching: false,
-		isLive: true,
 		date: new Date("2022-12-12T23:50:21.817Z"),
-		type: GameType.Vip
+		scoreToWin: 3,
+		backgroundUrl: ""
 	},
 	{
-		player1: players[1],
-		player2: players[3],
+		id: 4,
+		isMatching: false,
+		live: false,
+		player1: users[1],
+		player2: users[3],
 		player1Score: 7,
 		player2Score: 2,
-		isMatching: false,
-		isLive: true,
 		date: new Date("2022-12-12T23:50:21.817Z"),
-		type: GameType.Vip
+		scoreToWin: 3,
+		backgroundUrl: ""
+
+	},
+]
+
+export const liveMatches:IMatch[] = [
+	{
+		id: 0,
+		isMatching: false,
+		live: true,
+		player1: users[0],
+		player2: users[1],
+		player1Score: 2,
+		player2Score: 1,
+		date: new Date("2022-05-12T23:50:21.817Z"),
+		scoreToWin: 3,
+		backgroundUrl: "",
+	},
+	{
+		id: 1,
+		isMatching: false,
+		live: true,
+		player1: users[2],
+		player2: users[3],
+		player1Score: 4,
+		player2Score: 2,
+		date: new Date("2022-12-12T23:50:21.817Z"),
+		scoreToWin: 3,
+		backgroundUrl: ""
+	},
+	{
+		id: 2,
+		isMatching: false,
+		live: true,
+		player1: users[1],
+		player2: users[2],
+		player1Score: 2,
+		player2Score: 1,
+		date: new Date("2022-05-12T23:50:21.817Z"),
+		scoreToWin: 3,
+		backgroundUrl: ""
+	},
+	{
+		id: 3,
+		isMatching: false,
+		live: true,
+		player1: users[0],
+		player2: users[3],
+		player1Score: 4,
+		player2Score: 2,
+		date: new Date("2022-12-12T23:50:21.817Z"),
+		scoreToWin: 3,
+		backgroundUrl: ""
+	},
+	{
+		id: 4,
+		isMatching: false,
+		live: true,
+		player1: users[1],
+		player2: users[3],
+		player1Score: 7,
+		player2Score: 2,
+		date: new Date("2022-12-12T23:50:21.817Z"),
+		scoreToWin: 3,
+		backgroundUrl: ""
+
 	},
 ]
 

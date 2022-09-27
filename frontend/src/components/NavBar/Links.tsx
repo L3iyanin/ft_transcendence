@@ -17,10 +17,6 @@ const Links = () => {
 
 	const navigate = useNavigate();
 
-	const clientSocket: Socket = useSelector(
-		(state: any) => state.chat.clientSocket
-	);
-
 	const userData = useSelector((state: any) => state.user);
 
 	const onLogout = () => {
@@ -28,26 +24,11 @@ const Links = () => {
 		navigate('/');
 	};
 
-	const playGame = () => {
-		dispatch(setMatching());
-		const scoreToWin = 7;
-		toast.info(t("gamePage.dontCloseWindow"), {
-			position: toast.POSITION.TOP_CENTER,
-		});
-		clientSocket.emit('joinGame', {
-			userId: userData.user.id,
-			scoreToWin: scoreToWin,
-		});
-	};
-
-
 	return (
 		<div className="container h-16 w-auto mx-0 flex justify-center items-center gap-7 grow-1">
 			<nav className="container h-12 flex justify-end items-center gap-5">
 
-				<span onClick={playGame} className="cursor-pointer text-center text-base text-white font-medium">{t('play')}</span>
-
-				<Option url="/game">{t('home')}</Option>
+				<Option url="/home">{t('home')}</Option>
 				<Option url="/profile">{t('profile')}</Option>
 				<Option url="/settings">{t('settings')}</Option>
 				<Option url="/chat">{t('chat')}</Option>

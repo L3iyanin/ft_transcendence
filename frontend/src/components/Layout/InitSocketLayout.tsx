@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Socket } from "socket.io-client";
 import { setOnlineUsers, setSocket } from "../../reducers/ChatSlice";
-import { setStartedMatch } from "../../reducers/MatchSlice";
+import { setMatching, setStartedMatch } from "../../reducers/MatchSlice";
+import { ErrorAlertWithMessage } from "../UI/Error";
 
 const InitSocketLayout: React.FC<{
 	children: any;
@@ -53,10 +54,15 @@ const InitSocketLayout: React.FC<{
 
 		clientSocket.on("alreadyInMatch", () => {
 			console.log("=== alreadyInMatch ===");
+			ErrorAlertWithMessage(t("gamePage.alreadyInMatch"));
 		})
 
 		clientSocket.on("matching", () => {
 			console.log("=== matching ===");
+			dispatch(setMatching());
+			toast.info(t("gamePage.dontCloseWindow"), {
+				position: toast.POSITION.TOP_CENTER,
+			});
 		})
 
 		clientSocket.on("connectUserResponse", (users: IOnlineUser[]) => {
