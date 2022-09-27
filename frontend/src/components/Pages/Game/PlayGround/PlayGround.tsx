@@ -75,29 +75,9 @@ const PlayGround: React.FC<{
 
 
 			clientSocket.on("gameState", (gameState: IGameState) => {
-				console.log("gameState-----------");
-				// console.log(gameState);
 				setMatchPlayed(true);
 
 				updateBall(gameState.ballX, gameState.ballY);
-
-				window.ballXPosition = (gameState.ballX / PLAY_GROUND_WIDTH) * window.playgroundWidth;
-				window.ballYPosition = (gameState.ballY / PLAY_GROUND_HEIGHT) * window.playgroundHeight;
-
-				window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
-				window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
-
-				window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
-				window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
-
-				window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
-				window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
-
-				window.ballSize = BALL_SIZE * window.widthRatio;
-
-				window.player1YPositionRatio = window.player1Y / window.playgroundHeight;
-				window.player2YPositionRatio = window.player2Y / window.playgroundHeight;
-
 				setPlayersScore({
 					player1Score: gameState.player1Score,
 					player2Score: gameState.player2Score,
@@ -112,29 +92,8 @@ const PlayGround: React.FC<{
 
 
 			clientSocket.on("gameStateSpectators", (gameState: IGameState) => {
-				// console.log(gameState);
-				// setMatchPlayed(true);
-
-				console.log("Spectators+++++++");
 
 				updateBall(gameState.ballX, gameState.ballY);
-
-				window.ballXPosition = (gameState.ballX / PLAY_GROUND_WIDTH) * window.playgroundWidth;
-				window.ballYPosition = (gameState.ballY / PLAY_GROUND_HEIGHT) * window.playgroundHeight;
-
-				window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
-				window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
-
-				window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
-				window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
-
-				window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
-				window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
-
-				window.ballSize = BALL_SIZE * window.widthRatio;
-
-				window.player1YPositionRatio = window.player1Y / window.playgroundHeight;
-				window.player2YPositionRatio = window.player2Y / window.playgroundHeight;
 
 				setPlayersScore({
 					player1Score: gameState.player1Score,
@@ -171,7 +130,7 @@ const PlayGround: React.FC<{
 		updatePlayerPositionOutside: updatePlayerPosition2Outside,
 	} = usePlayerMove(PLAYER_FIRST_POSITION, PLAYER_TWO);
 
-	const { ballPosition, updateBall, updateBallOutside } = useBallMove();
+	const { updateBall } = useBallMove();
 
 	const ref = useRef(null);
 
@@ -195,40 +154,6 @@ const PlayGround: React.FC<{
 			window.heightRatio =
 				playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
 
-			// window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
-			// window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
-
-			// window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
-			// window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
-
-			// window.ballSize = BALL_SIZE * window.widthRatio;
-
-			// window.ballXPosition = window.playgroundWidth / 2 -
-			// 		window.ballSize / 2 +
-			// 		PLAYGROUND_BORDERSIZE +
-			// 		window.paddleXMargin / 2 - 2;
-
-			// window.ballYPosition = window.playgroundHeight / 2 -
-			// 		window.ballSize / 2 +
-			// 		PLAYGROUND_BORDERSIZE +
-			// 		window.paddleYMargin / 2 - 2;
-
-			// console.log("=========== old X and Y ===========");
-			// console.log(`window.ballXPosition: ${window.ballXPosition}`);
-			// console.log(`window.ballYPosition: ${window.ballYPosition}`);
-			// console.log("===================================");
-
-			// window.ballYPosition = (window.ballYPosition / PLAY_GROUND_HEIGHT) * window.playgroundHeight;
-			// window.ballXPosition = (window.ballXPosition / PLAY_GROUND_WIDTH) * window.playgroundWidth;
-
-			// window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
-			// window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
-
-			// console.log("=========== new X and Y ===========");
-			// console.log(`window.ballXPosition: ${window.ballXPosition}`);
-			// console.log(`window.ballYPosition: ${window.ballYPosition}`);
-			// console.log("===================================");
-
 			updatePlayerPosition1Outside(PLAYER_ONE);
 			updatePlayerPosition2Outside(PLAYER_TWO);
 		}
@@ -242,29 +167,7 @@ const PlayGround: React.FC<{
 
 				window.widthRatio = playgroundRef.current.offsetWidth / PLAY_GROUND_WIDTH;
 				window.heightRatio = playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
-				
-				// window.widthRatio = playgroundRef.current.offsetWidth / PLAY_GROUND_WIDTH;
-				// window.heightRatio = playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
-				// if (isNaN(window.player1Y)) {
-				// 	window.player1Y = PLAYER_FIRST_POSITION;
-				// }
-				// if (isNaN(window.player2Y)) {
-				// 	window.player2Y = PLAYER_FIRST_POSITION;
-				// }
-				// window.player1YPositionRatio = window.player1Y / window.playgroundHeight;
-				// window.player2YPositionRatio = window.player2Y / window.playgroundHeight;
-				// window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
-				// window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
-				// window.playgroundWidth = playgroundRef.current.offsetWidth;
-				// window.playgroundHeight = playgroundRef.current.offsetHeight;
-				// window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
-				// window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
-				// window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
-				// window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
-				// window.ballSize = BALL_SIZE * window.widthRatio;
-				// updateBallOutside();
-				// updatePlayerPosition1Outside(PLAYER_ONE);
-				// updatePlayerPosition2Outside(PLAYER_TWO);
+
 			}
 		});
 	}, []);
