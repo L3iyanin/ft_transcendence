@@ -7,7 +7,8 @@ import { GameGateway } from "./events/game.gateway";
 
 @Module({
 	imports: [OnlineUsersModule],
-	providers: [GameEventsService, GameGateway, GameService, GameController],
+	controllers: [GameController],
+	providers: [GameEventsService, GameGateway, GameService],
 	exports: [GameEventsService],
 })
 export class GameModule {}
