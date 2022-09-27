@@ -1,4 +1,5 @@
 import { User } from "@prisma/client";
+import GameLogic from "../gameLogic/gameLogic";
 
 export class BallDto {
 	x: number;
@@ -27,6 +28,7 @@ export class ResponseDto {
 
 export class LiveMatchDto {
 	id: number;
+	gameInstance: GameLogic;
 	player1Id: number;
 	player2Id: number;
 	scoreToWin: number;
