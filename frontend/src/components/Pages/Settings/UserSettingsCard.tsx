@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { ReactComponent as UploadIcon } from "../../../assets/icons/UploadAvatar.svg";
+import { getUser, setUserImg } from "../../../reducers/UserSlice";
 import { getProfileSettings, updateProfileSettings } from "../../../services/profile/settings";
 import { isResNotOk } from "../../../utils/helper/httpHelper";
 import ErrorAlert from "../../UI/Error";
@@ -9,12 +11,14 @@ import Input from "../../UI/inputs/Input";
 import LoadingSpinner from "../../UI/Loading/LoadingSpinner";
 
 const UserSettingsCard: React.FC<{
-	user: IUser;
 	enabledhandler: () => void;
-}> = ({ enabledhandler }) => {
+	usernameHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ enabledhandler, usernameHandler }) => {
 	const { t } = useTranslation();
 
 	const [user, setUser] = useState<IUser | null>(null);
+
+	const dispatch = useDispatch();
 
 	const hiddenFileInput = useRef<HTMLInputElement>(null);
 
@@ -43,6 +47,9 @@ const UserSettingsCard: React.FC<{
 			toast.success(res.message, {
 				position: toast.POSITION.TOP_CENTER,
 			});
+
+			dispatch(setUserImg(res.imgUrl));
+
 			setUser((prevState) => {
 				if (prevState) {
 					return {
@@ -114,6 +121,7 @@ const UserSettingsCard: React.FC<{
 				<Input
 					type="text"
 					placeholder={user.username}
+					onChange={usernameHandler}
 					className="w-full !py-3"
 				/>
 				<button

@@ -31,7 +31,7 @@ import { useTranslation } from "react-i18next";
 const PlayGround: React.FC<{
 	matchSettings?: IStartedMatch;
 }> = ({ matchSettings }) => {
-	const [matchPlayed, setMatchPlayed] = useState(false);
+	// const [matchPlayed, setMatchPlayed] = useState(false);
 
 	const [playerIndex, setPlayerIndex] = useState<number>(PLAYER_ONE);
 
@@ -51,7 +51,7 @@ const PlayGround: React.FC<{
 
 	const { t } = useTranslation();
 
-	usePrompt(t("gamePage.quit_helper"), matchPlayed);
+	// usePrompt(t("gamePage.quit_helper"), matchPlayed);
 
 	useEffect(() => {
 		if (LocalUserData && clientSocket && matchSettings) {
@@ -75,7 +75,7 @@ const PlayGround: React.FC<{
 
 
 			clientSocket.on("gameState", (gameState: IGameState) => {
-				setMatchPlayed(true);
+				// setMatchPlayed(true);
 
 				updateBall(gameState.ballX, gameState.ballY);
 				setPlayersScore({
@@ -111,7 +111,7 @@ const PlayGround: React.FC<{
 				} else {
 					setWinner(PLAYER_TWO);
 				}
-				setMatchPlayed(false);
+				// setMatchPlayed(false);
 			});
 		}
 	}, [clientSocket, LocalUserData, matchSettings]);
