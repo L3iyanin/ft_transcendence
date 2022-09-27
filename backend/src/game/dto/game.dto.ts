@@ -1,5 +1,7 @@
 import { User } from "@prisma/client";
-import GameLogic from "../gameLogic/gameLogic";
+import GameLogic from "../gameLogic/gameLogic"
+import { Server } from "socket.io";
+
 
 export class BallDto {
 	x: number;
@@ -28,6 +30,7 @@ export class ResponseDto {
 
 export class LiveMatchDto {
 	id: number;
+	server: Server;
 	gameInstance: GameLogic;
 	player1Id: number;
 	player2Id: number;

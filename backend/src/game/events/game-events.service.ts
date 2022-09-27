@@ -160,6 +160,7 @@ export class GameEventsService {
 					id: match.id,
 				},
 			});
+			return;
 		}
 
 		match = await this.prisma.match.findFirst({
@@ -183,13 +184,65 @@ export class GameEventsService {
 		});
 
 		if (match && match.live) {
-			// handle disconnect from live match
-			// end game and emit result to other player
-			await this.prisma.match.delete({
+			const liveMatch = this.getLiveMatch(match.id);
+			if (!liveMatch) {
+				return;
+			}
+			const gameState = liveMatch.gameInstance.getGameState();
+			let player1Score = gameState.player1Score;
+			let player2Score = gameState.player2Score;
+			let winnerId = userId == match.player1Id ? match.player2Id : match.player1Id;
+			let loserId = userId == match.player1Id ? match.player1Id : match.player2Id;
+
+			if (player1Score > player2Score && winnerId == match.player2Id) {
+				player1Score = player2Score + 1;
+			} else if (player2Score > player1Score && winnerId == match.player1Id) {
+				player2Score = player1Score + 1;
+			}
+
+			const endMatch = await this.prisma.match.update({
 				where: {
 					id: match.id,
 				},
+				data: {
+					live: false,
+					player1Score: gameState.player1Score,
+					player2Score: gameState.player2Score,
+				},
 			});
+
+			const matchName = generateMatchName(match.id);
+
+			liveMatch.server.to(matchName).emit("gameOver", {
+				player1Score: endMatch.player1Score,
+				player2Score: endMatch.player2Score,
+				isDisconnected: true,
+			});
+
+			await this.prisma.user.update({
+				where: {
+					id: winnerId,
+				},
+				data: {
+					wins: {
+						increment: 1,
+					},
+				},
+			});
+
+			await this.prisma.user.update({
+				where: {
+					id: loserId,
+				},
+				data: {
+					losses: {
+						increment: 1,
+					},
+				},
+			});
+
+			clearInterval(liveMatch.interval);
+			this.removeLiveMatch(match.id);
 		}
 	}
 
@@ -277,7 +330,7 @@ export class GameEventsService {
 			server.to(matchName).emit("gameState", gameState);
 		} else {
 			// end game
-			server.to(matchName).emit("gameState", gameState); // last goals
+			server.to(matchName).emit("gameState", gameState); // last goal
 			const endMatch = await this.prisma.match.update({
 				where: {
 					id: match.id,
@@ -292,6 +345,7 @@ export class GameEventsService {
 			server.to(matchName).emit("gameOver", {
 				player1Score: endMatch.player1Score,
 				player2Score: endMatch.player2Score,
+				isDisconnected: false,
 			});
 
 			const loserId = winnerId == match.player1Id ? match.player2Id : match.player1Id;
@@ -334,10 +388,10 @@ export class GameEventsService {
 			await this.gameTurn(gameInstance, match, server);
 		}, 1000 / FPS);
 		// store interval somewhere
-		this.addLiveMatch(match, interval, gameInstance);
+		this.addLiveMatch(match, interval, gameInstance, server);
 	}
 
-	addLiveMatch(match: Match, interval: NodeJS.Timer, gameInstance: GameLogic) {
+	addLiveMatch(match: Match, interval: NodeJS.Timer, gameInstance: GameLogic, server: Server) {
 		this.liveMatches.push({
 			id: match.id,
 			player1Id: match.player1Id,
@@ -345,6 +399,7 @@ export class GameEventsService {
 			scoreToWin: match.scoreToWin,
 			interval,
 			gameInstance,
+			server,
 		});
 	}
 
