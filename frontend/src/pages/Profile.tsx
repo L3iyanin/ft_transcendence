@@ -8,11 +8,22 @@ import UserCard from "../components/UserCard/UserCard";
 import LastMatches from "../components/LastMatches/LastMatches";
 import FirendsList from "../components/Pages/Profile/FriendsList/FriendsList";
 import AchievementsList from "../components/Pages/Profile/AchievementsList/AchievementsList";
+import { useSelector } from "react-redux";
 
 
 const Profile = () => {
 
-	const { userId } = useParams();
+	let { userId } = useParams();
+
+	const userData: IUserState = useSelector((state: any) => state.user);
+
+	if (!userData.user) {
+		return null;
+	}
+
+	if (!userId) {
+		userId = userData.user.id.toString();
+	}
 
 	return (
 		<>
@@ -21,7 +32,7 @@ const Profile = () => {
 				<main className="flex flex-col justify-between items-center gap-y-16">
 					<section className="w-full flex justify-between items-center gap-14">
 						<UserCard userId={userId} />
-						<LastMatches matches={lastMatches} isInProfile={true}/>
+						<LastMatches matches={lastMatches} userId={+userId} isInProfile={true}/>
 					</section>
 					<section className="gap-14 w-full flex justify-between items-center">
 						<FirendsList userId={userId} />

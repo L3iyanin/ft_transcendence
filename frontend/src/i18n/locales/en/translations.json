@@ -11,8 +11,6 @@
 	"technologiesUsed": "Technologies Used",
 	"search": "Search",
 	"password": "Password",
-	"wins": "wins",
-	"losses": "losses",
 	"friends": "friends",
 	"online": "online",
 	"lastMatches": "Last Matches:",
@@ -60,7 +58,8 @@
 		"watchTheMatch": "Watching The Match",
 		"theWinner": "The Winner",
 		"dontCloseWindow": "Please don't close the window or you will lose the matching and match",
-		"quit_helper": "Are you sure you want to quit the match?"
+		"quit_helper": "Are you sure you want to quit the match?",
+		"alreadyInMatch": "You are already in a match"
 	},
 	"chatPage": {
 		"dms": "DMs",

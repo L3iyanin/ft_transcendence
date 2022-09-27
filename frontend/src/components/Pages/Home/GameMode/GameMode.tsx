@@ -2,8 +2,15 @@ import { useTranslation } from "react-i18next";
 import { MatchTypeEnum } from "../../../../utils/constants/enum";
 import ModeDescription from "./ModeDescription";
 
-const GameMode: React.FC<{ mode: MatchTypeEnum }> = ({ mode }) => {
+const GameMode: React.FC<{
+	mode: MatchTypeEnum
+	onPlay: (scoreToWin: number) => void
+}> = ({ mode, onPlay }) => {
 	const { t } = useTranslation();
+
+	const onPlayHandler = () =>{
+		onPlay(mode);
+	}
 
 	return (
 		<section className="flex flex-col justify-center items-center gap-4">
@@ -25,7 +32,7 @@ const GameMode: React.FC<{ mode: MatchTypeEnum }> = ({ mode }) => {
 
 				<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 					<div className="w-[14px] h-[14px] rounded-full relative left-3/4 bg-beige"></div>
-					<button className="px-20 py-4 rounded-xl bg-red text-xl font-bold text-white text-center">
+					<button onClick={onPlayHandler} className="px-20 py-4 rounded-xl bg-red text-xl font-bold text-white text-center">
 						{t("homePage.Play")}
 					</button>
 				</div>

@@ -50,7 +50,7 @@ const PlayGround: React.FC<{
 
 	const { t } = useTranslation();
 
-	// usePrompt(t("gamePage.quit_helper"), matchPlayed);
+	usePrompt(t("gamePage.quit_helper"), matchPlayed);
 
 	useEffect(() => {
 		if (LocalUserData && clientSocket && matchSettings) {
