@@ -27,7 +27,7 @@ const Home: React.FC = () => {
 						<GameMode mode={MatchTypeEnum.Vip} />
 					</section>
 					<section className="w-full flex justify-between items-center gap-10">
-						<LastMatches matches={lastMatches} isInProfile={false}/>
+						<LastMatches matches={lastMatches}/>
 						<Leaderboard players={users} />
 					</section>
 				</section>

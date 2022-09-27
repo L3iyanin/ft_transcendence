@@ -1,7 +1,7 @@
 import Match from "../Match/Match";
 import { useTranslation } from "react-i18next";
 
-const LastMatches : React.FC < {matches : IMatch[], isInProfile : boolean} > = ({ matches, isInProfile }) => {
+const LastMatches : React.FC < {matches : IMatch[], isInProfile? : boolean} > = ({ matches, isInProfile }) => {
 	const { t } = useTranslation();
 
 	return (
@@ -9,7 +9,7 @@ const LastMatches : React.FC < {matches : IMatch[], isInProfile : boolean} > = (
 			<h2 className="text-3xl font-bold">{t("homePage.LastMatches")}</h2>
 			<section className={`${isInProfile ? "max-h-[320px]" : "max-h-[410px]"} w-full pr-8 overflow-y-auto`}>
 				{matches.map((match: IMatch, index: number) => (
-					<Match key={index} match={match} isInProfile={isInProfile} />
+					<Match key={index} match={match} isInProfile={isInProfile ?? false} />
 				))}
 			</section>
 		</section>

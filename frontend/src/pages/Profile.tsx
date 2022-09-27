@@ -6,9 +6,9 @@ import NavBar from "../components/NavBar/NavBar";
 import Footer from "../components/Footer/Footer";
 import UserCard from "../components/UserCard/UserCard";
 import LastMatches from "../components/LastMatches/LastMatches";
+import FirendsList from "../components/Pages/Profile/FriendsList/FriendsList";
+import AchievementsList from "../components/Pages/Profile/AchievementsList/AchievementsList";
 
-import FirendsList from "../components/pages/Profile/FriendsList/FriendsList";
-import AchievementsList from "../components/pages/Profile/AchievementsList/AchievementsList";
 
 const Profile = () => {
 
