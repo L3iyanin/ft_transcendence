@@ -68,9 +68,9 @@ export class GameGateway {
 		if (response.status === "SUCCESS") {
 			const spectatorRoomName = generateSpectatorsRoomName(payload.matchId);
 			client.join(spectatorRoomName);
-			client.emit("watchLiveMatchResponse", { message: response.message });
+			client.emit("watchLiveMatchResponse", response);
 		} else {
-			client.emit("watchLiveMatchResponse", { message: response.message });
+			client.emit("watchLiveMatchResponse", response);
 		}
 	}
 }
