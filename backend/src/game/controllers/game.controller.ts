@@ -21,7 +21,7 @@ export class GameController {
 	// get last x played matches (not live and not matching)
 	@ApiProperty()
 	@Get("last-matches/:count")
-	getLastMatches(@Param("count", ParseIntPipe) count: number): Promise<Match[]> {
+	getLastMatches(@Param("count", ParseIntPipe) count: number) {
 		return this.gameService.getLastMatches(count);
 	}
 
@@ -31,10 +31,7 @@ export class GameController {
 	getLastMatchesByUser(
 		@Param("count", ParseIntPipe) count: number,
 		@Param("userId", ParseIntPipe) userId: number
-	): Promise<Match[]> {
+	) {
 		return this.gameService.getLastMatchesByUser(count, userId);
 	}
-
-
-
 }
