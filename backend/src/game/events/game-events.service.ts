@@ -184,15 +184,6 @@ export class GameEventsService {
 		});
 
 		if (match && match.live) {
-<<<<<<< HEAD
-			// await this.prisma.match.delete({
-			// 	where: {
-			// 		id: match.id,
-			// 	},
-			// });
-			// return;
-=======
->>>>>>> 90c4983afa9bd4c4f92134780244ab766ffa45fe
 			const liveMatch = this.getLiveMatch(match.id);
 			if (!liveMatch) {
 				return;
@@ -397,10 +388,6 @@ export class GameEventsService {
 			await this.gameTurn(gameInstance, match, server);
 		}, 1000 / FPS);
 		// store interval somewhere
-<<<<<<< HEAD
-		// this.gameTurn(gameInstance, match, server)
-=======
->>>>>>> 90c4983afa9bd4c4f92134780244ab766ffa45fe
 		this.addLiveMatch(match, interval, gameInstance, server);
 	}
 
