@@ -61,13 +61,15 @@ const PlayGround: React.FC<{
 					player2Score: gameState.player2Score,
 				});
 
-				if (matchSettings.player1.id === LocalUserData.id) {
+				if (matchSettings.player1.id !== LocalUserData.id) {
 					updatePlayer1Y(gameState.player1y);
 				}
 				else {
 					updatePlayer2Y(gameState.player2y);
 				}
 			})
+
+			// clientSocket.on("")
 
 		}
 
