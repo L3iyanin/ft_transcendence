@@ -16,6 +16,7 @@ import {
 	PLAYGROUND_BORDERSIZE,
 	PLAY_GROUND_HEIGHT,
 	PLAY_GROUND_WIDTH,
+	SPECTATOR,
 	VIP_GAME_BG,
 } from "../../../../utils/constants/Game";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -54,16 +55,27 @@ const PlayGround: React.FC<{
 
 	useEffect(() => {
 		if (LocalUserData && clientSocket && matchSettings) {
-			if (matchSettings.player1.id !== LocalUserData.id) {
+			if (matchSettings.player1.id === LocalUserData.id) {
+				setPlayerIndex(PLAYER_ONE);
+				clientSocket.emit("readyToPlay", {
+					userId: LocalUserData.id,
+					matchId: matchSettings.matchId,
+				});
+			}
+			else if (matchSettings.player2.id === LocalUserData.id) {
 				setPlayerIndex(PLAYER_TWO);
+				clientSocket.emit("readyToPlay", {
+					userId: LocalUserData.id,
+					matchId: matchSettings.matchId,
+				});
+			}
+			else {
+				setPlayerIndex(SPECTATOR);
 			}
 
-			clientSocket.emit("readyToPlay", {
-				userId: LocalUserData.id,
-				matchId: matchSettings.matchId,
-			});
 
 			clientSocket.on("gameState", (gameState: IGameState) => {
+				console.log("gameState-----------");
 				// console.log(gameState);
 				setMatchPlayed(true);
 
@@ -86,9 +98,6 @@ const PlayGround: React.FC<{
 				window.player1YPositionRatio = window.player1Y / window.playgroundHeight;
 				window.player2YPositionRatio = window.player2Y / window.playgroundHeight;
 
-				// updatePlayerPosition1Outside(PLAYER_ONE);
-				// updatePlayerPosition2Outside(PLAYER_TWO);
-
 				setPlayersScore({
 					player1Score: gameState.player1Score,
 					player2Score: gameState.player2Score,
@@ -99,6 +108,41 @@ const PlayGround: React.FC<{
 				} else {
 					updatePlayer2Y(gameState.player2y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
 				}
+			});
+
+
+			clientSocket.on("gameStateSpectators", (gameState: IGameState) => {
+				// console.log(gameState);
+				// setMatchPlayed(true);
+
+				console.log("Spectators+++++++");
+
+				updateBall(gameState.ballX, gameState.ballY);
+
+				window.ballXPosition = (gameState.ballX / PLAY_GROUND_WIDTH) * window.playgroundWidth;
+				window.ballYPosition = (gameState.ballY / PLAY_GROUND_HEIGHT) * window.playgroundHeight;
+
+				window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
+				window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
+
+				window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
+				window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
+
+				window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
+				window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
+
+				window.ballSize = BALL_SIZE * window.widthRatio;
+
+				window.player1YPositionRatio = window.player1Y / window.playgroundHeight;
+				window.player2YPositionRatio = window.player2Y / window.playgroundHeight;
+
+				setPlayersScore({
+					player1Score: gameState.player1Score,
+					player2Score: gameState.player2Score,
+				});
+
+				updatePlayer1Y(gameState.player1y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+				updatePlayer2Y(gameState.player2y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
 			});
 
 			clientSocket.on("gameOver", (data: IGameOver) => {
@@ -134,7 +178,7 @@ const PlayGround: React.FC<{
 	const movePlayer = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		if (playerIndex === PLAYER_ONE) {
 			movePlayer1ByMouse(e);
-		} else {
+		} else if (playerIndex === PLAYER_TWO) {
 			movePlayer2ByMouse(e);
 		}
 	};

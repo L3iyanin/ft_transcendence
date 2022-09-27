@@ -31,7 +31,7 @@ const Match : React.FC <{match : IMatch, isInProfile : boolean, userId?: number}
 					isLeft={false}
 				/>
 			</div>
-			{match.live ? <SeeLive /> : <FirstCrown />}
+			{match.live ? <SeeLive matchId={match.id!} userId={userId!} /> : <FirstCrown />}
 		</article>
 	);
 };

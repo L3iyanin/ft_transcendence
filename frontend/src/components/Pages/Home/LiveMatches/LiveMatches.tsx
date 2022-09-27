@@ -5,7 +5,7 @@ import LoadingSpinner from "../../../UI/Loading/LoadingSpinner";
 import { getLiveMatches } from "../../../../services/home/home";
 import ErrorAlert from "../../../UI/Error";
 
-const LiveMatches : React.FC < {matches : IMatch[]} > = ({matches}) => {
+const LiveMatches : React.FC < {userId: number} > = ({ userId }) => {
 	const { t } = useTranslation();
 
 	const [liveMatches, setLiveMatches] = useState<IMatch[] | null> (null);
@@ -13,7 +13,7 @@ const LiveMatches : React.FC < {matches : IMatch[]} > = ({matches}) => {
 	useEffect(() => {
 		getLiveMatches()
 			.then(res => {
-				console.log(res);
+				// console.log(res);
 				setLiveMatches(res);
 			})
 			.catch(err => {
@@ -38,7 +38,7 @@ const LiveMatches : React.FC < {matches : IMatch[]} > = ({matches}) => {
 			<h2 className="text-3xl font-bold">{t("homePage.LiveMatches")}</h2>
 			<section className="w-full max-h-[320px] pr-8 overflow-y-auto">
 				{liveMatches.map((match: IMatch, index: number) => (
-					<Match key={index} match={match} isInProfile={false} />
+					<Match key={index} match={match} isInProfile={false} userId={userId} />
 				))}
 			</section>
 		</section>

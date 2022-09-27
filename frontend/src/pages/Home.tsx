@@ -14,11 +14,11 @@ const Home: React.FC = () => {
 
 	const clientSocket = useSelector((state: any) => state.chat.clientSocket);
 
-	const userData = useSelector((state: any) => state.user);
+	const userData: IUserState = useSelector((state: any) => state.user);
 
 	const playGame = (scoreToWin: number) => {
 		clientSocket.emit('joinGame', {
-			userId: userData.user.id,
+			userId: userData.user?.id,
 			scoreToWin: scoreToWin,
 		});
 	};
@@ -29,7 +29,7 @@ const Home: React.FC = () => {
 			<main className="flex flex-col justify-between items-center gap-20">
 				<section className="w-full flex justify-between items-center gap-16">
 					<UserCard />
-					<LiveMatches matches={liveMatches} />
+					{ userData.user && <LiveMatches userId={userData.user.id} /> }
 				</section>
 				<section className="w-full flex flex-col justify-between items-center gap-10">
 					<section className="w-full px-8 flex justify-between items-center gap-4">

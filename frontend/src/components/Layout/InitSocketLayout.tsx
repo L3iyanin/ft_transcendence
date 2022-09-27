@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { Socket } from "socket.io-client";
 import { setOnlineUsers, setSocket } from "../../reducers/ChatSlice";
 import { setMatching, setStartedMatch } from "../../reducers/MatchSlice";
+import { ResponseStatusEnum } from "../../utils/constants/enum";
 import { ErrorAlertWithMessage } from "../UI/Error";
 
 const InitSocketLayout: React.FC<{
@@ -50,6 +51,17 @@ const InitSocketLayout: React.FC<{
 			toast.info(t("playersReadyToPlay"), {
 				position: toast.POSITION.TOP_CENTER,
 			});
+		});
+
+		clientSocket.on("watchLiveMatchResponse", (data: IWatchMatchRes) => {
+			console.log(data);
+			if (data.status === ResponseStatusEnum.ERROR) {
+				ErrorAlertWithMessage(data.message);
+				return;
+			}
+			// add spectator to list of them
+			dispatch(setStartedMatch(data.matchSettings));
+			navigate(`/game`);
 		});
 
 		clientSocket.on("alreadyInMatch", () => {

@@ -18,34 +18,9 @@ const useBallMove = () => {
 	const [ballPosition, setBallPosition] = useState<{ x: number; y: number; }>({ x: 0, y: 0 });
 
 	const updateBall = (ballX: number, ballY: number) => {
-
-		// window.ballYPosition = ballY / PLAY_GROUND_HEIGHT * window.playgroundHeight;
-		// window.ballXPosition = ballX / PLAY_GROUND_WIDTH * window.playgroundWidth;
-
-
 		window.ballYPosition = ballY;
 		window.ballXPosition = ballX;
-
-		// console.log(`ballY: ${ballY}, ballX: ${ballX}`);
-
-		// console.log(`window.playgroundHeight: ${window.playgroundHeight}`);
-		// console.log(`window.playgroundWidth: ${window.playgroundWidth}`);
-
-		// console.log(`window.ballYPosition: ${window.ballYPosition}`);
-		// console.log(`window.ballXPosition: ${window.ballXPosition}`);
-
-
-		// window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
-		// window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
-
-		// const newX = window.playgroundWidth * window.ballXPositionRatio;
-		// const newY = window.playgroundHeight * window.ballYPositionRatio;
 		
-		// window.ballXPosition = newX;
-		// window.ballYPosition = newY;
-
-		// setBallPosition({ x: newX, y: newY });
-
 	}
 
 	const updateBallOutside = () => {

@@ -32,3 +32,9 @@ interface IGameOver {
 	player2Score: number,
 	isDisconnected: boolean,
 }
+
+interface IWatchMatchRes {
+	status: ResponseStatusEnum,
+	message: string,
+	matchSettings: IStartedMatch,
+}

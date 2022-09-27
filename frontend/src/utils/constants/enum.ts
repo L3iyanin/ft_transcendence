@@ -46,3 +46,8 @@ export enum CollisionTypeEnum {
 	RIGHT_PADDLE = "RIGHT_PADDLE",
 	NONE = "NONE",
 }
+
+export enum ResponseStatusEnum {
+	SUCCESS = "SUCCESS",
+	ERROR = "ERROR",
+}
