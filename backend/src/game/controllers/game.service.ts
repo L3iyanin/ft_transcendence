@@ -10,27 +10,26 @@ export class GameService {
 	}
 
 	async getLiveMatches() {
-		const matches = this.prisma.match.findMany({
+		const matches = await this.prisma.match.findMany({
 			where: {
 				live: true,
 			},
 		});
-		const users = this.prisma.user.findMany();
-		return Promise.all([matches, users]).then((values) => {
-			const matches = values[0];
-			const users = values[1];
-			return matches.map((match) => {
-				return {
-					...match,
-					player1: users.find((user) => user.id === match.player1Id),
-					player2: users.find((user) => user.id === match.player2Id),
-				};
-			});
+		const users = await this.prisma.user.findMany();
+		return matches.map((match) => {
+			const player1 = users.find((user) => user.id === match.player1Id);
+			const player2 = users.find((user) => user.id === match.player2Id);
+			return {
+				...match,
+				player1,
+				player2,
+			};
 		});
+
 	}
 
 	async getLastMatches(count: number) {
-		const matches = this.prisma.match.findMany({
+		const matches = await this.prisma.match.findMany({
 			where: {
 				live: false,
 				isMatching: false,
@@ -40,22 +39,20 @@ export class GameService {
 			},
 			take: count,
 		});
-		const users = this.prisma.user.findMany();
-		return Promise.all([matches, users]).then((values) => {
-			const matches = values[0];
-			const users = values[1];
-			return matches.map((match) => {
-				return {
-					...match,
-					player1: users.find((user) => user.id === match.player1Id),
-					player2: users.find((user) => user.id === match.player2Id),
-				};
-			});
+		const users = await this.prisma.user.findMany();
+		return matches.map((match) => {
+			const player1 = users.find((user) => user.id === match.player1Id);
+			const player2 = users.find((user) => user.id === match.player2Id);
+			return {
+				...match,
+				player1,
+				player2,
+			};
 		});
 	}
 
 	async getLastMatchesByUser(count: number, userId: number) {
-		const matches = this.prisma.match.findMany({
+		const matches = await this.prisma.match.findMany({
 			where: {
 				live: false,
 				isMatching: false,
@@ -73,17 +70,15 @@ export class GameService {
 			},
 			take: count,
 		});
-		const users = this.prisma.user.findMany();
-		return Promise.all([matches, users]).then((values) => {
-			const matches = values[0];
-			const users = values[1];
-			return matches.map((match) => {
-				return {
-					...match,
-					player1: users.find((user) => user.id === match.player1Id),
-					player2: users.find((user) => user.id === match.player2Id),
-				};
-			});
+		const users = await this.prisma.user.findMany();
+		return matches.map((match) => {
+			const player1 = users.find((user) => user.id === match.player1Id);
+			const player2 = users.find((user) => user.id === match.player2Id);
+			return {
+				...match,
+				player1,
+				player2,
+			};
 		});
 	}
 }
