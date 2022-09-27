@@ -139,7 +139,8 @@
 		"ScanTheQR": "Scan the QR",
 		"VerifyYourDevice": "Verify your device",
 		"EnterYourCode" : "Enter your code",
-		"verify" : "verify"
+		"verify" : "verify",
+		"usernameError": "Username is required and must be at least 3"
 	},
 	"signInSuccess": "You login success !!",
 	"searchPage": {

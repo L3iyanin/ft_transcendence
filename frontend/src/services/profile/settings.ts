@@ -11,3 +11,9 @@ export const updateProfileSettings = (data: any) => {
 			.then(res => res.data)
 			// .catch(err => console.error(`err`, err))
 }
+
+export const updateUsername = (username: string) => {
+	return axios.post(`/users/update-profile-info`, { name: username })
+			.then(res => res.data)
+			// .catch(err => console.error(`err`, err))
+}

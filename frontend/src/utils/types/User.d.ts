@@ -42,6 +42,11 @@ interface UserInterface {
 	id: number;
 	username: string,
 	fullName: string,
+	imgUrl?: string,
+	// login?: string,
+	// losses?: number,
+	// twoFactorAuth?: boolean
+	// wins?: number,
 	expiresIn?: string,
 }
 
