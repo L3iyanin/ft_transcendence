@@ -29,7 +29,7 @@ const Links = () => {
 
 	const playGame = () => {
 		dispatch(setMatching());
-		const scoreToWin = 7;
+		const scoreToWin = 3;
 		clientSocket.emit('joinGame', {
 			userId: userData.user.id,
 			scoreToWin: scoreToWin,
