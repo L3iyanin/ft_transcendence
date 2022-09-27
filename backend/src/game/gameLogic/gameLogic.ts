@@ -141,13 +141,13 @@ class GameLogic {
 			PADDLE_X_MARGIN + PLAYGROUND_BORDERSIZE - PLAYGROUND_BORDERSIZE
 		) {
 			this.resetGame();
-			this.player1Score += 1;
+			this.player2Score += 1;
 			return ;
 		}
 
 		if (newX + BALL_SIZE / 2 >= PLAY_GROUND_WIDTH - PADDLE_WIDTH) {
 			this.resetGame();
-			this.player2Score += 1;
+			this.player1Score += 1;
 			return ;
 		}
 
