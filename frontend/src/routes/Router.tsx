@@ -9,6 +9,7 @@ import Home from "../pages/Home";
 import ChannelSettings from "../pages/ChannelSettings";
 import RequireAuth from "./RequireAuth";
 import NotRequireAuth from "./NotRequireAuth";
+import Search from "../pages/Search";
 
 const Router: React.FC = () => {
 	return (
@@ -16,15 +17,20 @@ const Router: React.FC = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route element={<RequireAuth />}>
-						<Route path="/profile" element={<Profile />} />
+						<Route path="/profile/" element={<Profile />} />
+						<Route path="/profile/:userId" element={<Profile />} />
 						<Route path="/settings" element={<Settings />} />
 						<Route path="/chat" element={<Chat />} />
 						<Route
-							path="/:channelId/channel-settings"
+							path="/channel/:channelId/settings"
 							element={<ChannelSettings />}
 						/>
 						<Route path="/game" element={<Game />} />
+
+						<Route path="/search" element={<Search />} />
+
 						<Route path="/home" element={<Home />} />
+
 					</Route>
 					<Route element={<NotRequireAuth />}>
 						<Route path="/" element={<Landing />} />

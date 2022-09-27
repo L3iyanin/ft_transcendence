@@ -18,15 +18,17 @@ const InitSocketLayout: React.FC<{
 	}, []);
 
 	useEffect(() => {
-		if (!clientSocket) return;
+		if (!clientSocket || !userData) return;
 		
-		if (userData) {
-			clientSocket.on("connect", () => {
-				clientSocket.emit("addOnlineUser", { user: userData.user, socketId: clientSocket.id});
-			});
-		}
+		clientSocket.on("connect", () => {
+			clientSocket.emit("connectUser", { username: userData.user?.username, fullName: userData.user?.fullName, id: userData.user?.id});
+		});
 
-		clientSocket.on("onlineUsers", (users: IOnlineUser[]) => {
+		clientSocket.on("connect_error", (err) => {
+			console.error(`connect_error due to ${err.message}`);
+		  });
+
+		clientSocket.on("connectUserResponse", (users: IOnlineUser[]) => {
 			dispatch(setOnlineUsers(users));
 		})
 

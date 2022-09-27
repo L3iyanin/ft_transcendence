@@ -19,7 +19,6 @@ export class AuthService {
 			);
 			const token = await auth.get_Access_token(code);
 
-			console.log(token);
 
 			const data = await auth.get_user_data(token.access_token);
 			const fullName: any = data.first_name + " " + data.last_name;

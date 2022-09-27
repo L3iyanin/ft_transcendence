@@ -2,18 +2,54 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { Achievement } from "./dto/achievement.dto";
 import { Friend } from "./dto/friend.dto";
-import { FriendRequest } from "./dto/friendRequest.dto";
 import { userInLeaderboard } from "./dto/userInLeaderboard";
 import { UserInfo } from "./dto/userInfo.dto";
-import multer from "multer";
-import { extname, join } from "path";
+import { extname } from "path";
 import { PostResponce } from "./dto/postResponce.dto";
+import { generateChannelName } from "src/chat/helpers";
+import { ChatService } from "src/chat/controllers/chat.service";
 
 const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService {
-	async getUserInfoById(userId: number): Promise<UserInfo> {
+
+	constructor(private readonly ChatService: ChatService) {
+
+	}
+
+	async getAllUsers(currentUserID: number): Promise<
+		{
+			id: number;
+			fullName: string;
+			username: string;
+			imgUrl: string;
+			isFriend: Boolean;
+		}[]
+	> {
+		const users = await prisma.user.findMany({
+			include: {
+				friends: true,
+			},
+		});
+
+		let returnedUsers = users.map((user) => {
+			let isFriend = user.friends.some((friend) => friend.id === currentUserID);
+			return {
+				id: user.id,
+				fullName: user.fullName,
+				username: user.username,
+				imgUrl: user.imgUrl,
+				isFriend: isFriend,
+			};
+		})
+
+		returnedUsers = returnedUsers.filter(user => user.id !== currentUserID);
+
+		return returnedUsers;
+	}
+
+	async getUserInfoById(userId: number, currentUserID: number): Promise<UserInfo> {
 		try {
 			const user = await prisma.user.findUnique({
 				where: {
@@ -38,6 +74,34 @@ export class UsersService {
 					},
 				},
 			});
+
+			let status: "NONE" | "BLOCKED" | "FRIEND" = "NONE";
+			if (userId !== currentUserID) {
+				// check if currentUserId is in user.friends
+				const isFriend = user.friends.some((friend) => friend.id === currentUserID);
+				if (isFriend) {
+					status = "FRIEND";
+				}
+				// check if current user blocked user
+				const channelName = generateChannelName(userId, currentUserID);
+				const channel = await prisma.channel.findUnique({
+					where: {
+						name: channelName,
+					},
+					include: {
+						members: true,
+					},
+				});
+				if (channel) {
+					const userInChannel = channel.members.find(
+						(member) => member.userId === userId
+					);
+					if (userInChannel.status === "BLOCKED") {
+						status = "BLOCKED";
+					}
+				}
+			}
+
 			const userInfo: UserInfo = {
 				id: user.id,
 				username: user.username,
@@ -47,6 +111,7 @@ export class UsersService {
 				loses: user.loses,
 				numberOfAchievements: user.achievements.length,
 				numberOfFriends: user.friends.length,
+				userStatus: status,
 			};
 			return userInfo;
 		} catch (err) {
@@ -145,6 +210,7 @@ export class UsersService {
 			const friends: Friend[] = [];
 			user.friends.map((friend) => {
 				friends.push({
+					id: friend.id,
 					fullName: friend.fullName,
 					username: friend.username,
 					imgUrl: friend.imgUrl,
@@ -159,135 +225,61 @@ export class UsersService {
 		}
 	}
 
-	async sendFriendRequest(from: number, to: number): Promise<PostResponce> {
+	async addFriend(from: number, to: number): Promise<PostResponce> {
 		try {
-			let users = await prisma.user.findMany({
+			const fromUser = await prisma.user.findUnique({
 				where: {
-					id: {
-						in: [from, to],
-					},
+					id: from,
 				},
-				include: {
+				select: {
 					friends: true,
-					friendRequests: true,
 				},
 			});
-			let toUser = users.find((user) => user.id == to);
-			let fromUser = users.find((user) => user.id == from);
-
+			const toUser = await prisma.user.findUnique({
+				where: {
+					id: to,
+				},
+				select: {
+					friends: true,
+				},
+			});
 			if (
-				toUser.friendRequests.some((request) => request.id == from) ||
-				fromUser.friendRequests.some((request) => request.id == to)
+				fromUser.friends.some((friend) => friend.id === to) ||
+				toUser.friends.some((friend) => friend.id === from)
 			) {
-				throw new HttpException("Friend request already sent", HttpStatus.BAD_REQUEST);
+				throw new HttpException("User already friends", HttpStatus.BAD_REQUEST);
 			}
-			if (toUser.friends.some((friend) => friend.id == from)) {
-				throw new HttpException("Users are already friends", HttpStatus.BAD_REQUEST);
-			}
-
+			await prisma.user.update({
+				where: {
+					id: from,
+				},
+				data: {
+					friends: {
+						connect: {
+							id: to,
+						},
+					},
+				},
+			});
 			await prisma.user.update({
 				where: {
 					id: to,
 				},
 				data: {
-					friendRequests: {
-						connect: { id: from },
-					},
-				},
-			});
-			return {
-				message: "Friend request sent",
-			};
-		} catch (err) {
-			console.log(err);
-			throw new HttpException(err.response, err.status);
-		}
-	}
-
-	async acceptFriendRequest(userId: number, friendId: number): Promise<PostResponce> {
-		try {
-			let user = await prisma.user.findUnique({
-				where: { id: userId },
-				select: {
-					friendRequests: true,
-				},
-			});
-			const friendRequestExist = user.friendRequests.some((req) => req.id == friendId);
-			if (!friendRequestExist)
-				throw new HttpException("Friend request doesn't exist", HttpStatus.BAD_REQUEST);
-			await prisma.user.update({
-				where: { id: userId },
-				data: {
-					friendRequests: {
-						disconnect: { id: friendId },
-					},
 					friends: {
-						connect: { id: friendId },
+						connect: {
+							id: from,
+						},
 					},
 				},
 			});
-			await prisma.user.update({
-				where: { id: friendId },
-				data: {
-					friends: {
-						connect: { id: userId },
-					},
-				},
-			});
-			return {
-				message: "Friend request accepted",
-			};
-		} catch (err) {
-			throw new HttpException(err.response, err.status);
-		}
-	}
 
-	async discardFriendRequest(userId: number, friendId: number): Promise<PostResponce> {
-		try {
-			const user = await prisma.user.findUnique({
-				where: { id: userId },
-				select: {
-					friendRequests: true,
-				},
-			});
-			const friendRequestExist = user.friendRequests.some((req) => req.id == friendId);
-			if (!friendRequestExist)
-				return new HttpException("Friend Request dosnt exist", HttpStatus.BAD_REQUEST);
-			await prisma.user.update({
-				where: { id: userId },
-				data: {
-					friendRequests: {
-						disconnect: { id: friendId },
-					},
-				},
-			});
-			return {
-				message: "Friend request discarded",
-			};
-		} catch (err) {
-			throw new HttpException(err.response, err.status);
-		}
-	}
+			// create DM channel between users
+			this.ChatService.startDMWithUser(from, to);
 
-	async getFriendRequests(userId: number): Promise<FriendRequest[]> {
-		try {
-			const user = await prisma.user.findUnique({
-				where: {
-					id: userId,
-				},
-				select: {
-					friendRequests: true,
-				},
-			});
-			const friendRequests: FriendRequest[] = [];
-			user.friendRequests.map((friend) => {
-				friendRequests.push({
-					userName: friend.username,
-					friendId: friend.id,
-					imgUrl: friend.imgUrl,
-				});
-			});
-			return friendRequests;
+			return {
+				message: "Friend added successfully",
+			};
 		} catch (err) {
 			console.log(err);
 			throw new HttpException(err.response, err.status);
@@ -315,22 +307,19 @@ export class UsersService {
 		};
 	}
 
-	async updateImageProfile(
-		file: Express.Multer.File,
-		userId: number,
-		username: string
-	): Promise<PostResponce> {
+	async updateImageProfile(file: Express.Multer.File, userId: number, username: string) {
 		try {
 			const name = file.originalname.split(".")[0];
 			const fileExtName = extname(file.originalname);
 			const fileName = `/${name}-${username}${fileExtName}`;
-			const filePath = join(process.env.BACKEND_URL, fileName);
+			const filePath = process.env.BACKEND_URL + fileName;
 			await prisma.user.update({
 				where: { id: userId },
 				data: { imgUrl: filePath },
 			});
 			return {
 				message: "User avatar updated",
+				imgUrl: filePath,
 			};
 		} catch (err) {
 			console.log(err);

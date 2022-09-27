@@ -11,21 +11,18 @@ datasource db {
 }
 
 model User {
-    id                     Int           @id @default(autoincrement())
-    username               String        @unique
-    fullName               String
-    login                  String        @unique
-    imgUrl                 String
-    wins                   Int           @default(0)
-    loses                  Int           @default(0)
-    twoFactorAuth          Boolean       @default(false)
-    friends                User[]        @relation("friends")
-    friendsRelation        User[]        @relation("friends")
-    friendRequests         User[]        @relation("friendRequests")
-    friendRequestsRelation User[]        @relation("friendRequests")
-    achievements           Achievement[]
-    createdChannles        Channel[]
-    members                Member[]
+    id              Int           @id @default(autoincrement())
+    username        String        @unique
+    fullName        String
+    login           String        @unique
+    imgUrl          String
+    wins            Int           @default(0)
+    loses           Int           @default(0)
+    twoFactorAuth   Boolean       @default(false)
+    friends         User[]        @relation("friends")
+    friendsRelation User[]        @relation("friends")
+    achievements    Achievement[]
+    members         Member[]
 }
 
 model Match {
@@ -49,19 +46,17 @@ model Achievement {
 }
 
 model Channel {
-    id            Int           @id @default(autoincrement())
-    name          String // in case of dm, it will be the name of the other user, in case of group, it will be the name of the group
-    imgUrl        String // same as above
-    owner         User          @relation(fields: [userId], references: [id])
-    userId        Int
-    members       Member[]
-    messages      Message[]
-    status        ChannleStatus
-    password      String?
-    lastMessagdID Int?
+    id       Int         @id @default(autoincrement())
+    name     String      @unique // in case of dm, it will be the name of the other user, in case of group, it will be the name of the group
+    imgUrl   String? // same as above
+    // ondelete cascade
+    members  Member[]
+    messages Message[]
+    type     ChannelType
+    password String?
 }
 
-enum ChannleStatus {
+enum ChannelType {
     DM
     PUBLIC
     PRIVATE
@@ -74,14 +69,17 @@ model Member {
     status    MemberStatus
     until     DateTime?
     role      Roles
-    Channel   Channel      @relation(fields: [channelId], references: [id])
+    Channel   Channel      @relation(fields: [channelId], references: [id], onDelete: Cascade)
     channelId Int
     userId    Int
     messages  Message[]
+
+    // userId and channelId are unique together
+    @@unique([userId, channelId])
 }
 
 enum MemberStatus {
-    BANNED
+    BLOCKED
     MUTED
     NONE
 }
@@ -95,9 +93,10 @@ enum Roles {
 model Message {
     id        Int      @id @default(autoincrement())
     content   String
-    sender    Member   @relation(fields: [memberId], references: [id])
-    channel   Channel  @relation(fields: [channelId], references: [id])
-    date      DateTime @default(now())
+    from      Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+    channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
     channelId Int
     memberId  Int
+    createdAt DateTime @default(now())
+    invite    Boolean  @default(false)
 }
