@@ -37,6 +37,22 @@
 		"teamMateThree": "khalid benlyazid",
 		"teamMateFour": "imran baali"
 	},
+	"wins" : "wins",
+	"losses" : "losses",
+	"homePage" : {
+		"online": "online",
+		"offline": "offline",
+		"friends" : "friends",
+		"achievements" : "achievements",
+		"LiveMatches" : "Live Matches:",
+		"SeeMatchLive" : "See match live",
+		"MarinefordPong" : "Marineford Pong",
+		"WanoPong" : "Wano Pong",
+		"GoalsToWin" : "Goals to win",
+		"Play" : "Play",
+		"LastMatches" : "Last Played Matches:",
+		"Leaderboard" : "Leaderboard"
+	},
 	"gamePage": {
 		"goalsToWin": "Goals to win",
 		"watchTheMatch": "Watching The Match"
