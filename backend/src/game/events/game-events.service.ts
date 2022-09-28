@@ -496,7 +496,8 @@ export class GameEventsService {
 		try{
 
 			// const achievements : Achievement[] = await this.userService.getUserAchievements(player.id)
-			if(player.wins == 1 && player.losses == 0){ //? id 1  win first played match
+			if(player.wins == 1 && player.losses == 0){ //? id 1
+				//? win first played match
 			}
 
 			const allUserMatches = await this.prisma.match.findMany({
@@ -523,8 +524,9 @@ export class GameEventsService {
 				else
 					countWinsInRow == -10000
 			})
-			if (countWinsInRow == 3)  {//? id 2 Win 3 Match in row
-			
+			if (countWinsInRow == 3)  {//? id 2
+				//? Win 3 Match in row
+
 			}
 			if (player.id == match.player1Id && match.player1Score > match.player2Score && opponent.login == "kbenlyaz"){ //? id 3
 				//? you win vs khalid
@@ -539,10 +541,15 @@ export class GameEventsService {
 			}
 			else if (player.id == match.player2Id && match.player1Score < match.player2Score && match.player1Score == 0){
 				// ?Win with clean sheet
+			}
+
+			if (countWinsInRow == 5)  {//? id 5
+				//? Win 5 Match in row
 
 			}
-	}catch(err){
-		throw new HttpException(err.message, err.status)
-	}
+
+		}catch(err){
+			throw new HttpException(err.message, err.status)
+		}
 	}
 }

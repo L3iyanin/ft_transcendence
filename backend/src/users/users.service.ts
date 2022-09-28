@@ -65,6 +65,7 @@ export class UsersService {
 					imgUrl: true,
 					wins: true,
 					losses: true,
+					twoFactorAuth : true,
 					achievements: {
 						select: {
 							id: true,
@@ -115,6 +116,7 @@ export class UsersService {
 				numberOfAchievements: user.achievements.length,
 				numberOfFriends: user.friends.length,
 				userStatus: status,
+				twoFactorAuth : user.twoFactorAuth
 			};
 			return userInfo;
 		} catch (err) {

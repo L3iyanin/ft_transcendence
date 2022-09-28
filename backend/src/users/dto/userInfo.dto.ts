@@ -23,6 +23,9 @@ export class UserInfo {
 
 	@ApiProperty()
 	losses: number;
+	
+	@ApiProperty()
+	twoFactorAuth : boolean
 
 	@ApiProperty()
 	userStatus: "NONE" |  "BLOCKED" | "FRIEND"
