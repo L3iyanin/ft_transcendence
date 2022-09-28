@@ -25,7 +25,6 @@ export class GameService {
 				player2,
 			};
 		});
-
 	}
 
 	async getLastMatches(count: number) {
