@@ -11,14 +11,12 @@ import { ChatService } from "src/chat/controllers/chat.service";
 import { authenticator } from "otplib";
 import { toFile } from "qrcode";
 
-
 @Injectable()
 export class UsersService {
 	prisma: PrismaClient;
 
 	constructor(private readonly ChatService: ChatService) {
 		this.prisma = new PrismaClient();
-
 	}
 
 	async getAllUsers(currentUserID: number): Promise<
@@ -45,9 +43,9 @@ export class UsersService {
 				imgUrl: user.imgUrl,
 				isFriend: isFriend,
 			};
-		})
+		});
 
-		returnedUsers = returnedUsers.filter(user => user.id !== currentUserID);
+		returnedUsers = returnedUsers.filter((user) => user.id !== currentUserID);
 
 		return returnedUsers;
 	}
@@ -65,7 +63,7 @@ export class UsersService {
 					imgUrl: true,
 					wins: true,
 					losses: true,
-					twoFactorAuth : true,
+					twoFactorAuth: true,
 					achievements: {
 						select: {
 							id: true,
@@ -116,7 +114,7 @@ export class UsersService {
 				numberOfAchievements: user.achievements.length,
 				numberOfFriends: user.friends.length,
 				userStatus: status,
-				twoFactorAuth : user.twoFactorAuth
+				twoFactorAuth: user.twoFactorAuth,
 			};
 			return userInfo;
 		} catch (err) {
@@ -301,7 +299,7 @@ export class UsersService {
 		try {
 			const name = file.originalname.split(".")[0];
 			const fileExtName = extname(file.originalname);
-			const fileName = `/${name}-${username}${fileExtName}`;
+			const fileName = `/profilePics/${name}-${username}${fileExtName}`;
 			const filePath = process.env.BACKEND_URL + fileName;
 			await this.prisma.user.update({
 				where: { id: userId },
@@ -317,127 +315,129 @@ export class UsersService {
 		}
 	}
 	async updateUserName(newUserName: string, userId: number): Promise<PostResponce> {
-        try {
-            await this.prisma.user.update({
-                where: { id: userId },
-                data: { username: newUserName },
-            });
-            return {
-                message: "User name updated",
-            };
-        } catch (err) {
-            console.log(err);
-            throw new HttpException(err.message, err.status);
-        }
-    }
+		try {
+			await this.prisma.user.update({
+				where: { id: userId },
+				data: { username: newUserName },
+			});
+			return {
+				message: "User name updated",
+			};
+		} catch (err) {
+			console.log(err);
+			throw new HttpException(err.message, err.status);
+		}
+	}
 
-    async updateUser2ff(userId: number, secret: string): Promise<PostResponce> {
-        try {
-            const user = await this.prisma.user.findUnique({
-                where: { id: userId },
-            });
+	async updateUser2ff(userId: number, secret: string): Promise<PostResponce> {
+		try {
+			const user = await this.prisma.user.findUnique({
+				where: { id: userId },
+			});
 
-            if (user.twoFactorAuth == true) {
-                throw new HttpException("2FA is already Enabled", HttpStatus.BAD_REQUEST);
-            }
+			if (user.twoFactorAuth == true) {
+				throw new HttpException("2FA is already Enabled", HttpStatus.BAD_REQUEST);
+			}
 
-            await this.prisma.user.update({
-                where: { id: userId },
-                data: {
-                    twoFactorAuth: true,
-                    TwoFaSecret: secret,
-                },
-            });
+			await this.prisma.user.update({
+				where: { id: userId },
+				data: {
+					twoFactorAuth: true,
+					TwoFaSecret: secret,
+				},
+			});
 
-            return {
-                message: "2FA Has be enabled",
-            };
-        } catch (err) {
-            console.log(err);
-            throw new HttpException(err.message, err.status);
-        }
-    }
+			return {
+				message: "2FA Has be enabled",
+			};
+		} catch (err) {
+			console.log(err);
+			throw new HttpException(err.message, err.status);
+		}
+	}
 	async disable2Fa(userId: number): Promise<PostResponce> {
-        try {
-            const user = await this.prisma.user.findUnique({
-                where: { id: userId },
-            });
+		try {
+			const user = await this.prisma.user.findUnique({
+				where: { id: userId },
+			});
 
-            if (user.twoFactorAuth == false) {
-                throw new HttpException("2FA is already disabled", HttpStatus.BAD_REQUEST);
-            }
+			if (user.twoFactorAuth == false) {
+				throw new HttpException("2FA is already disabled", HttpStatus.BAD_REQUEST);
+			}
 
-            await this.prisma.user.update({
-                where: { id: userId },
-                data: {
-                    twoFactorAuth: false,
-                    TwoFaSecret: null,
-                },
-            });
+			await this.prisma.user.update({
+				where: { id: userId },
+				data: {
+					twoFactorAuth: false,
+					TwoFaSecret: null,
+				},
+			});
 
-            return {
-                message: "2FA Has be disabled",
-            };
-        } catch (err) {
-            console.log(err);
-            throw new HttpException(err.message, err.status);
-        }
-    }
-async generateTwoFactorAuthenticationSecret(userId: number) {
-        const secret = authenticator.generateSecret();
-        const user: User = await this.prisma.user.findUnique({
-            where: {
-                id: userId,
-            },
-        });
+			return {
+				message: "2FA Has be disabled",
+			};
+		} catch (err) {
+			console.log(err);
+			throw new HttpException(err.message, err.status);
+		}
+	}
+	async generateTwoFactorAuthenticationSecret(userId: number) {
+		const secret = authenticator.generateSecret();
+		const user: User = await this.prisma.user.findUnique({
+			where: {
+				id: userId,
+			},
+		});
 
-        const otpauthUrl = authenticator.keyuri(user.email, "FT_TRENDENDEN", secret);
+		const otpauthUrl = authenticator.keyuri(user.email, "FT_TRENDENDEN", secret);
 
-        // await this.usersService.setTwoFactorAuthenticationSecret(secret, user.id);
+		// await this.usersService.setTwoFactorAuthenticationSecret(secret, user.id);
 
-        return {
-            secret,
-            otpauthUrl,
-        };
-    }
+		return {
+			secret,
+			otpauthUrl,
+		};
+	}
 
-    async pipeQrCodeStream(stream: Response, otpauthUrl: string, userId : number) {
-        const name = `QrcodeForUserId_${userId}.png`
-        const path = join(__dirname, "../..", "../public", name)
-        toFile(path, otpauthUrl, {
-            color: {
-              dark: '#000',  // Blue dots
-              light: '#0000' // Transparent background
-            }
-          }, function (err) {
-            if (err)
-                throw err
-          })
-        const imagePath = process.env.BACKEND_URL + "/" + name
-        return imagePath
-    }
+	async pipeQrCodeStream(stream: Response, otpauthUrl: string, userId: number) {
+		const name = `QrcodeForUserId_${userId}.png`;
+		const path = join(__dirname, "../..", "../public", name);
+		toFile(
+			path,
+			otpauthUrl,
+			{
+				color: {
+					dark: "#000", // Blue dots
+					light: "#0000", // Transparent background
+				},
+			},
+			function (err) {
+				if (err) throw err;
+			}
+		);
+		const imagePath = process.env.BACKEND_URL + "/" + name;
+		return imagePath;
+	}
 
-    async isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, userId: number) {
-        try{
-
-            const user = await this.prisma.user.findUnique({
-                where : {
-                    id : userId
-                }
-            })
-            return authenticator.verify({
-                token: twoFactorAuthenticationCode,
-                secret: user.TwoFaSecret
-            })
-        } catch(err){
-            throw new HttpException(err.message, err.status);
-
-        }
-    }
+	async isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, userId: number) {
+		try {
+			const user = await this.prisma.user.findUnique({
+				where: {
+					id: userId,
+				},
+			});
+			return authenticator.verify({
+				token: twoFactorAuthenticationCode,
+				secret: user.TwoFaSecret,
+			});
+		} catch (err) {
+			throw new HttpException(err.message, err.status);
+		}
+	}
 }
 
 export function editFileName(req, file, callback) {
 	const name = file.originalname.split(".")[0];
 	const fileExtName = extname(file.originalname);
-	callback(null, `${name}-${req.user.username}${fileExtName}`);
+	callback(null, `profilePics/${name}-${req.user.username}${fileExtName}`);
 }
