@@ -140,11 +140,11 @@ export class UsersController {
 
     @Post("generate2FA")
     async genrate2Fa(@Req() req, @Res() res) {
-        const currentUserID: number = req.user.id;
+		const currentUserID: number = req.user.id;
         const data = await this.userService.generateTwoFactorAuthenticationSecret(currentUserID);
         await this.userService.updateUser2ff(currentUserID, data.secret)
-        const qrCode = await this.userService.pipeQrCodeStream(res, data.otpauthUrl)
-        return qrCode
+        const qrCodeImagePath = await this.userService.pipeQrCodeStream(res, data.otpauthUrl, currentUserID)
+        return res.send({qrUrl :qrCodeImagePath })
     }
 
     @Post("disable2FA")
