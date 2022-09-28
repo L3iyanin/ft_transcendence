@@ -44,7 +44,9 @@
     "joi-to-typescript": "^4.0.5",
     "jsonwebtoken": "^8.5.1",
     "nestjs-i18n": "^9.1.10",
+    "otplib": "^12.0.1",
     "passport-jwt": "^4.0.0",
+    "qrcode": "^1.5.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
