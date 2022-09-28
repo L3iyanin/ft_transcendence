@@ -89,12 +89,14 @@ export class GameEventsService {
 						imgUrl: true,
 						wins: true,
 						losses: true,
+						email: true,
 						achievements: {
 							select: {
 								id: true,
 							},
 						},
 						twoFactorAuth: true,
+						TwoFaSecret: true,
 						login: true,
 					},
 				});
