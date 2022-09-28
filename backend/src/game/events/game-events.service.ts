@@ -1,13 +1,14 @@
 import { Injectable } from "@nestjs/common";
-import { Achievement, Match, PrismaClient, User } from "@prisma/client";
+import { Match, PrismaClient, User } from "@prisma/client";
 import { OnlineUsersService } from "src/online-users/online-users.service";
-import { LiveMatchDto, ResponseDto, SpectatorDto } from "../dto/game-events.dto";
+import { JoinMatchDto, LiveMatchDto, ResponseDto, SpectatorDto } from "../dto/game-events.dto";
 import { Server, Socket } from "socket.io";
 import { FPS } from "../constants/game.constants";
 import GameLogic from "../gameLogic/gameLogic";
 import { generateMatchName, generateSpectatorsRoomName } from "../helpers/helpers";
 import { UsersService } from "src/users/users.service";
 import { HttpException } from "@nestjs/common";
+import { generateChannelName } from "src/chat/helpers/helpers";
 
 let liveMatches: LiveMatchDto[] = [];
 
@@ -20,27 +21,189 @@ export class GameEventsService {
 		this.prisma = new PrismaClient();
 	}
 
-	async joinGame(userId: number, scoreToWin: 3 | 7, clientId: string): Promise<ResponseDto> {
+	async sendInviteMessage(payload: JoinMatchDto, clientId: string, server: Server) {
+		const channelName = generateChannelName(payload.inviterUserId, payload.invitedUserId);
+
+		const channel = await this.prisma.channel.findUnique({
+			where: {
+				name: channelName,
+			},
+		});
+		const member = await this.prisma.member.findUnique({
+			where: {
+				userId_channelId: {
+					userId: payload.invitedUserId,
+					channelId: channel.id,
+				},
+			},
+		});
+		const message = await this.prisma.message.create({
+			data: {
+				content: "Invite to play",
+				from: {
+					connect: {
+						id: member.id,
+					},
+				},
+				channel: {
+					connect: {
+						id: channel.id,
+					},
+				},
+				invite: true,
+				inviterId: payload.inviterUserId,
+				invitedId: payload.invitedUserId,
+			},
+		});
+
+		server.to(channelName).emit("receivedMessage", {
+			from: member,
+			content: message.content,
+			channelId: channel.id,
+			isDm: true,
+			invite: true,
+			inviterId: message.inviterId,
+			invitedId: message.invitedId,
+			matchId: message.matchId,
+			scoreToWin: payload.scoreToWin,
+		});
+	}
+
+	async joinInviteMatch(
+		payload: JoinMatchDto,
+		clientId: string,
+		server: Server
+	): Promise<ResponseDto> {
 		try {
-			if (scoreToWin != 3 && scoreToWin != 7) {
-				scoreToWin = 3;
+			const { inviterUserId, invitedUserId, userId, matchId, scoreToWin } = payload;
+			if (userId === inviterUserId) {
+				// create match and return Matching
+				await this.prisma.match.create({
+					data: {
+						scoreToWin,
+						isMatching: true,
+						player1Id: inviterUserId,
+						player2Id: invitedUserId,
+						live: false,
+					},
+				});
+				this.onlineUsersService.setSocketInGame(clientId); // setting socket of player1 in game
+
+				await this.sendInviteMessage(payload, clientId, server);
+
+				return {
+					check: "MATCHING",
+				};
+			} else if (userId === invitedUserId) {
+				const match = await this.prisma.match.findMany({
+					where: {
+						id: matchId,
+						player1Id: inviterUserId,
+						player2Id: invitedUserId,
+						isMatching: true,
+					},
+				});
+				if (match.length !== 1) {
+					return {
+						check: "MATCH_NOT_FOUND",
+					};
+				}
+				// update match and return Start match
+				await this.prisma.match.update({
+					where: {
+						id: matchId,
+					},
+					data: {
+						isMatching: false,
+						live: true,
+					},
+				});
+
+				const { player1, player2 } = await this.populatePlayers(
+					match[0].player1Id,
+					match[0].player2Id
+				);
+
+				this.onlineUsersService.setSocketInGame(clientId); // setting socket of player2 in game
+				return {
+					check: "START_MATCH",
+					data: {
+						matchId,
+						player1,
+						player2,
+						scoreToWin,
+					},
+				};
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	async validateJoinGame(payload: JoinMatchDto) {
+		const { userId } = payload;
+		const matches = await this.prisma.match.findMany({
+			where: {
+				AND: [
+					{
+						OR: [
+							{
+								player1Id: userId,
+							},
+							{
+								player2Id: userId,
+							},
+						],
+					},
+					{
+						OR: [
+							{
+								isMatching: true,
+							},
+							{
+								live: true,
+							},
+						],
+					},
+				],
+			},
+		});
+		if (matches.length > 0) {
+			return {
+				check: "ALREADY_IN_MATCH",
+			};
+		}
+		return {
+			check: "OK",
+		};
+	}
+
+	async joinGame(payload: JoinMatchDto, clientId: string, server: Server): Promise<ResponseDto> {
+		try {
+			if (payload.scoreToWin != 3 && payload.scoreToWin != 7) {
+				payload.scoreToWin = 3;
 			}
 
-			let matches = await this.prisma.match.findMany({
+			// check if any of the users is in a live match or is matching regardless of the scoreToWin
+			const validationResult = await this.validateJoinGame(payload);
+			if (validationResult.check === "ALREADY_IN_MATCH") {
+				return {
+					check: "ALREADY_IN_MATCH",
+				};
+			}
+
+			if (payload.invite) {
+				return await this.joinInviteMatch(payload, clientId, server);
+			}
+
+			let matchingMatches = await this.prisma.match.findMany({
 				where: {
 					AND: [
 						{
-							scoreToWin: scoreToWin,
+							scoreToWin: payload.scoreToWin,
 						},
 						{
-							OR: [
-								{
-									isMatching: true,
-								},
-								{
-									live: true,
-								},
-							],
+							isMatching: true,
 						},
 						{
 							matchByInvite: false,
@@ -49,18 +212,6 @@ export class GameEventsService {
 				},
 			});
 
-			if (matches.length > 0) {
-				if (
-					matches.some((match) => {
-						return match.player1Id == userId || match.player2Id == userId;
-					})
-				) {
-					return {
-						check: "ALREADY_IN_MATCH",
-					};
-				}
-			}
-			const matchingMatches = matches.filter((match) => match.isMatching);
 			let match = matchingMatches.length > 0 ? matchingMatches[0] : null;
 			if (match) {
 				match = await this.prisma.match.update({
@@ -69,44 +220,15 @@ export class GameEventsService {
 					},
 					data: {
 						isMatching: false,
-						player2Id: userId,
+						player2Id: payload.userId,
 						live: true,
 					},
 				});
 
-				const users = await this.prisma.user.findMany({
-					where: {
-						OR: [
-							{
-								id: match.player1Id,
-							},
-							{
-								id: match.player2Id,
-							},
-						],
-					},
-					select: {
-						id: true,
-						username: true,
-						fullName: true,
-						imgUrl: true,
-						wins: true,
-						losses: true,
-						email: true,
-						achievements: {
-							select: {
-								id: true,
-							},
-						},
-						twoFactorAuth: true,
-						TwoFaSecret: true,
-						login: true,
-					},
-				});
-
-				const player1 = users.find((user) => user.id == match.player1Id);
-
-				const player2 = users.find((user) => user.id == match.player2Id);
+				const { player1, player2 } = await this.populatePlayers(
+					match.player1Id,
+					match.player2Id
+				);
 
 				this.onlineUsersService.setSocketInGame(clientId); // setting socket of player2 in game
 
@@ -123,9 +245,9 @@ export class GameEventsService {
 			} else if (!match) {
 				await this.prisma.match.create({
 					data: {
-						scoreToWin: scoreToWin,
+						scoreToWin: payload.scoreToWin,
 						isMatching: true,
-						player1Id: userId,
+						player1Id: payload.userId,
 						live: false,
 					},
 				});
@@ -345,12 +467,17 @@ export class GameEventsService {
 				},
 			});
 
-			server.to(matchName).to(spectatorRoomName).emit("gameOver", {
+			server.to(matchName).emit("gameOver", {
 				player1Score: endMatch.player1Score,
 				player2Score: endMatch.player2Score,
 				isDisconnected: false,
 			});
 
+			server.to(spectatorRoomName).emit("gameOver", {
+				player1Score: endMatch.player1Score,
+				player2Score: endMatch.player2Score,
+				isDisconnected: false,
+			});
 			const loserId = winnerId == match.player1Id ? match.player2Id : match.player1Id;
 
 			// update user stats
@@ -491,8 +618,53 @@ export class GameEventsService {
 		return users;
 	}
 
-	async updateUserAcheivements(match : Match, player : User, opponent : User){
+	async populatePlayers(player1Id: number, player2Id: number) {
+		const users = await this.prisma.user.findMany({
+			// where: {
+			// 	OR: [
+			// 		{
+			// 			id: player1Id,
+			// 		},
+			// 		{
+			// 			id: player2Id,
+			// 		},
+			// 	],
+			// },
+			where: {
+				id: {
+					in: [player1Id, player2Id],
+				},
+			},
+			select: {
+				id: true,
+				username: true,
+				fullName: true,
+				imgUrl: true,
+				wins: true,
+				losses: true,
+				email: true,
+				achievements: {
+					select: {
+						id: true,
+					},
+				},
+				twoFactorAuth: true,
+				TwoFaSecret: true,
+				login: true,
+			},
+		});
 
+		const player1 = users.find((user) => user.id == player1Id);
+
+		const player2 = users.find((user) => user.id == player2Id);
+
+		return {
+			player1,
+			player2,
+		};
+	}
+
+	async updateUserAcheivements(match : Match, player : User, opponent : User){
 		try{
 			const allUserMatches = await this.prisma.match.findMany({
 				where : {

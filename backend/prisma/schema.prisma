@@ -96,12 +96,16 @@ enum Roles {
 }
 
 model Message {
-    id        Int      @id @default(autoincrement())
-    content   String
-    from      Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
-    channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
-    channelId Int
-    memberId  Int
-    createdAt DateTime @default(now())
-    invite    Boolean  @default(false)
+    id              Int      @id @default(autoincrement())
+    content         String
+    from            Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+    channel         Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+    channelId       Int
+    memberId        Int
+    createdAt       DateTime @default(now())
+    invite          Boolean  @default(false)
+    inviterId       Int?
+    invitedId       Int?
+    matchId         Int?
+    validInvitation Boolean?
 }

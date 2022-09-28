@@ -35,7 +35,7 @@ export class AuthController {
         } else {
             throw new HttpException({
 				message : "Please pass through 2FA",
-				uderId : user.id
+				userId : user.id
 			}, 403)
         }
     }

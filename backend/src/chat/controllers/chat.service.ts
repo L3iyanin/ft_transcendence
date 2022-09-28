@@ -448,7 +448,6 @@ export class ChatService {
 				throw new HttpException("This is not a group", HttpStatus.BAD_REQUEST);
 			}
 			const member = channel.members.find((member) => member.userId === userId);
-			console.log(member);
 			if (!member) {
 				throw new HttpException("Member not found", HttpStatus.NOT_FOUND);
 			}
