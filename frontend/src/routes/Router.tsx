@@ -35,7 +35,7 @@ const Router: React.FC = () => {
 					<Route element={<NotRequireAuth />}>
 						<Route path="/" element={<Landing />} />
 					</Route>
-					<Route path="*" element={<Navigate to="/" replace />} />
+					<Route path="*" element={<Navigate to="/home" replace />} />
 				</Routes>
 			</BrowserRouter>
 		</>
