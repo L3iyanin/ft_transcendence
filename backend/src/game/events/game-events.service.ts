@@ -269,6 +269,11 @@ export class GameEventsService {
 		if (!userId) {
 			return;
 		}
+		const socketInGame = this.onlineUsersService.getUserGameSocket(userId);
+		if (socketInGame && socketInGame.id !== client.id) {
+			return;
+		}
+
 		let match = await this.prisma.match.findFirst({
 			where: {
 				AND: [
@@ -283,6 +288,7 @@ export class GameEventsService {
 		});
 
 		if (match && match.isMatching && !match.live) {
+			console.log("deleting match");
 			await this.prisma.match.delete({
 				where: {
 					id: match.id,
