@@ -14,6 +14,10 @@ export class BallDto {
 export class JoinMatchDto {
 	userId: number;
 	scoreToWin: 3 | 7;
+	invite?: boolean; // true in match by invite, undefined in match by queue
+	inviterUserId?: number;
+	invitedUserId?: number;
+	matchId?: number; // matchId for invited user
 }
 
 export class StartedMatchResponseDto {
@@ -24,7 +28,7 @@ export class StartedMatchResponseDto {
 }
 
 export class ResponseDto {
-	check: "MATCHING" | "ALREADY_IN_MATCH" | "START_MATCH";
+	check: "MATCHING" | "ALREADY_IN_MATCH" | "START_MATCH" | "MATCH_NOT_FOUND";
 	data?: StartedMatchResponseDto;
 }
 
