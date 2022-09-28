@@ -16,8 +16,10 @@ let liveMatches: LiveMatchDto[] = [];
 export class GameEventsService {
 	prisma: PrismaClient;
 
-	constructor(private readonly onlineUsersService: OnlineUsersService,
-		private readonly userService: UsersService) {
+	constructor(
+		private readonly onlineUsersService: OnlineUsersService,
+		private readonly userService: UsersService
+	) {
 		this.prisma = new PrismaClient();
 	}
 
@@ -269,6 +271,11 @@ export class GameEventsService {
 		if (!userId) {
 			return;
 		}
+		const socketInGame = this.onlineUsersService.getUserGameSocket(userId);
+		if (socketInGame && socketInGame.id !== client.id) {
+			return;
+		}
+
 		let match = await this.prisma.match.findFirst({
 			where: {
 				AND: [
@@ -316,15 +323,16 @@ export class GameEventsService {
 			if (!liveMatch) {
 				return;
 			}
+			clearInterval(liveMatch.interval);
 			const gameState = liveMatch.gameInstance.getGameState();
 			let player1Score = gameState.player1Score;
 			let player2Score = gameState.player2Score;
 			let winnerId = userId == match.player1Id ? match.player2Id : match.player1Id;
 			let loserId = userId == match.player1Id ? match.player1Id : match.player2Id;
 
-			if (player1Score > player2Score && winnerId == match.player2Id) {
+			if (player1Score >= player2Score && winnerId == match.player1Id) {
 				player1Score = player2Score + 1;
-			} else if (player2Score > player1Score && winnerId == match.player1Id) {
+			} else if (player2Score >= player1Score && winnerId == match.player2Id) {
 				player2Score = player1Score + 1;
 			}
 
@@ -334,8 +342,8 @@ export class GameEventsService {
 				},
 				data: {
 					live: false,
-					player1Score: gameState.player1Score,
-					player2Score: gameState.player2Score,
+					player1Score: player1Score,
+					player2Score: player2Score,
 				},
 			});
 
@@ -347,7 +355,7 @@ export class GameEventsService {
 				isDisconnected: true,
 			});
 
-			await this.prisma.user.update({
+			const winner = await this.prisma.user.update({
 				where: {
 					id: winnerId,
 				},
@@ -358,7 +366,7 @@ export class GameEventsService {
 				},
 			});
 
-			await this.prisma.user.update({
+			const loser = await this.prisma.user.update({
 				where: {
 					id: loserId,
 				},
@@ -369,7 +377,9 @@ export class GameEventsService {
 				},
 			});
 
-			clearInterval(liveMatch.interval);
+			await this.updateUserAcheivements(endMatch, winner, loser);
+			await this.updateUserAcheivements(endMatch, loser, winner);
+
 			this.removeLiveMatch(match.id);
 		}
 	}
@@ -455,6 +465,11 @@ export class GameEventsService {
 		server.to(matchName).emit("gameState", gameState);
 		server.to(spectatorRoomName).emit("gameStateSpectators", gameState);
 		if (winnerId) {
+			// clearinterval
+			const liveMatch = this.getLiveMatch(match.id);
+			if (liveMatch) {
+				clearInterval(liveMatch.interval);
+			}
 			// end game
 			const endMatch = await this.prisma.match.update({
 				where: {
@@ -478,10 +493,11 @@ export class GameEventsService {
 				player2Score: endMatch.player2Score,
 				isDisconnected: false,
 			});
+
 			const loserId = winnerId == match.player1Id ? match.player2Id : match.player1Id;
 
 			// update user stats
-			await this.prisma.user.update({
+			const winner = await this.prisma.user.update({
 				where: {
 					id: winnerId,
 				},
@@ -492,7 +508,7 @@ export class GameEventsService {
 				},
 			});
 
-			await this.prisma.user.update({
+			const loser = await this.prisma.user.update({
 				where: {
 					id: loserId,
 				},
@@ -502,10 +518,10 @@ export class GameEventsService {
 					},
 				},
 			});
-			// clearinterval
-			const liveMatch = this.getLiveMatch(match.id);
+
+			await this.updateUserAcheivements(endMatch, winner, loser);
+			await this.updateUserAcheivements(endMatch, loser, winner);
 			if (liveMatch) {
-				clearInterval(liveMatch.interval);
 				this.removeLiveMatch(match.id);
 			}
 		}
@@ -664,89 +680,115 @@ export class GameEventsService {
 		};
 	}
 
-	async updateUserAcheivements(match : Match, player : User, opponent : User){
-		try{
+	async updateUserAcheivements(match: Match, player: User, opponent: User) {
+		try {
 			const allUserMatches = await this.prisma.match.findMany({
-				where : {
-					OR : [
+				where: {
+					OR: [
 						{
-							player1Id : player.id
+							player1Id: player.id,
 						},
 						{
-							player2Id : player.id
-						}
-					]
+							player2Id: player.id,
+						},
+					],
 				},
 				orderBy: {
 					date: "desc",
 				},
-			})
+				take: 5,
+			});
 
-			let countWinsInRow = 0
-			for(let i = 0; i < allUserMatches.length ; i++){
+			let countWinsInRow = 0;
+			console.log("allUserMatches", allUserMatches);
+			for (let i = 0; i < allUserMatches.length; i++) {
 				const userMatch = allUserMatches[i];
-				if (userMatch.player1Id == player.id && userMatch.player1Score > userMatch.player2Score)
-					countWinsInRow++
-				else if (userMatch.player2Id == player.id && userMatch.player1Score < userMatch.player2Score)
-					countWinsInRow++
-				else
-					break
+				if (
+					userMatch.player1Id == player.id &&
+					userMatch.player1Score > userMatch.player2Score
+				)
+					countWinsInRow++;
+				else if (
+					userMatch.player2Id == player.id &&
+					userMatch.player1Score < userMatch.player2Score
+				)
+					countWinsInRow++;
+				else break;
+			}
+			console.log("countWinsInRow", countWinsInRow);
+
+			//? id 1
+			//? win first played match
+			if (player.wins == 1 && player.losses == 0) {
+				await this.addAcheivementToUser(player.id, 1);
 			}
 
-			if(player.wins == 1 && player.losses == 0){ //? id 1
-				//? win first played match
-				await this.addAcheivementToUser(player.id, 1)
+			//? id 2
+			//? Win 2 Match in row
+			if (countWinsInRow == 2) {
+				await this.addAcheivementToUser(player.id, 2);
 			}
 
-			if (countWinsInRow == 3)  {//? id 2
-				//? Win 3 Match in row
-				await this.addAcheivementToUser(player.id, 2)
+			//? id 3
+			//? you win vs khalid
+			if (
+				player.id == match.player1Id &&
+				match.player1Score > match.player2Score &&
+				opponent.login == "kbenlyaz"
+			) {
+				await this.addAcheivementToUser(player.id, 3);
+			} else if (
+				player.id == match.player2Id &&
+				match.player1Score < match.player2Score &&
+				opponent.login == "kbenlyaz"
+			) {
+				await this.addAcheivementToUser(player.id, 3);
 			}
 
-			if (player.id == match.player1Id && match.player1Score > match.player2Score && opponent.login == "kbenlyaz"){ //? id 3
-				//? you win vs khalid
-				await this.addAcheivementToUser(player.id, 3)
-			}
-			else if (player.id == match.player2Id && match.player1Score < match.player2Score && opponent.login == "kbenlyaz"){ //? id 3
-				//? you win vs khalid
-				await this.addAcheivementToUser(player.id, 3)
-			}
-
-			if (player.id == match.player1Id && match.player1Score > match.player2Score && match.player2Score == 0){ //? id 4
-				// ?Win with clean sheet
-				await this.addAcheivementToUser(player.id, 4)
-			}
-			else if (player.id == match.player2Id && match.player1Score < match.player2Score && match.player1Score == 0){ //? id 4
-				// ?Win with clean sheet
-				await this.addAcheivementToUser(player.id, 4)
+			//? id 4
+			// ?Win with clean sheet
+			if (
+				player.id == match.player1Id &&
+				match.player1Score > match.player2Score &&
+				match.player2Score == 0
+			) {
+				await this.addAcheivementToUser(player.id, 4);
+			} else if (
+				player.id == match.player2Id &&
+				match.player1Score < match.player2Score &&
+				match.player1Score == 0
+			) {
+				await this.addAcheivementToUser(player.id, 4);
 			}
 
-			if (countWinsInRow == 5)  {//? id 5
-				//? Win 5 Match in row
-				await this.addAcheivementToUser(player.id, 5)
+			//? id 5
+			//? Win 5 Match in row
+			if (countWinsInRow == 5) {
+				await this.addAcheivementToUser(player.id, 5);
 			}
-
-		}catch(err){
-			throw new HttpException(err.message, err.status)
+		} catch (err) {
+			throw new HttpException(err.message, err.status);
 		}
 	}
 
-	async addAcheivementToUser(userId : number, achievementId : number){
+	async addAcheivementToUser(userId: number, achievementId: number) {
 		try {
 			await this.prisma.user.update({
-				where : {
-					id : userId
+				where: {
+					id: userId,
 				},
-				data : {
-					achievements : {
-						connect : [{
-							id : achievementId
-						}]
-					}
-				}
-			})
-		}catch(err){
-			throw new HttpException(err.message, err.status)
+				data: {
+					achievements: {
+						connect: [
+							{
+								id: achievementId,
+							},
+						],
+					},
+				},
+			});
+		} catch (err) {
+			throw new HttpException(err.message, err.status);
 		}
 	}
 }
