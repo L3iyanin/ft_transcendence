@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Match, PrismaClient } from "@prisma/client";
+import { Match, PrismaClient, User } from "@prisma/client";
 import { OnlineUsersService } from "src/online-users/online-users.service";
 import { JoinMatchDto, LiveMatchDto, ResponseDto, SpectatorDto } from "../dto/game-events.dto";
 import { Server, Socket } from "socket.io";
@@ -642,12 +642,14 @@ export class GameEventsService {
 				imgUrl: true,
 				wins: true,
 				losses: true,
+				email: true,
 				achievements: {
 					select: {
 						id: true,
 					},
 				},
 				twoFactorAuth: true,
+				TwoFaSecret: true,
 				login: true,
 			},
 		});
