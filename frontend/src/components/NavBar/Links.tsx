@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import { setMatching } from '../../reducers/MatchSlice';
 import { toast } from 'react-toastify';
-
+import { Link } from 'react-router-dom';
 
 const Links = () => {
 
@@ -36,10 +36,10 @@ const Links = () => {
 				<span onClick={onLogout} className="cursor-pointer text-center text-base text-white font-medium">{t('logout')}</span>
 
 			</nav>
-			<div className="container flex items-center grow-0">
+			<Link className="container flex items-center grow-0" to="/profile">
 				{/* <Avatar className="h-8"/> */}
 				<img src={userData.user.imgUrl} className="h-8 w-8 rounded-full" alt="" />
-			</div>
+			</Link>
 		</div>
 	);
 }
