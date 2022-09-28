@@ -4,12 +4,12 @@ import { Achievement } from "./dto/achievement.dto";
 import { Friend } from "./dto/friend.dto";
 import { userInLeaderboard } from "./dto/userInLeaderboard";
 import { UserInfo } from "./dto/userInfo.dto";
-import { extname } from "path";
+import { extname, join } from "path";
 import { PostResponce } from "./dto/postResponce.dto";
 import { generateChannelName } from "src/chat/helpers/helpers";
 import { ChatService } from "src/chat/controllers/chat.service";
 import { authenticator } from "otplib";
-import { toFileStream } from "qrcode";
+import { toFile } from "qrcode";
 
 
 @Injectable()
@@ -399,8 +399,20 @@ async generateTwoFactorAuthenticationSecret(userId: number) {
         };
     }
 
-    async pipeQrCodeStream(stream: Response, otpauthUrl: string) {
-        return toFileStream(stream, otpauthUrl);
+    async pipeQrCodeStream(stream: Response, otpauthUrl: string, userId : number) {
+        const name = `QrcodeForUserId_${userId}.png`
+        const path = join(__dirname, "../..", "../public", name)
+        toFile(path, otpauthUrl, {
+            color: {
+              dark: '#000',  // Blue dots
+              light: '#0000' // Transparent background
+            }
+          }, function (err) {
+            if (err)
+                throw err
+          })
+        const imagePath = process.env.BACKEND_URL + "/" + name
+        return imagePath
     }
 
     async isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, userId: number) {
