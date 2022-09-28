@@ -87,7 +87,7 @@ const UserSettingsCard: React.FC<{
 						onClick={enabledhandler}
 						className="w-full py-3 bg-red rounded-md px-2"
 					>
-						{t("settingsPage.Enable2FA")}|{user.twoFactorAuth}
+						{t("settingsPage.Enable2FA")}
 					</button>
 				)}
 				{isEnabled && (

@@ -7,6 +7,8 @@ const QRZone: React.FC<{
 }> = ({ isEnabled, qrCodePath }) => {
 	const { t } = useTranslation();
 
+	// console.log(qrCodePath);
+
 	return (
 		<section className="container min-w-[300px] rounded-lg flex flex-col justify-center items-center gap-6 text-white  bg-dark-60 bg-opacity-60">
 			{!isEnabled && (
@@ -17,7 +19,7 @@ const QRZone: React.FC<{
 			)}
 			{isEnabled && qrCodePath && (
 				<div className="relative bg-white p-2">
-					<img src={qrCodePath} alt="qr code" className="w-48 h-48" />
+					<img src={qrCodePath} alt="qr code" className="w-48 h-48" loading="lazy" />
 				</div>
 			)}
 			{!isEnabled && (

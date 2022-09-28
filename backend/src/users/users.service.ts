@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Res } from "@nestjs/common";
 import { PrismaClient, User } from "@prisma/client";
 import { Achievement } from "./dto/achievement.dto";
 import { Friend } from "./dto/friend.dto";
@@ -399,10 +399,11 @@ export class UsersService {
 		};
 	}
 
-	async pipeQrCodeStream(stream: Response, otpauthUrl: string, userId: number) {
+	async pipeQrCodeStream(@Res() res, otpauthUrl: string, userId: number) {
 		const date : Date = new  Date()
 		const name = `QrcodeForUserId_${userId}.png`;
 		const path = join(__dirname, "../..", "../public/qrCodes", name + "_" + date.toDateString());
+		console.log(otpauthUrl)
 		toFile(
 			path,
 			otpauthUrl,
@@ -414,10 +415,11 @@ export class UsersService {
 			},
 			function (err) {
 				if (err) throw err;
+				const imagePath = process.env.BACKEND_URL + "/qrCodes/" + name + "_" + date.toDateString();
+				res.send({qrUrl :imagePath })
 			}
 		);
-		const imagePath = process.env.BACKEND_URL + "/qrCodes/" + name + "_" + date.toDateString();
-		return imagePath;
+		// return imagePath;
 	}
 
 	async isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, userId: number) {
