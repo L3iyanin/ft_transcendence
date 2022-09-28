@@ -2,6 +2,7 @@
 /dist
 /node_modules
 /public/profilePics/*
+/public/qrCodes/*
 
 # Logs
 logs

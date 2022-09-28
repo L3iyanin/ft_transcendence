@@ -401,7 +401,7 @@ export class UsersService {
 
 	async pipeQrCodeStream(stream: Response, otpauthUrl: string, userId: number) {
 		const name = `QrcodeForUserId_${userId}.png`;
-		const path = join(__dirname, "../..", "../public", name);
+		const path = join(__dirname, "../..", "../public/qrCodes", name);
 		toFile(
 			path,
 			otpauthUrl,
@@ -415,7 +415,7 @@ export class UsersService {
 				if (err) throw err;
 			}
 		);
-		const imagePath = process.env.BACKEND_URL + "/" + name;
+		const imagePath = process.env.BACKEND_URL + "/qrCodes/" + name;
 		return imagePath;
 	}
 
