@@ -58,6 +58,7 @@ async function addUsers(howManyUsers : number = 10) {
 				fullName: faker.name.fullName(),
 				imgUrl: faker.image.avatar(),
 				login: username,
+				email: faker.internet.email(),
 			},
 		});
 		console.log("user created: ", user);

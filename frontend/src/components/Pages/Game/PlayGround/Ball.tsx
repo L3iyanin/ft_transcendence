@@ -11,7 +11,7 @@ const Ball: React.FC<{
 
 	return (
 		<div
-			className={`absolute bg-beige rounded-full`}
+			className={`absolute bg-white rounded-full`}
 			style={{
 				top: `${window.ballYPosition - window.ballSize / 2}px`,
 				left: `${window.ballXPosition - window.ballSize / 2}px`,

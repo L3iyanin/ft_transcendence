@@ -23,6 +23,8 @@ model User {
     friendsRelation User[]        @relation("friends")
     achievements    Achievement[]
     members         Member[]
+	email           String
+    TwoFaSecret     String?
 }
 
 model Match {

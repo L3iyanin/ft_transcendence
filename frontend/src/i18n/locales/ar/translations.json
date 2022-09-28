@@ -1,7 +1,8 @@
 {
-	"home": "منزل",
+	"home": "الرئيسية",
 	"profile": "ملفي",
 	"settings": "إعدادات",
+	"search": "بحت",
 	"logout": "خروج",
 	"signinWith42": "تسجيل الدخول باستخدام 42",
 	"chat": "دردشة",
@@ -9,8 +10,35 @@
 	"team": "فريق",
 	"mainFeatures": "الخصائص الرئيسية",
 	"technologiesUsed": "التقنيات المستخدمة",
-	"wins" : "فوز",
-	"losses" : "خسارة",
+	"password": "رمز المرور",
+	"friends": "الأصدقاء",
+	"online": "متصل",
+	"lastMatches": ": اخر المباريات",
+	"unlocked": "غير مفتوح",
+	"locked": "مفتوح",
+	"startchat": "ابدأ محادثة",
+	"blockUser": "حجب",
+	"unblockUser": "الغاء الحجب",
+	"addFriend": "أضف صديق",
+	"youHaveNoFriends": "ليس لديك أي صديق",
+	"alreadyFriends": "Already Friends",
+	"friendAdded": "تمت اضافة صديق بنجاح",
+	"matching": "Matching",
+	"playersReadyToPlay": "اللاعبون على أتم الاستعداد",
+	"landingPage": {
+		"aboutParagrapOne": "Ft_transcendence هو المشروع الأخير في جوهر مدرسة 1337 (42Network).",
+		"aboutParagrapTwo": "إنها لعبة بونغ متعددة اللاعبين.",
+		"mainFeaturesHeader": "يحتوي المشروع على:",
+		"mainFeaturesListOne": "لعبة بونغ متعددة اللاعبين على الإنترنت",
+		"mainFeaturesListTwo": "الدردشة المباشرة والجماعية (مع أذونات وتكوينات مختلفة)",
+		"mainFeaturesListThree": "الملف الشخصي الذي يحتوي على: الإنجازات والإحصائيات",
+		"teamMateOne": "يونس عروبي",
+		"teamMateTwo": "عبدالعالي أيت احميد",
+		"teamMateThree": "خالد بنليزيد",
+		"teamMateFour": "عمران باعلي"
+	},
+	"wins" : "wins",
+	"losses" : "losses",
 	"homePage" : {
 		"online": "متصل",
 		"offline": "غير متصل",
@@ -25,18 +53,15 @@
 		"LastMatches" : ":اخر المباريات",
 		"Leaderboard" : "المتصدرين"
 	},
-	"landingPage": {
-		"aboutParagrapOne": "Ft_transcendence هو المشروع الأخير في جوهر مدرسة 1337 (42Network).",
-		"aboutParagrapTwo": "إنها لعبة بونغ متعددة اللاعبين.",
-		"mainFeaturesHeader": "يحتوي المشروع على:",
-		"mainFeaturesListOne": "لعبة بونغ متعددة اللاعبين على الإنترنت",
-		"mainFeaturesListTwo": "الدردشة المباشرة والجماعية (مع أذونات وتكوينات مختلفة)",
-		"mainFeaturesListThree": "الملف الشخصي الذي يحتوي على: الإنجازات والإحصائيات",
-		"teamMateOne": "يونس عروبي",
-		"teamMateTwo": "عبدالعالي أيت احميد",
-		"teamMateThree": "خالد بنليزيد",
-		"teamMateFour": "عمران باعلي"
+	"gamePage": {
+		"goalsToWin": "أهداف لتفوز",
+		"watchTheMatch": "Watching The Match",
+		"theWinner": "الفائز",
+		"dontCloseWindow": "Please don't close the window or you will lose the matching and match",
+		"quit_helper": "هل أنت متأكد من مغادرتك للمباراة",
+		"alreadyInMatch": "You are already in a match"
 	},
+	"invite": "Invite",
 	"chatPage": {
 		"dms": "الرسائل الخاصة",
 		"channels": "القنوات",
@@ -46,18 +71,66 @@
 		"privateChannel": "قناة خاصة",
 		"seeProfile": "عرض الملف الشخصي",
 		"inviteToPlay": "دعوة للعب",
-		"playNow": "العب الآن"
+		"playNow": "العب الآن",
+		"youAreBanned": "لفد تم حجبك من هده المحادثة",
+		"youAreMuted": "لفد تم كتم صوتك من هده المحادثة",
+		"channelSettings": "اعدادات القناة",
+		"createChannel": "انشاء قناة",
+		"channelName": "اسم القناة",
+		"channelNameError": "اسم القناة ضروري و يجب أن يحتوي على ثلاثة أحرف على الأقل",
+		"channelPasswordError": "رمز مرور القناة ضروري و يجب أن يحتوي على ثلاثة أحرف على الأقل",
+		"noMessages": "ليست هناك أية رسالة",
+		"notMemberOfChannel": "لست عضوأ في هده القناة",
+		"joinChannel": "انضم للقناة",
+		"areYouIn": "هل انضممت ?",
+		"noChannels": "ليست هناك أية قناة",
+		"typeChannelPassword": "أدخل رمز مرور القناة...",
+		"channelType": {
+			"public": "عامة",
+			"private": "خاصة",
+			"protected": "محمية"
+		},
+		"bot": {
+			"name": "روبوت آلي 🤖",
+			"botMessages": [
+				"نحن سعيدون لرؤيتك هنا",
+				"يمكنك التواصل مع أصدقائك من خلال الرسائل الخاصة",
+				"و يمكنك أيضا انشاء قناتك الخاصة و التحدت مع أصدقائك"
+			]
+		}
 	},
-	"gamePage": {
-		"goalsToWin": "أهداف لتفوز"
-	},
+	"startNewConversation": "ابدأ محادثة جديدة",
 	"channelSettings" : {
-		"channelSettings": "اعدادات القناة"
+		"channelSettings": "اعدادات القناة",
+		"ban": "حجب",
+		"mute": "كتم",
+		"unmute": "الغاء الكتم",
+		"unban": "الغاء الحجب",
+		"kickOut": "طرد",
+		"2minutes": "دقيقتان",
+		"1Hour": "ساعة",
+		"5Hours": "٥ ساعات",
+		"24Hours": "٢٤ ساعة",
+		"addMember": "أضف عضو",
+		"addFriendsToRoom": "Add friends to room",
+		"youHaveNoFriendToadd": "You have no friends to add",
+		"leaveChannel": "leave channel"
 	},
+	"roles" : {
+		"member": "عضو",
+		"admin": "مدير",
+		"owner": "owner"
+	},
+	"send": "Send",
+	"playerOne": "Player 1",
+	"playerTwo": "Player 2",
 	"footer": {
 		"textOne": "تم تطويره ب💪🏼 بواسطة العيانين",
 		"textTwo": "1337 المستقبل في تحميل"
 	},
+	"classicGame": "Marineford Pong",
+	"vipGame": "Wano Pong",
+	"pongInvitation": "You've been invited to play a pong game",
 	"settingsPage": {
 		"Enable2FA" : "2FA تفعيل",
 		"EnableTwoFA" : "(2FA) تفعيل المصادقة الثنائية",
@@ -68,5 +141,9 @@
 		"VerifyYourDevice": "تأكيد هوية جهازك",
 		"EnterYourCode" : "أدخل رمزك",
 		"verify" : "تحقق"
-	}
+	},
+	"signInSuccess": "You login success !!",
+	"searchPage": {
+		"noUsersFound": "No users found"
+	}	
 }

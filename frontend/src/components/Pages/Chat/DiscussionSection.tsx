@@ -31,7 +31,7 @@ const DiscussionSection: React.FC = () => {
 	const [channelsOfGroups, setChannelsOfGroups] = useState<IChatChannel[]>(
 		[]
 	);
-	const [refreshGetMessages, setRefreshGetMessages] = useState(false);
+
 	const [visibleChannels, setVisibleChannels] = useState<IChatChannel[]>([]);
 
 	const clientSocket: Socket = useSelector(
