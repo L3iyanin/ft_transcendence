@@ -33,6 +33,8 @@ const PlayGround: React.FC<{
 }> = ({ matchSettings }) => {
 	// const [matchPlayed, setMatchPlayed] = useState(false);
 
+	// const [refresher, setRefresher] = useState(0);
+
 	const [playerIndex, setPlayerIndex] = useState<number>(PLAYER_ONE);
 
 	const LocalUserData = useSelector((state: any) => state.user.user);
@@ -168,6 +170,8 @@ const PlayGround: React.FC<{
 				window.widthRatio = playgroundRef.current.offsetWidth / PLAY_GROUND_WIDTH;
 				window.heightRatio = playgroundRef.current.offsetHeight / PLAY_GROUND_HEIGHT;
 
+				updatePlayerPosition1Outside(PLAYER_ONE);
+				updatePlayerPosition2Outside(PLAYER_TWO);
 			}
 		});
 	}, []);
@@ -187,18 +191,14 @@ const PlayGround: React.FC<{
 		);
 	}
 
-	const playgroundBg =
-		matchSettings.scoreToWin === MatchTypeEnum.Classic
-			? CLASSIC_GAME_BG
-			: VIP_GAME_BG;
 
-	// const playgroundBg = CLASSIC_GAME_BG;
+	const isForClassic = matchSettings.scoreToWin === MatchTypeEnum.Classic;
 
 	return (
 		<div
-			className={`relative w-full bg-red mt-5 bg-cover bg-center rounded-3xl border-4 border-red`}
+			className={`relative w-full mt-5 bg-cover bg-center rounded-3xl border-4 ${ isForClassic ? "border-red" : "border-yellow"}`}
 			style={{
-				backgroundImage: `url(${playgroundBg})`,
+				backgroundImage: `url(${isForClassic ? CLASSIC_GAME_BG : VIP_GAME_BG})`,
 				// height: `${PLAY_GROUND_HEIGHT}px`,
 				// width: `${PLAY_GROUND_WIDTH}px`,
 				aspectRatio: "16 / 9",

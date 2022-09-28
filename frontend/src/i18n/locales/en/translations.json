@@ -61,6 +61,7 @@
 		"quit_helper": "Are you sure you want to quit the match?",
 		"alreadyInMatch": "You are already in a match"
 	},
+	"invite": "Invite",
 	"chatPage": {
 		"dms": "DMs",
 		"youAreBanned": "You are banned in this chat",

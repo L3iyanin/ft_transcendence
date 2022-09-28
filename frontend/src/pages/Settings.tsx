@@ -7,6 +7,7 @@ import How2FA from "../components/pages/Settings/How2FA";
 import QRZone from "../components/pages/Settings/QRZone";
 import UserSettingsCard from "../components/pages/Settings/UserSettingsCard";
 import ErrorAlert, { ErrorAlertWithMessage } from "../components/UI/Error";
+import SuccesAlert from "../components/UI/SuccesAlert";
 import { updateUsername } from "../services/profile/settings";
 
 const Settings = () => {
@@ -23,7 +24,7 @@ const Settings = () => {
 
 	// handler for username html input event
 	const usernameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		console.log(event.target.value);
+		// console.log(event.target.value);
 		setusername(event.target.value);
 	}
 
@@ -35,7 +36,8 @@ const Settings = () => {
 		else {
 			updateUsername(username)
 			.then(res => {
-				console.log(res);
+				// console.log(res);
+				SuccesAlert(res.message);
 			})
 			.catch(err => {
 				console.error(err);

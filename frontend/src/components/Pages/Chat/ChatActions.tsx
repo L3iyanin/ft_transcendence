@@ -9,6 +9,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IamAdminOrOwner } from "../../../utils/helper/chat";
 import { ReactComponent as LeaveIcon } from "../../../assets/icons/leave.svg";
+import ButtonWithDropdown from "../../UI/button/ButtonWithDropdown";
+import { useState } from "react";
+import InviteToPlayPopup from "./InviteToPlayPopup";
 
 const ChatActions: React.FC<{
 	currentChannel: IChatChannel;
@@ -25,7 +28,10 @@ const ChatActions: React.FC<{
 	IamNotMember,
 	leaveChannelHandler,
 }) => {
+
 	const { t } = useTranslation();
+
+	const [openInviteToPlay, setOpenInviteToPlay] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -41,8 +47,17 @@ const ChatActions: React.FC<{
 		}
 	}
 
+	const onOpenInviteToPlayHandler = () => {
+		setOpenInviteToPlay(true);
+	}
+
 	return (
 		<div className="flex justify-between">
+			<InviteToPlayPopup
+				open={openInviteToPlay}
+				setOpen={setOpenInviteToPlay}
+				// onRefreshHandler={onRefreshHandler}
+			/>
 			<div className="flex items-center gap-3 bg-dark-60 rounded-2xl py-2 px-6">
 				<img
 					className="rounded-full w-[38px] h-[38px]"
@@ -77,6 +92,7 @@ const ChatActions: React.FC<{
 							className="bg-red text-white"
 							icon={<PlayIcon />}
 							label={t("chatPage.inviteToPlay")}
+							onClick={onOpenInviteToPlayHandler}
 						/>
 					</>
 				)}
