@@ -17,3 +17,15 @@ export const updateUsername = (username: string) => {
 			.then(res => res.data)
 			// .catch(err => console.error(`err`, err))
 }
+
+export const enableTwoFactorAuth = () => {
+	return axios.post(`users/generate2FA`)
+			.then(res => res.data)
+			// .catch(err => console.error(`err`, err))
+}
+
+export const disableTwoFactorAuth = () => {
+	return axios.post(`users/disable2Fa`)
+			.then(res => res.data)
+			// .catch(err => console.error(`err`, err))
+}

@@ -35,7 +35,9 @@
 		"teamMateOne": "younes arroubi",
 		"teamMateTwo": "abdelali ait hmid",
 		"teamMateThree": "khalid benlyazid",
-		"teamMateFour": "imran baali"
+		"teamMateFour": "imran baali",
+		"needTwoFA": "Please Enter 2FA secret",
+		"sendTwoFA": "Send 2FA"
 	},
 	"wins" : "wins",
 	"losses" : "losses",
@@ -134,6 +136,8 @@
 	"settingsPage": {
 		"Enable2FA" : "Enable 2FA",
 		"EnableTwoFA" : "Enable 2FA",
+		"TwoFaEnabled" : "you already Enabled 2FA",
+		"Disable2FA" : "Disable 2FA",
 		"GenerateQR" : "Click to generate your 2FA QR code",
 		"HowToEnable2FA": "How to Enable Two Factor Authentication",
 		"InstallGoogleAuth" : "Install Google Auth",
