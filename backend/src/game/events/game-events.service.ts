@@ -491,15 +491,9 @@ export class GameEventsService {
 		return users;
 	}
 
-	async addUserAcheivements(match : Match, player : User, opponent : User){
+	async updateUserAcheivements(match : Match, player : User, opponent : User){
 
 		try{
-
-			// const achievements : Achievement[] = await this.userService.getUserAchievements(player.id)
-			if(player.wins == 1 && player.losses == 0){ //? id 1
-				//? win first played match
-			}
-
 			const allUserMatches = await this.prisma.match.findMany({
 				where : {
 					OR : [
@@ -515,39 +509,70 @@ export class GameEventsService {
 					date: "desc",
 				},
 			})
+
 			let countWinsInRow = 0
-			allUserMatches.forEach(userMatch => {
+			for(let i = 0; i < allUserMatches.length ; i++){
+				const userMatch = allUserMatches[i];
 				if (userMatch.player1Id == player.id && userMatch.player1Score > userMatch.player2Score)
 					countWinsInRow++
 				else if (userMatch.player2Id == player.id && userMatch.player1Score < userMatch.player2Score)
 					countWinsInRow++
 				else
-					countWinsInRow == -10000
-			})
+					break
+			}
+
+			if(player.wins == 1 && player.losses == 0){ //? id 1
+				//? win first played match
+				await this.addAcheivementToUser(player.id, 1)
+			}
+
 			if (countWinsInRow == 3)  {//? id 2
 				//? Win 3 Match in row
-
+				await this.addAcheivementToUser(player.id, 2)
 			}
+
 			if (player.id == match.player1Id && match.player1Score > match.player2Score && opponent.login == "kbenlyaz"){ //? id 3
 				//? you win vs khalid
+				await this.addAcheivementToUser(player.id, 3)
 			}
 			else if (player.id == match.player2Id && match.player1Score < match.player2Score && opponent.login == "kbenlyaz"){ //? id 3
 				//? you win vs khalid
-
+				await this.addAcheivementToUser(player.id, 3)
 			}
 
 			if (player.id == match.player1Id && match.player1Score > match.player2Score && match.player2Score == 0){ //? id 4
 				// ?Win with clean sheet
+				await this.addAcheivementToUser(player.id, 4)
 			}
-			else if (player.id == match.player2Id && match.player1Score < match.player2Score && match.player1Score == 0){
+			else if (player.id == match.player2Id && match.player1Score < match.player2Score && match.player1Score == 0){ //? id 4
 				// ?Win with clean sheet
+				await this.addAcheivementToUser(player.id, 4)
 			}
 
 			if (countWinsInRow == 5)  {//? id 5
 				//? Win 5 Match in row
-
+				await this.addAcheivementToUser(player.id, 5)
 			}
 
+		}catch(err){
+			throw new HttpException(err.message, err.status)
+		}
+	}
+
+	async addAcheivementToUser(userId : number, achievementId : number){
+		try {
+			await this.prisma.user.update({
+				where : {
+					id : userId
+				},
+				data : {
+					achievements : {
+						connect : [{
+							id : achievementId
+						}]
+					}
+				}
+			})
 		}catch(err){
 			throw new HttpException(err.message, err.status)
 		}

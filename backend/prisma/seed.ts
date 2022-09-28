@@ -178,9 +178,9 @@ async function CreateChannelGroup(user1 : number, user2 : number, user3 : number
 	});
 }
 async function main() {
-	await addAchivements();
+	// await addAchivements();
 	// await addUsers();
-	// await addAchivementsToUser(2)
+	await addAchivementsToUser(1)
 	// await addAFriendsToUser(2)
 	// await CreateChannelDm(5, 6)
 	// await CreateChannelGroup(5, 6, 7)
