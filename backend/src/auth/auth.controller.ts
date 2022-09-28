@@ -6,6 +6,7 @@ import { UserGuard } from "src/users/user.guard";
 import { UsersService } from "src/users/users.service";
 import { AuthUserData } from "./auth.interface";
 import { AuthService } from "./auth.service";
+import { TwoFADto } from "./dto/twoFA.dto";
 
 // interface user {}
 @Controller("auth/42")
@@ -32,15 +33,17 @@ export class AuthController {
             });
 
         } else {
-            throw new HttpException("Please pass through 2FA", 403)
+            throw new HttpException({
+				message : "Please pass through 2FA",
+				uderId : user.id
+			}, 403)
         }
     }
 
-    @UseGuards(UserGuard)
     @Post('/2fa')
-    async pass2FA(@Body() body, @Req() req, @Res() res: Response){
-        const userId = req.user.id
-        const check : boolean =  await this.userService.isTwoFactorAuthenticationCodeValid(body.secret, userId)
+    async pass2FA(@Body() payload : TwoFADto, @Res() res: Response){
+        const userId = payload.userId
+        const check : boolean =  await this.userService.isTwoFactorAuthenticationCodeValid(payload.secret, userId)
         if (check == true){
             const user = await this.authService.getUserById(userId)
             const token = await this.authService.createJwtToken(
