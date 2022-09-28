@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /node_modules
+/public/profilePics/*
 
 # Logs
 logs
@@ -38,3 +39,4 @@ lerna-debug.log*
 /prisma/migrations
 .prettierrc
 .eslintrc.js
+
