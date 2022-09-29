@@ -6,11 +6,16 @@ import { ReactComponent as OwnerIcon } from "../../../assets/icons/owner.svg";
 import { useTranslation } from "react-i18next";
 import { RolesEnum } from "../../../utils/constants/enum";
 import { Link } from "react-router-dom";
+import { ReactComponent as LeaveIcon } from "../../../assets/icons/leave.svg";
 
 const MessageCard: React.FC<{
 	message: IMessage;
-}> = ({ message }) => {
+	userId?: number;
+}> = ({ message, userId }) => {
+
 	const { t } = useTranslation();
+
+	// console.log(message);
 
 	return (
 		<div className="flex gap-2 mb-5">
@@ -36,7 +41,9 @@ const MessageCard: React.FC<{
 							<div className="bg-red py-[2px] px-3 rounded-2xl flex items-center gap-1">
 								{" "}
 								<ShieldIcon />{" "}
-								<span className="text-xs">{t("roles.admin")}</span>
+								<span className="text-xs">
+									{t("roles.admin")}
+								</span>
 							</div>
 						)}
 					{message.from.role &&
@@ -44,20 +51,15 @@ const MessageCard: React.FC<{
 							<div className="bg-green py-[2px] px-3 rounded-2xl flex items-center gap-1 ">
 								{" "}
 								<OwnerIcon />{" "}
-								<span className="text-xs">{t("roles.owner")}</span>
+								<span className="text-xs">
+									{t("roles.owner")}
+								</span>
 							</div>
 						)}
 				</div>
 				{!message.invite && <p>{message.content}</p>}
 				{message.invite && (
-					<div className="flex gap-4 items-center">
-						<p>{t("pongInvitation")}</p>
-						<ButtonWithIcon
-							icon={<PlayIcon />}
-							label={t("chatPage.playNow")}
-							className="!py-1 rounded-lg px-3 bg-red"
-						/>
-					</div>
+					<InviteMessageCard message={message} userId={userId} />
 				)}
 			</div>
 		</div>
@@ -65,3 +67,41 @@ const MessageCard: React.FC<{
 };
 
 export default MessageCard;
+
+const InviteMessageCard: React.FC<{
+	message: IMessage;
+	userId?: number;
+}> = ({ message, userId }) => {
+	const { t } = useTranslation();
+
+	// console.log(message);
+
+	if (message.from.id != userId) {
+		return (
+			<div className="flex gap-4 items-center">
+				<p>{t("pongInvitation")}</p>
+				<ButtonWithIcon
+					icon={<PlayIcon />}
+					label={t("chatPage.playNow")}
+					className="!py-1 rounded-lg px-3 bg-green"
+				/>
+				<ButtonWithIcon
+					icon={<LeaveIcon className="w-4 h-4" />}
+					label={t("chatPage.cancelInvite")}
+					className="!py-1 rounded-lg px-3 bg-red"
+				/>
+			</div>
+		);
+	}
+
+	return (
+		<div className="flex gap-4 items-center">
+			<p>{t("pongInviter")}</p>
+			<ButtonWithIcon
+				icon={<LeaveIcon className="w-4 h-4" />}
+				label={t("chatPage.cancelInvite")}
+				className="!py-1 rounded-lg px-3 bg-red"
+			/>
+		</div>
+	);
+};

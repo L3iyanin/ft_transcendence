@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Res } from "@nestjs/common";
 import { PrismaClient, User } from "@prisma/client";
 import { Achievement } from "./dto/achievement.dto";
 import { Friend } from "./dto/friend.dto";
@@ -10,7 +10,6 @@ import { generateChannelName } from "src/chat/helpers/helpers";
 import { ChatService } from "src/chat/controllers/chat.service";
 import { authenticator } from "otplib";
 import { toFile } from "qrcode";
-import { Res } from "@nestjs/common";
 
 @Injectable()
 export class UsersService {

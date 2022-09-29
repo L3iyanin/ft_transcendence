@@ -108,4 +108,5 @@ model Message {
     invitedId       Int?
     matchId         Int?
     validInvitation Boolean?
+	scoreToWin      Int?
 }

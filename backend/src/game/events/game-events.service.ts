@@ -23,7 +23,7 @@ export class GameEventsService {
 		this.prisma = new PrismaClient();
 	}
 
-	async sendInviteMessage(payload: JoinMatchDto, clientId: string, server: Server) {
+	async sendInviteMessage(payload: JoinMatchDto, clientId: string, server: Server, matchId: number) {
 		const channelName = generateChannelName(payload.inviterUserId, payload.invitedUserId);
 
 		const channel = await this.prisma.channel.findUnique({
@@ -37,6 +37,9 @@ export class GameEventsService {
 					userId: payload.invitedUserId,
 					channelId: channel.id,
 				},
+			},
+			include: {
+				user: true,
 			},
 		});
 		const message = await this.prisma.message.create({
@@ -55,6 +58,9 @@ export class GameEventsService {
 				invite: true,
 				inviterId: payload.inviterUserId,
 				invitedId: payload.invitedUserId,
+				matchId: matchId,
+				scoreToWin: payload.scoreToWin,
+				validInvitation: true,
 			},
 		});
 
@@ -67,8 +73,9 @@ export class GameEventsService {
 			inviterId: message.inviterId,
 			invitedId: message.invitedId,
 			matchId: message.matchId,
-			scoreToWin: payload.scoreToWin,
+			scoreToWin: message.scoreToWin,
 		});
+
 	}
 
 	async joinInviteMatch(
@@ -80,7 +87,7 @@ export class GameEventsService {
 			const { inviterUserId, invitedUserId, userId, matchId, scoreToWin } = payload;
 			if (userId === inviterUserId) {
 				// create match and return Matching
-				await this.prisma.match.create({
+				const match = await this.prisma.match.create({
 					data: {
 						scoreToWin,
 						isMatching: true,
@@ -91,7 +98,7 @@ export class GameEventsService {
 				});
 				this.onlineUsersService.setSocketInGame(clientId); // setting socket of player1 in game
 
-				await this.sendInviteMessage(payload, clientId, server);
+				await this.sendInviteMessage(payload, clientId, server, match.id);
 
 				return {
 					check: "MATCHING",

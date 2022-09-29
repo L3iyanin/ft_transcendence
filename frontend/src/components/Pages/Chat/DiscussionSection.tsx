@@ -225,6 +225,7 @@ const DiscussionSection: React.FC = () => {
 	useEffect(() => {
 		if (!clientSocket) return;
 		clientSocket.on("receivedMessage", (message: any) => {
+			console.log(`message received: ${message}`);
 			setCurrentChannel((channelInfo) => {
 				if (message.isDm) {
 					setChannelsOfDms((channels) => {
@@ -453,11 +454,12 @@ const DiscussionSection: React.FC = () => {
 							? currentChannel.members.length > 1 ? currentChannel.members[1].user.username : undefined
 							: currentChannel.members[0].user.username
 					}
-					userId={
+					friendId={
 						currentChannel.members[0].user.id === userData.user?.id
 							? currentChannel.members.length > 1 ? currentChannel.members[1].user.id : undefined
 							: currentChannel.members[0].user.id
 					}
+					userId={userData.user?.id}
 					onOpenCreateChannelHandler={onOpenCreateChannelHandler}
 					IamNotMember={currentChannel.IamNotMember}
 					leaveChannelHandler={leaveChannelHandler}
@@ -474,6 +476,7 @@ const DiscussionSection: React.FC = () => {
 					onSendMessageHandler={onSendMessageHandler}
 					currentChannel={currentChannel}
 					userStatus={userStatus}
+					userId={userData.user?.id}
 					onCompleteCountdownHandler={onCompleteCountdownHandler}
 				/>
 			</div>

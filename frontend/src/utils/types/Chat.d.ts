@@ -7,6 +7,10 @@ interface IMessage {
     Channel?: IChatChannel;
     // channelId: number;
 	invite?: boolean;
+	invitedId?: number;
+	inviterId?: number;
+	matchId?: number;
+	scoreToWin?: number;
 }
 
 interface IMember {

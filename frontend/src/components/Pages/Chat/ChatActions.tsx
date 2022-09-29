@@ -16,6 +16,7 @@ import InviteToPlayPopup from "./InviteToPlayPopup";
 const ChatActions: React.FC<{
 	currentChannel: IChatChannel;
 	username?: string;
+	friendId?: number;
 	userId?: number;
 	onOpenCreateChannelHandler: () => void;
 	IamNotMember?: boolean;
@@ -23,6 +24,7 @@ const ChatActions: React.FC<{
 }> = ({
 	currentChannel,
 	username,
+	friendId,
 	userId,
 	onOpenCreateChannelHandler,
 	IamNotMember,
@@ -42,20 +44,38 @@ const ChatActions: React.FC<{
 	const LocalUserData = useSelector((state: any) => state.user.user);
 
 	const seeProfile = () => {
-		if (userId) {
-			navigate(`/profile/${userId}`);
+		if (friendId) {
+			navigate(`/profile/${friendId}`);
 		}
 	}
+
+	const clientSocket = useSelector((state: any) => state.chat.clientSocket);
 
 	const onOpenInviteToPlayHandler = () => {
 		setOpenInviteToPlay(true);
 	}
+
+	const onInvitePlayerHandler = (scoreToWin: number) => {
+		clientSocket.emit('joinGame', {
+			userId: userId,
+			scoreToWin: scoreToWin,
+			invite: true,
+			inviterUserId: userId,
+			invitedUserId: friendId,
+		});
+	}
+
+	// console.log("====================================");
+	// console.log(`friendId ${friendId}`);
+	// console.log(`userId ${userId}`);
+	// console.log("====================================");
 
 	return (
 		<div className="flex justify-between">
 			<InviteToPlayPopup
 				open={openInviteToPlay}
 				setOpen={setOpenInviteToPlay}
+				onInvitePlayer={onInvitePlayerHandler}
 				// onRefreshHandler={onRefreshHandler}
 			/>
 			<div className="flex items-center gap-3 bg-dark-60 rounded-2xl py-2 px-6">
@@ -66,7 +86,7 @@ const ChatActions: React.FC<{
 				/>
 
 				{currentChannel.status === ChannleTypesEnum.DM && (
-					<Link to={`/profile/${userId}`}>
+					<Link to={`/profile/${friendId}`}>
 						<span className="text-grey-2 font-bold">
 							@{username ? username : currentChannel.name}
 						</span>
