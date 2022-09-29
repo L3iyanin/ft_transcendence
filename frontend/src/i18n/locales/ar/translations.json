@@ -21,9 +21,9 @@
 	"unblockUser": "الغاء الحجب",
 	"addFriend": "أضف صديق",
 	"youHaveNoFriends": "ليس لديك أي صديق",
-	"alreadyFriends": "Already Friends",
+	"alreadyFriends": "انتم اصداقاء من قبل",
 	"friendAdded": "تمت اضافة صديق بنجاح",
-	"matching": "Matching",
+	"matching": "جار البحث عن لاعب أخر",
 	"playersReadyToPlay": "اللاعبون على أتم الاستعداد",
 	"landingPage": {
 		"aboutParagrapOne": "Ft_transcendence هو المشروع الأخير في جوهر مدرسة 1337 (42Network).",
@@ -61,9 +61,9 @@
 		"theWinner": "الفائز",
 		"dontCloseWindow": "لا تغلق هذه النافذة حتى ينتهي اللعب",
 		"quit_helper": "هل أنت متأكد من مغادرتك للمباراة",
-		"alreadyInMatch": "You are already in a match"
+		"alreadyInMatch": "أنت موجود في مبارة سابقة"
 	},
-	"invite": "Invite",
+	"invite": "دعوة",
 	"chatPage": {
 		"dms": "الرسائل الخاصة",
 		"channels": "القنوات",
@@ -132,15 +132,15 @@
 		"textOne": "تم تطويره ب💪🏼 بواسطة العيانين",
 		"textTwo": "1337 المستقبل في تحميل"
 	},
-	"classicGame": "Marineford Pong",
-	"vipGame": "Wano Pong",
-	"pongInvitation": "You've been invited to play a pong game",
-	"pongInviter": "You invite you friend to play a pong game",
+	"classicGame": "مارينفورد پونغ",
+	"vipGame": "وانو پونغ",
+	"pongInvitation": "تمت دعوتك للعب لعبة الپونغ",
+	"pongInviter": "لقد دعوت صديقك للعب لعبة الپونغ",
 	"settingsPage": {
 		"Enable2FA" : "2FA تفعيل",
 		"EnableTwoFA" : "(2FA) تفعيل المصادقة الثنائية",
-		"TwoFaEnabled" : "you already Enabled 2FA",
-		"Disable2FA" : "Disable 2FA",
+		"TwoFaEnabled" : "مفعلة من قبل (2FA)",
+		"Disable2FA" : "تعطيل (2FA)",
 		"GenerateQR" : "2FA QR اضغط لإنشاء رمز",
 		"HowToEnable2FA": "كيفية تفعيل المصادقة الثنائية",
 		"InstallGoogleAuth" : "Google Auth تحميل",
