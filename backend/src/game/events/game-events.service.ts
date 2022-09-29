@@ -64,6 +64,15 @@ export class GameEventsService {
 			},
 		});
 
+		const inviterSocket = this.onlineUsersService.getUserSockets(payload.inviterUserId);
+		const invitedSocket = this.onlineUsersService.getUserSockets(payload.invitedUserId);
+		inviterSocket.forEach((socket) => {
+			socket.join(channelName);
+		});
+		invitedSocket.forEach((socket) => {
+			socket.join(channelName);
+		});
+
 		server.to(channelName).emit("receivedMessage", {
 			from: member,
 			content: message.content,
