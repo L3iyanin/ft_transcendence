@@ -22,11 +22,11 @@ const Footer = () => {
 
 	return (
 		<div className="bg-dark-60 mt-20 text-white">
-			<div className="container flex justify-between">
-				<p className=" px-6  text-sm font-medium p-4">
+			<div className="container flex justify-between flex-wrap">
+				<p className=" px-6 text-sm font-medium p-4 w-full md:w-auto md:text-left text-center">
 					{t("footer.textOne")}
 				</p>
-				<div className="flex items-center gap-4 text-sm text-white ">
+				<div className="flex items-center gap-4 text-sm text-white w-full md:w-auto justify-center">
 					<span
 						onClick={changeLanguageToEnglish}
 						className="underline hover:text-yellow hover:no-underline cursor-pointer"
@@ -52,7 +52,7 @@ const Footer = () => {
 						Français
 					</a>
 				</div>
-				<p className=" px-6 text-sm font-medium p-4">
+				<p className=" px-6 text-sm font-medium p-4 w-full md:w-auto md:text-left text-center">
 					{t("footer.textTwo")}
 				</p>
 			</div>

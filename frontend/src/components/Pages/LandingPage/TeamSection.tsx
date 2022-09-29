@@ -39,7 +39,7 @@ const TeamSection = () => {
 	return (
 		<div className="mb-10">
 			<h2 className="text-white font-bold text-2xl text-center py-8">{t("team")}</h2>
-			<div className='flex justify-center gap-16'>
+			<div className='flex flex-wrap justify-center gap-16'>
 				{teamMembers.map((member, index) => (
 					<TeamCard
 						key={index}
