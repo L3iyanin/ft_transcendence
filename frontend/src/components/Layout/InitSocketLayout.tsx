@@ -25,8 +25,11 @@ const InitSocketLayout: React.FC<{
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		dispatch(setSocket());
-	}, []);
+		if (!clientSocket && userData.user && userData.user.token) {
+			console.log("init socket");
+			dispatch(setSocket(userData.user?.token));
+		}
+	}, [userData.user?.token]);
 
 	useEffect(() => {
 		if (!clientSocket || !userData) return;

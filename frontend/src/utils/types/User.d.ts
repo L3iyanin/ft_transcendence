@@ -43,6 +43,7 @@ interface UserInterface {
 	username: string,
 	fullName: string,
 	imgUrl?: string,
+	token?: string,
 	// login?: string,
 	// losses?: number,
 	// twoFactorAuth?: boolean
