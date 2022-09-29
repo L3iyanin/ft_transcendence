@@ -12,7 +12,7 @@ const TopSection = () => {
 					{t("signinWith42")}
 				</a>
 			</div>
-			<div className="h-96">
+			<div className="h-96 hidden md:block">
 				<Arcade className="max-h-full" />
 			</div>
 		</div>
