@@ -36,8 +36,8 @@
 		"teamMateTwo": "ⴰⴱⴷ ⵍⴰⵍⵉ ⴰⵉⵜ-ⵀⴻⵎⵉⴷ",
 		"teamMateThree": "ⴽⵀⴰⵍⵉⴷ ⴱⴻⵏⵍⵢⴰⵣⵉⴷ",
 		"teamMateFour": "ⵉⵎⵔⴰⵏ ⴱⴰⴰⵍⵉ",
-		"needTwoFA": "Please Enter 2FA secret",
-		"sendTwoFA": "Send 2FA"
+		"needTwoFA": "ⵙⴻⴽⴻⵛⵀⴻⵎ 2ⴼⴰ ⵜⴰⵏⴻⵇⴻⵛⵀⴰ",
+		"sendTwoFA": "ⵙⵉⴼⴻⴷ 2ⴼⴰ"
 	},
 	"wins" : "ⵜⴻⵔⴱⴻⵀⴻⵜ",
 	"losses" : "ⵜⴻⴽⵀⴻⵙⵙⴻⵔⴻⵜ",
@@ -75,8 +75,8 @@
 		"seeProfile": "ⵙⴱⴰⵢⴻⵏ ⵍⵎⴻⴰⵍoⵎⴰⵜⴻⵏⴻⴽ",
 		"inviteToPlay": "ⴳⵀⴻⵔⴰⵙⵙ ⴰⵢⴻⵍⴻⴰⴻⴱ",
 		"playNow": "ⵙⴻⴼⴰⴳⵀⴻⵏⴻⴽ ⴳⵀ ⵍⴻⵊⴻⵎⴰⴰⵜⴰⴷ",
-		"cancelInvite": "Cancel Invite",
-		"invalidInvite": "Invitation Expired",
+		"cancelInvite": "heyid tabratad",
+		"invalidInvite": "ⵜⴰⵎⴰⵜⴻⵍ ⵜⴰⴱⵔⴰⵜ",
 		"typeMessage": "ⵣⴻⵎⵉⵎ ⵜⴰⴱⵔⴰⵜⴻⵏⴻⴽ ⴳⵀⵉⴷ",
 		"channelSettings": "ⵙⴽⴻⵔ ⵢⴰⵜ ⵍⵊⴻⵎⴰⴰⵜ ⵍⵊⴻⴷⵉⴷ",
 		"createChannel": "ⴷoⵙⵙⴰⵜ ⵍⵊⴻⵎⴰ3ⴰⵜ",
@@ -140,7 +140,7 @@
 		"Enable2FA" : "ⵙⴽⵀⴻⴷⴻⵎ 2ⴼⴰ",
 		"EnableTwoFA" : "ⵙⴽⵀⴻⴷⴻⵎ 2ⴼⴰ",
 		"TwoFaEnabled" : "2ⴼⴰ ⵜⴻⴽⵀⴻⴷⴻⵎ ⵢⴰⴷⴻⵍⵉ",
-		"Disable2FA" : "Disable 2FA",
+		"Disable2FA" : "ⴽⵉⵙⵙ 2ⴼⴰ",
 		"GenerateQR" : "ⴰⴷⴷ ⴱⴰⵛⵀ ⴰⵢⴰⴽ ⵉⵙⴳⴰⴷⴰ ⵍⵛoⴷⴻ ⵏ ⵇⵔⴰ",
 		"HowToEnable2FA": "ⵎⴰⵏⵉⴽ ⴰⵙⵙⴻⵔⴰ ⵜⵙⴻⴽⵀⴻⴷⴻⵎⴻⵜ 2ⴼⴰ",
 		"InstallGoogleAuth" : "ⵜⴻⵍⴻⵛⵀⴰⵔⴳⴻⵔ ⴳooⴳⵍⴻ ⴰⵓⵜⵀ ⴰ",
@@ -148,7 +148,7 @@
 		"VerifyYourDevice": "ⵙⵛⴰⵏⵉ ⵇⵔ ⵛoⴷⴻ",
 		"EnterYourCode" : "ⵜⴰⴽⴻⴷ ⴳⵀⴻⵜⴻⵍⴻⴼoⵏⴻⴽ" ,
 		"verify" : "ⵣⴻⵔ ⵉⵣⴻⴷ ⵏⵜⴰⵏ ⴰⵢⴰⵏ",
-		"usernameError": "Username is required and must be at least 3"
+		"usernameError": "ⵙⴻⵎⵉⵢⴰ ⵉⴽⵀⴻⵙⵙⴰ ⴰⴳⵉⵙⵙⵉⵍⴻⵏ 3 ⵙoⴼⴻⵍⴰ"
 	},
 	"signInSuccess": "ⵜⴽⴻⵅⴻⵎⵡⴻⵜ ⵀoⵡⴰ ⵀⴰⴷⴰⴽ",
 	"searchPage": {
