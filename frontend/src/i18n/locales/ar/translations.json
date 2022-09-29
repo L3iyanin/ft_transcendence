@@ -35,10 +35,12 @@
 		"teamMateOne": "يونس عروبي",
 		"teamMateTwo": "عبدالعالي أيت احميد",
 		"teamMateThree": "خالد بنليزيد",
-		"teamMateFour": "عمران باعلي"
+		"teamMateFour": "عمران باعلي",
+		"needTwoFA": "تحتاج إلى تفعيل الاحتياطي الثنائي لتسجيل الدخول",
+		"sendTwoFA": "إرسال رمز الاحتياطي الثنائي"
 	},
-	"wins" : "wins",
-	"losses" : "losses",
+	"wins" : "الفوز",
+	"losses" : "الخسارة",
 	"homePage" : {
 		"online": "متصل",
 		"offline": "غير متصل",
@@ -55,9 +57,9 @@
 	},
 	"gamePage": {
 		"goalsToWin": "أهداف لتفوز",
-		"watchTheMatch": "Watching The Match",
+		"watchTheMatch": "مشاهدة المباراة",
 		"theWinner": "الفائز",
-		"dontCloseWindow": "Please don't close the window or you will lose the matching and match",
+		"dontCloseWindow": "لا تغلق هذه النافذة حتى ينتهي اللعب",
 		"quit_helper": "هل أنت متأكد من مغادرتك للمباراة",
 		"alreadyInMatch": "You are already in a match"
 	},
@@ -66,14 +68,16 @@
 		"dms": "الرسائل الخاصة",
 		"channels": "القنوات",
 		"publicChannel": "قناة عامة",
-		"typeMessage": "اكتب رسالتك هنا",
 		"protectedChannel": "قناة محمية",
 		"privateChannel": "قناة خاصة",
+		"youAreBanned": "لفد تم حجبك من هده المحادثة",
+		"youAreMuted": "لفد تم كتم صوتك من هده المحادثة",
 		"seeProfile": "عرض الملف الشخصي",
 		"inviteToPlay": "دعوة للعب",
 		"playNow": "العب الآن",
-		"youAreBanned": "لفد تم حجبك من هده المحادثة",
-		"youAreMuted": "لفد تم كتم صوتك من هده المحادثة",
+		"cancelInvite": "إلغاء الدعوة",
+		"invalidInvite": "دعوة غير صالحة",
+		"typeMessage": "اكتب رسالتك هنا",
 		"channelSettings": "اعدادات القناة",
 		"createChannel": "انشاء قناة",
 		"channelName": "اسم القناة",
@@ -112,18 +116,18 @@
 		"5Hours": "٥ ساعات",
 		"24Hours": "٢٤ ساعة",
 		"addMember": "أضف عضو",
-		"addFriendsToRoom": "Add friends to room",
-		"youHaveNoFriendToadd": "You have no friends to add",
-		"leaveChannel": "leave channel"
+		"addFriendsToRoom": "أضف أصدقائك للقناة",
+		"youHaveNoFriendToadd": "ليس لديك أصدقاء لإضافتهم",
+		"leaveChannel": "مغادرة القناة"
 	},
 	"roles" : {
 		"member": "عضو",
 		"admin": "مدير",
-		"owner": "owner"
+		"owner": "مالك"
 	},
 	"send": "Send",
-	"playerOne": "Player 1",
-	"playerTwo": "Player 2",
+	"playerOne": "اللاعب الأول",
+	"playerTwo": "اللاعب الثاني",
 	"footer": {
 		"textOne": "تم تطويره ب💪🏼 بواسطة العيانين",
 		"textTwo": "1337 المستقبل في تحميل"
@@ -131,19 +135,23 @@
 	"classicGame": "Marineford Pong",
 	"vipGame": "Wano Pong",
 	"pongInvitation": "You've been invited to play a pong game",
+	"pongInviter": "You invite you friend to play a pong game",
 	"settingsPage": {
 		"Enable2FA" : "2FA تفعيل",
 		"EnableTwoFA" : "(2FA) تفعيل المصادقة الثنائية",
+		"TwoFaEnabled" : "you already Enabled 2FA",
+		"Disable2FA" : "Disable 2FA",
 		"GenerateQR" : "2FA QR اضغط لإنشاء رمز",
 		"HowToEnable2FA": "كيفية تفعيل المصادقة الثنائية",
 		"InstallGoogleAuth" : "Google Auth تحميل",
 		"ScanTheQR" : "QR امسح رمز",
 		"VerifyYourDevice": "تأكيد هوية جهازك",
 		"EnterYourCode" : "أدخل رمزك",
-		"verify" : "تحقق"
+		"verify" : "تحقق",
+		"usernameError": "اسم المستخدم ضروري و يجب أن يحتوي على ثلاثة أحرف على الأقل"
 	},
-	"signInSuccess": "You login success !!",
+	"signInSuccess": "تم تسجيل الدخول بنجاح",
 	"searchPage": {
-		"noUsersFound": "No users found"
+		"noUsersFound": "لم يتم العثور على أي مستخدم"
 	}	
 }

@@ -35,7 +35,9 @@
 		"teamMateOne": "ⵢopⵓⵏⴻⵙⵙ ⴰⵔoⵓⴱⵉ",
 		"teamMateTwo": "ⴰⴱⴷ ⵍⴰⵍⵉ ⴰⵉⵜ-ⵀⴻⵎⵉⴷ",
 		"teamMateThree": "ⴽⵀⴰⵍⵉⴷ ⴱⴻⵏⵍⵢⴰⵣⵉⴷ",
-		"teamMateFour": "ⵉⵎⵔⴰⵏ ⴱⴰⴰⵍⵉ"
+		"teamMateFour": "ⵉⵎⵔⴰⵏ ⴱⴰⴰⵍⵉ",
+		"needTwoFA": "Please Enter 2FA secret",
+		"sendTwoFA": "Send 2FA"
 	},
 	"wins" : "ⵜⴻⵔⴱⴻⵀⴻⵜ",
 	"losses" : "ⵜⴻⴽⵀⴻⵙⵙⴻⵔⴻⵜ",
@@ -44,7 +46,6 @@
 		"offline": "oⵔⴳⵀⵉⴷⵉⵍⴰ",
 		"friends" : "ⵉⵎⴷoⴽⴰⵍ",
 		"achievements" : "ⴳⵀⴰⵢⴻⵍⵉ ⵜⴻⵔⴻⴱⴻⵀⴻⵜ",
-		"achievments" : "ⴳⵀⴰⵢⴻⵍⵉ ⵜⴻⵔⴻⴱⴻⵀⴻⵜ",
 		"LiveMatches" : "ⵎⴰⵜⵛⵀⴰⵜ ⵏⴳⵀⵉⵍⴰⴷ:",
 		"SeeMatchLive" : "ⴰⵜⴼⴻⵔⴻⵊⴻⵜ ⴳⵀⵉⵍ ⵎⴰⵜⵛⵀ",
 		"MarinefordPong" : "ⵎⴰⵔⵉⵏⴼoⵔⴷ Poⵏⴳ",
@@ -67,14 +68,16 @@
 		"dms": "ⵜⵉⴱⵔⴰⵜⴻ ⴳⵔⴰⵜoⵏ",
 		"channels": "ⵇⵡⴰⴷⴻⵙⵙ",
 		"publicChannel": "ⵍⵉⴷⴰⴰ ⵏⴽoⵍⵛⵀⵉ",
-		"typeMessage": "ⵣⴻⵎⵉⵎ ⵜⴰⴱⵔⴰⵜⴻⵏⴻⴽ ⴳⵀⵉⴷ",
 		"protectedChannel": "ⵇⴰⴷoⵙⵙ ⵜoⵇⴼⴰⵍⵍ",
 		"privateChannel": "ⵇⴰⴷⴷoⵙⵙ ⵉⵜⴰⴼ ⴱⴰⴱⴻⵏⴻⵙⵙ",
+		"youAreBanned": "ⵍⵊⴻⵎⴰ3ⵜ ⵜⵙⵙⵉⴼⵉⵙⵙⴻⴽ",
+		"youAreMuted": "ⴷoⵙⵙⴰⵜ ⵍⵊⴻⵎⴰ3ⴰⵜ",
 		"seeProfile": "ⵙⴱⴰⵢⴻⵏ ⵍⵎⴻⴰⵍoⵎⴰⵜⴻⵏⴻⴽ",
 		"inviteToPlay": "ⴳⵀⴻⵔⴰⵙⵙ ⴰⵢⴻⵍⴻⴰⴻⴱ",
 		"playNow": "ⵙⴻⴼⴰⴳⵀⴻⵏⴻⴽ ⴳⵀ ⵍⴻⵊⴻⵎⴰⴰⵜⴰⴷ",
-		"youAreBanned": "ⵍⵊⴻⵎⴰ3ⵜ ⵜⵙⵙⵉⴼⵉⵙⵙⴻⴽ",
-		"youAreMuted": "ⴷoⵙⵙⴰⵜ ⵍⵊⴻⵎⴰ3ⴰⵜ",
+		"cancelInvite": "Cancel Invite",
+		"invalidInvite": "Invitation Expired",
+		"typeMessage": "ⵣⴻⵎⵉⵎ ⵜⴰⴱⵔⴰⵜⴻⵏⴻⴽ ⴳⵀⵉⴷ",
 		"channelSettings": "ⵙⴽⴻⵔ ⵢⴰⵜ ⵍⵊⴻⵎⴰⴰⵜ ⵍⵊⴻⴷⵉⴷ",
 		"createChannel": "ⴷoⵙⵙⴰⵜ ⵍⵊⴻⵎⴰ3ⴰⵜ",
 		"channelName": "ⵙⵎⵉⵢⴻⵜ ⵍⵊⴻⵎⴰⴻⴰⵜ",
@@ -131,22 +134,24 @@
 	},
 	"classicGame": "ⵎⴰⵔⵉⵏⴼoⵔⴷ Poⵏⴳ",
 	"vipGame":" ⵡⴰⵏo poⵏⴳ",
-
 	"pongInvitation": "ⴳⵀⴻⵔⴰⵏⴰⴽ ⴰⵜⴻⵍⴻⴰⴱⴻⵜⴻ ⴳⵀⴻⵍ ⵍoⴻⴰⴱⴰ ⵍPoⵏⴳ",
+	"pongInviter": "You invite you friend to play a pong game",
 	"settingsPage": {
 		"Enable2FA" : "ⵙⴽⵀⴻⴷⴻⵎ 2ⴼⴰ",
 		"EnableTwoFA" : "ⵙⴽⵀⴻⴷⴻⵎ 2ⴼⴰ",
 		"TwoFaEnabled" : "2ⴼⴰ ⵜⴻⴽⵀⴻⴷⴻⵎ ⵢⴰⴷⴻⵍⵉ",
+		"Disable2FA" : "Disable 2FA",
 		"GenerateQR" : "ⴰⴷⴷ ⴱⴰⵛⵀ ⴰⵢⴰⴽ ⵉⵙⴳⴰⴷⴰ ⵍⵛoⴷⴻ ⵏ ⵇⵔⴰ",
 		"HowToEnable2FA": "ⵎⴰⵏⵉⴽ ⴰⵙⵙⴻⵔⴰ ⵜⵙⴻⴽⵀⴻⴷⴻⵎⴻⵜ 2ⴼⴰ",
 		"InstallGoogleAuth" : "ⵜⴻⵍⴻⵛⵀⴰⵔⴳⴻⵔ ⴳooⴳⵍⴻ ⴰⵓⵜⵀ ⴰ",
 		"ScanTheQR" : "ⵜⴻⵍⴻⵛⵀⴰⵔⴳⴻⵔ ⴳooⴳⵍⴻ ⴰⵓⵜⵀ",
 		"VerifyYourDevice": "ⵙⵛⴰⵏⵉ ⵇⵔ ⵛoⴷⴻ",
 		"EnterYourCode" : "ⵜⴰⴽⴻⴷ ⴳⵀⴻⵜⴻⵍⴻⴼoⵏⴻⴽ" ,
-		"verify" : "ⵣⴻⵔ ⵉⵣⴻⴷ ⵏⵜⴰⵏ ⴰⵢⴰⵏ"
+		"verify" : "ⵣⴻⵔ ⵉⵣⴻⴷ ⵏⵜⴰⵏ ⴰⵢⴰⵏ",
+		"usernameError": "Username is required and must be at least 3"
 	},
 	"signInSuccess": "ⵜⴽⴻⵅⴻⵎⵡⴻⵜ ⵀoⵡⴰ ⵀⴰⴷⴰⴽ",
 	"searchPage": {
 		"noUsersFound":"oⵔoⴼⵉⴳⵀⵀ ⵜⴰⴽⵔⵏⵢⴰⵏ" 
-	}	
+	}
 }

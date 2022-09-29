@@ -4,6 +4,7 @@ interface IMessage {
     content: string;
     from: IMember;
     date: Date;
+	createdAt: Date;
     Channel?: IChatChannel;
     // channelId: number;
 	invite?: boolean;

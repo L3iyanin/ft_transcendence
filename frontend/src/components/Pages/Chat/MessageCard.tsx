@@ -35,7 +35,7 @@ const MessageCard: React.FC<{
 						</span>
 					</Link>
 					<span className="text-xs text-grey-2">
-						{moment(message.date).format("MMM D, YYYY [at] HH:mm")}
+						{moment(message.createdAt).format("MMM D, YYYY [at] HH:mm")}
 					</span>
 					{message.from.role &&
 						message.from.role === RolesEnum.ADMIN && (

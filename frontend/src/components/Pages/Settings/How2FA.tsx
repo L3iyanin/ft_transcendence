@@ -17,7 +17,7 @@ const How2FA = () => {
 			<div className="container flex justify-center items-center gap-8">
 				<StepOne style={style} />
 				<StepTwo style={style} />
-				<StepThree style={style} />
+				{/* <StepThree style={style} /> */}
 			</div>
 		</section>
 	);
