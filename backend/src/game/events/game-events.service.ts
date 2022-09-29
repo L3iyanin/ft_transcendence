@@ -101,6 +101,7 @@ export class GameEventsService {
 						player1Id: inviterUserId,
 						player2Id: invitedUserId,
 						live: false,
+						matchByInvite: true,
 					},
 				});
 				this.onlineUsersService.setSocketInGame(clientId); // setting socket of player1 in game
