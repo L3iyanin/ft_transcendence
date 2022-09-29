@@ -91,7 +91,7 @@ const MemberCart: React.FC<{
 
 	let actions = (
 		<>
-			<div className="flex flex-row">
+			<div className="flex flex-row flex-wrap justify-center w-full lg:w-auto lg:flex-nowrap lg:justify-start">
 				<ButtonWithIcon
 					icon={<BanIcon />}
 					text={t("channelSettings.ban")}
@@ -135,18 +135,18 @@ const MemberCart: React.FC<{
 
 	if (props.member.role === "OWNER") {
 		actions = (
-			<>
+			<div className="justify-center w-full flex lg:block lg:w-auto">
 				<ButtonWithIcon
 					icon={<></>}
 					text={t(`roles.${props.member.role.toLowerCase()}`)}
 					dropDown={false}
 				/>
-			</>
+			</div>
 		);
 	} else if (props.member.status === "BLOCKED") {
 		actions = (
 			<>
-				<div className="flex flex-row">
+				<div className="flex flex-row flex-wrap justify-center w-full lg:w-auto lg:flex-nowrap lg:justify-start">
 					<ButtonWithIcon
 						icon={<BanIcon />}
 						text={t("channelSettings.unban")}
@@ -175,7 +175,7 @@ const MemberCart: React.FC<{
 	} else if (props.member.status === "MUTED") {
 		actions = (
 			<>
-				<div className="flex flex-row">
+				<div className="flex flex-row flex-wrap justify-center w-full lg:w-auto lg:flex-nowrap lg:justify-start">
 					<ButtonWithIcon
 						icon={<BanIcon />}
 						text={t("channelSettings.ban")}
@@ -217,8 +217,8 @@ const MemberCart: React.FC<{
 
 	return (
 		<div className="container">
-			<li className="flex flex-row p-3 pl-6 my-4 text-white rounded-2xl bg-dark-60 justify-between">
-				<div className="flex flex-row items-center">
+			<li className="flex flex-row flex-wrap lg:flex-nowrap p-3 pl-6 my-4 text-white rounded-2xl bg-dark-60 justify-between">
+				<div className="flex w-full lg:w-auto justify-center flex-row items-center">
 					<img
 						src={props.member.user.imgUrl}
 						className="w-12 h-12 rounded-full"
