@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable } from "@nestjs/common";
 import { Match, PrismaClient, User } from "@prisma/client";
 import { OnlineUsersService } from "src/online-users/online-users.service";
 import { JoinMatchDto, LiveMatchDto, ResponseDto, SpectatorDto } from "../dto/game-events.dto";
@@ -6,7 +6,6 @@ import { Server, Socket } from "socket.io";
 import { FPS } from "../constants/game.constants";
 import GameLogic from "../gameLogic/gameLogic";
 import { generateMatchName, generateSpectatorsRoomName } from "../helpers/helpers";
-import { UsersService } from "src/users/users.service";
 import { HttpException } from "@nestjs/common";
 import { generateChannelName } from "src/chat/helpers/helpers";
 
@@ -18,7 +17,6 @@ export class GameEventsService {
 
 	constructor(
 		private readonly onlineUsersService: OnlineUsersService,
-		private readonly userService: UsersService
 	) {
 		this.prisma = new PrismaClient();
 	}
@@ -64,6 +62,15 @@ export class GameEventsService {
 			},
 		});
 
+		const inviterSocket = this.onlineUsersService.getUserSockets(payload.inviterUserId);
+		const invitedSocket = this.onlineUsersService.getUserSockets(payload.invitedUserId);
+		inviterSocket.forEach((socket) => {
+			socket.join(channelName);
+		});
+		invitedSocket.forEach((socket) => {
+			socket.join(channelName);
+		});
+
 		server.to(channelName).emit("receivedMessage", {
 			from: member,
 			content: message.content,
@@ -94,6 +101,7 @@ export class GameEventsService {
 						player1Id: inviterUserId,
 						player2Id: invitedUserId,
 						live: false,
+						matchByInvite: true,
 					},
 				});
 				this.onlineUsersService.setSocketInGame(clientId); // setting socket of player1 in game
@@ -145,13 +153,13 @@ export class GameEventsService {
 				};
 			}
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 		}
 	}
 
 	async validateJoinGame(payload: JoinMatchDto) {
 		const { userId } = payload;
-		const matches = await this.prisma.match.findMany({
+		let matches = await this.prisma.match.findMany({
 			where: {
 				AND: [
 					{
@@ -176,6 +184,14 @@ export class GameEventsService {
 					},
 				],
 			},
+		});
+		// remove matches that are matching, and the invited user is trying to join
+		// because the invited is already in the match as player2Id
+		matches = matches.filter((match) => {
+			if (match.isMatching && match.player2Id === userId) {
+				return false;
+			}
+			return true;
 		});
 		if (matches.length > 0) {
 			return {
@@ -296,6 +312,19 @@ export class GameEventsService {
 			},
 		});
 
+		if (match && match.matchByInvite) {
+			// make validInvitation=false in message
+			const ret = await this.makeValidInvitationFalse(match.id);
+
+			// delete match
+			await this.prisma.match.delete({
+				where: {
+					id: match.id,
+				},
+			});
+			return;
+		}
+
 		if (match && match.isMatching && !match.live) {
 			await this.prisma.match.delete({
 				where: {
@@ -386,6 +415,9 @@ export class GameEventsService {
 
 			await this.updateUserAcheivements(endMatch, winner, loser);
 			await this.updateUserAcheivements(endMatch, loser, winner);
+			if (endMatch.matchByInvite) {
+				await this.makeValidInvitationFalse(endMatch.id);
+			}
 
 			this.removeLiveMatch(match.id);
 		}
@@ -528,6 +560,9 @@ export class GameEventsService {
 
 			await this.updateUserAcheivements(endMatch, winner, loser);
 			await this.updateUserAcheivements(endMatch, loser, winner);
+			if (endMatch.matchByInvite) {
+				await this.makeValidInvitationFalse(endMatch.id);
+			}
 			if (liveMatch) {
 				this.removeLiveMatch(match.id);
 			}
@@ -707,7 +742,6 @@ export class GameEventsService {
 			});
 
 			let countWinsInRow = 0;
-			console.log("allUserMatches", allUserMatches);
 			for (let i = 0; i < allUserMatches.length; i++) {
 				const userMatch = allUserMatches[i];
 				if (
@@ -722,7 +756,6 @@ export class GameEventsService {
 					countWinsInRow++;
 				else break;
 			}
-			console.log("countWinsInRow", countWinsInRow);
 
 			//? id 1
 			//? win first played match
@@ -798,4 +831,44 @@ export class GameEventsService {
 			throw new HttpException(err.message, err.status);
 		}
 	}
+
+	async makeValidInvitationFalse(matchId: number) {
+		try {
+			const match = await this.prisma.match.findUnique({
+				where: {
+					id: matchId,
+				},
+			});
+			if (!match) {
+				throw new HttpException("Match not found", HttpStatus.NOT_FOUND);
+			}
+			if (!match.matchByInvite) {
+				throw new HttpException("Match is not by invite", HttpStatus.BAD_REQUEST);
+			}
+			const message = await this.prisma.message.findUnique({
+				where: {
+					matchId,
+				},
+			});
+			if (!message) {
+				throw new HttpException("Message not found", HttpStatus.NOT_FOUND);
+			}
+			const newMessage = await this.prisma.message.update({
+				where: {
+					id: message.id,
+				},
+				data: {
+					validInvitation: false,
+				},
+			});
+			return {
+				newMessage,
+				message: "Invitation is no longer valid",
+			}
+
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
 }

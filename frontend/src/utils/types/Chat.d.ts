@@ -11,6 +11,7 @@ interface IMessage {
 	inviterId?: number;
 	matchId?: number;
 	scoreToWin?: number;
+	validInvitation?: boolean;
 }
 
 interface IMember {

@@ -3,6 +3,7 @@ import ButtonWithIcon from "../../UI/Buttons/ButtonWithIcon";
 import { ReactComponent as PlayIcon } from "../../../assets/icons/play.svg";
 import { ReactComponent as ShieldIcon } from "../../../assets/icons/shield.svg";
 import { ReactComponent as OwnerIcon } from "../../../assets/icons/owner.svg";
+import { ReactComponent as InvalidIcon } from "../../../assets/icons/invalid.svg";
 import { useTranslation } from "react-i18next";
 import { RolesEnum } from "../../../utils/constants/enum";
 import { Link } from "react-router-dom";
@@ -12,7 +13,8 @@ const MessageCard: React.FC<{
 	message: IMessage;
 	userId?: number;
 	acceptInvitation: (message: IMessage) => void;
-}> = ({ message, userId, acceptInvitation }) => {
+	cancelInvitation: (matchId: number) => void;
+}> = ({ message, userId, acceptInvitation, cancelInvitation }) => {
 
 	const { t } = useTranslation();
 
@@ -60,7 +62,12 @@ const MessageCard: React.FC<{
 				</div>
 				{!message.invite && <p>{message.content}</p>}
 				{message.invite && (
-					<InviteMessageCard message={message} userId={userId} acceptInvitation={acceptInvitation} />
+					<InviteMessageCard
+						message={message}
+						userId={userId}
+						acceptInvitation={acceptInvitation}
+						cancelInvitation={cancelInvitation}
+						/>
 				)}
 			</div>
 		</div>
@@ -73,24 +80,40 @@ const InviteMessageCard: React.FC<{
 	message: IMessage;
 	userId?: number;
 	acceptInvitation: (message: IMessage) => void;
-}> = ({ message, userId, acceptInvitation }) => {
+	cancelInvitation: (matchId: number) => void;
+}> = ({ message, userId, acceptInvitation, cancelInvitation }) => {
 	const { t } = useTranslation();
+
+	console.log(message);
 
 	if (message.inviterId !== userId) {
 		return (
 			<div className="flex gap-4 items-center">
 				<p>{t("pongInvitation")}</p>
-				<ButtonWithIcon
-					icon={<PlayIcon />}
-					label={t("chatPage.playNow")}
-					className="!py-1 rounded-lg px-3 bg-green"
-					onClick={acceptInvitation.bind(null, message)}
-				/>
-				<ButtonWithIcon
-					icon={<LeaveIcon className="w-4 h-4" />}
-					label={t("chatPage.cancelInvite")}
-					className="!py-1 rounded-lg px-3 bg-red"
-				/>
+				{
+					message.validInvitation !== false ?
+						<>
+							<ButtonWithIcon
+								icon={<PlayIcon />}
+								label={t("chatPage.playNow")}
+								className="!py-1 rounded-lg px-3 bg-green"
+								onClick={acceptInvitation.bind(null, message)}
+							/>
+							<ButtonWithIcon
+								icon={<LeaveIcon className="w-4 h-4" />}
+								label={t("chatPage.cancelInvite")}
+								className="!py-1 rounded-lg px-3 bg-red"
+								onClick={cancelInvitation.bind(null, message.matchId!)}
+							/>
+						</>
+						:
+						<ButtonWithIcon
+							icon={<InvalidIcon />}
+							isDisabled={true}
+							label={t("chatPage.invalidInvite")}
+							className="!py-1 rounded-lg px-3 bg-dark-blue text-xs"
+						/>
+				}
 			</div>
 		);
 	}
@@ -98,11 +121,22 @@ const InviteMessageCard: React.FC<{
 	return (
 		<div className="flex gap-4 items-center">
 			<p>{t("pongInviter")}</p>
-			<ButtonWithIcon
-				icon={<LeaveIcon className="w-4 h-4" />}
-				label={t("chatPage.cancelInvite")}
-				className="!py-1 rounded-lg px-3 bg-red"
-			/>
+			{
+					message.validInvitation !== false ?
+					<ButtonWithIcon
+						icon={<LeaveIcon className="w-4 h-4" />}
+						label={t("chatPage.cancelInvite")}
+						className="!py-1 rounded-lg px-3 bg-red"
+						onClick={cancelInvitation.bind(null, message.matchId!)}
+					/>
+					:
+						<ButtonWithIcon
+							icon={<InvalidIcon />}
+							isDisabled={true}
+							label={t("chatPage.invalidInvite")}
+							className="!py-1 rounded-lg px-3 bg-dark-blue text-xs"
+						/>
+			}
 		</div>
 	);
 };

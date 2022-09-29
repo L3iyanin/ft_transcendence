@@ -106,7 +106,7 @@ model Message {
     invite          Boolean  @default(false)
     inviterId       Int?
     invitedId       Int?
-    matchId         Int?
+    matchId         Int? @unique
     validInvitation Boolean?
 	scoreToWin      Int?
 }

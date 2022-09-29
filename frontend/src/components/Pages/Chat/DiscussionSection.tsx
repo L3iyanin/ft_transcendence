@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import useBotChannel from "../../../hooks/useBotChannel";
 import CreateChannelPopup from "./CreateChannelPopup";
 import {
+	cancelInvitation,
 	getChannelMessages,
 	getChannels,
 	joinChannel,
@@ -225,9 +226,6 @@ const DiscussionSection: React.FC = () => {
 	useEffect(() => {
 		if (!clientSocket) return;
 		clientSocket.on("receivedMessage", (message: any) => {
-			console.log(`========== message received ========`);
-			console.log(message);
-			console.log(`========== endinnnnnngngggg ========`);
 			setCurrentChannel((channelInfo) => {
 				if (message.isDm) {
 					setChannelsOfDms((channels) => {
@@ -423,6 +421,19 @@ const DiscussionSection: React.FC = () => {
 		getNewChannelMessages(currentChannel.id.toString());
 	};
 
+
+	const onCancelInvitationHandler = (matchId: number) => {
+		cancelInvitation(matchId)
+			.then((res) => {
+				SuccesAlert(res.message);
+				getNewChannelMessages(currentChannel.id.toString());
+			})
+			.catch((err) => {
+				console.log(err);
+				ErrorAlert(err);
+			});
+	}
+
 	return (
 		<div className="flex gap-4">
 			<CreateChannelPopup
@@ -480,6 +491,7 @@ const DiscussionSection: React.FC = () => {
 					userStatus={userStatus}
 					userId={userData.user?.id}
 					onCompleteCountdownHandler={onCompleteCountdownHandler}
+					onCancelInvitationHandler={onCancelInvitationHandler}
 				/>
 			</div>
 		</div>
