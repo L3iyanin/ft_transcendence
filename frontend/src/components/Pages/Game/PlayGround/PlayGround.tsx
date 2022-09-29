@@ -197,8 +197,6 @@ const PlayGround: React.FC<{
 			className={`relative w-full mt-5 bg-cover bg-center rounded-3xl border-4 ${ isForClassic ? "border-red" : "border-yellow"}`}
 			style={{
 				backgroundImage: `url(${isForClassic ? CLASSIC_GAME_BG : VIP_GAME_BG})`,
-				// height: `${PLAY_GROUND_HEIGHT}px`,
-				// width: `${PLAY_GROUND_WIDTH}px`,
 				aspectRatio: "16 / 9",
 			}}
 			id="playground"
@@ -211,8 +209,6 @@ const PlayGround: React.FC<{
 					player2={matchSettings.player2}
 				/>
 			)}
-			{/* <PlayerPaddle isOnLeft={true} top={`${player1Y}px`} />
-			<PlayerPaddle isOnLeft={false} top={`${player2Y}px`} /> */}
 			<PlayerPaddle isOnLeft={true} top={`${window.player1Y}px`} />
 			<PlayerPaddle isOnLeft={false} top={`${window.player2Y}px`} />
 			<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-full border-r-2 border-dashed border-beige" />
@@ -230,8 +226,6 @@ const PlayGround: React.FC<{
 			<Ball
 				top={window.ballYPosition}
 				left={window.ballXPosition}
-				// top={ballPosition.y}
-				// left={ballPosition.x}
 			/>
 			<div
 				className="relative w-full h-full rounded-2xl"

@@ -13,7 +13,7 @@ const PlayerCard: React.FC<{
 	const { t } = useTranslation();
 
 	return (
-		<div className="min-w-[200px]">
+		<div className="min-w-[200px] lg:m-auto">
 			<h2 className="text-2xl font-bold text-center">{header}</h2>
 			<div className="mt-5 bg-dark-60 rounded-lg flex flex-col items-center p-6 gap-y-1.5">
 				<img

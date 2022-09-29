@@ -14,7 +14,7 @@ const WatchersAndPlayers: React.FC<{
 	}
 
 	return (
-		<div className="mt-20 text-white flex justify-between gap-16">
+		<div className="mt-20 text-white flex justify-between gap-16 flex-wrap">
 			<PlayerCard player={matchSettings.player1} header={`${t("playerOne")}:`} />
 			<WatchersList watchers={watchers} />
 			<PlayerCard player={matchSettings.player2} header={`${t("playerTwo")}:`} />

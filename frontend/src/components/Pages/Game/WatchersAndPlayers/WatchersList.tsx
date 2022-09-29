@@ -11,7 +11,7 @@ const WatchersList: React.FC<{
 	const { t } = useTranslation();
 
 	return (
-		<div className="bg-dark-60 rounded-lg p-6 grow max-h-[480px] overflow-y-auto">
+		<div className="bg-dark-60 rounded-lg p-6 grow max-h-[480px] overflow-y-auto -order-1 w-full lg:order-none lg:w-auto">
 			<h2 className="text-3xl font-bold mb-6">{t("gamePage.watchTheMatch")}:</h2>
 			{
 				watchers.map((watcher) => (

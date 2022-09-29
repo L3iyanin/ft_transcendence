@@ -6,11 +6,11 @@ const PlayerScore: React.FC<{
 }> = ({ player, isReverse, score }) => {
 	return (
 		<div
-			className={`flex text-xl items-center gap-x-4 ${
+			className={`flex items-center gap-x-4 ${
 				isReverse ? "flex-row-reverse" : "text-right"
 			}`}
 		>
-			<div className="w-[200px]">
+			<div className="w-[200px] hidden md:block text-xs md:text-base lg:text-xl">
 				<div>{player.fullName}</div>
 				<div className="text-beige">{player.username}</div>
 			</div>
