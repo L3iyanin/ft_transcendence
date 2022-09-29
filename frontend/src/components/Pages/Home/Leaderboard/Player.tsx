@@ -19,8 +19,8 @@ const Friend :React.FC < {user : IUser} > = ({ user }) => {
 				</div>
 			</div>
 			<div className="flex flex-col justify-between items-start gap-4">
-				<Stat stat="wins" qty={user.wins!} />
-				<Stat stat="losses" qty={user.losses!} />
+				<Stat stat={t("wins")} qty={user.wins!} />
+				<Stat stat={t("losses")} qty={user.losses!} />
 			</div>
 		</article>
 	);

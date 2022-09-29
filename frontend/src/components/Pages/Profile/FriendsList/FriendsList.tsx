@@ -42,7 +42,7 @@ const FirendsList: React.FC<{ userId?: string }> = ({ userId }) => {
 	return (
 		<section className="relative basis-6/12 h-[480px] py-3 pl-1 pr-2 rounded-2xl flex flex-col justify-start gap-3 bg-dark-60">
 			<h2 className="m-2 px-4 text-2xl font-bold text-white ">
-				{t("Friends")}
+				{t("friends")}
 			</h2>
 			<div className=" max-h-[410px] px-6 rounded-lg overflow-y-auto">
 				{friends.length > 0 &&

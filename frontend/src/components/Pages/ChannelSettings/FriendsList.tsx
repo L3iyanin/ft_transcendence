@@ -61,7 +61,7 @@ const FriendsList: React.FC<{
 				<InputWithIcon
 					icon={<SearchIcon />}
 					type="text"
-					placeholder="Search"
+					placeholder={t("search")}
 					onChange={searchHandler}
 				/>
 			</div>

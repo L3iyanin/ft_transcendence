@@ -42,7 +42,7 @@ export class AuthController {
 			);
 		}
 	}
-	
+
 	@Post("/2fa")
 	async pass2FA(@Body() payload: TwoFADto, @Res() res: Response) {
 		const userId = payload.userId;
@@ -67,11 +67,9 @@ export class AuthController {
 		}
 	}
 
-	@UseGuards(UserGuard)
 	@Get("logout")
 	async logout(@Req() req, @Res() res: Response) {
-		const user = req.user;
-		const token = await this.authService.destroyJwtToken(user.username, user.fullName, user.id);
+		const token = await this.authService.destroyJwtToken("logout", "logout", 0);
 		res.cookie("jwt", token, { httpOnly: true, maxAge: 1 });
 		return res.send({ message: "logout successfully" });
 	}
