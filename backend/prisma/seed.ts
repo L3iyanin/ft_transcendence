@@ -14,35 +14,35 @@ async function addAchivements() {
 		data: {
 			name: "Win first played Match",
 			description: "Mera Mera No Mi",
-			imgUrl: "http://10.11.6.4:8080/achivements/achivement1.png",
+			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement1.png`,
 		},
 	});
 	const achivement1 = await prisma.achievement.create({
 		data: {
 			name: "Win 2 Match in row",
 			description: "Ope Ope No Mi",
-			imgUrl: "http://10.11.6.4:8080/achivements/achivement2.png",
+			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement2.png`,
 		},
 	});
 	const achivement2 = await prisma.achievement.create({
 		data: {
 			name: "you Lose versus khalid ",
 			description: "Poneglyph",
-			imgUrl: "http://10.11.6.4:8080/achivements/achivement3.png",
+			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement3.png`,
 		},
 	});
 	const achivement3 = await prisma.achievement.create({
 		data: {
 			name: "Win with clean sheet",
 			description: "Ito Ito No Mi",
-			imgUrl: "http://10.11.6.4:8080/achivements/achivement4.png",
+			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement4.png`,
 		},
 	});
 	const achivement4 = await prisma.achievement.create({
 		data: {
 			name: "Win 5 Match in row",
 			description: "King Of Pirates",
-			imgUrl: "http://10.11.6.4:8080/achivements/achivement5.png",
+			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement5.png`,
 		},
 	});
 	console.table({ achivement0, achivement1 , achivement2, achivement3, achivement4});
