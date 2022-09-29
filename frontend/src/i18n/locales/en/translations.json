@@ -76,6 +76,7 @@
 		"inviteToPlay": "Invite to play",
 		"playNow": "Play Now",
 		"cancelInvite": "Cancel Invite",
+		"invalidInvite": "Invitation Expired",
 		"typeMessage": "Type a message...",
 		"channelSettings": "Channel Settings",
 		"createChannel": "Create Channel",

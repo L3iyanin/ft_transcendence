@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
+import { cancelInvitation } from "../../../services/chat/chat";
 import { ChannleTypesEnum, MemberStatusEnum } from "../../../utils/constants/enum";
 import ButtonWithIcon from "../../UI/Buttons/ButtonWithIcon";
 import Counterdown from "../../UI/Countdown";
-import { ErrorAlertWithMessage } from "../../UI/Error";
+import ErrorAlert, { ErrorAlertWithMessage } from "../../UI/Error";
 import Input from "../../UI/inputs/Input";
+import SuccesAlert from "../../UI/SuccesAlert";
 import MessageCard from "./MessageCard";
 
 const MessagesList: React.FC<{
@@ -25,6 +27,7 @@ const MessagesList: React.FC<{
 		isBanned: boolean;
 		isMuted: boolean;
 	};
+	onCancelInvitationHandler: (matchId: number) => void;
 }> = ({
 	messages,
 	disableSend,
@@ -35,7 +38,8 @@ const MessagesList: React.FC<{
 	currentChannel,
 	userStatus,
 	onCompleteCountdownHandler,
-	userId
+	userId,
+	onCancelInvitationHandler
 }) => {
 	const { t } = useTranslation();
 
@@ -72,10 +76,6 @@ const MessagesList: React.FC<{
 	);
 
 	const onAcceptInvitationHandler = (message: IMessage) => {
-		console.log("===== accept invitation =====");
-		console.log(message)
-		console.log(`userId: ${userId}`)
-		console.log("===== endiiiiiiiiiiiing =====");
 		clientSocket.emit("joinGame", {
 				userId: userId,
 				scoreToWin: message.scoreToWin,
@@ -91,7 +91,13 @@ const MessagesList: React.FC<{
 			<div className="overflow-auto">
 				{!IamNotMember &&
 					messages.map((message, index) => (
-						<MessageCard key={index} message={message} userId={userId} acceptInvitation={onAcceptInvitationHandler} />
+						<MessageCard
+							key={index}
+							message={message}
+							userId={userId}
+							acceptInvitation={onAcceptInvitationHandler}
+							cancelInvitation={onCancelInvitationHandler}
+							/>
 					))}
 				{!IamNotMember && messages.length === 0 && <MessageNotFound />}
 				{!IamNotMember && messages.length > 0 && (
