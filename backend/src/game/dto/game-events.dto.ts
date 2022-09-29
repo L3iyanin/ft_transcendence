@@ -17,7 +17,7 @@ export class JoinMatchDto {
 	invite?: boolean; // true in match by invite, undefined in match by queue
 	inviterUserId?: number;
 	invitedUserId?: number;
-	matchId?: number; // matchId for invited user
+	matchId?: number; // (I send it in message), only send it when userId is invitedUserId
 }
 
 export class StartedMatchResponseDto {
