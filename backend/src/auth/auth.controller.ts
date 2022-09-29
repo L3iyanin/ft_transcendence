@@ -30,8 +30,7 @@ export class AuthController {
 			res.cookie("jwt", token, { httpOnly: true });
 			return res.send({
 				status: 200,
-				data: user,
-				token : token
+				data: {...user, token}
 			});
 		} else {
 			throw new HttpException(
@@ -43,7 +42,7 @@ export class AuthController {
 			);
 		}
 	}
-
+	
 	@Post("/2fa")
 	async pass2FA(@Body() payload: TwoFADto, @Res() res: Response) {
 		const userId = payload.userId;
@@ -61,8 +60,7 @@ export class AuthController {
 			res.cookie("jwt", token, { httpOnly: true });
 			return res.send({
 				status: 200,
-				data: user,
-				token : token
+				data: {...user, token},
 			});
 		} else {
 			throw new HttpException("2FA SECRET IS INCOORECT", 401);
