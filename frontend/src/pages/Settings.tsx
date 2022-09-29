@@ -59,7 +59,6 @@ const Settings = () => {
 		setisEnabled(prevEnabledStatus => !prevEnabledStatus);
 		enableTwoFactorAuth()
 			.then(res => {
-				// console.log(res);
 				setqrCodePath(res.qrUrl);
 				setisEnabled(true);
 			})
@@ -84,7 +83,6 @@ const Settings = () => {
 
 	// handler for username html input event
 	const usernameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		// console.log(event.target.value);
 		setusername(event.target.value);
 	}
 
@@ -96,7 +94,6 @@ const Settings = () => {
 		else {
 			updateUsername(username)
 			.then(res => {
-				// console.log(res);
 				if (isResNotOk(res)) {
 					ErrorAlert(res);
 					return;
@@ -116,7 +113,6 @@ const Settings = () => {
 
 		updateProfileSettings(formData)
 			.then((res) => {
-				// console.log(res)
 				if (isResNotOk(res)) {
 					ErrorAlert(res);
 					return;

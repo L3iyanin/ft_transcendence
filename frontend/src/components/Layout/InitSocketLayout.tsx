@@ -26,7 +26,6 @@ const InitSocketLayout: React.FC<{
 
 	useEffect(() => {
 		if (!clientSocket && userData.user && userData.user.token) {
-			console.log("init socket");
 			dispatch(setSocket(userData.user?.token));
 		}
 	}, [userData.user?.token]);
@@ -57,7 +56,6 @@ const InitSocketLayout: React.FC<{
 		});
 
 		clientSocket.on("watchLiveMatchResponse", (data: IWatchMatchRes) => {
-			console.log(data);
 			if (data.status === ResponseStatusEnum.ERROR) {
 				ErrorAlertWithMessage(data.message);
 				return;
@@ -68,17 +66,14 @@ const InitSocketLayout: React.FC<{
 		});
 
 		clientSocket.on("spectatorJoined", (data: IUser[]) => {
-			console.log(data);
 			dispatch(setSpectatorsInLiveMatch(data));
 		});
 
 		clientSocket.on("alreadyInMatch", () => {
-			console.log("=== alreadyInMatch ===");
 			ErrorAlertWithMessage(t("gamePage.alreadyInMatch"));
 		})
 
 		clientSocket.on("matching", () => {
-			console.log("=== matching ===");
 			dispatch(setMatching());
 			toast.info(t("gamePage.dontCloseWindow"), {
 				position: toast.POSITION.TOP_CENTER,

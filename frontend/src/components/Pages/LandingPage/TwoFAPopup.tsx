@@ -26,7 +26,6 @@ const TwoFAPopup: React.FC<{
 
 		send2FASecret(TwoFA, userId!)
 		.then((res) => {
-				console.log(res);
 				setOpen(false);
 				// SuccesAlert(res.message);
 				dispatch(login(res.data.data));
@@ -41,7 +40,6 @@ const TwoFAPopup: React.FC<{
 	};
 
 	const onChangeTwoFAHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		console.log(e.target.value);
 		setTwoFA(e.target.value);
 	};
 

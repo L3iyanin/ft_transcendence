@@ -12,7 +12,6 @@ const InviteToPlayPopup: React.FC<{
 
 
 	const onInviteHandler = (scoreToWin: number) => {
-		console.log(`scoreToWin: ${scoreToWin}`);
 		onInvitePlayer(scoreToWin);
 		setOpen(false);
 	};

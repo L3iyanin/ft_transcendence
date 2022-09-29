@@ -5,9 +5,8 @@ const QRZone: React.FC<{
 	isEnabled: boolean;
 	qrCodePath: string | null;
 }> = ({ isEnabled, qrCodePath }) => {
+	
 	const { t } = useTranslation();
-
-	// console.log(qrCodePath);
 
 	return (
 		<section className="container min-w-[300px] rounded-lg flex flex-col justify-center items-center gap-6 text-white  bg-dark-60 bg-opacity-60">

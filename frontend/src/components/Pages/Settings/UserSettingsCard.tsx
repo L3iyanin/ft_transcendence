@@ -36,7 +36,6 @@ const UserSettingsCard: React.FC<{
 
 	const handleChangeProfileImage = (event: any) => {
 		const fileUploaded = event.target.files[0];
-		// console.log(fileUploaded);
 		const formData = new FormData();
 		formData.append("file", fileUploaded, fileUploaded.name);
 

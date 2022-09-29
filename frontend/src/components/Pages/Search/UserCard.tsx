@@ -14,7 +14,6 @@ const UserCard: React.FC<{ user: IUser }> = ({ user }) => {
 	const [isFriendAdded, setIsFriendAdded] = useState(false);
 
 	const addFriendHandler = () => {
-		console.log("add friend");
 		addFriend(id.toString()).then((res) => {
 			SuccesAlert(`${t("friendAdded")}`);
 			setIsFriendAdded(true);
