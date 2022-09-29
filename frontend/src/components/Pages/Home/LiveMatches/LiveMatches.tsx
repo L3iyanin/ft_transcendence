@@ -13,7 +13,6 @@ const LiveMatches : React.FC < {userId: number} > = ({ userId }) => {
 	useEffect(() => {
 		getLiveMatches()
 			.then(res => {
-				// console.log(res);
 				setLiveMatches(res);
 			})
 			.catch(err => {

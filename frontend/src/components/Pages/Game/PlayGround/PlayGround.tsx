@@ -107,13 +107,11 @@ const PlayGround: React.FC<{
 			});
 
 			clientSocket.on("gameOver", (data: IGameOver) => {
-				// console.log(data);
 				if (data.player1Score > data.player2Score) {
 					setWinner(PLAYER_ONE);
 				} else {
 					setWinner(PLAYER_TWO);
 				}
-				// setMatchPlayed(false);
 			});
 		}
 	}, [clientSocket, LocalUserData, matchSettings]);

@@ -98,7 +98,6 @@ const DiscussionSection: React.FC = () => {
 	const onSelectConversationHandler = (channel: IChatChannel) => {
 		getChannelMessages(channel.id)
 			.then((res) => {
-				// console.log(res);
 				setCurrentChannel((_) => {
 					const newChannel = {
 						...channel,
@@ -107,9 +106,6 @@ const DiscussionSection: React.FC = () => {
 					};
 					return newChannel;
 				});
-
-				// onRefreshHandler();
-
 				// remove the unread messages count
 				setChannelsOfDms((channels) => {
 					const newChannels = [...channels];
@@ -184,14 +180,11 @@ const DiscussionSection: React.FC = () => {
 	}, [refresh]);
 
 	const joinChannelHandler = (password?: string) => {
-		// console.log("joinChannelHandler");
 		joinChannel(currentChannel.id, password)
 			.then((res) => {
-				// console.log(res);
 				return getChannelMessages(currentChannel.id);
 			})
 			.then((res) => {
-				// console.log(res);
 				setCurrentChannel((_) => {
 					const newChannel = {
 						...currentChannel,
@@ -212,7 +205,6 @@ const DiscussionSection: React.FC = () => {
 		if (currentChannel && currentChannel.id) {
 			leaveChannel(currentChannel.id.toString())
 				.then((res) => {
-					console.log(res);
 					SuccesAlert(res.message);
 					onSelectConversationHandler(currentChannel);
 				})
@@ -366,7 +358,6 @@ const DiscussionSection: React.FC = () => {
 	const getNewChannelMessages = (channelId: string) => {
 		getChannelMessages(+channelId)
 		.then((res) => {
-			// console.log(res);
 			setCurrentChannel((prevCurrChannel) => {
 				const newChannel = {
 					...prevCurrChannel,
@@ -383,7 +374,6 @@ const DiscussionSection: React.FC = () => {
 		if (!clientSocket) return;
 
 		clientSocket.on("youbAreBlocked", (userBanned) => {
-			// console.log(userBanned);
 			ErrorAlertWithMessage(userBanned.error);
 			setUserStatus({
 				status: MemberStatusEnum.BANNED,
@@ -396,7 +386,6 @@ const DiscussionSection: React.FC = () => {
 		});
 		
 		clientSocket.on("youAreMuted", (userMuted) => {
-			// console.log(userMuted);
 			ErrorAlertWithMessage(userMuted.error);
 			setUserStatus({
 				status: MemberStatusEnum.MUTED,
@@ -411,7 +400,6 @@ const DiscussionSection: React.FC = () => {
 
 
 	const onCompleteCountdownHandler = () => {
-		// console.log("countdown completed");
 		setUserStatus({
 			status: MemberStatusEnum.NONE,
 			untill: new Date(),
@@ -429,7 +417,7 @@ const DiscussionSection: React.FC = () => {
 				getNewChannelMessages(currentChannel.id.toString());
 			})
 			.catch((err) => {
-				console.log(err);
+				console.error(err);
 				ErrorAlert(err);
 			});
 	}

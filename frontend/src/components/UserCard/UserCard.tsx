@@ -63,7 +63,6 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 	const addFriendHandler = () => {
 		addFriend(userId!)
 		.then(res => {
-			// console.log(res);
 			SuccesAlert(res.message);
 			setUser(prevUser => ({
 				...prevUser!,
@@ -76,7 +75,6 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 	}
 
 	const startChatHandler = () => {
-		// console.log("start chat");
 		startChat(userId!)
 		.then(res => {
 			navigate(`/chat`);
@@ -90,7 +88,6 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 	const blockUserHandler = () => {
 		blockUser(userId!)
 		.then(res => {
-			// console.log(res);
 			SuccesAlert(res.message);
 			setUser(prevUser => ({
 				...prevUser!,
@@ -105,7 +102,6 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 	const unblockUserHandler = () => {
 		unblockUser(userId!)
 		.then(res => {
-			// console.log(res);
 			SuccesAlert(res.message);
 			setUser(prevUser => ({
 				...prevUser!,

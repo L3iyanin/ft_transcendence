@@ -43,7 +43,6 @@ export class ChatGateway implements OnGatewayConnection {
 		console.log("function not implemented yet !!");
 	}
 
-	@UseGuards(UserGuard)
 	@SubscribeMessage("sendMessage")
 	async handleMessage(client: Socket, payload: Message) {
 		const messageData = await this.chatService.handleMessage(client, payload);

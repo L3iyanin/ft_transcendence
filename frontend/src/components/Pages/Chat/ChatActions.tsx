@@ -56,12 +56,6 @@ const ChatActions: React.FC<{
 	}
 
 	const onInvitePlayerHandler = (scoreToWin: number) => {
-
-		console.log("===== send   invitation =====");
-		console.log(`userId: ${userId}`)
-		console.log(`friendId: ${friendId}`)
-		console.log("===== endiiiiiiiiiiiing =====");
-
 		clientSocket.emit('joinGame', {
 			userId: userId,
 			scoreToWin: scoreToWin,
@@ -70,11 +64,6 @@ const ChatActions: React.FC<{
 			invitedUserId: friendId,
 		});
 	}
-
-	// console.log("====================================");
-	// console.log(`friendId ${friendId}`);
-	// console.log(`userId ${userId}`);
-	// console.log("====================================");
 
 	return (
 		<div className="flex justify-between">

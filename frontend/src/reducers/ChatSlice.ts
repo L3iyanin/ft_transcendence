@@ -10,8 +10,12 @@ export const chatSlice = createSlice({
 	name: "chat",
 	initialState: initialState,
 	reducers: {
-		setSocket: (state) => {
-			const newClientSocket: Socket = io(import.meta.env.VITE_APP_SOCKET_BASE_URL);
+		setSocket: (state, action: PayloadAction<string>) => {
+			const newClientSocket: Socket = io(import.meta.env.VITE_APP_SOCKET_BASE_URL, {
+				auth: {
+					access_token: action.payload,
+				},
+			});
 			
 			const newState = {
 				...state,

@@ -17,7 +17,6 @@ const LastMatches : React.FC < {matches : IMatch[], isInProfile? : boolean, user
 		if (userData && userData.user) {
 			getLastMatches(userData.user?.id)
 				.then(res => {
-					// console.log(res);
 					setLastMatches(res);
 				})
 				.catch(err => {
