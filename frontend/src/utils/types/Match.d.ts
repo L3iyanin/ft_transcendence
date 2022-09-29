@@ -40,3 +40,12 @@ interface IWatchMatchRes {
 	matchSettings: IStartedMatch,
 	spectators: IUser[],
 }
+
+interface IJoinMatch {
+    userId: number;
+    scoreToWin: 3 | 7;
+    invite?: boolean; // true in match by invite, undefined in match by queue
+    inviterUserId?: number;
+    invitedUserId?: number;
+    matchId?: number; // (I send it in message), only send it when userId is invitedUserId
+}

@@ -13,6 +13,7 @@ const MessagesList: React.FC<{
 	messages: IMessage[];
 	disableSend?: boolean;
 	IamNotMember?: boolean;
+	userId?: number;
 	joinChannelHandler?: (password:string) => void;
 	isProtectedChannel?: boolean;
 	onSendMessageHandler: (message: string) => void;
@@ -23,7 +24,7 @@ const MessagesList: React.FC<{
 		untill: Date;
 		isBanned: boolean;
 		isMuted: boolean;
-	}
+	};
 }> = ({
 	messages,
 	disableSend,
@@ -34,6 +35,7 @@ const MessagesList: React.FC<{
 	currentChannel,
 	userStatus,
 	onCompleteCountdownHandler,
+	userId
 }) => {
 	const { t } = useTranslation();
 
@@ -65,17 +67,26 @@ const MessagesList: React.FC<{
 		setMessageContent("");
 	};
 
-
 	const clientSocket: Socket = useSelector(
 		(state: any) => state.chat.clientSocket
 	);
+
+	const onAcceptInvitationHandler = (message: IMessage) => {
+		// clientSocket.emit("joinGame", {
+		// 		userId: userId,
+		// 		scoreToWin: scoreToWin,
+		// 		invite: true,
+		// 		inviterUserId: userId,
+		// 		invitedUserId: friendId,
+		// });
+	}
 
 	return (
 		<div className="relative flex flex-col bg-dark-60 mt-5 rounded-2xl p-5 text-white h-[75vh] overflow-y-auto">
 			<div className="overflow-auto">
 				{!IamNotMember &&
 					messages.map((message, index) => (
-						<MessageCard key={index} message={message} />
+						<MessageCard key={index} message={message} userId={userId} />
 					))}
 				{!IamNotMember && messages.length === 0 && <MessageNotFound />}
 				{!IamNotMember && messages.length > 0 && (

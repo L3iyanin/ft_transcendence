@@ -75,6 +75,7 @@
 		"seeProfile": "See Profile",
 		"inviteToPlay": "Invite to play",
 		"playNow": "Play Now",
+		"cancelInvite": "Cancel Invite",
 		"typeMessage": "Type a message...",
 		"channelSettings": "Channel Settings",
 		"createChannel": "Create Channel",
@@ -133,6 +134,7 @@
 	"classicGame": "Marineford Pong",
 	"vipGame": "Wano Pong",
 	"pongInvitation": "You've been invited to play a pong game",
+	"pongInviter": "You invite you friend to play a pong game",
 	"settingsPage": {
 		"Enable2FA" : "Enable 2FA",
 		"EnableTwoFA" : "Enable 2FA",

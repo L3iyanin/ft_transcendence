@@ -7,11 +7,14 @@ const InviteToPlayPopup: React.FC<{
 	open: boolean;
 	setOpen: (open: boolean) => void;
 	onRefreshHandler?: () => void;
-}> = ({ open, setOpen, onRefreshHandler }) => {
+	onInvitePlayer: (scoreToWin: number) => void;
+}> = ({ open, setOpen, onRefreshHandler, onInvitePlayer }) => {
 
 
 	const onInviteHandler = (scoreToWin: number) => {
 		console.log(`scoreToWin: ${scoreToWin}`);
+		onInvitePlayer(scoreToWin);
+		setOpen(false);
 	};
 
 	return (
