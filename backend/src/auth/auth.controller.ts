@@ -31,6 +31,7 @@ export class AuthController {
 			return res.send({
 				status: 200,
 				data: user,
+				token : token
 			});
 		} else {
 			throw new HttpException(
@@ -61,6 +62,7 @@ export class AuthController {
 			return res.send({
 				status: 200,
 				data: user,
+				token : token
 			});
 		} else {
 			throw new HttpException("2FA SECRET IS INCOORECT", 401);

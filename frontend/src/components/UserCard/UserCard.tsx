@@ -147,7 +147,7 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 					<AchivementIcon />
 					<span className="text-xs">
 						{user.numberOfAchievements}/{MAX_ACHIVEMENTS}{" "}
-						achievments
+						{t("homePage.achievements")}
 					</span>
 				</div>
 			</div>
