@@ -8,6 +8,9 @@ import { Socket } from 'socket.io-client';
 import { setMatching } from '../../reducers/MatchSlice';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import { logout42 } from '../../services/auth/auth42';
+import ErrorAlert from '../UI/Error';
+import SuccesAlert from '../UI/SuccesAlert';
 
 const Links = () => {
 
@@ -20,8 +23,16 @@ const Links = () => {
 	const userData = useSelector((state: any) => state.user);
 
 	const onLogout = () => {
-		dispatch(logout());
-		navigate('/');
+		logout42()
+			.then((res) => {
+				SuccesAlert(res.message);
+				dispatch(logout());
+				navigate('/login');
+			})
+			.catch(err => {
+				console.error(err);
+				ErrorAlert(err);
+			})
 	};
 
 	return (
