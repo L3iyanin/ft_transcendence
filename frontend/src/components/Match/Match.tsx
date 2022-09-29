@@ -12,10 +12,10 @@ const Match : React.FC <{match : IMatch, isInProfile : boolean, userId?: number}
 	// const border = isInProfile && !match.live ? (user.id === winner.id ? "border-green" : "border-red") : "border-beige";
 	return (
 		<article
-			className={`h-20 mb-3 mt-2 pr-11 pl-12 py-3 flex justify-between items-center gap-4 border rounded-lg 
+			className={`mb-6 mt-2 pr-11 pl-12 py-3 flex justify-between items-center gap-4 border rounded-2xl 
 				${(isInProfile && !match.live && userId) ? (userId === winner.id ? "border-green" : "border-red") : "border-beige"}`}
 		>
-			<div className="flex justify-between items-center gap-16 grow">
+			<div className="flex flex-wrap xl:flex-nowrap justify-between items-center xl:gap-16 grow">
 				<Player
 					username={loser.username}
 					avatar={loser.imgUrl}

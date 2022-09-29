@@ -33,7 +33,7 @@ const LiveMatches : React.FC < {userId: number} > = ({ userId }) => {
 	}
 
 	return (
-		<section className="h-[368px] grow pl-8 pr-1 pt-7 rounded-2xl flex flex-col items-start gap-8 bg-dark-60 text-white">
+		<section className="xl:basis-6/12 basis-full h-[368px] pl-8 pr-1 pt-7 rounded-2xl flex flex-col items-start gap-8 bg-dark-60 text-white">
 			<h2 className="text-3xl font-bold">{t("homePage.LiveMatches")}</h2>
 			<section className="w-full max-h-[320px] pr-8 overflow-y-auto">
 				{liveMatches.map((match: IMatch, index: number) => (

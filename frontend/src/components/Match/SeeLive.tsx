@@ -21,7 +21,7 @@ const SeeLive:React.FC<{
 
 	return (
 		<div onClick={seeLiveMatchHandler} className="flex justify-end items-center gap-3 cursor-pointer">
-			<p className="text-xs font-medium text-yellow">{t("homePage.SeeMatchLive")}</p>
+			<p className="text-xs font-medium hidden md:block text-yellow">{t("homePage.SeeMatchLive")}</p>
 			<Live className="animate-ping" />
 		</div>
 	);

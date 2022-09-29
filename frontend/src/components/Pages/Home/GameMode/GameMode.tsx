@@ -16,10 +16,10 @@ const GameMode: React.FC<{
 	const isForClassic = mode === MatchTypeEnum.Classic;
 
 	return (
-		<section className="flex flex-col justify-center items-center gap-4">
+		<section className="flex flex-col basis-full xl:basis-1/2 justify-center items-center mb-10 xl:mb-0">
 			<ModeDescription mode={mode} />
 			<article
-				className={`relative w-[513px] h-[288px] px-1 flex justify-between items-center rounded-lg border-4 bg-opacity-20 ${ isForClassic ? "border-red" : "border-yellow"}`}
+				className={`relative xl:w-4/5 w-full px-1 flex justify-between items-center rounded-lg border-4 bg-opacity-20 ${ isForClassic ? "border-red" : "border-yellow"}`}
 				style={{
 					backgroundImage:
 						isForClassic

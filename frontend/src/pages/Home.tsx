@@ -11,39 +11,48 @@ import UserCard from "../components/UserCard/UserCard";
 import { useSelector } from "react-redux";
 
 const Home: React.FC = () => {
-
 	const clientSocket = useSelector((state: any) => state.chat.clientSocket);
 
 	const userData: IUserState = useSelector((state: any) => state.user);
 
 	const playGame = (scoreToWin: number) => {
-		clientSocket.emit('joinGame', {
+		clientSocket.emit("joinGame", {
 			userId: userData.user?.id,
 			scoreToWin: scoreToWin,
 		});
 	};
 
 	return (
-		<div className="container">
-			<NavBar />
-			<main className="flex flex-col justify-between items-center gap-20">
-				<section className="w-full flex justify-between items-center gap-16">
-					<UserCard />
-					{ userData.user && <LiveMatches userId={userData.user.id} /> }
-				</section>
-				<section className="w-full flex flex-col justify-between items-center gap-10">
-					<section className="w-full px-8 flex justify-between items-center gap-4">
-						<GameMode onPlay={playGame} mode={MatchTypeEnum.Classic} />
-						<GameMode onPlay={playGame} mode={MatchTypeEnum.Vip} />
+		<>
+			<div className="container">
+				<NavBar />
+				<main className="flex flex-col justify-between items-center gap-20">
+					<section className="w-full flex-wrap flex justify-around items-center">
+						<UserCard />
+						{userData.user && (
+							<LiveMatches userId={userData.user.id} />
+						)}
 					</section>
-					<section className="w-full flex justify-between items-center gap-10">
-						<LastMatches matches={lastMatches}/>
-						<Leaderboard />
+					<section className="w-full flex flex-col justify-between items-center gap">
+						<section className="w-full px-8 flex flex-wrap justify-between items-center mb-10">
+							<GameMode
+								onPlay={playGame}
+								mode={MatchTypeEnum.Classic}
+							/>
+							<GameMode
+								onPlay={playGame}
+								mode={MatchTypeEnum.Vip}
+							/>
+						</section>
+						<section className="w-full flex flex-wrap justify-between items-center gap-10">
+							<LastMatches matches={lastMatches} />
+							<Leaderboard />
+						</section>
 					</section>
-				</section>
-			</main>
+				</main>
+			</div>
 			<Footer />
-		</div>
+		</>
 	);
 };
 

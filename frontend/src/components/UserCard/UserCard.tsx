@@ -115,14 +115,14 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 
 	if (!user) {
 		return (
-			<section className="relative w-[395px] h-[368px] rounded-2xl flex flex-col bg-dark-60">
+			<section className="relative min-w-[395px] h-[368px] rounded-2xl flex flex-col bg-dark-60">
 				<LoadingSpinner />
 			</section>
 		);
 	}
 
 	return (
-		<section className=" w-[395px] h-[368px] rounded-2xl flex flex-col bg-dark-60">
+		<section className="mb-10 xl:mb-0 xl:basis-3/12 basis-10/12 md:basis-6/12 h-[368px] rounded-2xl flex flex-col bg-dark-60">
 			<div className="grow pt-7 pb-7 container m-0 flex flex-col items-center justify-center gap-3 text-white">
 				<img
 					src={user.imgUrl}
