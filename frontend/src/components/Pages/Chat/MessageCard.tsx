@@ -76,11 +76,7 @@ const InviteMessageCard: React.FC<{
 }> = ({ message, userId, acceptInvitation }) => {
 	const { t } = useTranslation();
 
-	if (!message.from) {
-		console.log(message);
-	}
-
-	if (message.from.id != userId) {
+	if (message.inviterId !== userId) {
 		return (
 			<div className="flex gap-4 items-center">
 				<p>{t("pongInvitation")}</p>
