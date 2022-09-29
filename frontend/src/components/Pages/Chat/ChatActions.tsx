@@ -56,6 +56,12 @@ const ChatActions: React.FC<{
 	}
 
 	const onInvitePlayerHandler = (scoreToWin: number) => {
+
+		console.log("===== send   invitation =====");
+		console.log(`userId: ${userId}`)
+		console.log(`friendId: ${friendId}`)
+		console.log("===== endiiiiiiiiiiiing =====");
+
 		clientSocket.emit('joinGame', {
 			userId: userId,
 			scoreToWin: scoreToWin,
