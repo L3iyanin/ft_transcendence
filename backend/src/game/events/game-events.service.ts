@@ -153,7 +153,7 @@ export class GameEventsService {
 				};
 			}
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 		}
 	}
 
@@ -742,7 +742,6 @@ export class GameEventsService {
 			});
 
 			let countWinsInRow = 0;
-			console.log("allUserMatches", allUserMatches);
 			for (let i = 0; i < allUserMatches.length; i++) {
 				const userMatch = allUserMatches[i];
 				if (
@@ -757,7 +756,6 @@ export class GameEventsService {
 					countWinsInRow++;
 				else break;
 			}
-			console.log("countWinsInRow", countWinsInRow);
 
 			//? id 1
 			//? win first played match
@@ -869,7 +867,7 @@ export class GameEventsService {
 			}
 
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 		}
 	}
 
