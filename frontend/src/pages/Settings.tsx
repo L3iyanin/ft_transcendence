@@ -143,7 +143,7 @@ const Settings = () => {
 		<div>
 			<NavBar />
 			<main className="container px-24 flex flex-col gap-10">
-				<section className="container flex justify-between gap-10">
+				<section className="container flex flex-wrap justify-around">
 					<UserSettingsCard
 						user={user}
 						isEnabled={isEnabled}

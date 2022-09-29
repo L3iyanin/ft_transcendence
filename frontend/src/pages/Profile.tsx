@@ -30,11 +30,11 @@ const Profile = () => {
 			<div className="container">
 				<NavBar />
 				<main className="flex flex-col justify-between items-center gap-y-16">
-					<section className="w-full flex justify-between items-center gap-14">
+					<section className="w-full flex flex-wrap justify-around items-center gap-14">
 						<UserCard userId={userId} />
 						<LastMatches matches={lastMatches} userId={+userId} isInProfile={true}/>
 					</section>
-					<section className="gap-14 w-full flex justify-between items-center">
+					<section className="w-full flex flex-wrap justify-between items-center">
 						<FirendsList userId={userId} />
 						<AchievementsList userId={userId} />
 					</section>

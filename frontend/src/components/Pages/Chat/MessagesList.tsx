@@ -181,9 +181,10 @@ const SendMessageInputAndBtn: React.FC<{
 	};
 
 	return (
-		<form className="mt-auto flex gap-4" onSubmit={onSubmitHandler}>
+		<form className="mt-auto flex flex-wrap md:flex-nowrap md:gap-4" onSubmit={onSubmitHandler}>
 			<Input
 				type="text"
+				className="basis-full md:basis-auto"
 				placeholder={t("chatPage.typeMessage")}
 				onChange={onTypeMessageHandler}
 				value={messageContent}
@@ -194,7 +195,7 @@ const SendMessageInputAndBtn: React.FC<{
 				}
 				// onClick={sendMessageHandler}
 				label={t("send")}
-				className="bg-white text-dark-60 !rounded-lg"
+				className="bg-white text-dark-60 !rounded-lg basis-full md:basis-auto mt-5 md:mt-0 justify-center"
 			/>
 		</form>
 	);

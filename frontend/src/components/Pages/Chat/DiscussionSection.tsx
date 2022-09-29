@@ -423,13 +423,13 @@ const DiscussionSection: React.FC = () => {
 	}
 
 	return (
-		<div className="flex gap-4">
+		<div className="flex flex-wrap">
 			<CreateChannelPopup
 				open={openCreateChannel}
 				setOpen={setOpenCreateChannel}
 				onRefreshHandler={onRefreshHandler}
 			/>
-			<div className="basis-1/3">
+			<div className="xl:basis-1/3 basis-full xl:pr-4">
 				<InputWithIcon
 					icon={<SearchIcon />}
 					type="text"
@@ -447,7 +447,7 @@ const DiscussionSection: React.FC = () => {
 					onSelectConversation={onSelectConversationHandler}
 				/>
 			</div>
-			<div className="basis-2/3 basis">
+			<div className="xl:basis-2/3 basis-full xl:pl-4">
 				<ChatActions
 					currentChannel={currentChannel}
 					username={

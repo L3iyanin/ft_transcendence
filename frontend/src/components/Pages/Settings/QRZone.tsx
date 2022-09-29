@@ -9,7 +9,7 @@ const QRZone: React.FC<{
 	const { t } = useTranslation();
 
 	return (
-		<section className="container min-w-[300px] rounded-lg flex flex-col justify-center items-center gap-6 text-white  bg-dark-60 bg-opacity-60">
+		<section className="container xl:basis-6/12 basis-full rounded-2xl flex flex-col justify-center items-center gap-6 text-white bg-dark-60 bg-opacity-60 py-10">
 			{!isEnabled && (
 				<h2 className="text-2xl">{t("settingsPage.EnableTwoFA")}</h2>
 			)}

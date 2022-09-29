@@ -34,7 +34,7 @@ const ConversationsList: React.FC<{
 	};
 
 	return (
-		<div className="relative bg-dark-60 mt-5 rounded-2xl p-5 text-white  h-full max-h-[75vh] overflow-y-auto">
+		<div className="relative bg-dark-60 mt-5 rounded-2xl p-5 text-white xl:h-full mb-10 xl:mb-0 max-h-[75vh] overflow-y-auto">
 			<RoundedFilter
 				firstLabel={t("chatPage.dms")}
 				secondLabel={t("chatPage.channels")}

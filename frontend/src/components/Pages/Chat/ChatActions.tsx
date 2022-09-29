@@ -66,14 +66,14 @@ const ChatActions: React.FC<{
 	}
 
 	return (
-		<div className="flex justify-between">
+		<div className="flex justify-between flex-wrap ">
 			<InviteToPlayPopup
 				open={openInviteToPlay}
 				setOpen={setOpenInviteToPlay}
 				onInvitePlayer={onInvitePlayerHandler}
 				// onRefreshHandler={onRefreshHandler}
 			/>
-			<div className="flex items-center gap-3 bg-dark-60 rounded-2xl py-2 px-6">
+			<div className="flex items-center gap-3 bg-dark-60 rounded-2xl py-2 px-6 mb-5 md:mb-0">
 				<img
 					className="rounded-full w-[38px] h-[38px]"
 					src={currentChannel.imgUrl}
@@ -94,17 +94,17 @@ const ChatActions: React.FC<{
 					</span>
 				)}
 			</div>
-			<div className="flex gap-4">
+			<div className="flex md:gap-4 flex-wrap md:flex-nowrap w-full md:w-auto justify-around">
 				{currentChannel.status === ChannleTypesEnum.DM && (
 					<>
 						<ButtonWithIcon
-							className="bg-yellow"
+							className="bg-yellow basis-5/12 md:basis-auto"
 							icon={<ProfileIcon className=" stroke-dark-60" />}
 							label={t("chatPage.seeProfile")}
 							onClick={seeProfile}
 						/>
 						<ButtonWithIcon
-							className="bg-red text-white"
+							className="bg-red text-white basis-5/12 md:basis-auto"
 							icon={<PlayIcon />}
 							label={t("chatPage.inviteToPlay")}
 							onClick={onOpenInviteToPlayHandler}

@@ -53,7 +53,7 @@ const UserSettingsCard: React.FC<{
 
 
 	return (
-		<section className=" w-[395px] h-[404px] rounded-2xl p-10 flex flex-col gap-7 items-center bg-dark-60 bg-opacity-60 text-white ">
+		<section className="mb-10 xl:mb-0 xl:basis-4/12 basis-10/12 md:basis-6/12 h-[404px] rounded-2xl p-10 flex flex-col gap-7 items-center bg-dark-60 bg-opacity-60 text-white ">
 			<article className="relative">
 				<img
 					src={user.imgUrl}

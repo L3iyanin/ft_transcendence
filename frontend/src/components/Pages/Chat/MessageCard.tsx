@@ -22,7 +22,7 @@ const MessageCard: React.FC<{
 		<div className="flex gap-2 mb-5">
 			<Link to={`/profile/${message.from.user.id}`}>
 				<img
-					className="w-[50px] h-[50px] rounded-full"
+					className="min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] rounded-full"
 					src={message.from.user.imgUrl}
 					alt={message.from.user.fullName}
 				/>
@@ -58,7 +58,7 @@ const MessageCard: React.FC<{
 							</div>
 						)}
 				</div>
-				{!message.invite && <p>{message.content}</p>}
+				{!message.invite && <p className="break-all">{message.content}</p>}
 				{message.invite && (
 					<InviteMessageCard
 						message={message}
