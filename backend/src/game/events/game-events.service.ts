@@ -38,6 +38,9 @@ export class GameEventsService {
 					channelId: channel.id,
 				},
 			},
+			include: {
+				user: true,
+			},
 		});
 		const message = await this.prisma.message.create({
 			data: {
@@ -72,18 +75,7 @@ export class GameEventsService {
 			matchId: message.matchId,
 			scoreToWin: message.scoreToWin,
 		});
-		console.log("channelName", channelName);
-		console.log("sent invite message", {
-			from: member,
-			content: message.content,
-			channelId: channel.id,
-			isDm: true,
-			invite: true,
-			inviterId: message.inviterId,
-			invitedId: message.invitedId,
-			matchId: message.matchId,
-			scoreToWin: message.scoreToWin,
-		});
+
 	}
 
 	async joinInviteMatch(
