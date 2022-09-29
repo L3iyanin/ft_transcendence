@@ -151,7 +151,7 @@ export class GameEventsService {
 
 	async validateJoinGame(payload: JoinMatchDto) {
 		const { userId } = payload;
-		const matches = await this.prisma.match.findMany({
+		let matches = await this.prisma.match.findMany({
 			where: {
 				AND: [
 					{
@@ -176,6 +176,14 @@ export class GameEventsService {
 					},
 				],
 			},
+		});
+		// remove matches that are matching, and the invited user is trying to join
+		// because the invited is already in the match as player2Id
+		matches = matches.filter((match) => {
+			if (match.isMatching && match.player2Id === userId) {
+				return false;
+			}
+			return true;
 		});
 		if (matches.length > 0) {
 			return {
