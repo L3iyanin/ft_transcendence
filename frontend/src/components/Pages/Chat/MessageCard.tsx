@@ -15,6 +15,8 @@ const MessageCard: React.FC<{
 
 	const { t } = useTranslation();
 
+	// console.log(message);
+
 	return (
 		<div className="flex gap-2 mb-5">
 			<Link to={`/profile/${message.from.user.id}`}>
@@ -72,7 +74,7 @@ const InviteMessageCard: React.FC<{
 }> = ({ message, userId }) => {
 	const { t } = useTranslation();
 
-	console.log(message);
+	// console.log(message);
 
 	if (message.from.id != userId) {
 		return (

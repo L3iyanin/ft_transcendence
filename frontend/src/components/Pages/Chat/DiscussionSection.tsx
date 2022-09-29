@@ -225,6 +225,7 @@ const DiscussionSection: React.FC = () => {
 	useEffect(() => {
 		if (!clientSocket) return;
 		clientSocket.on("receivedMessage", (message: any) => {
+			console.log(`message received: ${message}`);
 			setCurrentChannel((channelInfo) => {
 				if (message.isDm) {
 					setChannelsOfDms((channels) => {
