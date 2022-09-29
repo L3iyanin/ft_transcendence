@@ -10,6 +10,7 @@ import { generateChannelName } from "src/chat/helpers/helpers";
 import { ChatService } from "src/chat/controllers/chat.service";
 import { authenticator } from "otplib";
 import { toFile } from "qrcode";
+import { Res } from "@nestjs/common";
 
 @Injectable()
 export class UsersService {
@@ -399,10 +400,12 @@ export class UsersService {
 		};
 	}
 
-	async pipeQrCodeStream(stream: Response, otpauthUrl: string, userId: number) {
+	async pipeQrCodeStream(@Res() res, otpauthUrl: string, userId: number) {
 		const date : Date = new  Date()
 		const name = `QrcodeForUserId_${userId}.png`;
 		const path = join(__dirname, "../..", "../public/qrCodes", name + "_" + date.toDateString());
+		const imagePath = process.env.BACKEND_URL + "/qrCodes/" + name + "_" + date.toDateString();
+
 		toFile(
 			path,
 			otpauthUrl,
@@ -414,9 +417,9 @@ export class UsersService {
 			},
 			function (err) {
 				if (err) throw err;
+				res.send({qrUrl :imagePath })
 			}
 		);
-		const imagePath = process.env.BACKEND_URL + "/qrCodes/" + name + "_" + date.toDateString();
 		return imagePath;
 	}
 
