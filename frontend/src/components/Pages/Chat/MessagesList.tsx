@@ -72,13 +72,18 @@ const MessagesList: React.FC<{
 	);
 
 	const onAcceptInvitationHandler = (message: IMessage) => {
-		// clientSocket.emit("joinGame", {
-		// 		userId: userId,
-		// 		scoreToWin: scoreToWin,
-		// 		invite: true,
-		// 		inviterUserId: userId,
-		// 		invitedUserId: friendId,
-		// });
+		console.log("===== accept invitation =====");
+		console.log(message)
+		console.log(`userId: ${userId}`)
+		console.log("===== endiiiiiiiiiiiing =====");
+		clientSocket.emit("joinGame", {
+				userId: userId,
+				scoreToWin: message.scoreToWin,
+				invite: true,
+				inviterUserId: message.inviterId,
+				invitedUserId: message.invitedId,
+				matchId: message.matchId
+		});
 	}
 
 	return (
@@ -86,7 +91,7 @@ const MessagesList: React.FC<{
 			<div className="overflow-auto">
 				{!IamNotMember &&
 					messages.map((message, index) => (
-						<MessageCard key={index} message={message} userId={userId} />
+						<MessageCard key={index} message={message} userId={userId} acceptInvitation={onAcceptInvitationHandler} />
 					))}
 				{!IamNotMember && messages.length === 0 && <MessageNotFound />}
 				{!IamNotMember && messages.length > 0 && (

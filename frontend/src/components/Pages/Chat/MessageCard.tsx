@@ -11,7 +11,8 @@ import { ReactComponent as LeaveIcon } from "../../../assets/icons/leave.svg";
 const MessageCard: React.FC<{
 	message: IMessage;
 	userId?: number;
-}> = ({ message, userId }) => {
+	acceptInvitation: (message: IMessage) => void;
+}> = ({ message, userId, acceptInvitation }) => {
 
 	const { t } = useTranslation();
 
@@ -59,7 +60,7 @@ const MessageCard: React.FC<{
 				</div>
 				{!message.invite && <p>{message.content}</p>}
 				{message.invite && (
-					<InviteMessageCard message={message} userId={userId} />
+					<InviteMessageCard message={message} userId={userId} acceptInvitation={acceptInvitation} />
 				)}
 			</div>
 		</div>
@@ -71,10 +72,13 @@ export default MessageCard;
 const InviteMessageCard: React.FC<{
 	message: IMessage;
 	userId?: number;
-}> = ({ message, userId }) => {
+	acceptInvitation: (message: IMessage) => void;
+}> = ({ message, userId, acceptInvitation }) => {
 	const { t } = useTranslation();
 
-	// console.log(message);
+	if (!message.from) {
+		console.log(message);
+	}
 
 	if (message.from.id != userId) {
 		return (
@@ -84,6 +88,7 @@ const InviteMessageCard: React.FC<{
 					icon={<PlayIcon />}
 					label={t("chatPage.playNow")}
 					className="!py-1 rounded-lg px-3 bg-green"
+					onClick={acceptInvitation.bind(null, message)}
 				/>
 				<ButtonWithIcon
 					icon={<LeaveIcon className="w-4 h-4" />}
