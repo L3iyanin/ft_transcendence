@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, ParseIntPipe, Post, Req, UseGuards } from "@nestjs/common";
 import { ApiProperty, ApiTags } from "@nestjs/swagger";
 import { Match } from "@prisma/client";
 import { UserGuard } from "src/users/user.guard";
@@ -32,5 +32,15 @@ export class GameController {
 		@Param("userId", ParseIntPipe) userId: number
 	) {
 		return this.gameService.getLastMatchesByUser(count, userId);
+	}
+
+	// make validInvitation=true
+	@ApiProperty()
+	@Post("discard-invitation/:matchId")
+	discardInvitation(
+		@Req() req,
+		@Param("matchId", ParseIntPipe) matchId: number,
+	) {
+		return this.gameService.discardInvitation(req.user.id, matchId);
 	}
 }
