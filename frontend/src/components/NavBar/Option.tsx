@@ -1,18 +1,30 @@
-import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { setYouAreNotPlaying } from "../../reducers/MatchSlice";
 
-const Option = ({ url, children } : IOptionProps) => {
+const Option = ({ url, children }: IOptionProps) => {
+
+	const navigate = useNavigate();
+
+	const match: IMatchState = useSelector((state: any) => state.match);
+
+	// const dispatch = useDispatch();
+
+	const onClick = () => {
+		navigate(url);
+		if (match.areYouPlaying) {
+			navigate(0);
+			// dispatch(setYouAreNotPlaying())
+		}
+	};
+
 	return (
-		<NavLink
-			to={url}
-			className={(state) =>
-				"text-center text-base text-white font-medium" +
-				(state.isActive
-					? " text-yellow underline underline-offset-8 decoration-2"
-					: "")
-			}
+		<span
+			onClick={onClick}
+			className="cursor-pointer text-center text-base text-white font-medium"
 		>
 			{children}
-		</NavLink>
+		</span>
 	);
 };
 

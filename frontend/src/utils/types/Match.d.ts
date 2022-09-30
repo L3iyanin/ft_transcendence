@@ -26,6 +26,7 @@ interface IMatchState {
 	whenMatching?: string;
 	match?: IStartedMatch;
 	spectators?: IUser[];
+	areYouPlaying?: boolean;
 }
 
 interface IGameOver {

@@ -14,6 +14,7 @@ import ErrorAlert from "../UI/Error";
 import SuccesAlert from "../UI/SuccesAlert";
 import { useEffect, useState } from "react";
 import { addNotification } from "../../reducers/ChatSlice";
+import { usePrevLocation } from "../../hooks/usePropmpt";
 
 const Links = () => {
 	const { t } = useTranslation();
@@ -48,6 +49,8 @@ const Links = () => {
 	const onCloseMobileLinks = () => {
 		setOpenMobileLinks(false);
 	};
+
+	const location = useLocation();
 
 	const Options = (
 		<>
@@ -97,7 +100,7 @@ const Links = () => {
 		</div>
 	);
 
-	const location = useLocation();
+	// const location = useLocation();
 
 	useEffect(() => {
 		if (chatSocket.clientSocket) {

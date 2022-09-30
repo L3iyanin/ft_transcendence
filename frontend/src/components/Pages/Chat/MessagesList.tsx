@@ -45,7 +45,7 @@ const MessagesList: React.FC<{
 
 	const messageListRef = useRef<HTMLDivElement>(null);
 
-	const userData: IUserState = useSelector((state: any) => state.user);
+	// const userData: IUserState = useSelector((state: any) => state.user);
 
 	// useEffect(() => {
 	// 	if (messages.length === 0) return;

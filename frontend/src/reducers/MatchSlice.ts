@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState: IMatchState = {
 	isMatching: false,
 	spectators: [],
+	areYouPlaying: false,
 };
 
 export const matchSlice = createSlice({
@@ -21,7 +22,8 @@ export const matchSlice = createSlice({
 				...state,
 				isMatching: false,
 				whenMatching: undefined,
-				match: action.payload
+				match: action.payload,
+				areYouPlaying: true,
 			}
 		},
 		setSeeingLiveMatch: (state, action: PayloadAction<IWatchMatchRes>) => {
@@ -31,6 +33,12 @@ export const matchSlice = createSlice({
 				whenMatching: undefined,
 				match: action.payload.matchSettings,
 				// spectators: action.payload.spectators
+			}
+		},
+		setYouAreNotPlaying: (state) => {
+			return  {
+				...state,
+				areYouPlaying: false,
 			}
 		},
 		setSpectatorsInLiveMatch: (state, action: PayloadAction<IUser[]>) => {
@@ -44,4 +52,4 @@ export const matchSlice = createSlice({
 
 export default matchSlice.reducer;
 
-export const { setMatching, setStartedMatch, setSeeingLiveMatch, setSpectatorsInLiveMatch } = matchSlice.actions;
+export const { setMatching, setStartedMatch, setSeeingLiveMatch, setSpectatorsInLiveMatch, setYouAreNotPlaying } = matchSlice.actions;
