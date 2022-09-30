@@ -22,7 +22,7 @@ const Profile = () => {
 	}
 
 	if (!userId) {
-		userId = userData.user.id.toString();
+		console.log("no user id");		userId = userData.user.id.toString();
 	}
 
 	return (

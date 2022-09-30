@@ -15,7 +15,10 @@ const LastMatches : React.FC < {matches : IMatch[], isInProfile? : boolean, user
 
 	useEffect(() => {
 		if (userData && userData.user) {
-			getLastMatches(userData.user?.id)
+
+			const fetchedUserId = userId ? userId : userData.user.id;
+
+			getLastMatches(fetchedUserId)
 				.then(res => {
 					setLastMatches(res);
 				})

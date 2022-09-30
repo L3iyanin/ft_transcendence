@@ -85,7 +85,7 @@ const Links = () => {
 				/>
 				{chatSocket.notifications > 0 && (
 					<div className="font-bold bf-red w-4 h-4 absolute -bottom-1 -right-1 bg-red rounded-full text-xs text-white flex items-center justify-center">
-						{chatSocket.notifications}
+						{/* {chatSocket.notifications} */}
 					</div>
 				)}
 			</Link>
@@ -124,7 +124,7 @@ const Links = () => {
 					/>
 					{chatSocket.notifications > 0 && (
 						<div className="font-bold bf-red w-4 h-4 absolute -bottom-1 right-0 bg-red rounded-full text-xs text-white flex items-center justify-center">
-							{chatSocket.notifications}
+							{/* {chatSocket.notifications} */}
 						</div>
 					)}
 				</div>
