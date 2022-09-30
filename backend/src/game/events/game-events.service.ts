@@ -384,11 +384,18 @@ export class GameEventsService {
 			});
 
 			const matchName = generateMatchName(match.id);
+			const spectatorRoomName = generateSpectatorsRoomName(match.id);
 
 			liveMatch.server.to(matchName).emit("gameOver", {
 				player1Score: endMatch.player1Score,
 				player2Score: endMatch.player2Score,
 				isDisconnected: true,
+			});
+
+			liveMatch.server.to(spectatorRoomName).emit("gameOver", {
+				player1Score: endMatch.player1Score,
+				player2Score: endMatch.player2Score,
+				isDisconnected: false,
 			});
 
 			const winner = await this.prisma.user.update({
