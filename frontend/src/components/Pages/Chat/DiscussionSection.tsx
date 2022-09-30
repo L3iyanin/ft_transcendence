@@ -22,8 +22,9 @@ import {
 import ErrorAlert, { ErrorAlertWithMessage } from "../../UI/Error";
 import { leaveChannel } from "../../../services/channel/settings";
 import SuccesAlert from "../../UI/SuccesAlert";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
+import { resetNotifications } from "../../../reducers/ChatSlice";
 
 const DiscussionSection: React.FC = () => {
 	const [openCreateChannel, setOpenCreateChannel] = useState(false);
@@ -214,6 +215,12 @@ const DiscussionSection: React.FC = () => {
 				});
 		}
 	};
+
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(resetNotifications());
+	}, [])
 
 	useEffect(() => {
 		if (!clientSocket) return;

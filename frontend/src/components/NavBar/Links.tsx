@@ -4,7 +4,7 @@ import { ReactComponent as MenuIcon } from "../../assets/icons/menu.svg";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../reducers/UserSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import { setMatching } from "../../reducers/MatchSlice";
 import { toast } from "react-toastify";
@@ -12,7 +12,8 @@ import { Link } from "react-router-dom";
 import { logout42 } from "../../services/auth/auth42";
 import ErrorAlert from "../UI/Error";
 import SuccesAlert from "../UI/SuccesAlert";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { addNotification } from "../../reducers/ChatSlice";
 
 const Links = () => {
 	const { t } = useTranslation();
@@ -22,6 +23,8 @@ const Links = () => {
 	const navigate = useNavigate();
 
 	const userData = useSelector((state: any) => state.user);
+
+	const chatSocket: IChatSocket = useSelector((state: any) => state.chat);
 
 	const onLogout = () => {
 		logout42()
@@ -67,12 +70,16 @@ const Links = () => {
 			<nav className="container lg:h-12 flex justify-end items-center gap-5 z-20  ">
 				{Options}
 			</nav>
-			<Link className="container flex items-center grow-0" to="/profile">
+			{/* <Link className="relative container flex items-center grow-0" to="/profile"> */}
+			<Link className="relative container flex items-center grow-0" to="/chat">
 				<img
 					src={userData.user.imgUrl}
 					className="h-8 w-8 rounded-full"
 					alt=""
 				/>
+				{chatSocket.notifications > 0 && <div className="font-bold bf-red w-4 h-4 absolute -bottom-1 -right-1 bg-red rounded-full text-xs text-white flex items-center justify-center">
+				{chatSocket.notifications}
+				</div> }
 			</Link>
 		</div>
 	);
@@ -85,15 +92,33 @@ const Links = () => {
 		</div>
 	);
 
+	const location = useLocation();
+
+	console.log(location.pathname);
+
+	useEffect(() => {
+		if (chatSocket.clientSocket) {
+			chatSocket.clientSocket.on("receivedMessage", (message: any) => {
+				if (location.pathname !== "/chat") {
+					dispatch(addNotification());
+				}
+			});
+
+		}
+	}, [chatSocket.clientSocket])
+
 	return (
 		<>
 			{OptionsLinks}
 			{openMobileLinks && OptionsLinksMobile}
 			{!openMobileLinks ? (
-				<MenuIcon
-					className="fill-white lg:hidden cursor-pointer"
-					onClick={onOpenMobileLinks}
-				/>
+				<div className="relative lg:hidden">
+					<MenuIcon
+						className="fill-white cursor-pointer"
+						onClick={onOpenMobileLinks}
+					/>
+					{chatSocket.notifications > 0 && <div className="font-bold bf-red w-4 h-4 absolute -bottom-1 right-0 bg-red rounded-full text-xs text-white flex items-center justify-center">{chatSocket.notifications}</div>}
+				</div>
 			) : (
 				<CloseIcon
 					className="w-6 h-6 lg:hidden cursor-pointer z-50"
