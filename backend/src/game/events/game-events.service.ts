@@ -811,7 +811,7 @@ export class GameEventsService {
 		}
 	}
 
-	async addAcheivementToUser(userId: number, achievementId: number) {
+	async addAcheivementToUser(userId: number, achivementId: number) {
 		try {
 			await this.prisma.user.update({
 				where: {
@@ -821,7 +821,7 @@ export class GameEventsService {
 					achievements: {
 						connect: [
 							{
-								id: achievementId,
+								achivementId: achivementId,
 							},
 						],
 					},
