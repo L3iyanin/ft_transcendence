@@ -1,6 +1,6 @@
 
 
-export const getMessageWithLength = (message: string | undefined, length: number = 30) => {
+export const getMessageWithLength = (message: string | undefined, length: number = 19) => {
 
 	if (message === undefined) {
 		return "";
