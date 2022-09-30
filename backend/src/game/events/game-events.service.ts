@@ -366,9 +366,9 @@ export class GameEventsService {
 			let winnerId = userId == match.player1Id ? match.player2Id : match.player1Id;
 			let loserId = userId == match.player1Id ? match.player1Id : match.player2Id;
 
-			if (player1Score >= player2Score && winnerId == match.player1Id) {
+			if (winnerId == match.player1Id && player1Score <= player2Score) {
 				player1Score = player2Score + 1;
-			} else if (player2Score >= player1Score && winnerId == match.player2Id) {
+			} else if (winnerId == match.player2Id && player2Score <= player1Score) {
 				player2Score = player1Score + 1;
 			}
 
