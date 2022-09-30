@@ -15,6 +15,7 @@ async function addAchivements() {
 			name: "Win first played Match",
 			description: "Mera Mera No Mi",
 			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement1.png`,
+			achivementId: 1,
 		},
 	});
 	const achivement1 = await prisma.achievement.create({
@@ -22,6 +23,7 @@ async function addAchivements() {
 			name: "Win 2 Match in row",
 			description: "Ope Ope No Mi",
 			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement2.png`,
+			achivementId: 2,
 		},
 	});
 	const achivement2 = await prisma.achievement.create({
@@ -29,6 +31,7 @@ async function addAchivements() {
 			name: "you Lose versus khalid ",
 			description: "Poneglyph",
 			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement3.png`,
+			achivementId: 3,
 		},
 	});
 	const achivement3 = await prisma.achievement.create({
@@ -36,6 +39,7 @@ async function addAchivements() {
 			name: "Win with clean sheet",
 			description: "Ito Ito No Mi",
 			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement4.png`,
+			achivementId: 4,
 		},
 	});
 	const achivement4 = await prisma.achievement.create({
@@ -43,6 +47,7 @@ async function addAchivements() {
 			name: "Win 5 Match in row",
 			description: "King Of Pirates",
 			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement5.png`,
+			achivementId: 5,
 		},
 	});
 	console.table({ achivement0, achivement1 , achivement2, achivement3, achivement4});

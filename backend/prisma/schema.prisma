@@ -23,7 +23,7 @@ model User {
     friendsRelation User[]        @relation("friends")
     achievements    Achievement[]
     members         Member[]
-	email           String
+    email           String
     TwoFaSecret     String?
 }
 
@@ -43,11 +43,12 @@ model Match {
 }
 
 model Achievement {
-    id          Int    @id @default(autoincrement())
-    name        String
-    description String
-    imgUrl      String
-    users       User[]
+    id           Int    @id @default(autoincrement())
+    achivementId Int    @unique
+    name         String
+    description  String
+    imgUrl       String
+    users        User[]
 }
 
 model Channel {
@@ -106,7 +107,7 @@ model Message {
     invite          Boolean  @default(false)
     inviterId       Int?
     invitedId       Int?
-    matchId         Int? @unique
+    matchId         Int?     @unique
     validInvitation Boolean?
-	scoreToWin      Int?
+    scoreToWin      Int?
 }

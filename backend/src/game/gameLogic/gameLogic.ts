@@ -99,7 +99,11 @@ class GameLogic {
 
 	updateBallPosition() {
 		// const distance = this.ball.velocity;
-		const distance = 7;
+		let distance = this.ball.velocity * 20;
+		this.ball.velocity += 0.003;
+		if (distance > 35) {
+			distance = 35;
+		}
 
 		let newDirectionX = this.ball.directionX;
 		let newDirectionY = this.ball.directionY;
