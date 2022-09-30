@@ -6,6 +6,7 @@ import {
 	ChannleTypesEnum,
 	ChatOptionsEnum,
 } from "../../../utils/constants/enum";
+import { isUserOnline } from "../../../utils/helper/chat";
 import RoundedHr from "../../UI/Hr/RoundedHr";
 import RoundedFilter from "../../UI/RoundedFilter";
 import ConversationCard from "./ConversationCard";
@@ -69,11 +70,3 @@ const ConversationsList: React.FC<{
 };
 
 export default ConversationsList;
-
-const isUserOnline = (name: string, onlineUsers: IOnlineUser[]): boolean => {
-	return onlineUsers.some(
-		(userData) =>
-			userData.user.fullName.toLocaleLowerCase() ===
-			name.toLocaleLowerCase()
-	);
-};

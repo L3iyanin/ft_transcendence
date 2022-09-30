@@ -13,6 +13,7 @@
 	"password": "Password",
 	"friends": "friends",
 	"online": "online",
+	"offline": "offline",
 	"lastMatches": "Last Matches:",
 	"unlocked": "unlocked",
 	"locked": "locked",

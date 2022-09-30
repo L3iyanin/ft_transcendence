@@ -71,15 +71,20 @@ const Links = () => {
 				{Options}
 			</nav>
 			{/* <Link className="relative container flex items-center grow-0" to="/profile"> */}
-			<Link className="relative container flex items-center grow-0" to="/chat">
+			<Link
+				className="relative container flex items-center grow-0"
+				to="/chat"
+			>
 				<img
 					src={userData.user.imgUrl}
 					className="h-8 w-8 rounded-full"
 					alt=""
 				/>
-				{chatSocket.notifications > 0 && <div className="font-bold bf-red w-4 h-4 absolute -bottom-1 -right-1 bg-red rounded-full text-xs text-white flex items-center justify-center">
-				{chatSocket.notifications}
-				</div> }
+				{chatSocket.notifications > 0 && (
+					<div className="font-bold bf-red w-4 h-4 absolute -bottom-1 -right-1 bg-red rounded-full text-xs text-white flex items-center justify-center">
+						{chatSocket.notifications}
+					</div>
+				)}
 			</Link>
 		</div>
 	);
@@ -94,8 +99,6 @@ const Links = () => {
 
 	const location = useLocation();
 
-	console.log(location.pathname);
-
 	useEffect(() => {
 		if (chatSocket.clientSocket) {
 			chatSocket.clientSocket.on("receivedMessage", (message: any) => {
@@ -103,9 +106,8 @@ const Links = () => {
 					dispatch(addNotification());
 				}
 			});
-
 		}
-	}, [chatSocket.clientSocket])
+	}, [chatSocket.clientSocket]);
 
 	return (
 		<>
@@ -117,7 +119,11 @@ const Links = () => {
 						className="fill-white cursor-pointer"
 						onClick={onOpenMobileLinks}
 					/>
-					{chatSocket.notifications > 0 && <div className="font-bold bf-red w-4 h-4 absolute -bottom-1 right-0 bg-red rounded-full text-xs text-white flex items-center justify-center">{chatSocket.notifications}</div>}
+					{chatSocket.notifications > 0 && (
+						<div className="font-bold bf-red w-4 h-4 absolute -bottom-1 right-0 bg-red rounded-full text-xs text-white flex items-center justify-center">
+							{chatSocket.notifications}
+						</div>
+					)}
 				</div>
 			) : (
 				<CloseIcon
