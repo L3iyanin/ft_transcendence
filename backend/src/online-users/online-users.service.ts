@@ -94,6 +94,6 @@ export class OnlineUsersService {
 
 	setSocketNotInGame(clientId: string) {
 		const user = this.onlineUsers.find((user) => user.socket.id == clientId);
-		user.socketInGame = false;
+		if (user) user.socketInGame = false;
 	}
 }
