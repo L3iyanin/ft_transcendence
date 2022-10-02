@@ -52,6 +52,10 @@ export class OnlineUsersGateway implements OnGatewayDisconnect {
 	@SubscribeMessage("connectUser")
 	addConnectedUser(client: Socket, newUser: User) {
 		const users = this.onlineUsersService.addConnectedUser(client, newUser);
+		console.log("-----------------------");
+		console.log("-----------------------");
+		console.log("-----------------------");
+		console.log("connectUserResponse", users);
 		this.server.emit("connectUserResponse", users);
 	}
 }
