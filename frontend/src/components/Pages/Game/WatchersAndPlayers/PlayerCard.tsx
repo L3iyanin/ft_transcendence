@@ -1,6 +1,7 @@
 import { ReactComponent as WinIcon } from "../../../../assets/icons/win.svg";
 import { ReactComponent as LoseIcon } from "../../../../assets/icons/lose.svg";
 import { ReactComponent as AchivementIcon } from "../../../../assets/icons/achivement.svg";
+import { useTranslation } from "react-i18next";
 
 const MAX_ACHIVEMENTS = import.meta.env.VITE_APP_MAX_ACHIVEMENTS;
 
@@ -8,8 +9,11 @@ const PlayerCard: React.FC<{
 	player: IUser;
 	header: string;
 }> = ({ player, header }) => {
+
+	const { t } = useTranslation();
+
 	return (
-		<div className="min-w-[200px]">
+		<div className="min-w-[200px] lg:m-auto">
 			<h2 className="text-2xl font-bold text-center">{header}</h2>
 			<div className="mt-5 bg-dark-60 rounded-lg flex flex-col items-center p-6 gap-y-1.5">
 				<img
@@ -22,17 +26,17 @@ const PlayerCard: React.FC<{
 				<div className="flex gap-4">
 					<div className="flex items-center gap-2">
 						<WinIcon />
-						<span className="text-xs">{player.wins} wins</span>
+						<span className="text-xs">{player.wins} {t("wins")}</span>
 					</div>
 					<div className="flex items-center gap-2">
 						<LoseIcon />
-						<span className="text-xs">{player.losses} losses</span>
+						<span className="text-xs">{player.losses} {t("losses")}</span>
 					</div>
 				</div>
 				<div className="flex items-center gap-2">
 					<AchivementIcon />
 					<span className="text-xs">
-						{player.achievements?.length}/{MAX_ACHIVEMENTS} achivments
+						{player.achievements?.length}/{MAX_ACHIVEMENTS} {t("homePage.achievements")}
 					</span>
 				</div>
 			</div>

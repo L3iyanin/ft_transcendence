@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import useBotChannel from "../../../hooks/useBotChannel";
 import CreateChannelPopup from "./CreateChannelPopup";
 import {
+	cancelInvitation,
 	getChannelMessages,
 	getChannels,
 	joinChannel,
@@ -21,8 +22,9 @@ import {
 import ErrorAlert, { ErrorAlertWithMessage } from "../../UI/Error";
 import { leaveChannel } from "../../../services/channel/settings";
 import SuccesAlert from "../../UI/SuccesAlert";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
+import { resetNotifications } from "../../../reducers/ChatSlice";
 
 const DiscussionSection: React.FC = () => {
 	const [openCreateChannel, setOpenCreateChannel] = useState(false);
@@ -31,7 +33,7 @@ const DiscussionSection: React.FC = () => {
 	const [channelsOfGroups, setChannelsOfGroups] = useState<IChatChannel[]>(
 		[]
 	);
-	const [refreshGetMessages, setRefreshGetMessages] = useState(false);
+
 	const [visibleChannels, setVisibleChannels] = useState<IChatChannel[]>([]);
 
 	const clientSocket: Socket = useSelector(
@@ -97,7 +99,6 @@ const DiscussionSection: React.FC = () => {
 	const onSelectConversationHandler = (channel: IChatChannel) => {
 		getChannelMessages(channel.id)
 			.then((res) => {
-				// console.log(res);
 				setCurrentChannel((_) => {
 					const newChannel = {
 						...channel,
@@ -106,9 +107,6 @@ const DiscussionSection: React.FC = () => {
 					};
 					return newChannel;
 				});
-
-				// onRefreshHandler();
-
 				// remove the unread messages count
 				setChannelsOfDms((channels) => {
 					const newChannels = [...channels];
@@ -183,14 +181,11 @@ const DiscussionSection: React.FC = () => {
 	}, [refresh]);
 
 	const joinChannelHandler = (password?: string) => {
-		// console.log("joinChannelHandler");
 		joinChannel(currentChannel.id, password)
 			.then((res) => {
-				// console.log(res);
 				return getChannelMessages(currentChannel.id);
 			})
 			.then((res) => {
-				// console.log(res);
 				setCurrentChannel((_) => {
 					const newChannel = {
 						...currentChannel,
@@ -211,7 +206,6 @@ const DiscussionSection: React.FC = () => {
 		if (currentChannel && currentChannel.id) {
 			leaveChannel(currentChannel.id.toString())
 				.then((res) => {
-					console.log(res);
 					SuccesAlert(res.message);
 					onSelectConversationHandler(currentChannel);
 				})
@@ -221,6 +215,12 @@ const DiscussionSection: React.FC = () => {
 				});
 		}
 	};
+
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(resetNotifications());
+	}, [])
 
 	useEffect(() => {
 		if (!clientSocket) return;
@@ -365,7 +365,6 @@ const DiscussionSection: React.FC = () => {
 	const getNewChannelMessages = (channelId: string) => {
 		getChannelMessages(+channelId)
 		.then((res) => {
-			// console.log(res);
 			setCurrentChannel((prevCurrChannel) => {
 				const newChannel = {
 					...prevCurrChannel,
@@ -382,7 +381,6 @@ const DiscussionSection: React.FC = () => {
 		if (!clientSocket) return;
 
 		clientSocket.on("youbAreBlocked", (userBanned) => {
-			// console.log(userBanned);
 			ErrorAlertWithMessage(userBanned.error);
 			setUserStatus({
 				status: MemberStatusEnum.BANNED,
@@ -395,7 +393,6 @@ const DiscussionSection: React.FC = () => {
 		});
 		
 		clientSocket.on("youAreMuted", (userMuted) => {
-			// console.log(userMuted);
 			ErrorAlertWithMessage(userMuted.error);
 			setUserStatus({
 				status: MemberStatusEnum.MUTED,
@@ -410,7 +407,6 @@ const DiscussionSection: React.FC = () => {
 
 
 	const onCompleteCountdownHandler = () => {
-		// console.log("countdown completed");
 		setUserStatus({
 			status: MemberStatusEnum.NONE,
 			untill: new Date(),
@@ -420,14 +416,27 @@ const DiscussionSection: React.FC = () => {
 		getNewChannelMessages(currentChannel.id.toString());
 	};
 
+
+	const onCancelInvitationHandler = (matchId: number) => {
+		cancelInvitation(matchId)
+			.then((res) => {
+				SuccesAlert(res.message);
+				getNewChannelMessages(currentChannel.id.toString());
+			})
+			.catch((err) => {
+				console.error(err);
+				ErrorAlert(err);
+			});
+	}
+
 	return (
-		<div className="flex gap-4">
+		<div className="flex flex-wrap">
 			<CreateChannelPopup
 				open={openCreateChannel}
 				setOpen={setOpenCreateChannel}
 				onRefreshHandler={onRefreshHandler}
 			/>
-			<div className="basis-1/3">
+			<div className="xl:basis-1/3 basis-full xl:pr-4">
 				<InputWithIcon
 					icon={<SearchIcon />}
 					type="text"
@@ -445,7 +454,7 @@ const DiscussionSection: React.FC = () => {
 					onSelectConversation={onSelectConversationHandler}
 				/>
 			</div>
-			<div className="basis-2/3 basis">
+			<div className="xl:basis-2/3 basis-full xl:pl-4">
 				<ChatActions
 					currentChannel={currentChannel}
 					username={
@@ -453,11 +462,12 @@ const DiscussionSection: React.FC = () => {
 							? currentChannel.members.length > 1 ? currentChannel.members[1].user.username : undefined
 							: currentChannel.members[0].user.username
 					}
-					userId={
+					friendId={
 						currentChannel.members[0].user.id === userData.user?.id
 							? currentChannel.members.length > 1 ? currentChannel.members[1].user.id : undefined
 							: currentChannel.members[0].user.id
 					}
+					userId={userData.user?.id}
 					onOpenCreateChannelHandler={onOpenCreateChannelHandler}
 					IamNotMember={currentChannel.IamNotMember}
 					leaveChannelHandler={leaveChannelHandler}
@@ -474,7 +484,9 @@ const DiscussionSection: React.FC = () => {
 					onSendMessageHandler={onSendMessageHandler}
 					currentChannel={currentChannel}
 					userStatus={userStatus}
+					userId={userData.user?.id}
 					onCompleteCountdownHandler={onCompleteCountdownHandler}
+					onCancelInvitationHandler={onCancelInvitationHandler}
 				/>
 			</div>
 		</div>

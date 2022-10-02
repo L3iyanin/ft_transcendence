@@ -99,7 +99,11 @@ class GameLogic {
 
 	updateBallPosition() {
 		// const distance = this.ball.velocity;
-		const distance = 2;
+		let distance = this.ball.velocity * 20;
+		this.ball.velocity += 0.003;
+		if (distance > 35) {
+			distance = 35;
+		}
 
 		let newDirectionX = this.ball.directionX;
 		let newDirectionY = this.ball.directionY;
@@ -110,7 +114,6 @@ class GameLogic {
 		// let newVelocity = prev.velocity + VELOCITY_INCREASE * delta;
 
 		if (newY + BALL_SIZE / 2 >= PLAY_GROUND_HEIGHT - PLAYGROUND_BORDERSIZE) {
-			console.log("collision with bottom");
 			newDirectionY = newDirectionY * -1;
 			newY = this.ball.y + newDirectionY * distance;
 		}

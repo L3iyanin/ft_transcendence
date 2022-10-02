@@ -11,7 +11,7 @@ const WatchersList: React.FC<{
 	const { t } = useTranslation();
 
 	return (
-		<div className="bg-dark-60 rounded-lg p-6 grow max-h-[480px] overflow-y-auto">
+		<div className="bg-dark-60 rounded-lg p-6 grow max-h-[480px] overflow-y-auto -order-1 w-full lg:order-none lg:w-auto">
 			<h2 className="text-3xl font-bold mb-6">{t("gamePage.watchTheMatch")}:</h2>
 			{
 				watchers.map((watcher) => (
@@ -44,13 +44,13 @@ const WatcherCard: React.FC<{ watcher: IUser }> = ({ watcher }) => {
 				</div>
 				<div className="flex flex-col justify-between">
 					<IconWithLabel
-						linkToGo={`/chat/${watcher.username}`}
+						linkToGo={`/chat`}
 						icon={<ChatIcon />}
 						label={t("chat")}
 						labelStyle="text-red"
 					/>
 					<IconWithLabel
-						linkToGo={`/profile/${watcher.username}`}
+						linkToGo={`/profile/${watcher.id}`}
 						icon={<ProfileIcon className="w-4 h-4" />}
 						label={t("profile")}
 						labelStyle="text-yellow"

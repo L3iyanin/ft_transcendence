@@ -16,6 +16,7 @@ import { users } from "../../utils/data/Users";
 import { UserStatusEnum } from "../../utils/constants/enum";
 import SuccesAlert from "../UI/SuccesAlert";
 import { useNavigate } from "react-router-dom";
+import { isUserOnline, isUserOnlineOrInGame } from "../../utils/helper/chat";
 
 const MAX_ACHIVEMENTS = import.meta.env.VITE_APP_MAX_ACHIVEMENTS;
 
@@ -27,6 +28,10 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 	const [user, setUser] = useState<IUser | null>(null);
 
 	let isMe = userId === undefined || LocalUserData.id === +userId;
+
+	const onlineUsers: IOnlineUser[] = useSelector(
+		(state: any) => state.chat.onlineUsers
+	);
 
 	const navigate = useNavigate();
 
@@ -42,7 +47,9 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 				}
 
 				const userData = res;
-				// setUser(users[0]);
+
+				const userStatus = isUserOnlineOrInGame(userData.fullName, onlineUsers);
+
 				setUser(_ => ({
 					id: userData.id,
 					username: userData.username,
@@ -53,17 +60,18 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 					wins: userData.wins,
 					losses: userData.losses,
 					userStatus: userData.userStatus,
+					isOnline: userStatus.isOnline,
+					isInGame: userStatus.isInGame,
 				}))
 			})
 			.catch((err) => {
 				ErrorAlert(err);
 			});
-	}, [userId]);
+	}, [userId, onlineUsers]);
 
 	const addFriendHandler = () => {
 		addFriend(userId!)
 		.then(res => {
-			// console.log(res);
 			SuccesAlert(res.message);
 			setUser(prevUser => ({
 				...prevUser!,
@@ -76,7 +84,6 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 	}
 
 	const startChatHandler = () => {
-		// console.log("start chat");
 		startChat(userId!)
 		.then(res => {
 			navigate(`/chat`);
@@ -90,7 +97,6 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 	const blockUserHandler = () => {
 		blockUser(userId!)
 		.then(res => {
-			// console.log(res);
 			SuccesAlert(res.message);
 			setUser(prevUser => ({
 				...prevUser!,
@@ -105,7 +111,6 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 	const unblockUserHandler = () => {
 		unblockUser(userId!)
 		.then(res => {
-			// console.log(res);
 			SuccesAlert(res.message);
 			setUser(prevUser => ({
 				...prevUser!,
@@ -119,14 +124,14 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 
 	if (!user) {
 		return (
-			<section className="relative w-[395px] h-[368px] rounded-2xl flex flex-col bg-dark-60">
+			<section className="relative min-w-[395px] h-[368px] rounded-2xl flex flex-col bg-dark-60">
 				<LoadingSpinner />
 			</section>
 		);
 	}
 
 	return (
-		<section className=" w-[395px] h-[368px] rounded-2xl flex flex-col bg-dark-60">
+		<section className="mb-10 xl:mb-0 xl:basis-3/12 basis-10/12 md:basis-6/12 h-[368px] rounded-2xl flex flex-col bg-dark-60">
 			<div className="grow pt-7 pb-7 container m-0 flex flex-col items-center justify-center gap-3 text-white">
 				<img
 					src={user.imgUrl}
@@ -136,7 +141,7 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 				<h3 className="text-xl font-bold m-0">{user.fullName}</h3>
 				<p className="m-0 text-beige">{user.username}</p>
 				<div className="flex gap-4">
-					<Stat stat={t("online")} qty={user.wins!} />
+					<Stat stat={user.isInGame ? t("inGame") : (user.isOnline ? t("online") : t("offline"))} qty={0} isUserOnline={user.isOnline} isUserInGame={user.isInGame} />
 					<Stat stat={t("friends")} qty={user.numberOfFriends!} />
 				</div>
 				<div className="flex gap-4">
@@ -147,7 +152,7 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 					<AchivementIcon />
 					<span className="text-xs">
 						{user.numberOfAchievements}/{MAX_ACHIVEMENTS}{" "}
-						achievments
+						{t("homePage.achievements")}
 					</span>
 				</div>
 			</div>

@@ -4,9 +4,15 @@ interface IMessage {
     content: string;
     from: IMember;
     date: Date;
+	createdAt: Date;
     Channel?: IChatChannel;
     // channelId: number;
 	invite?: boolean;
+	invitedId?: number;
+	inviterId?: number;
+	matchId?: number;
+	scoreToWin?: number;
+	validInvitation?: boolean;
 }
 
 interface IMember {

@@ -51,9 +51,23 @@ export const userSlice = createSlice({
 			}
 			state.isLoading = false;
 		},
+		setUserImg: (state, action: PayloadAction<string>) => {
+			state.user = {
+				id: state.user!.id,
+				username: state.user!.username,
+				fullName: state.user!.fullName,
+				imgUrl: action.payload,
+			};
+			
+			localStorage.setItem(USER_KEY, JSON.stringify(state.user));
+		},
+		setFirstTime: (state) => {
+			state.user!.firstTime = false;
+			localStorage.setItem(USER_KEY, JSON.stringify(state.user));
+		}
 	},
 });
 
 export default userSlice.reducer;
 
-export const { login, logout, getUser } = userSlice.actions;
+export const { login, logout, getUser, setUserImg, setFirstTime } = userSlice.actions;

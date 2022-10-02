@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { ReactComponent as WinnerIcon } from "../../../../assets/icons/winner.svg";
-import { PLAYER_ONE } from "../../../../utils/constants/Game";
+import { PLAYER_ONE, PLAYER_TWO } from "../../../../utils/constants/Game";
 
 const WinnerOverlay:React.FC<{
 	player1: IUser;
@@ -16,10 +16,10 @@ const WinnerOverlay:React.FC<{
 				marginLeft: winner === PLAYER_ONE ? "0" : "50%",
 			}}
 		>
-			<WinnerIcon />
-			<span className="text-3xl text-red">{t("gamePage.theWinner")}</span>
-			<span className="text-2xl text-white">{winner === PLAYER_ONE ? player1.fullName : player2.fullName}</span>
-			<span className="text-xl text-beige">{winner === PLAYER_ONE ? player1.username : player2.username}</span>
+			<WinnerIcon className="w-14 lg:w-auto -mb-4 lg:mb-0" />
+			<span className="text-lg lg:text-3xl text-red">{t("gamePage.theWinner")}</span>
+			<span className="lg:text-2xl text-white">{winner === PLAYER_ONE ? player1.fullName : player2.fullName}</span>
+			<span className="lg:text-xl text-beige">{winner === PLAYER_ONE ? player1.username : player2.username}</span>
 		</div>
 	);
 }

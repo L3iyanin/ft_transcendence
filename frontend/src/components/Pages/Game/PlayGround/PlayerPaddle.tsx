@@ -7,7 +7,7 @@ const PlayerPaddle: React.FC<{
 
 	return (
 		<div
-			className={`absolute rounded-sm bg-beige`}
+			className={`absolute rounded-sm bg-white`}
 			style={{
 				top: top,
 				height: `${window.paddleHeight}px`,
