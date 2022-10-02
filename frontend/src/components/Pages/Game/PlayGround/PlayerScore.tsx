@@ -15,11 +15,11 @@ const PlayerScore: React.FC<{
 				<div className="text-beige">{player.username}</div>
 			</div>
 			<img
-				className="w-[49px] h-[49px] rounded-full"
+				className="w-[28px] h-[28px] md:w-[49px] md:h-[49px] rounded-full"
 				src={player.imgUrl}
 				alt=""
 			/>
-			<span className="text-5xl font-bold">{score}</span>
+			<span className="text-2xl md:text-5xl font-bold">{score}</span>
 		</div>
 	);
 };

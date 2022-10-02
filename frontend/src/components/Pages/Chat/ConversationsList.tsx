@@ -6,6 +6,7 @@ import {
 	ChannleTypesEnum,
 	ChatOptionsEnum,
 } from "../../../utils/constants/enum";
+import { isUserOnline } from "../../../utils/helper/chat";
 import RoundedHr from "../../UI/Hr/RoundedHr";
 import RoundedFilter from "../../UI/RoundedFilter";
 import ConversationCard from "./ConversationCard";
@@ -59,7 +60,7 @@ const ConversationsList: React.FC<{
 					);
 				})}
 				{channels.length === 0 && (
-					<div className="text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-400">
+					<div className="text-center xl:absolute xl:top-1/2 xl:left-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2 text-gray-400">
 						{t("chatPage.noChannels")}
 					</div>
 				)}
@@ -69,11 +70,3 @@ const ConversationsList: React.FC<{
 };
 
 export default ConversationsList;
-
-const isUserOnline = (name: string, onlineUsers: IOnlineUser[]): boolean => {
-	return onlineUsers.some(
-		(userData) =>
-			userData.user.fullName.toLocaleLowerCase() ===
-			name.toLocaleLowerCase()
-	);
-};

@@ -16,6 +16,7 @@ import { users } from "../../utils/data/Users";
 import { UserStatusEnum } from "../../utils/constants/enum";
 import SuccesAlert from "../UI/SuccesAlert";
 import { useNavigate } from "react-router-dom";
+import { isUserOnline } from "../../utils/helper/chat";
 
 const MAX_ACHIVEMENTS = import.meta.env.VITE_APP_MAX_ACHIVEMENTS;
 
@@ -27,6 +28,10 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 	const [user, setUser] = useState<IUser | null>(null);
 
 	let isMe = userId === undefined || LocalUserData.id === +userId;
+
+	const onlineUsers: IOnlineUser[] = useSelector(
+		(state: any) => state.chat.onlineUsers
+	);
 
 	const navigate = useNavigate();
 
@@ -42,7 +47,7 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 				}
 
 				const userData = res;
-				// setUser(users[0]);
+
 				setUser(_ => ({
 					id: userData.id,
 					username: userData.username,
@@ -53,12 +58,13 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 					wins: userData.wins,
 					losses: userData.losses,
 					userStatus: userData.userStatus,
+					isOnline: isUserOnline(userData.fullName, onlineUsers),
 				}))
 			})
 			.catch((err) => {
 				ErrorAlert(err);
 			});
-	}, [userId]);
+	}, [userId, onlineUsers]);
 
 	const addFriendHandler = () => {
 		addFriend(userId!)
@@ -132,7 +138,7 @@ const UserCard: React.FC<{ userId?: string }> = ({ userId }) => {
 				<h3 className="text-xl font-bold m-0">{user.fullName}</h3>
 				<p className="m-0 text-beige">{user.username}</p>
 				<div className="flex gap-4">
-					<Stat stat={t("online")} qty={user.wins!} />
+					<Stat stat={user.isOnline ? t("online") : t("offline")} qty={user.wins!} isUserOnline={user.isOnline} />
 					<Stat stat={t("friends")} qty={user.numberOfFriends!} />
 				</div>
 				<div className="flex gap-4">

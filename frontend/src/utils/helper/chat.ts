@@ -11,3 +11,11 @@ export const IamAdminOrOwner = (members:IMember[], myId: number) => {
 	}
 	return false;
 }
+
+export const isUserOnline = (name: string, onlineUsers: IOnlineUser[]): boolean => {
+	return onlineUsers.some(
+		(userData) =>
+			userData.user.fullName.toLocaleLowerCase() ===
+			name.toLocaleLowerCase()
+	);
+};

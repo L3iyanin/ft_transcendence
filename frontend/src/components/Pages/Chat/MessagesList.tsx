@@ -45,12 +45,21 @@ const MessagesList: React.FC<{
 
 	const messageListRef = useRef<HTMLDivElement>(null);
 
-	const userData: IUserState = useSelector((state: any) => state.user);
+	// const userData: IUserState = useSelector((state: any) => state.user);
+
+	// useEffect(() => {
+	// 	if (messages.length === 0) return;
+	// 	messageListRef.current?.scrollIntoView({ behavior: "smooth" });
+	// }, [messages]);
 
 	useEffect(() => {
-		if (messages.length === 0) return;
-		messageListRef.current?.scrollIntoView({ behavior: "smooth" });
-	}, [messages]);
+		if (messageListRef.current) {
+			const lastItem = messageListRef.current.lastElementChild;
+			if (lastItem) {
+			lastItem.scrollIntoView({ behavior: "smooth", block: "nearest" });
+			}
+		}
+	  }, [messages]);
 
 	const [password, setPassword] = useState("");
 	const [messageContent, setMessageContent] = useState("");
@@ -88,7 +97,7 @@ const MessagesList: React.FC<{
 
 	return (
 		<div className="relative flex flex-col bg-dark-60 mt-5 rounded-2xl p-5 text-white h-[75vh] overflow-y-auto">
-			<div className="overflow-auto">
+			<div className="overflow-auto" ref={messageListRef}>
 				{!IamNotMember &&
 					messages.map((message, index) => (
 						<MessageCard
@@ -100,9 +109,9 @@ const MessagesList: React.FC<{
 							/>
 					))}
 				{!IamNotMember && messages.length === 0 && <MessageNotFound />}
-				{!IamNotMember && messages.length > 0 && (
+				{/* {!IamNotMember && messages.length > 0 && (
 					<div ref={messageListRef} />
-				)}
+				)} */}
 			</div>
 
 			{IamNotMember && <NoMemberInChannel />}

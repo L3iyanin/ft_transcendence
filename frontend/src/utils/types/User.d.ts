@@ -26,6 +26,7 @@ interface IUser {
     members?: IMember[],
     messages?: Message[],
 	userStatus?: UserStatusEnum,
+	isOnline?: boolean,
 }
 
 interface IUserState {

@@ -80,16 +80,14 @@ const PlayGround: React.FC<{
 				// setMatchPlayed(true);
 
 				updateBall(gameState.ballX, gameState.ballY);
+				
 				setPlayersScore({
 					player1Score: gameState.player1Score,
 					player2Score: gameState.player2Score,
 				});
 
-				if (matchSettings.player1.id !== LocalUserData.id) {
-					updatePlayer1Y(gameState.player1y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
-				} else {
-					updatePlayer2Y(gameState.player2y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
-				}
+				updatePlayer1Y(gameState.player1y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+				updatePlayer2Y(gameState.player2y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
 			});
 
 
@@ -213,7 +211,7 @@ const PlayGround: React.FC<{
 			<PlayerPaddle isOnLeft={true} top={`${window.player1Y}px`} />
 			<PlayerPaddle isOnLeft={false} top={`${window.player2Y}px`} />
 			<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-full border-r-2 border-dashed border-beige" />
-			<div className="absolute text-white top-4 left-1/2 transform -translate-x-1/2 gap-x-16 flex">
+			<div className="absolute text-white top-4 left-1/2 transform -translate-x-1/2 gap-x-8 md:gap-x-16 flex">
 				<PlayerScore
 					score={playersScore.player1Score}
 					player={matchSettings.player1}
