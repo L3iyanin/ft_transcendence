@@ -27,6 +27,10 @@ import { fakematch } from "../../../../utils/data/Match";
 import WinnerOverlay from "./WinnerOverlay";
 import usePrompt from "../../../../hooks/usePropmpt";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
+let isFirstRnder = true;
 
 const PlayGround: React.FC<{
 	matchSettings?: IStartedMatch;
@@ -52,6 +56,8 @@ const PlayGround: React.FC<{
 	});
 
 	const { t } = useTranslation();
+
+	const navigate = useNavigate();
 
 	// usePrompt(t("gamePage.quit_helper"), matchPlayed);
 
@@ -92,8 +98,18 @@ const PlayGround: React.FC<{
 					player2Score: gameState.player2Score,
 				});
 
-				updatePlayer1Y(gameState.player1y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
-				updatePlayer2Y(gameState.player2y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+				if (isFirstRnder === true) {
+					updatePlayer1Y(gameState.player1y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+					updatePlayer2Y(gameState.player2y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+					isFirstRnder = false;
+				}
+
+				if (matchSettings.player2.id === LocalUserData.id) {
+					updatePlayer1Y(gameState.player1y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+				}
+				else {
+					updatePlayer2Y(gameState.player2y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+				}
 			});
 
 
@@ -123,6 +139,14 @@ const PlayGround: React.FC<{
 					fullName: LocalUserData.fullName,
 					id: LocalUserData.id,
 				});
+
+				toast.info(t("gameEnd"), {
+					position: toast.POSITION.TOP_CENTER,
+				});
+
+				setTimeout(() => {
+					navigate("/home");
+				}, 2000);
 
 			});
 		}

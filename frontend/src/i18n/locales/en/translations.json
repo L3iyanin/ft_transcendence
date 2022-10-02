@@ -28,6 +28,7 @@
 	"friendAdded": "Friend Added Seccessfully",
 	"matching": "Matching",
 	"playersReadyToPlay": "Players Ready To Play",
+	"gameEnd": "The game end you will redirect to home soon",
 	"landingPage": {
 		"aboutParagrapOne": "Ft_transcendence is the last project in the commen core of 1337 School (42Network).",
 		"aboutParagrapTwo": "It's a Pong Multiplayer Game.",
