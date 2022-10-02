@@ -563,10 +563,6 @@ export class GameEventsService {
 
 			const loserId = winnerId == match.player1Id ? match.player2Id : match.player1Id;
 
-
-			if (liveMatch && !liveMatch.interval) {
-				return;
-			}
 			// update user stats
 			const winner = await this.prisma.user.update({
 				where: {
