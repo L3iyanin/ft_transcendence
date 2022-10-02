@@ -12,7 +12,11 @@ export const getLiveMatches = () => {
 			// .catch(err => console.error(`err`, err))
 };
 
-export const getLastMatches = (userId: number, countOfMatches: number = 10) => {
+export const getLastMatches = (userId: number, isForAllUsers: boolean = false, countOfMatches: number = 10) => {
+	if (isForAllUsers) {
+		return axios.get(`/game/last-matches/${countOfMatches}`)
+			.then(res => res.data)
+	}
 	return axios.get(`/game/last-matches/${countOfMatches}/${userId}`)
 			.then(res => res.data)
 			// .catch(err => console.error(`err`, err))
