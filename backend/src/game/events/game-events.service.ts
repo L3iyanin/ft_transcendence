@@ -798,16 +798,16 @@ export class GameEventsService {
 			}
 
 			//? id 3
-			//? you win vs khalid
+			//? you lose vs khalid
 			if (
 				player.id == match.player1Id &&
-				match.player1Score > match.player2Score &&
+				match.player1Score < match.player2Score &&
 				opponent.login == "kbenlyaz"
 			) {
 				await this.addAcheivementToUser(player.id, 3);
 			} else if (
 				player.id == match.player2Id &&
-				match.player1Score < match.player2Score &&
+				match.player1Score > match.player2Score &&
 				opponent.login == "kbenlyaz"
 			) {
 				await this.addAcheivementToUser(player.id, 3);
