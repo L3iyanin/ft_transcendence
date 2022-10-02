@@ -146,6 +146,7 @@ const PlayGround: React.FC<{
 
 				setTimeout(() => {
 					navigate("/home");
+					navigate(0);
 				}, 2000);
 
 			});
