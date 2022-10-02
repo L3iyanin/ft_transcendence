@@ -27,6 +27,8 @@ import { fakematch } from "../../../../utils/data/Match";
 import WinnerOverlay from "./WinnerOverlay";
 import usePrompt from "../../../../hooks/usePropmpt";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 let isFirstRnder = true;
 
@@ -54,6 +56,8 @@ const PlayGround: React.FC<{
 	});
 
 	const { t } = useTranslation();
+
+	const navigate = useNavigate();
 
 	// usePrompt(t("gamePage.quit_helper"), matchPlayed);
 
@@ -135,6 +139,14 @@ const PlayGround: React.FC<{
 					fullName: LocalUserData.fullName,
 					id: LocalUserData.id,
 				});
+
+				toast.info(t("gameEnd"), {
+					position: toast.POSITION.TOP_CENTER,
+				});
+
+				setTimeout(() => {
+					navigate("/home");
+				}, 2000);
 
 			});
 		}
