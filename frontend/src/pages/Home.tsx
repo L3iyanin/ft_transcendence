@@ -45,7 +45,7 @@ const Home: React.FC = () => {
 							/>
 						</section>
 						<section className="w-full flex flex-wrap justify-between items-center gap-10">
-							<LastMatches matches={lastMatches} />
+							<LastMatches isForAllUsers={true} matches={lastMatches} />
 							<Leaderboard />
 						</section>
 					</section>
