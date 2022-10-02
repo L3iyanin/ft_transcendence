@@ -42,7 +42,10 @@ export class AuthService {
 				},
 			});
 			if (userExist) {
-				return userExist;
+				return {
+					firstTime: false,
+					user: userExist,
+				};
 			} else {
 				const user = await this.prisma.user.create({
 					data: {
@@ -53,7 +56,10 @@ export class AuthService {
 						email: email,
 					},
 				});
-				return user;
+				return {
+					firstTime: true,
+					user: user,
+				};
 			}
 		} catch (exception) {
 			console.log("ERROR " + exception);
@@ -96,13 +102,16 @@ export class AuthService {
 		try {
 			const userData: AuthUserData = await this.getUserData(code);
 			const avatarImage = this.getImageProfileUrl(userData.username);
-			const user = await this.saveUserInDatabase(
+			const { user, firstTime } = await this.saveUserInDatabase(
 				userData.username,
 				userData.fullName,
 				avatarImage,
 				userData.email
 			);
-			return user;
+			return {
+				user: user,
+				firstTime: firstTime,
+			};
 		} catch (err) {
 			throw new HttpException(err.message, err.status);
 		}

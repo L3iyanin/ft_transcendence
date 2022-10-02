@@ -19,7 +19,7 @@ export class AuthController {
 	@Get()
 	async Auth42(@Req() req: Request, @Res() res: Response) {
 		const code: any = req.query["code"];
-		const user = await this.authService.auth42(code);
+		const { user, firstTime } = await this.authService.auth42(code);
 
 		if (user.twoFactorAuth == false) {
 			const token = await this.authService.createJwtToken(
@@ -30,7 +30,7 @@ export class AuthController {
 			res.cookie("jwt", token, { httpOnly: true });
 			return res.send({
 				status: 200,
-				data: {...user, token}
+				data: { ...user, token, firstTime },
 			});
 		} else {
 			throw new HttpException(
@@ -60,7 +60,7 @@ export class AuthController {
 			res.cookie("jwt", token, { httpOnly: true });
 			return res.send({
 				status: 200,
-				data: {...user, token},
+				data: { ...user, token, firstTime: false },
 			});
 		} else {
 			throw new HttpException("2FA SECRET IS INCOORECT", 401);
