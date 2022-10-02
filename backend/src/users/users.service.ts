@@ -314,8 +314,15 @@ export class UsersService {
 			throw new HttpException(err.response, err.status);
 		}
 	}
+
 	async updateUserName(newUserName: string, userId: number): Promise<PostResponce> {
 		try {
+			const user = 	await this.prisma.user.findFirst({
+				where: { username: newUserName },
+			});
+			if (user && user.id != userId)
+				throw new HttpException("UserName is already used", 400);
+
 			await this.prisma.user.update({
 				where: { id: userId },
 				data: { username: newUserName },
@@ -355,6 +362,7 @@ export class UsersService {
 			throw new HttpException(err.message, err.status);
 		}
 	}
+
 	async disable2Fa(userId: number): Promise<PostResponce> {
 		try {
 			const user = await this.prisma.user.findUnique({
@@ -381,6 +389,7 @@ export class UsersService {
 			throw new HttpException(err.message, err.status);
 		}
 	}
+
 	async generateTwoFactorAuthenticationSecret(userId: number) {
 		const secret = authenticator.generateSecret();
 		const user: User = await this.prisma.user.findUnique({
