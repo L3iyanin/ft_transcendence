@@ -28,6 +28,8 @@ import WinnerOverlay from "./WinnerOverlay";
 import usePrompt from "../../../../hooks/usePropmpt";
 import { useTranslation } from "react-i18next";
 
+let isFirstRnder = true;
+
 const PlayGround: React.FC<{
 	matchSettings?: IStartedMatch;
 }> = ({ matchSettings }) => {
@@ -92,8 +94,18 @@ const PlayGround: React.FC<{
 					player2Score: gameState.player2Score,
 				});
 
-				updatePlayer1Y(gameState.player1y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
-				updatePlayer2Y(gameState.player2y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+				if (isFirstRnder === true) {
+					updatePlayer1Y(gameState.player1y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+					updatePlayer2Y(gameState.player2y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+					isFirstRnder = false;
+				}
+
+				if (matchSettings.player2.id === LocalUserData.id) {
+					updatePlayer1Y(gameState.player1y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+				}
+				else {
+					updatePlayer2Y(gameState.player2y / PLAY_GROUND_HEIGHT * window.playgroundHeight);
+				}
 			});
 
 
