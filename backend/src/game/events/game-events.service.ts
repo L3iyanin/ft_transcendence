@@ -15,13 +15,16 @@ let liveMatches: LiveMatchDto[] = [];
 export class GameEventsService {
 	prisma: PrismaClient;
 
-	constructor(
-		private readonly onlineUsersService: OnlineUsersService,
-	) {
+	constructor(private readonly onlineUsersService: OnlineUsersService) {
 		this.prisma = new PrismaClient();
 	}
 
-	async sendInviteMessage(payload: JoinMatchDto, clientId: string, server: Server, matchId: number) {
+	async sendInviteMessage(
+		payload: JoinMatchDto,
+		clientId: string,
+		server: Server,
+		matchId: number
+	) {
 		const channelName = generateChannelName(payload.inviterUserId, payload.invitedUserId);
 
 		const channel = await this.prisma.channel.findUnique({
@@ -82,7 +85,6 @@ export class GameEventsService {
 			matchId: message.matchId,
 			scoreToWin: message.scoreToWin,
 		});
-
 	}
 
 	async joinInviteMatch(
@@ -513,8 +515,11 @@ export class GameEventsService {
 		if (winnerId) {
 			// clearinterval
 			const liveMatch = this.getLiveMatch(match.id);
-			if (liveMatch) {
+			if (liveMatch && liveMatch.interval) {
 				clearInterval(liveMatch.interval);
+				liveMatch.interval = null;
+			} else {
+				return;
 			}
 			// end game
 			const endMatch = await this.prisma.match.update({
@@ -542,6 +547,10 @@ export class GameEventsService {
 
 			const loserId = winnerId == match.player1Id ? match.player2Id : match.player1Id;
 
+
+			if (liveMatch && !liveMatch.interval) {
+				return;
+			}
 			// update user stats
 			const winner = await this.prisma.user.update({
 				where: {
@@ -871,11 +880,9 @@ export class GameEventsService {
 			return {
 				newMessage,
 				message: "Invitation is no longer valid",
-			}
-
+			};
 		} catch (error) {
 			console.error(error);
 		}
 	}
-
 }
