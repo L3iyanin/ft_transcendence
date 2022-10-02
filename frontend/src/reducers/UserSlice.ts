@@ -60,10 +60,14 @@ export const userSlice = createSlice({
 			};
 			
 			localStorage.setItem(USER_KEY, JSON.stringify(state.user));
+		},
+		setFirstTime: (state) => {
+			state.user!.firstTime = false;
+			localStorage.setItem(USER_KEY, JSON.stringify(state.user));
 		}
 	},
 });
 
 export default userSlice.reducer;
 
-export const { login, logout, getUser, setUserImg } = userSlice.actions;
+export const { login, logout, getUser, setUserImg, setFirstTime } = userSlice.actions;

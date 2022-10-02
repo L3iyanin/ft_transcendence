@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../reducers/UserSlice";
 import LoadingSpinner from "../components/UI/Loading/LoadingSpinner";
 import TwoFAPopup from "../components/Pages/LandingPage/TwoFAPopup";
+import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
 	const { t } = useTranslation();
@@ -21,6 +22,8 @@ const Landing = () => {
 	const [userId, setUserId] = useState<string | null>(null);
 
 	const [isLoading, setIsLoading] = useState(false);
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
