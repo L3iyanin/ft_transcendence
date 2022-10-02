@@ -23,6 +23,8 @@ model User {
     friendsRelation User[]        @relation("friends")
     achievements    Achievement[]
     members         Member[]
+    email           String
+    TwoFaSecret     String?
 }
 
 model Match {
@@ -41,11 +43,12 @@ model Match {
 }
 
 model Achievement {
-    id          Int    @id @default(autoincrement())
-    name        String
-    description String
-    imgUrl      String
-    users       User[]
+    id           Int    @id @default(autoincrement())
+    achivementId Int    @unique
+    name         String
+    description  String
+    imgUrl       String
+    users        User[]
 }
 
 model Channel {
@@ -94,12 +97,17 @@ enum Roles {
 }
 
 model Message {
-    id        Int      @id @default(autoincrement())
-    content   String
-    from      Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
-    channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
-    channelId Int
-    memberId  Int
-    createdAt DateTime @default(now())
-    invite    Boolean  @default(false)
+    id              Int      @id @default(autoincrement())
+    content         String
+    from            Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+    channel         Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+    channelId       Int
+    memberId        Int
+    createdAt       DateTime @default(now())
+    invite          Boolean  @default(false)
+    inviterId       Int?
+    invitedId       Int?
+    matchId         Int?     @unique
+    validInvitation Boolean?
+    scoreToWin      Int?
 }

@@ -5,6 +5,10 @@ import {
 	INITIAL_BALL_X,
 	INITIAL_BALL_Y,
 	INITIAL_VELOCITY,
+	PADDLE_HEIGHT,
+	PADDLE_WIDTH,
+	PADDLE_X_MARGIN,
+	PADDLE_Y_MARGIN,
 	PLAYER_ONE,
 	PLAYER_TWO,
 	PLAYGROUND_BORDERSIZE,
@@ -15,60 +19,32 @@ import {
 
 const useBallMove = () => {
 
-	const [ballPosition, setBallPosition] = useState<{ x: number; y: number; }>({ x: 0, y: 0 });
-
 	const updateBall = (ballX: number, ballY: number) => {
-
-		// window.ballYPosition = ballY / PLAY_GROUND_HEIGHT * window.playgroundHeight;
-		// window.ballXPosition = ballX / PLAY_GROUND_WIDTH * window.playgroundWidth;
-
-
 		window.ballYPosition = ballY;
 		window.ballXPosition = ballX;
 
-		// console.log(`ballY: ${ballY}, ballX: ${ballX}`);
 
-		// console.log(`window.playgroundHeight: ${window.playgroundHeight}`);
-		// console.log(`window.playgroundWidth: ${window.playgroundWidth}`);
+		window.ballXPosition = (ballX / PLAY_GROUND_WIDTH) * window.playgroundWidth;
+		window.ballYPosition = (ballY / PLAY_GROUND_HEIGHT) * window.playgroundHeight;
 
-		// console.log(`window.ballYPosition: ${window.ballYPosition}`);
-		// console.log(`window.ballXPosition: ${window.ballXPosition}`);
+		window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
+		window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
 
+		window.paddleHeight = PADDLE_HEIGHT * window.heightRatio;
+		window.paddleWidth = PADDLE_WIDTH * window.widthRatio;
 
-		// window.ballXPositionRatio = window.ballXPosition / window.playgroundWidth;
-		// window.ballYPositionRatio = window.ballYPosition / window.playgroundHeight;
+		window.paddleXMargin = PADDLE_X_MARGIN * window.widthRatio;
+		window.paddleYMargin = PADDLE_Y_MARGIN * window.heightRatio;
 
-		// const newX = window.playgroundWidth * window.ballXPositionRatio;
-		// const newY = window.playgroundHeight * window.ballYPositionRatio;
-		
-		// window.ballXPosition = newX;
-		// window.ballYPosition = newY;
+		window.ballSize = BALL_SIZE * window.widthRatio;
 
-		// setBallPosition({ x: newX, y: newY });
-
+		window.player1YPositionRatio = window.player1Y / window.playgroundHeight;
+		window.player2YPositionRatio = window.player2Y / window.playgroundHeight;
 	}
 
-	const updateBallOutside = () => {
-		setBallPosition((prev) => {
-			// console.log(`prev.y: ${prev.y}`);
-			// console.log(`window.ballXPositionRatio: ${window.ballXPositionRatio}`);
-			const newX = window.playgroundWidth * window.ballXPositionRatio;
-			const newY = window.playgroundHeight * window.ballYPositionRatio;
-
-			window.ballXPosition = newX;
-			window.ballYPosition = newY;
-			
-			return {
-				x: newX,
-				y: newY,
-			};
-		});
-	}
 
 	return {
-		ballPosition,
 		updateBall,
-		updateBallOutside
 	};
 };
 

@@ -43,7 +43,7 @@ const Matching: React.FC = () => {
 		return <></>;
 
 	return (
-		<div className="flex bg-dark-60 h-full items-center rounded-lg gap-3 px-4 ml-20">
+		<div className="flex bg-dark-60 items-center py-4 rounded-lg gap-3 px-4 ml-20">
 			<div className="w-3 h-3 rounded-full bg-green animate-pulse" />
 			<img src="/imgs/icons/muchi-muchi.png" alt="muchi muchi" />
 			<span className="font-bold text-white">{t("matching")}</span>

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { ReactComponent as Unlocked } from "../../../../assets/icons/Unlocked.svg";
+import { ReactComponent as Unlocked } from "../../../../assets/icons/UnLocked.svg";
 import { ReactComponent as Locked } from "../../../../assets/icons/Locked.svg";
 
 const Achievement: React.FC<{ achievement: IAchievement }> = ({

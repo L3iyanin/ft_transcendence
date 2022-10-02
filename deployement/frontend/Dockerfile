@@ -4,11 +4,11 @@ COPY ./frontend /ft_transcendence_frontend
 COPY ./deployement/frontend/srcs/run.sh /
 
 #dev only
-COPY ./frontend/package.json /
-RUN npm install
+# COPY ./frontend/package.json /
+# RUN npm install
 
 WORKDIR /ft_transcendence_frontend
-# RUN npm install
+RUN npm install
 
 EXPOSE 3000
 

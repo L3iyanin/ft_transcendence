@@ -11,6 +11,7 @@ import {
 	Post,
 	Put,
 	Req,
+	Res,
 	UploadedFile,
 	UseGuards,
 	UseInterceptors,
@@ -131,18 +132,23 @@ export class UsersController {
 	}
 
 	@ApiResponse({ type: PostResponce })
-	@Post("/update-profile-info")
-	async updateProfileInfo(@Req() req, @Body() form: Form): Promise<PostResponce> {
+    @Post("/update-profile-info")
+    async updateProfileInfo(@Req() req, @Body() form: Form): Promise<PostResponce> {
+        const currentUserID: number = req.user.id;
+            return await this.userService.updateUserName(form.name, currentUserID);
+    }
+
+    @Post("generate2FA")
+    async genrate2Fa(@Req() req, @Res() res) {
 		const currentUserID: number = req.user.id;
-		if (form.name && !form.twoFF)
-			return await this.userService.updateUserName(form.name, currentUserID);
-		if (form.twoFF && !form.name) return await this.userService.update2ff(currentUserID);
-		if (form.name && form.twoFF) {
-			await this.userService.update2ff(currentUserID);
-			await this.userService.updateUserName(form.name, currentUserID);
-			return {
-				message: "Profile has be updated",
-			};
-		}
-	}
+        const data = await this.userService.generateTwoFactorAuthenticationSecret(currentUserID);
+        await this.userService.updateUser2ff(currentUserID, data.secret)
+         await this.userService.pipeQrCodeStream(res, data.otpauthUrl, currentUserID)
+    }
+
+    @Post("disable2FA")
+    async disable2Fa(@Req() req) {
+        const currentUserID: number = req.user.id;
+        return await this.userService.disable2Fa(currentUserID)
+    }
 }

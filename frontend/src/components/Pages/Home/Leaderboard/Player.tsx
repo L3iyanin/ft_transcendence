@@ -11,7 +11,7 @@ const Friend :React.FC < {user : IUser} > = ({ user }) => {
 				<img
 					src={user.imgUrl}
 					alt={user.username + ": avatar"}
-					className="block rounded-full w-[49px] h-[49px]"
+					className="xl:block rounded-full w-[49px] h-[49px] hidden"
 				/>
 				<div className="flex flex-col justify-center gap-1">
 					<h4 className="text-xl font-medium">{user.fullName}</h4>
@@ -19,8 +19,8 @@ const Friend :React.FC < {user : IUser} > = ({ user }) => {
 				</div>
 			</div>
 			<div className="flex flex-col justify-between items-start gap-4">
-				<Stat stat="wins" qty={user.wins!} />
-				<Stat stat="losses" qty={user.losses!} />
+				<Stat stat={t("wins")} qty={user.wins!} />
+				<Stat stat={t("losses")} qty={user.losses!} />
 			</div>
 		</article>
 	);

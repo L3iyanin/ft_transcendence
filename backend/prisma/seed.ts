@@ -14,35 +14,40 @@ async function addAchivements() {
 		data: {
 			name: "Win first played Match",
 			description: "Mera Mera No Mi",
-			imgUrl: "http://localhost:8080/achivements/achivement1.png",
+			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement1.png`,
+			achivementId: 1,
 		},
 	});
 	const achivement1 = await prisma.achievement.create({
 		data: {
 			name: "Win 2 Match in row",
 			description: "Ope Ope No Mi",
-			imgUrl: "http://localhost:8080/achivements/achivement2.png",
+			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement2.png`,
+			achivementId: 2,
 		},
 	});
 	const achivement2 = await prisma.achievement.create({
 		data: {
 			name: "you Lose versus khalid ",
 			description: "Poneglyph",
-			imgUrl: "http://localhost:8080/achivements/achivement3.png",
+			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement3.png`,
+			achivementId: 3,
 		},
 	});
 	const achivement3 = await prisma.achievement.create({
 		data: {
 			name: "Win with clean sheet",
 			description: "Ito Ito No Mi",
-			imgUrl: "http://localhost:8080/achivements/achivement4.png",
+			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement4.png`,
+			achivementId: 4,
 		},
 	});
 	const achivement4 = await prisma.achievement.create({
 		data: {
 			name: "Win 5 Match in row",
 			description: "King Of Pirates",
-			imgUrl: "http://localhost:8080/achivements/achivement5.png",
+			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement5.png`,
+			achivementId: 5,
 		},
 	});
 	console.table({ achivement0, achivement1 , achivement2, achivement3, achivement4});
@@ -58,6 +63,7 @@ async function addUsers(howManyUsers : number = 10) {
 				fullName: faker.name.fullName(),
 				imgUrl: faker.image.avatar(),
 				login: username,
+				email: faker.internet.email(),
 			},
 		});
 		console.log("user created: ", user);
@@ -179,7 +185,7 @@ async function CreateChannelGroup(user1 : number, user2 : number, user3 : number
 async function main() {
 	await addAchivements();
 	// await addUsers();
-	// await addAchivementsToUser(2)
+	// await addAchivementsToUser(1)
 	// await addAFriendsToUser(2)
 	// await CreateChannelDm(5, 6)
 	// await CreateChannelGroup(5, 6, 7)

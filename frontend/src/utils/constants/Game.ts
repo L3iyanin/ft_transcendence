@@ -33,6 +33,8 @@ export const PLAYER_ONE = 1;
 
 export const PLAYER_TWO = 2;
 
+export const SPECTATOR = 3;
+
 export const PLAYER_FIRST_POSITION = 313;
 
 export const CLASSIC_GAME_BG = "/imgs/backgrounds/marineford-bg.png";

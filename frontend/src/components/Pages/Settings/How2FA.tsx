@@ -11,13 +11,13 @@ const How2FA = () => {
 		"container m-2 w-72 h-80 px-5 py-3 border rounded-2xl flex flex-col";
 	return (
 		<section className="container min-w-[350px] p-8 rounded-2xl flex flex-col gap-10 bg-dark-60 bg-opacity-60 text-white text-base">
-			<h2 className="text-xl font-bold">
+			<h2 className="text-xl font-bold text-center md:text-left">
 				{t("settingsPage.HowToEnable2FA")}
 			</h2>
-			<div className="container flex justify-center items-center gap-8">
+			<div className="container flex flex-wrap justify-center items-center gap-8">
 				<StepOne style={style} />
 				<StepTwo style={style} />
-				<StepThree style={style} />
+				{/* <StepThree style={style} /> */}
 			</div>
 		</section>
 	);

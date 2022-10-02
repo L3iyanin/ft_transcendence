@@ -26,6 +26,8 @@ interface IUser {
     members?: IMember[],
     messages?: Message[],
 	userStatus?: UserStatusEnum,
+	isOnline?: boolean,
+	isInGame?: boolean,
 }
 
 interface IUserState {
@@ -42,6 +44,13 @@ interface UserInterface {
 	id: number;
 	username: string,
 	fullName: string,
+	imgUrl?: string,
+	token?: string,
+	firstTime?: boolean,
+	// login?: string,
+	// losses?: number,
+	// twoFactorAuth?: boolean
+	// wins?: number,
 	expiresIn?: string,
 }
 
@@ -49,6 +58,7 @@ interface IOnlineUser {
 	user: {
 		username: string;
 		fullName: string;
+		inGame: boolean;
 		id: number;
 	}
 }

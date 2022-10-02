@@ -2,19 +2,20 @@ import Score from "./Score";
 import Player from "./Player";
 import SeeLive from "./SeeLive";
 import { ReactComponent as FirstCrown } from "../../assets/icons/FirstCrown.svg"
+import { useSelector } from "react-redux";
 
-const Match : React.FC <{match : IMatch, isInProfile : boolean}> = ({ match, isInProfile }) => {
+const Match : React.FC <{match : IMatch, isInProfile : boolean, userId?: number}> = ({ match, isInProfile, userId }) => {
 	const [winner, winnerScore] = match.player1Score > match.player2Score ? [match.player1, match.player1Score] : [match.player2, match.player2Score];
 	const [loser, loserScore] = match.player1Score <= match.player2Score ? [match.player1, match.player1Score] : [match.player2, match.player2Score];
-	
-	const user = match.player1;//!!!!!!!!!!
-	const border = isInProfile && !match.live ? (user.id === winner.id ? "border-green" : "border-red") : "border-beige";
+
+
+	// const border = isInProfile && !match.live ? (user.id === winner.id ? "border-green" : "border-red") : "border-beige";
 	return (
 		<article
-			className={`h-20 mb-3 mt-2 pr-11 pl-12 py-3 flex justify-between items-center gap-4 border rounded-lg 
-				${isInProfile && !match.live ? (user.id === winner.id ? "border-green" : "border-red") : "border-beige"}`}
+			className={`mb-6 mt-2 pr-11 pl-12 py-3 flex justify-between items-center gap-4 border rounded-2xl 
+				${(isInProfile && !match.live && userId) ? (userId === winner.id ? "border-green" : "border-red") : "border-beige"}`}
 		>
-			<div className="flex justify-between items-center gap-16 grow">
+			<div className="flex flex-wrap xl:flex-nowrap justify-between items-center xl:gap-16 grow">
 				<Player
 					username={loser.username}
 					avatar={loser.imgUrl}
@@ -30,7 +31,7 @@ const Match : React.FC <{match : IMatch, isInProfile : boolean}> = ({ match, isI
 					isLeft={false}
 				/>
 			</div>
-			{match.live ? <SeeLive /> : <FirstCrown />}
+			{match.live ? <SeeLive matchId={match.id!} userId={userId!} /> : <FirstCrown />}
 		</article>
 	);
 };

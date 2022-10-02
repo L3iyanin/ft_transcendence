@@ -17,6 +17,8 @@ services:
       - database:${CONTAINER_DATABASE_VLPATH}
     ports:
       - '5432:5432'
+    networks:
+      - ft_transcendence
   
 
   backend:
@@ -49,8 +51,6 @@ services:
     depends_on:
       - database
       - backend
-    volumes:
-      - frontend:${CONTAINER_FRONTEND_VLPATH}
     networks:
       - ft_transcendence
 
@@ -90,11 +90,4 @@ volumes:
       type: 'none'
       o: 'bind'
       device: ${LOCAL_DATABASE_VLPATH}
-  frontend:
-    name: frontend
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: ${LOCAL_FRONTEND_VLPATH}
 # =======================================================================================
