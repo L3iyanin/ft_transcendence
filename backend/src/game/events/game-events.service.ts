@@ -422,6 +422,9 @@ export class GameEventsService {
 				},
 			});
 
+			const winnerSocket = this.onlineUsersService.getUserGameSocket(winnerId);
+			this.onlineUsersService.setSocketNotInGame(winnerSocket.id);
+
 			await this.updateUserAcheivements(endMatch, winner, loser);
 			await this.updateUserAcheivements(endMatch, loser, winner);
 			if (endMatch.matchByInvite) {
@@ -544,6 +547,19 @@ export class GameEventsService {
 				player2Score: endMatch.player2Score,
 				isDisconnected: false,
 			});
+
+			// remove inGame status from users after game ends
+			const { player1Socket, player2Socket } = this.getPlayersSockets(
+				match.player1Id,
+				match.player2Id
+			);
+			if (player1Socket) {
+				this.onlineUsersService.setSocketNotInGame(player1Socket.id);
+			}
+			if (player2Socket) {
+				this.onlineUsersService.setSocketNotInGame(player2Socket.id);
+			}
+
 
 			const loserId = winnerId == match.player1Id ? match.player2Id : match.player1Id;
 
