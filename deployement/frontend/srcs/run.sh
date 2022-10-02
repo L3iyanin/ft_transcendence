@@ -1,6 +1,7 @@
-if [ ! -d "/ft_transcendence_frontend/node_modules" ]
+
+if [ ! -d "/ft_transcendence_backend/node_modules" ]
 then
-	mv /node_modules /ft_transcendence_frontend/node_modules
+	mv /node_modules /ft_transcendence_backend/node_modules
 	rm -rf /package.json
 fi
 

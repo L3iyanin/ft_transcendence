@@ -3,7 +3,7 @@ include .env
 
 Author = l3iyanin
 
-all: volumes up prisma
+all: volumes up
 	
 
 update_env:
@@ -12,8 +12,9 @@ update_env:
 
 prisma:
 	cd backend/prisma && echo $(PWD) && npx  prisma migrate dev --name "init" && cd ../..
+
 up:
-	@docker-compose up
+	@docker-compose up -d
 
 build:
 	@docker-compose build

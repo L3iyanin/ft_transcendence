@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Footer from "../components/Footer/Footer";
 import NavBar from "../components/NavBar/NavBar";
-import Hifd from "../components/pages/Settings/Hifd";
-import How2FA from "../components/pages/Settings/How2FA";
-import QRZone from "../components/pages/Settings/QRZone";
-import UserSettingsCard from "../components/pages/Settings/UserSettingsCard";
+import Hifd from "../components/Pages/Settings/Hifd";
+import How2FA from "../components/Pages/Settings/How2FA";
+import QRZone from "../components/Pages/Settings/QRZone";
+import UserSettingsCard from "../components/Pages/Settings/UserSettingsCard";
 import { users } from "../utils/data/Users";
 
 const Settings = () => {

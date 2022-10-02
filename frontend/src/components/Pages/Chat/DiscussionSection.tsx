@@ -2,7 +2,7 @@ import InputWithIcon from "../../UI/inputs/InputWithIcon";
 import ChatActions from "./ChatActions";
 import ConversationsList from "./ConversationsList";
 import MessagesList from "./MessagesList";
-import { ReactComponent as SearchIcon } from "../../../assets/icons/search.svg";
+import { ReactComponent as SearchIcon } from "../../../assets/icons/Search.svg";
 import { dmChannels, GroupChannels } from "../../../utils/data/Chat";
 import { useTranslation } from "react-i18next";
 import {

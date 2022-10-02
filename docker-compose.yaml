@@ -17,6 +17,71 @@ services:
       - database:${CONTAINER_DATABASE_VLPATH}
     ports:
       - '5432:5432'
+  
+
+  backend:
+    build:
+      context: .
+      dockerfile: deployement/backend/Dockerfile
+    image: backend
+    container_name: backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - database
+    ports:
+      - 8080
+    networks:
+      - ft_transcendence
+
+  frontend:
+    build:
+      context: .
+      dockerfile: deployement/frontend/Dockerfile
+    image: frontend
+    container_name: frontend
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - 3000
+    depends_on:
+      - database
+      - backend
+    volumes:
+      - frontend:${CONTAINER_FRONTEND_VLPATH}
+    networks:
+      - ft_transcendence
+
+  webserver:
+    build: deployement/webserver
+    image: webserver
+    container_name: webserver
+    restart: unless-stopped
+    ports:
+      - 80:80
+    depends_on:
+      - database
+      - backend
+      - frontend
+    env_file:
+      - .env
+    networks:
+      - ft_transcendence
+# =======================================================================================
+
+
+
+# ======================================= Networks ======================================
+networks:
+  ft_transcendence:
+    name: ft_transcendence
+# =======================================================================================
+
+
+
+# ======================================= Volumes =======================================
 volumes:
   database:
     name: database
@@ -25,96 +90,11 @@ volumes:
       type: 'none'
       o: 'bind'
       device: ${LOCAL_DATABASE_VLPATH}
-
-  #   networks:
-  #     - ft_transcendence
-
-  # backend:
-  #   build:
-  #     dockerfile: deployement/backend/Dockerfile
-  #     context: .
-  #   image: backend
-  #   container_name: backend
-  #   restart: unless-stopped
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - database
-  #   ports:
-  #     - 8080
-  #   volumes:
-  #     - backend:${CONTAINER_BACKEND_VLPATH}
-  #   networks:
-  #     - ft_transcendence
-
-  # frontend:
-  #   build:
-  #     dockerfile: deployement/frontend/Dockerfile
-  #     context: .
-  #   image: frontend
-  #   container_name: frontend
-  #   restart: unless-stopped
-  #   env_file:
-  #     - .env
-  #   ports:
-  #     - 3000
-  #   depends_on:
-  #     - database
-  #     - backend
-  #   volumes:
-  #     - frontend:${CONTAINER_FRONTEND_VLPATH}
-  #   networks:
-  #     - ft_transcendence
-
-  # webserver:
-  #   build: deployement/webserver
-  #   image: webserver
-  #   container_name: webserver
-  #   restart: unless-stopped
-  #   ports:
-  #     - 80:80
-  #     - 443:443
-  #   depends_on:
-  #     - database
-  #     - backend
-  #     - frontend
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - ft_transcendence
-# =======================================================================================
-
-
-
-# ======================================= Networks ======================================
-# networks:
-#   ft_transcendence:
-#     name: ft_transcendence
-# =======================================================================================
-
-
-
-# ======================================= Volumes =======================================
-# volumes:
-#   database:
-#     name: database
-#     driver: local
-#     driver_opts:
-#       type: 'none'
-#       o: 'bind'
-#       device: ${LOCAL_DATABASE_VLPATH}
-  # frontend:
-  #   name: frontend
-  #   driver: local
-  #   driver_opts:
-  #     type: 'none'
-  #     o: 'bind'
-  #     device: ${LOCAL_FRONTEND_VLPATH}
-  # backend:
-  #   name: backend
-  #   driver: local
-  #   driver_opts:
-  #     type: 'none'
-  #     o: 'bind'
-  #     device: ${LOCAL_BACKEND_VLPATH}
+  frontend:
+    name: frontend
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: ${LOCAL_FRONTEND_VLPATH}
 # =======================================================================================

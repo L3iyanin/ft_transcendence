@@ -1,8 +1,6 @@
 
-if [ ! -d "/ft_transcendence_backend/node_modules" ]
-then
-	mv /node_modules /ft_transcendence_backend/node_modules
-	rm -rf /package.json
-fi
+cd prisma && echo $(PWD) && npx prisma migrate dev --name "init" && cd ..
 
-npm run start:dev
+npm run --prefix prisma seed
+
+npm run start
