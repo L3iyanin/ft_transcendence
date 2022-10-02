@@ -10,7 +10,7 @@ async function bootstrap() {
 	app.useGlobalPipes(new ValidationPipe());
 	app.enableCors({
 		credentials: true,
-		origin: "http://localhost:3000",
+		origin: true,
 	});
 
 	app.setGlobalPrefix("api");
@@ -24,6 +24,6 @@ async function bootstrap() {
 	SwaggerModule.setup("api", app, document);
 
 	const PORT = process.env.PORT || 8080;
-	await app.listen(PORT, () => console.log(`Server running on http://127.0.0.1:${PORT}/api`));
+	await app.listen(PORT, () => console.log(`Server running on ${process.env.BACKEND_URL}/api`));
 }
 bootstrap();

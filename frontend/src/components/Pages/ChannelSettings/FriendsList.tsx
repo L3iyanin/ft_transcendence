@@ -31,15 +31,8 @@ const FriendsList: React.FC<{
 	const addFriendToChannelHandler = (friendId: string) => {
 		addFriendToChannel(channelInfo.id.toString(), friendId)
 			.then((res) => {
-				// console.log(res);
 				SuccesAlert(res.message);
 				refreshHandler();
-				// setFriends((prevFriends) => {
-				// 	if (prevFriends) {
-				// 		return prevFriends.filter((friend) => friend.id !== +friendId);
-				// 	}
-				// 	return null;
-				// });
 			})
 			.catch((err) => {
 				console.error(err);
@@ -61,7 +54,7 @@ const FriendsList: React.FC<{
 				<InputWithIcon
 					icon={<SearchIcon />}
 					type="text"
-					placeholder="Search"
+					placeholder={t("search")}
 					onChange={searchHandler}
 				/>
 			</div>

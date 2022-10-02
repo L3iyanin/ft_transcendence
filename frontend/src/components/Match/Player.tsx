@@ -3,15 +3,15 @@
 const Player : React.FC <{username : string, avatar : string, isLeft : boolean }> = ({ username, avatar, isLeft }) => {
 	return (
 		<div
-			className={`w-40 flex justify-start items-center gap-5 grow ${!isLeft && "flex-row-reverse"}`
+			className={`xl:w-40 flex justify-start items-center gap-5 grow ${!isLeft && "flex-row-reverse"}`
 			}
 		>
 			<img
 				src={avatar}
 				alt={username + ": avatar"}
-				className="block h-[49px] w-[49px] rounded-full"
+				className="xl:block xl:h-[49px] xl:w-[49px] h-[24px] w-[24px] rounded-full hidden"
 			/>
-			<p className="text-xl font-medium text-white">{username}</p>
+			<p className="xl:text-xl text-xs font-medium text-white">{username}</p>
 		</div>
 	);
 };

@@ -4,16 +4,17 @@ import { useTranslation } from "react-i18next";
 
 const WatchersAndPlayers: React.FC<{
 	matchSettings?: IStartedMatch;
-	watchers: IUser[];
+	watchers?: IUser[];
 }> = ({ matchSettings, watchers }) => {
 
 	const { t } = useTranslation();
 
-	if (!matchSettings)
+	if (!matchSettings || !watchers) {
 		return null;
+	}
 
 	return (
-		<div className="mt-20 text-white flex justify-between gap-16">
+		<div className="mt-20 text-white flex justify-between gap-16 flex-wrap">
 			<PlayerCard player={matchSettings.player1} header={`${t("playerOne")}:`} />
 			<WatchersList watchers={watchers} />
 			<PlayerCard player={matchSettings.player2} header={`${t("playerTwo")}:`} />

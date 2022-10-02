@@ -9,8 +9,8 @@ import Matching from "./Matching";
 const NavBar = () => {
 
 	return (
-		<header className="container mx-auto my-10 flex justify-between">
-			<div className=" mx-0 w-auto flex justify-start items-center">
+		<header className="container mx-auto my-10 flex flex-wrap justify-between items-center">
+			<div className=" mx-0 w-auto flex flex-wrap justify-start items-center">
 				<Link to="/">
 					<Logo />
 				</Link>

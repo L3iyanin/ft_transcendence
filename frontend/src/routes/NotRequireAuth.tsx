@@ -9,7 +9,7 @@ function NotRequireAuth({ children }: { children?: JSX.Element }) {
 	if (userData.isLoading) return <Loading />;
 
 	if (userData.isLoggedIn) {
-		return <Navigate to="/chat" state={{ from: location }} replace />;
+		return <Navigate to="/home" state={{ from: location }} replace />;
 	}
 
 	if (children) {

@@ -36,7 +36,6 @@ const ChannelSettings: React.FC = () => {
 		if (channelId) {
 			getChannelInfo(channelId)
 				.then(res => {
-					// console.log(res)
 					if (isResNotOk(res) === true) {
 						ErrorAlert(res);
 						return;
@@ -88,7 +87,7 @@ const ChannelSettings: React.FC = () => {
 					navigate("/chat");
 				})
 				.catch((err) => {
-					console.log(err);
+					console.error(err);
 					ErrorAlert(err);
 				});
 		}

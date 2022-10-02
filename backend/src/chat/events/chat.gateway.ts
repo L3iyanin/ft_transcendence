@@ -1,9 +1,13 @@
+import { UseGuards } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import {
+	OnGatewayConnection,
 	SubscribeMessage,
 	WebSocketGateway,
 	WebSocketServer,
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
+import { UserGuard } from "src/users/user.guard";
 import { Message } from "../dto/chat.dto";
 import { ChatService } from "./chat.service";
 
@@ -12,17 +16,27 @@ import { ChatService } from "./chat.service";
 		origin: "*",
 	},
 })
-export class ChatGateway {
+export class ChatGateway implements OnGatewayConnection {
+	jwtService = new JwtService();
 	constructor(private readonly chatService: ChatService) {}
+
+	public async handleConnection(client: Socket): Promise<any> {
+		try {
+			if (client.handshake.auth.access_token) {
+				this.jwtService.verify(client.handshake.auth.access_token, {
+					secret: process.env.JWT_SECRET,
+				});
+			} else {
+				client.disconnect();
+			}
+		} catch (err) {
+			console.log(err);
+			client.disconnect();
+		}
+	}
 
 	@WebSocketServer()
 	server: Server;
-
-	// @SubscribeMessage("connectUser")
-	// addConnectedUser(client: Socket, newUser: User) {
-	// 	const users = this.chatService.addConnectedUser(client, newUser);
-	// 	this.server.emit("connectUserResponse", users);
-	// }
 
 	@SubscribeMessage("disconnectUser")
 	removeConnectedUser(client: Socket, userId: number) {

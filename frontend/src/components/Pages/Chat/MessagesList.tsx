@@ -2,17 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
+import { cancelInvitation } from "../../../services/chat/chat";
 import { ChannleTypesEnum, MemberStatusEnum } from "../../../utils/constants/enum";
 import ButtonWithIcon from "../../UI/Buttons/ButtonWithIcon";
 import Counterdown from "../../UI/Countdown";
-import { ErrorAlertWithMessage } from "../../UI/Error";
+import ErrorAlert, { ErrorAlertWithMessage } from "../../UI/Error";
 import Input from "../../UI/inputs/Input";
+import SuccesAlert from "../../UI/SuccesAlert";
 import MessageCard from "./MessageCard";
 
 const MessagesList: React.FC<{
 	messages: IMessage[];
 	disableSend?: boolean;
 	IamNotMember?: boolean;
+	userId?: number;
 	joinChannelHandler?: (password:string) => void;
 	isProtectedChannel?: boolean;
 	onSendMessageHandler: (message: string) => void;
@@ -23,7 +26,8 @@ const MessagesList: React.FC<{
 		untill: Date;
 		isBanned: boolean;
 		isMuted: boolean;
-	}
+	};
+	onCancelInvitationHandler: (matchId: number) => void;
 }> = ({
 	messages,
 	disableSend,
@@ -34,17 +38,28 @@ const MessagesList: React.FC<{
 	currentChannel,
 	userStatus,
 	onCompleteCountdownHandler,
+	userId,
+	onCancelInvitationHandler
 }) => {
 	const { t } = useTranslation();
 
 	const messageListRef = useRef<HTMLDivElement>(null);
 
-	const userData: IUserState = useSelector((state: any) => state.user);
+	// const userData: IUserState = useSelector((state: any) => state.user);
+
+	// useEffect(() => {
+	// 	if (messages.length === 0) return;
+	// 	messageListRef.current?.scrollIntoView({ behavior: "smooth" });
+	// }, [messages]);
 
 	useEffect(() => {
-		if (messages.length === 0) return;
-		messageListRef.current?.scrollIntoView({ behavior: "smooth" });
-	}, [messages]);
+		if (messageListRef.current) {
+			const lastItem = messageListRef.current.lastElementChild;
+			if (lastItem) {
+			lastItem.scrollIntoView({ behavior: "smooth", block: "nearest" });
+			}
+		}
+	  }, [messages]);
 
 	const [password, setPassword] = useState("");
 	const [messageContent, setMessageContent] = useState("");
@@ -65,22 +80,38 @@ const MessagesList: React.FC<{
 		setMessageContent("");
 	};
 
-
 	const clientSocket: Socket = useSelector(
 		(state: any) => state.chat.clientSocket
 	);
 
+	const onAcceptInvitationHandler = (message: IMessage) => {
+		clientSocket.emit("joinGame", {
+				userId: userId,
+				scoreToWin: message.scoreToWin,
+				invite: true,
+				inviterUserId: message.inviterId,
+				invitedUserId: message.invitedId,
+				matchId: message.matchId
+		});
+	}
+
 	return (
 		<div className="relative flex flex-col bg-dark-60 mt-5 rounded-2xl p-5 text-white h-[75vh] overflow-y-auto">
-			<div className="overflow-auto">
+			<div className="overflow-auto" ref={messageListRef}>
 				{!IamNotMember &&
 					messages.map((message, index) => (
-						<MessageCard key={index} message={message} />
+						<MessageCard
+							key={index}
+							message={message}
+							userId={userId}
+							acceptInvitation={onAcceptInvitationHandler}
+							cancelInvitation={onCancelInvitationHandler}
+							/>
 					))}
 				{!IamNotMember && messages.length === 0 && <MessageNotFound />}
-				{!IamNotMember && messages.length > 0 && (
+				{/* {!IamNotMember && messages.length > 0 && (
 					<div ref={messageListRef} />
-				)}
+				)} */}
 			</div>
 
 			{IamNotMember && <NoMemberInChannel />}
@@ -159,9 +190,10 @@ const SendMessageInputAndBtn: React.FC<{
 	};
 
 	return (
-		<form className="mt-auto flex gap-4" onSubmit={onSubmitHandler}>
+		<form className="mt-auto flex flex-wrap md:flex-nowrap md:gap-4" onSubmit={onSubmitHandler}>
 			<Input
 				type="text"
+				className="basis-full md:basis-auto"
 				placeholder={t("chatPage.typeMessage")}
 				onChange={onTypeMessageHandler}
 				value={messageContent}
@@ -172,7 +204,7 @@ const SendMessageInputAndBtn: React.FC<{
 				}
 				// onClick={sendMessageHandler}
 				label={t("send")}
-				className="bg-white text-dark-60 !rounded-lg"
+				className="bg-white text-dark-60 !rounded-lg basis-full md:basis-auto mt-5 md:mt-0 justify-center"
 			/>
 		</form>
 	);

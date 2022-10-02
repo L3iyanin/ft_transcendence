@@ -2,7 +2,7 @@
  * Prompts a user when they exit the page
  */
 
- import { useCallback, useContext, useEffect } from 'react';
+ import { useCallback, useContext, useEffect, useRef } from 'react';
  import { UNSAFE_NavigationContext as NavigationContext } from 'react-router-dom';
  
  function useConfirmExit(confirmExit: () => boolean, when = true) {
@@ -47,3 +47,24 @@
    }, [message]);
    useConfirmExit(confirmExit, when);
  }
+
+export const usePrevLocation = (location: any) => {
+
+	const prevLocRef = useRef(location)
+	
+	useEffect(()=>{
+
+		console.log("location", location.pathname);
+		console.log(`prevLocRef.current.pathname`, prevLocRef.current.pathname);
+
+		if (location.pathname !== prevLocRef.current.pathname) {
+			console.log("prevLocRef.current", prevLocRef.current)
+			prevLocRef.current = location
+		}
+	
+	
+	},[location])
+	
+	return prevLocRef.current
+	
+	}

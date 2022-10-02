@@ -27,3 +27,11 @@ export const joinChannel = (channelId: number, password?: string) => {
 			})
 			// .catch(err => console.error(`err`, err))
 }
+
+export const cancelInvitation = (matchId: number) => {
+	return axios.post(`/game/discard-invitation/${matchId}`)
+			.then(res => {
+				return res.data
+			})
+			// .catch(err => console.error(`err`, err))
+}
