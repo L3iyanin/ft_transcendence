@@ -38,7 +38,8 @@ const InitSocketLayout: React.FC<{
 				username: userData.user?.username,
 				fullName: userData.user?.fullName,
 				id: userData.user?.id,
-			});		});
+			});
+		});
 
 		clientSocket.on("connect_error", (err) => {
 			console.error(`connect_error due to ${err.message}`);

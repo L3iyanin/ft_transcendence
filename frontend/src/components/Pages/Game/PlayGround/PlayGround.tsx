@@ -75,6 +75,12 @@ const PlayGround: React.FC<{
 				setPlayerIndex(SPECTATOR);
 			}
 
+			clientSocket.emit("connectUser", {
+				username: LocalUserData.username,
+				fullName: LocalUserData.fullName,
+				id: LocalUserData.id,
+			});
+
 
 			clientSocket.on("gameState", (gameState: IGameState) => {
 				// setMatchPlayed(true);
@@ -105,12 +111,19 @@ const PlayGround: React.FC<{
 			});
 
 			clientSocket.on("gameOver", (data: IGameOver) => {
-				console.log("gameOver", data);
+				// console.log("gameOver", data);
 				if (data.player1Score > data.player2Score) {
 					setWinner(PLAYER_ONE);
 				} else {
 					setWinner(PLAYER_TWO);
 				}
+
+				clientSocket.emit("connectUser", {
+					username: LocalUserData.username,
+					fullName: LocalUserData.fullName,
+					id: LocalUserData.id,
+				});
+
 			});
 		}
 	}, [clientSocket, LocalUserData, matchSettings]);

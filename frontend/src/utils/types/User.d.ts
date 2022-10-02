@@ -27,6 +27,7 @@ interface IUser {
     messages?: Message[],
 	userStatus?: UserStatusEnum,
 	isOnline?: boolean,
+	isInGame?: boolean,
 }
 
 interface IUserState {
@@ -56,6 +57,7 @@ interface IOnlineUser {
 	user: {
 		username: string;
 		fullName: string;
+		inGame: boolean;
 		id: number;
 	}
 }

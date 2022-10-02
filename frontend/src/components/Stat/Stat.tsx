@@ -6,18 +6,22 @@ import { ReactComponent as LoseIcon } from "../../assets/icons/lose.svg";
 import { ReactComponent as FriendsIcon } from "../../assets/icons/friends.svg";
 
 
-const Stat: React.FC < {stat : string, qty : number, isUserOnline?: boolean} > = (props) => {
+const Stat: React.FC < {stat : string, qty : number, isUserOnline?: boolean, isUserInGame?: boolean} > = (props) => {
 
 	const { t } = useTranslation();
 
-	const isOnline = props.stat === t("online") || props.stat === t("offline");
+	const isOnline = props.stat === t("online") || props.stat === t("offline") || props.stat === t("inGame");
 
 	let statIcon = <WinIcon />;
 
 	if (props.stat === t("losses"))
 		statIcon = <LoseIcon />;
 	else if (isOnline) {
-		if (props.isUserOnline) {
+
+		if (props.isUserInGame) {
+			statIcon = <span className="w-3 h-3 rounded-full bg-yellow"></span>;
+		}
+		else if (props.isUserOnline) {
 			statIcon = <span className="w-3 h-3 rounded-full bg-green"></span>;
 		}
 		else {

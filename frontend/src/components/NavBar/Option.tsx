@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { setYouAreNotPlaying } from "../../reducers/MatchSlice";
 
 const Option = ({ url, children }: IOptionProps) => {
@@ -8,7 +8,7 @@ const Option = ({ url, children }: IOptionProps) => {
 
 	const match: IMatchState = useSelector((state: any) => state.match);
 
-	// const dispatch = useDispatch();
+	const location = useLocation();
 
 	const onClick = () => {
 		navigate(url);
@@ -21,7 +21,7 @@ const Option = ({ url, children }: IOptionProps) => {
 	return (
 		<span
 			onClick={onClick}
-			className="cursor-pointer text-center text-base text-white font-medium"
+			className={`cursor-pointer text-center text-base text-white font-medium ${location.pathname === url ? "text-yellow underline underline-offset-8 decoration-2" : ""}`}
 		>
 			{children}
 		</span>

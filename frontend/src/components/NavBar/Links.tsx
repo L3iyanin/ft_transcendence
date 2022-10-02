@@ -15,6 +15,7 @@ import SuccesAlert from "../UI/SuccesAlert";
 import { useEffect, useState } from "react";
 import { addNotification } from "../../reducers/ChatSlice";
 import { usePrevLocation } from "../../hooks/usePropmpt";
+import LiveMatchesPopup from "./LiveMatchesPopup";
 
 const Links = () => {
 	const { t } = useTranslation();
@@ -24,6 +25,8 @@ const Links = () => {
 	const navigate = useNavigate();
 
 	const userData = useSelector((state: any) => state.user);
+
+	const [openLivematches, setOpenLivematches] = useState(false);
 
 	const chatSocket: IChatSocket = useSelector((state: any) => state.chat);
 
@@ -38,6 +41,10 @@ const Links = () => {
 				console.error(err);
 				ErrorAlert(err);
 			});
+	};
+
+	const onShowLives = () => {
+		setOpenLivematches(true);
 	};
 
 	const [openMobileLinks, setOpenMobileLinks] = useState(false);
@@ -59,6 +66,10 @@ const Links = () => {
 			<Option url="/settings">{t("settings")}</Option>
 			<Option url="/chat">{t("chat")}</Option>
 			<Option url="/search">{t("search")}</Option>
+			<span
+				onClick={onShowLives}
+				className="cursor-pointer text-center text-base text-white font-medium"
+			>{t("liveMatches")}</span>
 			<span
 				onClick={onLogout}
 				className="cursor-pointer text-center text-base text-white font-medium"
@@ -114,6 +125,7 @@ const Links = () => {
 
 	return (
 		<>
+			<LiveMatchesPopup open={openLivematches} setOpen={setOpenLivematches} />
 			{OptionsLinks}
 			{openMobileLinks && OptionsLinksMobile}
 			{!openMobileLinks ? (
