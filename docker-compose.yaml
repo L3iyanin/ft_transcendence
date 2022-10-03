@@ -15,8 +15,8 @@ services:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - database:${CONTAINER_DATABASE_VLPATH}
-    ports:
-      - 5432:5432
+    # ports:
+    #   - 5432:5432
     networks:
       - ft_transcendence
   
