@@ -2,4 +2,7 @@ npm install
 
 npm run build
 
-mv public/imgs/ dist/
+if [ ! -d "dist/imgs" ]
+then
+	mv public/imgs/ dist/
+fi

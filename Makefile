@@ -24,11 +24,13 @@ down:
 
 volumes:
 	@mkdir -p $(LOCAL_DATABASE_VLPATH)
+	@mkdir -p $(LOCAL_FRONTEND_VLPATH)
 
 clean: down
 
 fclean: clean
 	@rm -rf $(LOCAL_DATABASE_VLPATH)
+	@rm -rf $(LOCAL_FRONTEND_VLPATH)
 	@bash dockerCleanup.sh
 
 drop:
