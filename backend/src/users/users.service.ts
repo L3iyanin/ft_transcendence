@@ -299,7 +299,7 @@ export class UsersService {
 		try {
 			const name = file.originalname.split(".")[0];
 			const fileExtName = extname(file.originalname);
-			const fileName = `/profilePics/${name}-${username}${fileExtName}`;
+			const fileName = `/statics/profilePics/${name}-${username}${fileExtName}`;
 			const filePath = process.env.BACKEND_URL + fileName;
 			await this.prisma.user.update({
 				where: { id: userId },
@@ -411,8 +411,8 @@ export class UsersService {
 	async pipeQrCodeStream(@Res() res, otpauthUrl: string, userId: number) {
 		const date : Date = new  Date()
 		const name = `QrcodeForUserId_${userId}.png`;
-		const path = join(__dirname, "../..", "../public/qrCodes", name + "_" + date.toDateString());
-		const imagePath = process.env.BACKEND_URL + "/qrCodes/" + name + "_" + date.toDateString();
+		const path = join(__dirname, "../..", "../public/statics/qrCodes", name + "_" + date.toDateString());
+		const imagePath = process.env.BACKEND_URL + "/statics/qrCodes/" + name + "_" + date.toDateString();
 
 		toFile(
 			path,

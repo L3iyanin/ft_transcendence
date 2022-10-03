@@ -14,7 +14,7 @@ async function addAchivements() {
 		data: {
 			name: "Win first played Match",
 			description: "Mera Mera No Mi",
-			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement1.png`,
+			imgUrl: `${process.env.BACKEND_URL}/statics/achivements/achivement1.png`,
 			achivementId: 1,
 		},
 	});
@@ -22,7 +22,7 @@ async function addAchivements() {
 		data: {
 			name: "Win 2 Match in row",
 			description: "Ope Ope No Mi",
-			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement2.png`,
+			imgUrl: `${process.env.BACKEND_URL}/statics/achivements/achivement2.png`,
 			achivementId: 2,
 		},
 	});
@@ -30,7 +30,7 @@ async function addAchivements() {
 		data: {
 			name: "you Lose versus khalid ",
 			description: "Poneglyph",
-			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement3.png`,
+			imgUrl: `${process.env.BACKEND_URL}/statics/achivements/achivement3.png`,
 			achivementId: 3,
 		},
 	});
@@ -38,7 +38,7 @@ async function addAchivements() {
 		data: {
 			name: "Win with clean sheet",
 			description: "Ito Ito No Mi",
-			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement4.png`,
+			imgUrl: `${process.env.BACKEND_URL}/statics/achivements/achivement4.png`,
 			achivementId: 4,
 		},
 	});
@@ -46,7 +46,7 @@ async function addAchivements() {
 		data: {
 			name: "Win 5 Match in row",
 			description: "King Of Pirates",
-			imgUrl: `${process.env.BACKEND_URL}/achivements/achivement5.png`,
+			imgUrl: `${process.env.BACKEND_URL}/statics/achivements/achivement5.png`,
 			achivementId: 5,
 		},
 	});

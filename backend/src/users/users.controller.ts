@@ -105,7 +105,7 @@ export class UsersController {
 		FileInterceptor("file", {
 			storage: diskStorage({
 				filename: editFileName,
-				destination: "./public",
+				destination: "./public/statics",
 			}),
 		})
 	)
