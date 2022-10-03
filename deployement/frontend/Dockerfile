@@ -1,6 +1,6 @@
 FROM node:16
 
-COPY ./frontend /ft_transcendence_frontend
+# COPY ./frontend /ft_transcendence_frontend
 COPY ./deployement/frontend/srcs/run.sh /
 
 #dev only
@@ -8,8 +8,9 @@ COPY ./deployement/frontend/srcs/run.sh /
 # RUN npm install
 
 WORKDIR /ft_transcendence_frontend
-RUN npm install
+# RUN npm install
 
 EXPOSE 3000
 
 ENTRYPOINT ["bash", "/run.sh"]
+# ENTRYPOINT ["npm", "start"]

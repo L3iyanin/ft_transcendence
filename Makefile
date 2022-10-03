@@ -14,7 +14,7 @@ prisma:
 	cd backend/prisma && echo $(PWD) && npx  prisma migrate dev --name "init" && cd ../..
 
 up:
-	@docker-compose up -d
+	@docker-compose up
 
 build:
 	@docker-compose build

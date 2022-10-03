@@ -5,4 +5,6 @@
 # 	rm -rf /package.json
 # fi
 
+npm install
+
 npm start
