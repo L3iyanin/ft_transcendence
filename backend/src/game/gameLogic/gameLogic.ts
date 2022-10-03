@@ -125,12 +125,12 @@ class GameLogic {
 
 		if (this.isCollisionWithPlayer(newX, newY, this.player1y, PLAYER_ONE)) {
 			if (this.collistionType !== CollisionTypeEnum.LEFT_PADDLE) {
-				newDirectionX = newDirectionX * -1;
+				newDirectionX = newDirectionX * -1 + 0.1;
 				newX = this.ball.x + newDirectionX * distance;
 			}
 		} else if (this.isCollisionWithPlayer(newX, newY, this.player2y, PLAYER_TWO)) {
 			if (this.collistionType !== CollisionTypeEnum.RIGHT_PADDLE) {
-				newDirectionX = newDirectionX * -1;
+				newDirectionX = newDirectionX * -1 + 0.1;
 				newX = this.ball.x + newDirectionX * distance;
 			}
 		} else {
