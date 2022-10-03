@@ -62,10 +62,27 @@ export class OnlineUsersService {
 		const users = [];
 		this.onlineUsers.map((user) => {
 			users.push({
-				user: user.user,
+				user: {
+					...user.user,
+					inGame: user.socketInGame,
+				}
 			});
 		});
-		return users;
+		// remove duplicates
+		// and if inGame is true, set it to true
+		const uniqueUsers = [];
+		users.forEach((user) => {
+			const userIndex = uniqueUsers.findIndex((u) => u.user.id == user.user.id);
+			if (userIndex == -1) {
+				uniqueUsers.push(user);
+			} else {
+				if (user.user.inGame) {
+					uniqueUsers[userIndex].user.inGame = true;
+				}
+			}
+		}
+		);
+		return uniqueUsers;
 	}
 
 	checkIfReceiverIsOnline(receiverId: number): boolean {
