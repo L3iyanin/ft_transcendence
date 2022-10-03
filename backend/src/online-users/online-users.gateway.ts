@@ -25,19 +25,17 @@ export class OnlineUsersGateway implements OnGatewayDisconnect {
 	) {}
 
 	public async handleConnection(client: Socket): Promise<any> {
-		// try {
-		// 	if (client.handshake.auth.access_token) {
-		// 		this.jwtService.verify(client.handshake.auth.access_token, {
-		// 			secret: process.env.JWT_SECRET,
-		// 		});
-		// 	} else {
-		// 		client.disconnect();
-		// 	}
-		// } catch (err) {
-		// 	console.log(err);
-		// 	client.disconnect();
-		// }
-		console.log("11111111")
+		try {
+			if (client.handshake.auth.access_token) {
+				this.jwtService.verify(client.handshake.auth.access_token, {
+					secret: process.env.JWT_SECRET,
+				});
+			} else {
+				client.disconnect();
+			}
+		} catch (err) {
+			client.disconnect();
+		}
 
 	}
 
@@ -54,10 +52,6 @@ export class OnlineUsersGateway implements OnGatewayDisconnect {
 	@SubscribeMessage("connectUser")
 	addConnectedUser(client: Socket, newUser: User) {
 		const users = this.onlineUsersService.addConnectedUser(client, newUser);
-		console.log("-----------------------");
-		console.log("-----------------------");
-		console.log("-----------------------");
-		console.log("connectUserResponse", users);
 		this.server.emit("connectUserResponse", users);
 	}
 }

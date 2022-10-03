@@ -29,7 +29,6 @@ export class AuthService {
 			};
 			return userData;
 		} catch (exception) {
-			console.log(exception);
 			throw new HttpException("42 code not correct", HttpStatus.UNAUTHORIZED);
 		}
 	}
@@ -61,8 +60,8 @@ export class AuthService {
 					user: user,
 				};
 			}
-		} catch (exception) {
-			console.log("ERROR " + exception);
+		} catch (err) {
+			throw new HttpException(err.message, err.status);
 		}
 	}
 

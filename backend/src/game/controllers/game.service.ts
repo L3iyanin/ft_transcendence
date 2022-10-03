@@ -115,8 +115,9 @@ export class GameService {
 				message: "Invitation is no longer valid",
 			}
 
-		} catch (error) {
-			console.log(error);
+		} catch (err) {
+			throw new HttpException(err.message, err.status);
+
 		}
 	}
 
@@ -149,8 +150,9 @@ export class GameService {
 				return ret;
 			}
 			throw new HttpException("You are not allowed to do this", HttpStatus.FORBIDDEN);
-		} catch (error) {
-			console.log(error);
+		} catch (err) {
+			throw new HttpException(err.message, err.status);
+
 		}
 	}
 }

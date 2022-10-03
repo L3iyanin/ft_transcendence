@@ -195,7 +195,6 @@ export class UsersService {
 			});
 			return achievements;
 		} catch (err) {
-			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
@@ -223,7 +222,6 @@ export class UsersService {
 			});
 			return friends;
 		} catch (err) {
-			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
@@ -284,7 +282,6 @@ export class UsersService {
 				message: "Friend added successfully",
 			};
 		} catch (err) {
-			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
@@ -310,7 +307,6 @@ export class UsersService {
 				imgUrl: filePath,
 			};
 		} catch (err) {
-			console.log(err);
 			throw new HttpException(err.response, err.status);
 		}
 	}
@@ -331,7 +327,6 @@ export class UsersService {
 				message: "User name updated",
 			};
 		} catch (err) {
-			console.log(err);
 			throw new HttpException(err.message, err.status);
 		}
 	}
@@ -358,7 +353,6 @@ export class UsersService {
 				message: "2FA Has be enabled",
 			};
 		} catch (err) {
-			console.log(err);
 			throw new HttpException(err.message, err.status);
 		}
 	}
@@ -385,7 +379,6 @@ export class UsersService {
 				message: "2FA Has be disabled",
 			};
 		} catch (err) {
-			console.log(err);
 			throw new HttpException(err.message, err.status);
 		}
 	}
