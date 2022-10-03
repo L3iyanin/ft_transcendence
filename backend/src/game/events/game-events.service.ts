@@ -290,13 +290,54 @@ export class GameEventsService {
 		}
 	}
 
+	checkIfUserIsSpectator(userId: number): { liveMatch: LiveMatchDto } | null {
+		const match = liveMatches.find((match) => {
+			const isSpectator = match.spectators.find((spectator) => spectator.userId === userId);
+			if (isSpectator) {
+				return true;
+			}
+			return false;
+		});
+		if (match) {
+			return {
+				liveMatch: match,
+			};
+		}
+		return null;
+	}
+
 	// ? called by the disconnect event in OnlineUsersGateway
 	async handleDisconnectFromGame(userId: number, client: Socket) {
 		// if match.isMatching == true, and player1Id == userId, delete match
 		if (!userId) {
 			return;
 		}
+		// check if user is a spectator in a match
+		// if yes remove him from Live match
+
+		const spectatorMatch = this.checkIfUserIsSpectator(userId);
+		if (spectatorMatch) {
+			const { liveMatch } = spectatorMatch;
+			// remove spectator from match
+			liveMatch.spectators = liveMatch.spectators.filter((spectator) => {
+				if (spectator.userId === userId) {
+					return false;
+				}
+				return true;
+			});
+			const spectatorRoomName = generateSpectatorsRoomName(liveMatch.id);
+			const matchName = generateMatchName(liveMatch.id);
+			client.leave(spectatorRoomName);
+			const spectatorsPopulated = await this.populateSpectators(liveMatch.spectators);
+			// send to all spectators that a spectator has left
+			liveMatch.server
+				.to(matchName)
+				.to(spectatorRoomName)
+				.emit("spectatorJoined", spectatorsPopulated);
+		}
+
 		const socketInGame = this.onlineUsersService.getUserGameSocket(userId);
+
 		if (socketInGame && socketInGame.id !== client.id) {
 			return;
 		}
@@ -559,7 +600,6 @@ export class GameEventsService {
 			if (player2Socket) {
 				this.onlineUsersService.setSocketNotInGame(player2Socket.id);
 			}
-
 
 			const loserId = winnerId == match.player1Id ? match.player2Id : match.player1Id;
 
