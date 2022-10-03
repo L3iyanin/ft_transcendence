@@ -1,6 +1,5 @@
 import Friend from "./Friend";
 import { useTranslation } from "react-i18next";
-import { players } from "../../../../utils/data/Players";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getFriends } from "../../../../services/profile/profile";

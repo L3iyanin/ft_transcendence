@@ -45,7 +45,7 @@ services:
       dockerfile: deployement/frontend/Dockerfile
     image: frontend
     container_name: frontend
-    restart: unless-stopped
+    restart: on-failure
     env_file:
       - .env
     ports:

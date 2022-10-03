@@ -27,18 +27,21 @@ const useBotChannel = (): IChatChannel => {
 			content:  t("chatPage.bot.botMessages.0"),
 			from: members[0],
 			date: new Date(),
+			createdAt: new Date(),
 		},
 		{
 			id: 1,
 			content: t("chatPage.bot.botMessages.1"),
 			from: members[0],
 			date: new Date(),
+			createdAt: new Date(),
 		},
 		{
 			id: 2,
 			content: t("chatPage.bot.botMessages.2"),
 			from: members[0],
 			date: new Date(),
+			createdAt: new Date(),
 		}
 	];
 
@@ -52,6 +55,7 @@ const useBotChannel = (): IChatChannel => {
 			messages: messages,
 			status: ChannleTypesEnum.DM_BOT,
 			imgUrl: `https://myanimelist.tech/api/avatar?name=${t("chatPage.bot.name")}&animeName=Inazuma_Eleven`,
+			unreadMessages: 0
 		}
 	);
 }

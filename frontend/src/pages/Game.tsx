@@ -1,14 +1,9 @@
 import PlayGround from "../components/Pages/Game/PlayGround/PlayGround";
-import { fakeGameSettings, fakeMatchWatchers } from "../utils/data/GamePage";
 import TopSection from "../components/Pages/Game/TopSection";
 import WatchersAndPlayers from "../components/Pages/Game/WatchersAndPlayers/WatchersAndPlayers";
 import Footer from "../components/Footer/Footer";
 import NavBar from "../components/NavBar/NavBar";
-import useGetGameName from "../hooks/useGetGame";
 import { useSelector } from "react-redux";
-import LoadingSpinner from "../components/UI/Loading/LoadingSpinner";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
 
 const Game: React.FC = () => {
 

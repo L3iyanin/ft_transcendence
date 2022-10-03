@@ -15,7 +15,6 @@ import SuccesAlert from "../../UI/SuccesAlert";
 import MemberCart from "./MemberCart";
 
 const MembersList: React.FC<{
-	members: channelMemberInterface[];
 	channelInfo: IChatChannel | null;
 	refreshHandler: () => void;
 }> = ({ channelInfo, refreshHandler }) => {
