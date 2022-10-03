@@ -29,7 +29,7 @@ import { OnlineUsersModule } from './online-users/online-users.module';
 		AuthModuls,
 		ChatModule,
 		ServeStaticModule.forRoot({
-			rootPath : join(__dirname, "..", "../public/statics")
+			rootPath : join(__dirname, "..", "../public")
 		}),
 		GameModule,
 		OnlineUsersModule,

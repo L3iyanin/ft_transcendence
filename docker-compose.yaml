@@ -16,7 +16,7 @@ services:
     volumes:
       - database:${CONTAINER_DATABASE_VLPATH}
     ports:
-      - '5432:5432'
+      - 5432:5432
     networks:
       - ft_transcendence
   
@@ -73,6 +73,8 @@ services:
       - .env
     networks:
       - ft_transcendence
+    volumes:
+      - frontend:${WEBSEREVR_CONTAINER_FRONTEND_VLPATH}
 # =======================================================================================
 
 
