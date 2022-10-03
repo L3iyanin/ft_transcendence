@@ -15,8 +15,6 @@ services:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - database:${CONTAINER_DATABASE_VLPATH}
-    # ports:
-    #   - 5432:5432
     networks:
       - ft_transcendence
   
@@ -36,8 +34,6 @@ services:
       - 8080
     networks:
       - ft_transcendence
-    volumes:
-      - backend:${CONTAINER_BACKEND_VLPATH}
 
   frontend:
     build:
@@ -103,11 +99,4 @@ volumes:
       type: 'none'
       o: 'bind'
       device: ${LOCAL_FRONTEND_VLPATH}
-  backend:
-    name: backend
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: ${LOCAL_BACKEND_VLPATH}
 # =======================================================================================
