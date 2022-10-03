@@ -28,8 +28,7 @@ export class GameGateway implements OnGatewayConnection {
 			} else {
 				client.disconnect();
 			}
-		} catch (err) {
-			console.log(err);
+		} catch (err) {			
 			client.disconnect();
 		}
 	}

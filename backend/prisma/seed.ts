@@ -4,6 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { faker } from '@faker-js/faker';
 import { CreateChannelDto } from "src/chat/dto/chat.dto";
+import { HttpException } from "@nestjs/common";
 
 
 // initialize Prisma Client
@@ -66,7 +67,6 @@ async function addUsers(howManyUsers : number = 10) {
 				email: faker.internet.email(),
 			},
 		});
-		console.log("user created: ", user);
 	}
 }
 
@@ -84,8 +84,9 @@ async function addAchivementsToUser(userId : number){
 		)
 		console.table(userUpdated)
 	}
-	catch(exception){
-		console.log(exception)
+	catch(err){
+		throw new HttpException(err.message, err.status);
+
 	}
 }
 
@@ -103,8 +104,9 @@ async function addAFriendsToUser(userId : number){
 		)
 		console.table(userUpdated)
 	}
-	catch(exception){
-		console.log(exception)
+	catch(err){
+		throw new HttpException(err.message, err.status);
+
 	}
 }
 

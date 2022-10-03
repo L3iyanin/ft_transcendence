@@ -1,4 +1,4 @@
-import { UseGuards } from "@nestjs/common";
+import { HttpException, UseGuards } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import {
 	OnGatewayConnection,
@@ -30,18 +30,13 @@ export class ChatGateway implements OnGatewayConnection {
 				client.disconnect();
 			}
 		} catch (err) {
-			console.log(err);
 			client.disconnect();
+			throw new HttpException(err.message, err.status);
 		}
 	}
 
 	@WebSocketServer()
 	server: Server;
-
-	@SubscribeMessage("disconnectUser")
-	removeConnectedUser(client: Socket, userId: number) {
-		console.log("function not implemented yet !!");
-	}
 
 	@SubscribeMessage("sendMessage")
 	async handleMessage(client: Socket, payload: Message) {
