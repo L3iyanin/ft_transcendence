@@ -6,7 +6,7 @@ import ErrorAlert from "../UI/Error";
 import LoadingSpinner from "../UI/Loading/LoadingSpinner";
 import { useSelector } from "react-redux";
 
-const LastMatches : React.FC < {matches : IMatch[], isInProfile? : boolean, userId?: number, isForAllUsers?: boolean} > = ({ isInProfile, userId, isForAllUsers }) => {
+const LastMatches : React.FC < {isInProfile? : boolean, userId?: number, isForAllUsers?: boolean} > = ({ isInProfile, userId, isForAllUsers }) => {
 	const { t } = useTranslation();
 
 	const [lastMatches, setLastMatches] = useState<IMatch[] | null> (null);

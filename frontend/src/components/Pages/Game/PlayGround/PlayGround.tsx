@@ -23,7 +23,6 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import LoadingSpinner from "../../../UI/Loading/LoadingSpinner";
 import { MatchTypeEnum } from "../../../../utils/constants/enum";
-import { fakematch } from "../../../../utils/data/Match";
 import WinnerOverlay from "./WinnerOverlay";
 import usePrompt from "../../../../hooks/usePropmpt";
 import { useTranslation } from "react-i18next";

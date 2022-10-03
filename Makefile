@@ -3,7 +3,7 @@ include .env
 
 Author = l3iyanin
 
-all: volumes up prisma
+all: volumes up
 	
 
 update_env:
@@ -12,6 +12,7 @@ update_env:
 
 prisma:
 	cd backend/prisma && echo $(PWD) && npx  prisma migrate dev --name "init" && cd ../..
+
 up:
 	@docker-compose up
 
@@ -23,11 +24,13 @@ down:
 
 volumes:
 	@mkdir -p $(LOCAL_DATABASE_VLPATH)
+	@mkdir -p $(LOCAL_FRONTEND_VLPATH)
 
 clean: down
 
 fclean: clean
 	@rm -rf $(LOCAL_DATABASE_VLPATH)
+	@rm -rf $(LOCAL_FRONTEND_VLPATH)
 	@bash dockerCleanup.sh
 
 drop:

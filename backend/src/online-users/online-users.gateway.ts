@@ -34,9 +34,9 @@ export class OnlineUsersGateway implements OnGatewayDisconnect {
 				client.disconnect();
 			}
 		} catch (err) {
-			console.log(err);
 			client.disconnect();
 		}
+
 	}
 
 	@WebSocketServer()

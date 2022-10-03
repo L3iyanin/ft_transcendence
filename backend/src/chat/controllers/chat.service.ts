@@ -227,7 +227,6 @@ export class ChatService {
 				};
 			}
 		} catch (err) {
-			console.log(err);
 			throw new HttpException(err, err.status);
 		}
 	}
@@ -284,7 +283,6 @@ export class ChatService {
 				message: "Group channel created successfully",
 			};
 		} catch (err) {
-			console.log(err);
 			throw new HttpException(err, err.status);
 		}
 	}
@@ -346,7 +344,6 @@ export class ChatService {
 				message: "User joined channel successfully",
 			};
 		} catch (err) {
-			console.log(err);
 			throw new HttpException(err, err.status);
 		}
 	}
@@ -483,7 +480,6 @@ export class ChatService {
 				message: "User left the group successfully",
 			};
 		} catch (err) {
-			console.log(err);
 			throw new HttpException(err, err.status);
 		}
 	}

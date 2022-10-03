@@ -3,7 +3,6 @@ import InputWithIcon from "../components/UI/inputs/InputWithIcon";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import MembersList from "../components/Pages/ChannelSettings/MembersList";
-import { membersData, friendsListData } from "../utils/data/ChannelSettings";
 import FriendsList from "../components/Pages/ChannelSettings/FriendsList";
 import { useEffect, useState } from "react";
 import { getChannelInfo, leaveChannel } from "../services/channel/settings";
@@ -108,7 +107,6 @@ const ChannelSettings: React.FC = () => {
 			</div>
 			<MembersList
 				channelInfo={channelInfo}
-				members={membersData}
 				refreshHandler={refreshHandler}
 				/>
 

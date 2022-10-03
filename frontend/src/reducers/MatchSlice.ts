@@ -32,6 +32,7 @@ export const matchSlice = createSlice({
 				isMatching: false,
 				whenMatching: undefined,
 				match: action.payload.matchSettings,
+				areYouPlaying: true,
 				// spectators: action.payload.spectators
 			}
 		},

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ReactComponent as SearchIcon } from "../../../assets/icons/search.svg";
+import { ReactComponent as SearchIcon } from "../../../assets/icons/Search.svg";
 
 import { useTranslation } from "react-i18next";
 import InputWithIcon from "../../UI/inputs/InputWithIcon";

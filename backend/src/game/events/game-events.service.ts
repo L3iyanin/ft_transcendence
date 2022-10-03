@@ -703,16 +703,22 @@ export class GameEventsService {
 			}
 
 			const spectatorsPopulated = await this.populateSpectators(liveMatch.spectators);
-			const player1 = await this.prisma.user.findUnique({
-				where: {
-					id: liveMatch.player1Id,
-				},
-			});
-			const player2 = await this.prisma.user.findUnique({
-				where: {
-					id: liveMatch.player2Id,
-				},
-			});
+			// const player1 = await this.prisma.user.findUnique({
+			// 	where: {
+			// 		id: liveMatch.player1Id,
+			// 	},
+			// });
+			// const player2 = await this.prisma.user.findUnique({
+			// 	where: {
+			// 		id: liveMatch.player2Id,
+			// 	},
+			// });
+
+			const { player1, player2 } = await this.populatePlayers(
+				match.player1Id,
+				match.player2Id
+			);
+
 			const scoreToWin = liveMatch.scoreToWin;
 			const matchSettings = {
 				matchId,

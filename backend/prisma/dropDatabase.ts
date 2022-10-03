@@ -10,7 +10,6 @@ async function main() {
 	const channel = await prisma.channel.deleteMany();
 	const member = await prisma.member.deleteMany();
 	const message = await prisma.message.deleteMany();
-	console.log({ user, achievement, match, channel, member, message });
 }
 
 // execute the main function

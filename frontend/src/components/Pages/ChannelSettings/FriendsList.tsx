@@ -10,7 +10,7 @@ import InputWithIcon from "../../UI/inputs/InputWithIcon";
 import LoadingSpinner from "../../UI/Loading/LoadingSpinner";
 import SuccesAlert from "../../UI/SuccesAlert";
 import FriendCart from "./FriendCart";
-import { ReactComponent as SearchIcon } from "../../../assets/icons/search.svg";
+import { ReactComponent as SearchIcon } from "../../../assets/icons/Search.svg";
 
 const FriendsList: React.FC<{
 	channelInfo: IChatChannel;

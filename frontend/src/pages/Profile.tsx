@@ -1,7 +1,5 @@
 import { useParams } from "react-router-dom";
 
-import { lastMatches } from "../utils/data/Match";
-
 import NavBar from "../components/NavBar/NavBar";
 import Footer from "../components/Footer/Footer";
 import UserCard from "../components/UserCard/UserCard";
@@ -32,7 +30,7 @@ const Profile = () => {
 				<main className="flex flex-col justify-between items-center gap-y-16">
 					<section className="w-full flex flex-wrap justify-around items-center gap-14">
 						<UserCard userId={userId} />
-						<LastMatches matches={lastMatches} userId={+userId} isInProfile={true}/>
+						<LastMatches userId={+userId} isInProfile={true}/>
 					</section>
 					<section className="w-full flex flex-wrap justify-between items-center">
 						<FirendsList userId={userId} />

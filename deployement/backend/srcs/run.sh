@@ -1,8 +1,8 @@
 
-if [ ! -d "/ft_transcendence_backend/node_modules" ]
-then
-	mv /node_modules /ft_transcendence_backend/node_modules
-	rm -rf /package.json
-fi
+npx prisma migrate dev --name "init"
 
-npm run start:dev
+npm run seed
+
+npm run build
+
+npm run start:prod
