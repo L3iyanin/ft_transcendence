@@ -1,8 +1,8 @@
 # compiled output
 /dist
 /node_modules
-/public/statics/profilePics/*
-/public/statics/qrCodes/*
+# /public/statics/profilePics/*
+# /public/statics/qrCodes/*
 
 # Logs
 logs
