@@ -13,8 +13,8 @@ services:
     environment:
       - POSTGRES_USER=${DATABASE_USER}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-    volumes:
-      - database:${CONTAINER_DATABASE_VLPATH}
+    # volumes:
+    #   - database:${CONTAINER_DATABASE_VLPATH}
     networks:
       - ft_transcendence
   
@@ -52,51 +52,33 @@ services:
     networks:
       - ft_transcendence
     volumes:
-      - frontend:${CONTAINER_FRONTEND_VLPATH}
+      - static-content:/var/www/html
 
   webserver:
-    build: deployement/webserver
-    image: webserver
+    image: caddy/caddy:2.2.1-alpine
     container_name: webserver
     restart: unless-stopped
     ports:
       - 80:80
+      - 443:443
     depends_on:
       - database
       - backend
       - frontend
-    env_file:
-      - .env
     networks:
       - ft_transcendence
     volumes:
-      - frontend:${WEBSEREVR_CONTAINER_FRONTEND_VLPATH}
-# =======================================================================================
+        - static-content:/var/www/html
+        - ./deployement/webserver/srcs/Caddyfile:/etc/caddy/Caddyfile
+        - caddy_data:/data
+        - caddy_config:/config
 
 
-
-# ======================================= Networks ======================================
 networks:
   ft_transcendence:
     name: ft_transcendence
-# =======================================================================================
 
-
-
-# ======================================= Volumes =======================================
 volumes:
-  database:
-    name: database
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: ${LOCAL_DATABASE_VLPATH}
-  frontend:
-    name: frontend
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: ${LOCAL_FRONTEND_VLPATH}
-# =======================================================================================
+  caddy_data:
+  caddy_config:
+  static-content:

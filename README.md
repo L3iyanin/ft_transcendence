@@ -65,3 +65,4 @@ and also the backend will reload if you make edit the backend folder.
 1. request come from browser to nginx server.
 2. if the request start with `/api` or `/socket.io` it will be redirected to the backend container and will be served by nestjs.
 3. if the request not start with `/api` and `/socket.io` it will be redirected to the frontend container and will be served by react.
+# pong3yan

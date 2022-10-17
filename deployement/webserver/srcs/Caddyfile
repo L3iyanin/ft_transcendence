@@ -1,0 +1,11 @@
+pong.bringo.club {
+    root * /var/www/html/dist
+    route {
+        reverse_proxy /api* backend:8080
+        reverse_proxy /statics* backend:8080
+        reverse_proxy /socket.io* backend:8080
+        reverse_proxy /images* backend:8080
+        try_files {path} /index.html
+        file_server
+    }
+}

@@ -1,9 +1,11 @@
-FROM nginx:stable-alpine
+FROM caddy
 
-RUN rm -rf /usr/share/nginx/html/*
-RUN mkdir -p /usr/share/nginx/logs
-COPY ./srcs/default.conf /etc/nginx/nginx.conf
+# RUN rm -rf /usr/share/nginx/html/*
+# RUN mkdir -p /usr/share/nginx/logs
+# COPY ./deployement/nginx/default.config /etc/nginx/nginx.conf
 
-EXPOSE 80
+COPY ./deployement/webserver/srcs/Caddyfile /etc/caddy/Caddyfile
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+EXPOSE 80 443
+
+CMD ["caddy", "run"]
